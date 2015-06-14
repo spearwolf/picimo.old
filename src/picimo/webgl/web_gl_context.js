@@ -1,7 +1,7 @@
 (function(){
     "use strict";
 
-    var Map = require( 'core-js/fn/map' );
+    var Map = require( 'core-js/library/fn/map' );
 
     function WebGlContext ( gl ) {
 
