@@ -3,8 +3,9 @@
 
     module.exports = {
 
-        App : require( './app' ),
-        sg  : require( './sg' )
+        App   : require( './app' ),
+        sg    : require( './sg' ),
+        webgl : require( './webgl' )
     
     };
 

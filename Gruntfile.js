@@ -22,6 +22,7 @@ module.exports = function( grunt ) {
                 options: {
                     transform: [ 'brfs' ],
                     browserifyOptions: {
+                        debug: true,
                         standalone: 'Picimo'
                     }
                 }
@@ -42,6 +43,6 @@ module.exports = function( grunt ) {
 
     grunt.registerTask('build:src', ['browserify:picimo-dev']);
 
-    grunt.registerTask('default', [ 'build:src' ]);
+    grunt.registerTask('default', [ 'build:src', 'watch' ]);
 
 };
