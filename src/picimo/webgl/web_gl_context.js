@@ -3,6 +3,10 @@
 
     var Map = require( 'core-js/library/fn/map' );
 
+    /**
+     * @class Picimo.webgl.WebGlContext
+     */
+
     function WebGlContext ( gl ) {
 
         if ( ! gl ) throw new Error( 'WebGlContext: gl is undefined!' );

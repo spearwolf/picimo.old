@@ -1,6 +1,10 @@
 (function(){
     "use strict";
 
+    /**
+     * @class Picimo.sg.Node
+     */
+
     function Node () {
 
     }

@@ -1,6 +1,10 @@
 (function(){
     "use strict";
 
+    /**
+     * @class Picimo.App
+     */
+
     function App () {
 
     }

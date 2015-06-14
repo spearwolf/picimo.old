@@ -1,6 +1,10 @@
 (function(){
     "use strict";
 
+    /**
+     * @namespace Picimo
+     */
+
     module.exports = {
 
         App   : require( './app' ),

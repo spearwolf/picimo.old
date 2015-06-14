@@ -29,6 +29,19 @@ module.exports = function( grunt ) {
             }
         },
 
+        jsdoc: {
+            picimo: {
+                src: [
+                    'src/**/*.js'
+                ],
+                options: {
+                    destination : "doc",
+                    template    : "./node_modules/jaguarjs-jsdoc",
+                    configure   : "jsdoc.conf.json"
+                }
+            }
+        },
+
         watch: {
             'picimo-dev': {
                 files: [
