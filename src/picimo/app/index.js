@@ -1,6 +1,8 @@
 (function(){
     "use strict";
 
+    var utils = require( '../utils' );
+
     /**
      * @class Picimo.App
      */
@@ -9,7 +11,7 @@
 
     }
 
-    require( '../../utils/custom_event' ).eventize( App.prototype );
+    utils.custom_event.eventize( App.prototype );
 
     module.exports = App;
 

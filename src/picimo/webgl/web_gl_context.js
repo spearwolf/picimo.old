@@ -1,7 +1,7 @@
 (function(){
     "use strict";
 
-    var Map = require( 'core-js/library/fn/map' );
+    var utils = require( '../utils' );
 
     /**
      * @class Picimo.webgl.WebGlContext
@@ -11,13 +11,24 @@
 
         if ( ! gl ) throw new Error( '[new Picimo.webgl.WebGlContext] gl is undefined!' );
 
-        Object.defineProperty( this, 'gl', { value: gl, enumerable: true } );
+        utils.object.definePropertyPublicRO( this, 'gl', gl );
 
-        clearCaches( this );
+        utils.object.definePropertiesPrivateRO( this, {
+            '_boundBuffers' : new utils.Map(),
+            '_boundTextures': new utils.Map()
+        })
+
         readWebGlParameters( this );
+
+        Object.seal( this );
 
     }
 
+    /**
+     * @method Picimo.webgl.WebGlContext#glBindBuffer
+     * @param bufferType
+     * @param buffer
+     */
     WebGlContext.prototype.glBindBuffer = function ( bufferType, buffer ) {
 
         if ( this._boundBuffers.get( bufferType ) !== buffer ) {
@@ -29,28 +40,21 @@
 
     };
 
-    function clearCaches ( webGlContext ) {
-
-        webGlContext._boundBuffers  = new Map();
-        webGlContext._boundTextures = new Map();
-
-    }
-
     function readWebGlParameters( webGlContext ) {
 
         var gl = webGlContext.gl;
 
-        Object.defineProperties( webGlContext, {
+        utils.object.definePropertiesPublicRO( webGlContext, {
 
-            MAX_TEXTURE_SIZE: {
-                value: gl.getParameter( webGlContext.gl.MAX_TEXTURE_SIZE ),
-                enumerable: true
-            },
+            /**
+             * @member {number} Picimo.webgl.WebGlContext#MAX_TEXTURE_SIZE - gl.MAX_TEXTURE_SIZE
+             */
+            MAX_TEXTURE_SIZE : gl.getParameter( gl.MAX_TEXTURE_SIZE ),
 
-            MAX_TEXTURE_IMAGE_UNITS: {
-                value: gl.getParameter( webGlContext.gl.MAX_TEXTURE_IMAGE_UNITS ),
-                enumerable: true
-            }
+            /**
+             * @member {number} Picimo.webgl.WebGlContext#MAX_TEXTURE_IMAGE_UNITS - gl.MAX_TEXTURE_IMAGE_UNITS
+             */
+            MAX_TEXTURE_IMAGE_UNITS : gl.getParameter( gl.MAX_TEXTURE_IMAGE_UNITS )
 
         });
 

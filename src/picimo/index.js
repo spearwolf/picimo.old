@@ -9,8 +9,9 @@
 
         App   : require( './app' ),
         sg    : require( './sg' ),
-        webgl : require( './webgl' )
-    
+        webgl : require( './webgl' ),
+        utils : require( './utils' )
+
     };
 
 })();

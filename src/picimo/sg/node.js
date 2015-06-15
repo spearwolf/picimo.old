@@ -1,6 +1,8 @@
 (function(){
     "use strict";
 
+    var utils = require( '../utils' );
+
     /**
      * @class Picimo.sg.Node
      *
@@ -13,15 +15,14 @@
 
         if ( ! app ) throw new Error( '[Picimo.sg.Node] app is null!' );
 
-        Object.defineProperty( this, 'app', { value: app, enumerable: true });
+        utils.object.definePropertyPublicRO( this, 'app', app );
 
         this._ready = ( ! options ) || options.ready !== false;
 
-        this.on( 'frame', 99999, onFrame );
-
     }
 
-    function onFrame () {
+
+    Node.prototype.onFrame = function () {
 
         if ( ! this.ready ) return;
 
@@ -29,9 +30,10 @@
         // - init
         // - resize
 
-    }
+    };
 
-    require( '../../utils/custom_event' ).eventize( Node.prototype );
+
+    utils.custom_event.eventize( Node.prototype );
 
     Object.defineProperties( Node.prototype, {
 
@@ -58,6 +60,7 @@
         }
 
     });
+
 
     module.exports = Node;
 
