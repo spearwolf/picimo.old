@@ -55,6 +55,7 @@ module.exports = function( grunt ) {
 
 
     grunt.registerTask('build:src', ['browserify:picimo-dev']);
+    grunt.registerTask('doc', ['jsdoc']);
 
     grunt.registerTask('default', [ 'build:src', 'watch' ]);
 

@@ -9,20 +9,52 @@
 
     function WebGlContext ( gl ) {
 
-        if ( ! gl ) throw new Error( 'WebGlContext: gl is undefined!' );
+        if ( ! gl ) throw new Error( '[new Picimo.webgl.WebGlContext] gl is undefined!' );
 
         Object.defineProperty( this, 'gl', { value: gl, enumerable: true } );
 
-        this.clearCaches();
+        clearCaches( this );
+        readWebGlParameters( this );
 
     }
 
-    WebGlContext.prototype.clearCaches = function () {
+    WebGlContext.prototype.glBindBuffer = function ( bufferType, buffer ) {
 
-        this._boundBuffers  = new Map();
-        this._boundTextures = new Map();
+        if ( this._boundBuffers.get( bufferType ) !== buffer ) {
+
+            this._boundBuffers.set( bufferType, buffer );
+            this.gl.bindBuffer( bufferType, buffer );
+
+        }
 
     };
+
+    function clearCaches ( webGlContext ) {
+
+        webGlContext._boundBuffers  = new Map();
+        webGlContext._boundTextures = new Map();
+
+    }
+
+    function readWebGlParameters( webGlContext ) {
+
+        var gl = webGlContext.gl;
+
+        Object.defineProperties( webGlContext, {
+
+            MAX_TEXTURE_SIZE: {
+                value: gl.getParameter( webGlContext.gl.MAX_TEXTURE_SIZE ),
+                enumerable: true
+            },
+
+            MAX_TEXTURE_IMAGE_UNITS: {
+                value: gl.getParameter( webGlContext.gl.MAX_TEXTURE_IMAGE_UNITS ),
+                enumerable: true
+            }
+
+        });
+
+    }
 
     module.exports = WebGlContext;
 
