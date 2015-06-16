@@ -29,6 +29,19 @@ module.exports = function( grunt ) {
             }
         },
 
+        copy: {
+            jsdoc: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: "assets/images/doc",
+                        src: ['**/*.png', '**/*.jpg', '**/*.gif'],
+                        dest: 'doc/images/'
+                    }
+                ]
+            },
+        },
+
         jsdoc: {
             picimo: {
                 src: [
@@ -47,7 +60,7 @@ module.exports = function( grunt ) {
                 files: [
                     'src/**/*'
                 ],
-                tasks: [ 'build:src' ]
+                tasks: [ 'build:src', 'doc' ]
             }
         }
 
@@ -55,8 +68,8 @@ module.exports = function( grunt ) {
 
 
     grunt.registerTask('build:src', ['browserify:picimo-dev']);
-    grunt.registerTask('doc', ['jsdoc']);
+    grunt.registerTask('doc', ['jsdoc', 'copy:jsdoc']);
 
-    grunt.registerTask('default', [ 'build:src', 'watch' ]);
+    grunt.registerTask('default', [ 'build:src', 'doc', 'watch' ]);
 
 };

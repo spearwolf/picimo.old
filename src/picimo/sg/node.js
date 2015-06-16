@@ -6,8 +6,11 @@
 
     /**
      * @class Picimo.sg.Node
-     * @description
+     * @classdesc
      * The generic base class for all scene graph nodes.
+     *
+     * ### States and Events
+     * <img src="images/node-events.png" srcset="images/node-events.png 1x,images/node-events@2x.png 2x" alt="Node Events and States">
      *
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
@@ -89,8 +92,25 @@
 
             if ( this.display ) {
 
+                /**
+                 * Is called only if the node is *ready* and *display*-able.
+                 * @event Picimo.sg.Node#frame
+                 * @memberof Picimo.sg.Node
+                 */
                 this.emit( 'frame' );
+
+                /**
+                 * Is called just after the *frame* event and before the *frameEnd* event.
+                 * @event Picimo.sg.Node#renderFrame
+                 * @memberof Picimo.sg.Node
+                 */
                 this.emit( 'renderFrame' );
+
+                /**
+                 * Is called after the on *frame* and *renderFrame* events. Here the *render commands* should be generated.
+                 * @event Picimo.sg.Node#frameEnd
+                 * @memberof Picimo.sg.Node
+                 */
                 this.emit( 'frameEnd' );
 
             }
@@ -104,7 +124,8 @@
         node.state.set( NodeState.INIT );
 
         var initPromises = [];
-        node.emit( 'init', initPromises.push.bind( initPromises ) );
+
+        node.emit( 'init', makeDoneFunc( initPromises ) );
 
         utils.Promise.all( initPromises ).then( onInitGl.bind( node, node ), onFail.bind( node, node ) );
 
@@ -115,7 +136,8 @@
         if ( ! node.ready ) return;
 
         var initGlPromises = [];
-        node.emit( 'initGl', initGlPromises.push.bind( initGlPromises ) );
+
+        node.emit( 'initGl', makeDoneFunc( initGlPromises ) );
 
         utils.Promise.all( initGlPromises ).then( onInitDone.bind( node, node ), onFail.bind( node, node ) );
 
@@ -128,6 +150,20 @@
             node.state.set( NodeState.READY );
 
         }
+
+    }
+
+    function makeDoneFunc ( arr ) {
+
+        return function ( promise ) {
+
+            if ( promise ) {
+
+                arr.push( promise );
+
+            }
+
+        };
 
     }
 
