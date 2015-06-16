@@ -9,7 +9,8 @@
 
     module.exports = {
 
-        Node: require( './node' )
+        Node: require( './node' ),
+        NodeState: require( './node_state' )
 
     };
 

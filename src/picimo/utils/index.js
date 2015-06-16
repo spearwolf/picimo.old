@@ -29,6 +29,14 @@
          */
         Map : core.Map,
 
+        /**
+         * @class Picimo.utils.Promise
+         *
+         * @description
+         *   An ES6 Promise Implementation.
+         *   This is the *native* Implementation of your javascript environment or the polyfill/shim of the *core-js* library.
+         */
+        Promise : core.Promise,
     };
 
 })();

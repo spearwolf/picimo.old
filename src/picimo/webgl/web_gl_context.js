@@ -29,6 +29,7 @@
      * @param bufferType
      * @param buffer
      */
+
     WebGlContext.prototype.glBindBuffer = function ( bufferType, buffer ) {
 
         if ( this._boundBuffers.get( bufferType ) !== buffer ) {
