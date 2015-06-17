@@ -27,7 +27,7 @@
          *   An ES6 compatible Map Implementation.
          *   This is the *native* Implementation of your javascript environment or the polyfill/shim of the *core-js* library.
          */
-        Map : core.Map,
+        Map : ( ( typeof Map === 'undefined' ) ? core.Map : Map ),
 
         /**
          * @class Picimo.utils.Promise
@@ -36,7 +36,7 @@
          *   An ES6 Promise Implementation.
          *   This is the *native* Implementation of your javascript environment or the polyfill/shim of the *core-js* library.
          */
-        Promise : core.Promise,
+        Promise : ( ( typeof Promise === 'undefined' ) ? core.Promise : Promise ),
     };
 
 })();

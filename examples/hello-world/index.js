@@ -7,7 +7,7 @@ node.on( 'init', function ( done ) {
 
     console.log( 'init-ializing ..' );
 
-    done( new Promise( function ( resolve, reject ) {
+    done( function ( resolve, reject ) {
 
         setTimeout( function () {
 
@@ -17,13 +17,22 @@ node.on( 'init', function ( done ) {
 
         }, 5000 );
 
-    }));
+    });
 
 });
 
-node.on( 'initGl', function () {
+node.on( 'initGl', function ( done ) {
 
-    console.log( 'initGl' );
+    console.log( 'initGl..' );
+
+    done( new Promise( function ( resolve, reject ) {
+
+        console.log( '..done!' );
+        resolve();
+        // console.log( '..failed!' );
+        // reject();
+
+    }));
 
 });
 
@@ -33,6 +42,16 @@ node.on( 'frame', function () {
 
 });
 
+node.on( 'destroy', function () {
 
+    console.log( 'destroy' );
+
+});
+
+node.on( 'destroyGl', function () {
+
+    console.log( 'destroyGl' );
+
+});
 console.log( "app", app );
 console.log( "node", node );

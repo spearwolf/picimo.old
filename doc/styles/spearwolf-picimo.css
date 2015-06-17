@@ -302,6 +302,7 @@ pre.prettyprint {
   background: linear-gradient(to bottom right, #15978e 0%, #6aeae1 100%);
 }
 .main .attrs > .type-signature {
+  margin-left: 0;
   margin-right: 1.5em;
   color: #ffffff;
   border-left: 3px solid #404040;
@@ -532,6 +533,9 @@ td {
   color: #15978e;
 }
 /* ---- more main styles ----- */
+.main img {
+  max-width: 100%;
+}
 dd > .description > p {
   margin-top: 0.25em;
 }
