@@ -69,15 +69,15 @@ var vod = new Picimo.core.VertexObjectDescriptor(
         { name: 'position',  size: 3, attrNames: [ 'x', 'y', 'z' ] },
         { name: 'rotate',    size: 1, uniform: true },
         { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
-        { name: 'translate', size: 2, uniform: true, attrNames: [ 'x', 'y' ] },
+        { name: 'translate', size: 2, uniform: true, attrNames: [ 'tx', 'ty' ] },
         { name: 'scale',     size: 1, uniform: true },
-        { name: 'opacity',   size: 1 }
+        { name: 'opacity',   size: 1, uniform: true }
 
     ],
 
     {
 
-        pos2d: { size: 2, offset: 0, attrNames: [ 'x', 'y' ] },
+        pos2d: { size: 2, offset: 0 },
         posZ:  { size: 1, offset: 2, uniform: true },
         uv:    'texCoords'
 
