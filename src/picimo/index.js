@@ -10,7 +10,8 @@
         App   : require( './app' ),
         sg    : require( './sg' ),
         webgl : require( './webgl' ),
-        utils : require( './utils' )
+        utils : require( './utils' ),
+        core  : require( './core' )
 
     };
 

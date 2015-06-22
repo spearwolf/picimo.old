@@ -102,26 +102,36 @@
 
             if ( this.display ) {
 
-                /**
-                 * Is called only if node is *ready* and *display*-able.
-                 * @event Picimo.sg.Node#frame
-                 * @memberof Picimo.sg.Node
-                 */
-                this.emit( 'frame' );
+                try {
 
-                /**
-                 * Is called just after the *frame* event and before the *frameEnd* event. The *render commands* should be generated here.
-                 * @event Picimo.sg.Node#renderFrame
-                 * @memberof Picimo.sg.Node
-                 */
-                this.emit( 'renderFrame' );
+                    /**
+                     * Is called only if node is *ready* and *display*-able.
+                     * @event Picimo.sg.Node#frame
+                     * @memberof Picimo.sg.Node
+                     */
+                    this.emit( 'frame' );
 
-                /**
-                 * Is called after the on *frame* and *renderFrame* events.
-                 * @event Picimo.sg.Node#frameEnd
-                 * @memberof Picimo.sg.Node
-                 */
-                this.emit( 'frameEnd' );
+                    /**
+                     * Is called just after the *frame* event and before the *frameEnd* event. The *render commands* should be generated here.
+                     * @event Picimo.sg.Node#renderFrame
+                     * @memberof Picimo.sg.Node
+                     */
+                    this.emit( 'renderFrame' );
+
+                    /**
+                     * Is called after the on *frame* and *renderFrame* events.
+                     * @event Picimo.sg.Node#frameEnd
+                     * @memberof Picimo.sg.Node
+                     */
+                    this.emit( 'frameEnd' );
+
+                } catch ( err ) {
+
+                    console.error( '[frame,renderFrame,frameEnd]', err );
+
+                    this.ready = false;
+
+                }
 
             }
 
@@ -152,7 +162,7 @@
 
             } catch ( err ) {
 
-                console.error( 'destroyGl', err );
+                console.error( '[destroyGl]', err );
 
             }
 
@@ -167,7 +177,7 @@
 
             } catch ( err ) {
 
-                console.error( 'destroy', err );
+                console.error( '[destroy]', err );
 
             }
 
@@ -175,24 +185,34 @@
 
     };
 
-    function onInit ( node, finish ) {
+    function onInit ( node ) {
 
         node.state.set( NodeState.INIT );
 
         var initPromises = [];
 
-        /**
-         * This is the first event. Is called only once.
-         * @event Picimo.sg.Node#init
-         * @memberof Picimo.sg.Node
-         */
-        node.emit( 'init', makeDoneFunc( initPromises, node ) );
+        try {
 
-        utils.Promise.all( initPromises ).then( onInitGl.bind( node, node ), onFail.bind( node, node ) );
+            /**
+             * This is the first event. Is called only once.
+             * @event Picimo.sg.Node#init
+             * @memberof Picimo.sg.Node
+             */
+            node.emit( 'init', makeDoneFunc( initPromises, node ) );
+
+            utils.Promise.all( initPromises ).then( onInitGl.bind( node, node ), onFail.bind( node, node ) );
+
+        } catch ( err ) {
+        
+            console.error( '[init]', err );
+
+            this.ready = false;
+        
+        }
 
     }
 
-    function onInitGl( node ) {
+    function onInitGl ( node ) {
 
         node._initialized = true;
 
@@ -200,15 +220,24 @@
 
         var initGlPromises = [];
 
-        /**
-         * Is called just after *init*. Should only be used to perform webgl related tasks.
-         * @event Picimo.sg.Node#initGl
-         * @memberof Picimo.sg.Node
-         */
-        node.emit( 'initGl', makeDoneFunc( initGlPromises, node ) );
+        try {
 
-        utils.Promise.all( initGlPromises ).then( onInitDone.bind( node, node ), onFail.bind( node, node ) );
+            /**
+             * Is called just after *init*. Should only be used to perform webgl related tasks.
+             * @event Picimo.sg.Node#initGl
+             * @memberof Picimo.sg.Node
+             */
+            node.emit( 'initGl', makeDoneFunc( initGlPromises, node ) );
 
+            utils.Promise.all( initGlPromises ).then( onInitDone.bind( node, node ), onFail.bind( node, node ) );
+
+        } catch ( err ) {
+        
+            console.error( '[initGl]', err );
+
+            this.ready = false;
+        
+        }
     }
 
     function onInitDone ( node ) {

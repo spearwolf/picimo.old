@@ -123,7 +123,7 @@ iframe.mainframe {
   position: absolute;
   border: 0;
   top: 0;
-  left: 17rem;
+  left: 19rem;
   width: calc(100% - 17rem);
   height: 100%;
   overflow: auto;
@@ -145,7 +145,7 @@ header.page {
   position: fixed;
   top: 0;
   left: 0;
-  width: 17rem;
+  width: 19rem;
   height: 100vh;
   /*flex: 0 0 17rem;*/
   /*order: -1;*/

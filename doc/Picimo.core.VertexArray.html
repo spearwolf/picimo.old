@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: NodeState</title>
+    <title>Class: VertexArray</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.sg.NodeState.html">Class: NodeState</h1>
+        <h1 class="page-title" data-filename="Picimo.core.VertexArray.html">Class: VertexArray</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.sg.NodeState">
+<header data-current="Picimo.core.VertexArray">
     <h2>
-        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.sg.html">.sg</a>.</span>
+        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.core.html">.core</a>.</span>
     
-    NodeState
+    VertexArray
     </h2>
     
 </header>  
@@ -48,14 +48,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="NodeState">
+        <h4 class="name" id="VertexArray">
             
-            new Picimo.sg.NodeState<span class="signature">(<span class="optional">initialValue</span>)</span>
+            new Picimo.core.VertexArray<span class="signature">(descriptor, capacity, <span class="optional">vertices</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/node_state.js, line 6
+            core/vertex_array.js, line 5
         </div>
         
     </div>
@@ -83,8 +83,6 @@
 		<th>Type</th>
 		
 		
-		<th>Default</th>
-		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -95,7 +93,35 @@
 	
         <tr>
             
-                <td class="name"><code>initialValue</code></td>
+                <td class="name"><code>descriptor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.core.VertexArrayDescriptor.html">Picimo.core.VertexArrayDescriptor</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>The descriptor.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>capacity</code></td>
             
             
             <td class="type">
@@ -108,11 +134,33 @@
             </td>
             
             
-                <td class="default">
+            
+            <td class="description last">
                 
-                    0
+                    
+                    
+                        
+                    
                 
                 </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>vertices</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Float32Array</span>
+
+
+            
+            </td>
+            
             
             
             <td class="description last">
@@ -124,7 +172,7 @@
                         
                     
                 
-                <p>The initial state</p></td>
+                </td>
         </tr>
 	
 	
@@ -185,215 +233,6 @@
     
     
     
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".CREATE"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.CREATE</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".DESTROYED"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.DESTROYED</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".ERROR"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.ERROR</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".INIT"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.INIT</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".READY"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.READY</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
     
     
         <h3 class="subsection-title">Methods</h3>
@@ -402,14 +241,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="is">
+        <h4 class="name" id="copy">
             
-            is<span class="signature">(state)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+            copy<span class="signature">(fromVertexArray, <span class="optional">toInstanceOffset</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/node_state.js, line 18
+            core/vertex_array.js, line 28
         </div>
         
     </div>
@@ -437,6 +276,8 @@
 		<th>Type</th>
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -447,7 +288,39 @@
 	
         <tr>
             
-                <td class="name"><code>state</code></td>
+                <td class="name"><code>fromVertexArray</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>toInstanceOffset</code></td>
             
             
             <td class="type">
@@ -460,8 +333,180 @@
             </td>
             
             
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
             
             <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="subarray">
+            
+            subarray<span class="signature">(begin, <span class="optional">size</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            core/vertex_array.js, line 47
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>begin</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
                 
                 </td>
         </tr>
@@ -524,7 +569,7 @@
             
             <td class="type">
             
-                        boolean
+                        <a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a>
                         
                     
             </td>
@@ -536,143 +581,6 @@
 
     
     
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code>state.is( NodeState.CREATE | NodeState.INIT )</code></pre>
-    
-
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="set">
-            
-            set<span class="signature">(state)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            sg/node_state.js, line 31
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>state</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-
-<em>self</em>
-
-
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code>state.set( NodeState.READY )</code></pre>
-    
-
     
 </dd>
 

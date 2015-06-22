@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Class: VertexArrayDescriptor</title>
+    
+    
+    <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/spearwolf-picimo.css">
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    
+    
+    <script>
+    var config = {"monospaceLinks":false,"cleverLinks":true,"private":false,"dateFormat":"ddd MMM Do YYYY","outputSourceFiles":false,"outputSourcePath":false,"systemName":"Picimo","footer":"","copyright":"Picimo Copyright © 2014-2015 by Wolfger Schramm <wolfger@spearwolf.de>","navType":"vertical","linenums":false,"collapseSymbols":false,"inverseNav":false,"highlightTutorialCode":true,"protocol":"fred://","default":{}};
+    </script>
+    
+
+    
+</head>
+<body>
+
+
+<div id="wrap">
+    <div class="main">
+        <h1 class="page-title" data-filename="Picimo.core.VertexArrayDescriptor.html">Class: VertexArrayDescriptor</h1>
+        
+
+
+
+<section>
+    
+<header data-current="Picimo.core.VertexArrayDescriptor">
+    <h2>
+        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.core.html">.core</a>.</span>
+    
+    VertexArrayDescriptor
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="VertexArrayDescriptor">
+            
+            new Picimo.core.VertexArrayDescriptor<span class="signature">(descriptor)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            core/vertex_array_descriptor.js, line 7
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>descriptor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The description</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code>var descriptor = new Picimo.core.VertexArrayDescriptor({
+
+    vertexCount         : 4,
+    vertexAttrCount     : 12,
+
+    attrOffsetPosition  : 0,
+    attrOffsetRotate    : 3,
+    attrOffsetTexCoords : 4,
+    attrOffsetTranslate : 6,
+    attrOffsetScale     : 8,
+    attrOffsetOpacity   : 9,
+
+    vertexAttribPointer : {
+
+        pos2d     : { type: 'V2v2v4v4'   },
+        rotate    : { type: 'v2v1V1v4v4' },
+        posZ      : { type: 'v2V1v1v4v4' },
+
+        uv        : { type: 'v4V2v2v4'   },
+        translate : { type: 'v4v2V2v4'   },
+        scale     : { type: 'v4v4V1v1v2' },
+        opacity   : { type: 'v4v4v1V1v2' }
+
+    }
+};</code></pre>
+    
+
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="createVertexArray">
+            
+            createVertexArray<span class="signature">(<span class="optional">size</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            core/vertex_array_descriptor.js, line 46
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a>
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Mon Jun 22 2015 17:43:35 GMT+0200 (CEST)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="scripts/spearwolf-theme.js"></script>
+
+</body>
+</html>
