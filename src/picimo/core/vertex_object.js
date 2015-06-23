@@ -11,6 +11,8 @@
      */
     function VertexObject ( descriptor, vertexArray, pool ) {
 
+        if ( this.descriptor !== undefined ) return;
+
         /**
          * @member {Picimo.core.VertexObjectDescriptor} Picimo.core.VertexObject#descriptor - Vertex object descriptor.
          * @readonly

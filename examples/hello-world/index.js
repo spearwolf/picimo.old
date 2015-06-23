@@ -58,8 +58,13 @@ console.log( "node", node );
 
 
 
-
 var vod = new Picimo.core.VertexObjectDescriptor(
+
+    function () {
+
+        this.fooBar = 'plah!?';
+
+    },
 
     4,
     12,
@@ -84,6 +89,13 @@ var vod = new Picimo.core.VertexObjectDescriptor(
     }
 
 );
+
+vod.proto.numberOfBeast = function () {
+
+    return 999;
+
+};
+
 
 console.log( "vod", vod );
 

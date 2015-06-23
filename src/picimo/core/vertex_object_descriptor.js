@@ -7,12 +7,15 @@
 
     /**
      * @class Picimo.core.VertexObjectDescriptor
+     * @param {function} vertexObjectConstructor - Vertex object constructor function
      * @param {number} vertexCount - Vertex count
      * @param {number} vertexAttrCount - Vertex attribute count
      * @param {Array} attributes - Vertex attribute descriptions
      * @param {Object} [aliases] - Vertex attribute aliases
      * @example
      * var descriptor = new Picimo.core.VertexObjectDescriptor(
+     *
+     *     null,
      *
      *     4,   // vertexCount
      *     12,  // vertexAttrCount
@@ -38,17 +41,25 @@
      *
      * );
      *
+     * vo.proto.numberOfBeast = function () { return 666; };
+     *
+     *
      * var vo = descriptor.createVertexObject();
      *
      * vo.setPosition( 1,2,-1, 4,5,-1, 7,8,-1, 10,11,-1 );
-     * vo.x2           // => 7
-     * vo.y0           // => 2
-     * vo.posZ         // => -1
+     * vo.x2                // => 7
+     * vo.y0                // => 2
+     * vo.posZ              // => -1
      * vo.posZ = 23;
-     * vo.z1           // => 23
+     * vo.z1                // => 23
+     * vo.numberOfBeast()   // => 666
      *
      */
-    function VertexObjectDescriptor ( vertexCount, vertexAttrCount, attributes, aliases ) {
+    function VertexObjectDescriptor ( vertexObjectConstructor, vertexCount, vertexAttrCount, attributes, aliases ) {
+
+        this.vertexObjectConstructor = typeof vertexObjectConstructor === 'function' ? vertexObjectConstructor : ( function () {} );
+        this.vertexObjectConstructor.prototype = Object.create( VertexObject.prototype );
+        this.vertexObjectConstructor.prototype.constructor = this.vertexObjectConstructor;
 
         this.vertexCount = parseInt( vertexCount, 10 );
         this.vertexAttrCount = parseInt( vertexAttrCount, 10 );
@@ -135,7 +146,7 @@
 
         // ======= vertex object prototype =======
 
-        this.vertexObjectPrototype = Object.create( VertexObject.prototype, this.propertiesObject );
+        this.vertexObjectPrototype = Object.create( this.vertexObjectConstructor.prototype, this.propertiesObject );
 
 
         // === winterkälte jetzt
@@ -167,9 +178,34 @@
         var vo = Object.create( this.vertexObjectPrototype );
         VertexObject.call( vo, this, vertexArray, pool );
 
+        if ( VertexObject !== this.vertexObjectConstructor ) {
+
+            this.vertexObjectConstructor.call( vo );
+
+        }
+
         return vo;
 
     };
+
+
+    Object.defineProperties( VertexObjectDescriptor.prototype, {
+
+        /**
+         * @member {Object} Picimo.core.VertexObjectDescriptor#proto - The prototype object of the vertex object. You should add your own properties and methods here.
+         * @readonly
+         */
+
+        'proto': {
+            get: function () {
+
+                return this.vertexObjectConstructor.prototype;
+
+            },
+            enumerable: true
+        }
+
+    });
 
 
     // =========================================
@@ -195,7 +231,7 @@
             var postfix = this.attrNames[ index ];
 
             if ( postfix !== undefined ) {
-            
+
                 return postfix;
 
             }

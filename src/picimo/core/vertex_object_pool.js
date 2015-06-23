@@ -40,8 +40,6 @@
 
         });
 
-        //utils.object.definePropertyPrivate( this, "lastPoolId", 0 );
-
         createVertexObjects( this );
 
     }
@@ -101,8 +99,6 @@
 
         this.usedVOs.push( vo );
 
-        //vo.poolId = ++this.lastPoolId;
-
         vo.vertexArray.copy( this.ZERO.vertexArray );
 
         return vo;
@@ -124,12 +120,6 @@
 
         }
 
-        //if ( ! vo.poolId ) {
-
-            //throw new Error( "couldn't free(vo): vertex object has no poolId!" );
-
-        //}
-
         var idx = this.usedVOs.indexOf( vo );
 
         if ( idx === -1 )  {
@@ -137,8 +127,6 @@
             throw new Error( "couldn't free(vo): vertex object not found in usedVOs array!" );
 
         }
-
-        //vo.poolId = 0;
 
         var lastIdx = this.usedVOs.length - 1;
 
