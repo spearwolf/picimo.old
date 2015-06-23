@@ -7,10 +7,12 @@
 
     module.exports = {
 
-        VertexArray: require( './vertex_array' ),
-        VertexObject: require( './vertex_object' ),
-        VertexObjectDescriptor: require( './vertex_object_descriptor' ),
-        VertexArrayDescriptor: require( './vertex_array_descriptor' )  // old
+        VertexArray            : require( './vertex_array' ),
+        VertexObject           : require( './vertex_object' ),
+        VertexObjectDescriptor : require( './vertex_object_descriptor' ),
+        VertexObjectPool       : require( './vertex_object_pool' ),
+
+        VertexArrayDescriptor  : require( './vertex_array_descriptor' )  // TODO remove
 
     };
 

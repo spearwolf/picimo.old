@@ -11,15 +11,18 @@
      */
     function VertexObject ( descriptor, vertexArray, pool ) {
 
-        /** @member {Picimo.core.VertexObjectDescriptor} Picimo.core.VertexObject#descriptor - Vertex object descriptor. */
-        var _descriptor = ( !! descriptor ) ? descriptor : ( ( !! vertexArray ) ? vertexArray.descriptor : null );
-        utils.object.definePropertyPrivate( this, 'descriptor', _descriptor );
+        /**
+         * @member {Picimo.core.VertexObjectDescriptor} Picimo.core.VertexObject#descriptor - Vertex object descriptor.
+         * @readonly
+         */
 
-        if ( ! this.descriptor ) {
+        var _descriptor = ( !! descriptor ) ? descriptor : ( ( !! vertexArray ) ? vertexArray.descriptor : null );
+        if ( ! _descriptor ) {
 
             throw new Error( 'VertexObject.descriptor is null!' );
 
         }
+        utils.object.definePropertyPrivateRO( this, 'descriptor', _descriptor );
 
         /** @member {Picimo.core.VertexArray} Picimo.core.VertexObject#vertexArray - Vertex array. */
         var _vertexArray = ( !! vertexArray ) ? vertexArray : descriptor.createVertexArray();
@@ -31,25 +34,22 @@
 
         }
 
-        /** @member {Picimo.core.VertexObjectPool} Picimo.core.VertexObject#pool - Vertex object pool or _undefined_. */
-        var _pool = ! pool ? null : pool;
-        utils.object.definePropertyPrivate( this, 'pool', _pool );
+        /**
+         * @member {Picimo.core.VertexObjectPool} Picimo.core.VertexObject#pool - Vertex object pool or _null_.
+         * @readonly
+         */
 
-        this.reset();
+        var _pool = ! pool ? null : pool;
+        utils.object.definePropertyPrivateRO( this, 'pool', _pool );
+        //utils.object.definePropertyPrivate( this, 'poolId', 0 );
 
     }
-
-    VertexObject.prototype.reset = function () { /* overwrite */ };
 
     VertexObject.prototype.destroy = function () {
 
         if ( this.pool ) {
 
             this.pool.free( this );
-
-        } else {
-
-            this.reset();
 
         }
 

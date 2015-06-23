@@ -44,6 +44,28 @@
 
     };
 
+
+    /**
+     * @function Picimo.utils.object.definePropertyPrivateRO
+     * @description
+     *   Define a **read-only** property which is NOT *enumerable*, *configurable* and *writable*.
+     * @param {Object} obj
+     * @param {string} name
+     * @param value
+     * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
+     * @return obj
+     */
+    module.exports.definePropertyPrivateRO = function ( obj, name, value ) {
+
+        Object.defineProperty( obj, name, {
+            value : value
+        });
+
+        return obj;
+
+    };
+
+
     /**
      * @function Picimo.utils.object.definePropertiesPublicRO
      *
