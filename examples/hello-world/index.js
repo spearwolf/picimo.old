@@ -1,6 +1,9 @@
 /* global Picimo */
 
 var app  = new Picimo.App();
+
+// ========= nodes ============================================== {{{
+
 var node = new Picimo.sg.Node( app, { isRoot: true } );
 
 node.on( 'init', function ( done ) {
@@ -53,10 +56,13 @@ node.on( 'destroyGl', function () {
     console.log( 'destroyGl' );
 
 });
+
 console.log( "app", app );
 console.log( "node", node );
 
 
+// -------------------------------------------------------------- }}}
+// ========= vertex objects ===================================== {{{
 
 var vod = new Picimo.core.VertexObjectDescriptor(
 
@@ -96,9 +102,12 @@ vod.proto.numberOfBeast = function () {
 
 };
 
+var vo = vod.create();
+
 
 console.log( "vod", vod );
-
-var vo = vod.createVertexObject();
 console.log( "vo", vo );
+
+
+// -------------------------------------------------------------- }}}
 

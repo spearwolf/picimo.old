@@ -44,7 +44,7 @@
      * vo.proto.numberOfBeast = function () { return 666; };
      *
      *
-     * var vo = descriptor.createVertexObject();
+     * var vo = descriptor.create();
      *
      * vo.setPosition( 1,2,-1, 4,5,-1, 7,8,-1, 10,11,-1 );
      * vo.x2                // => 7
@@ -168,12 +168,13 @@
     };
 
     /**
-     * @method Picimo.core.VertexObjectDescriptor#createVertexObject
+     * Create a new vertex object.
+     * @method Picimo.core.VertexObjectDescriptor#create
      * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
      * @param {Picimo.core.VertexObjectPool} [pool] - Vertex object pool.
      * @return {Picimo.core.VertexObject}
      */
-    VertexObjectDescriptor.prototype.createVertexObject = function ( vertexArray, pool ) {
+    VertexObjectDescriptor.prototype.create = function ( vertexArray, pool ) {
 
         var vo = Object.create( this.vertexObjectPrototype );
         VertexObject.call( vo, this, vertexArray, pool );

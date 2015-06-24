@@ -7,6 +7,8 @@
 
     module.exports = {
 
+        Viewport               : require( './viewport' ),
+
         VertexArray            : require( './vertex_array' ),
         VertexObject           : require( './vertex_object' ),
         VertexObjectDescriptor : require( './vertex_object_descriptor' ),

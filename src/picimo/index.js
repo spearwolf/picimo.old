@@ -7,11 +7,12 @@
 
     module.exports = {
 
-        App   : require( './app' ),
-        sg    : require( './sg' ),
-        webgl : require( './webgl' ),
-        utils : require( './utils' ),
-        core  : require( './core' )
+        App     : require( './app' ),
+        sg      : require( './sg' ),
+        webgl   : require( './webgl' ),
+        utils   : require( './utils' ),
+        core    : require( './core' ),
+        sprites : require( './sprites' )
 
     };
 

@@ -36,7 +36,13 @@
              * @member {Picimo.core.VertexObject} Picimo.core.VertexObjectPool#ZERO - The *zero* vertex object.
              * @readonly
              */
-            'ZERO' : descriptor.createVertexObject()
+            'ZERO' : descriptor.create(),
+
+            /**
+             * @member {Picimo.core.VertexObject} Picimo.core.VertexObjectPool#NEW - The *new* vertex object.
+             * @readonly
+             */
+            'NEW' : descriptor.create()
 
         });
 
@@ -99,7 +105,7 @@
 
         this.usedVOs.push( vo );
 
-        vo.vertexArray.copy( this.ZERO.vertexArray );
+        vo.vertexArray.copy( this.NEW.vertexArray );
 
         return vo;
 
@@ -109,24 +115,13 @@
     /**
      * @method Picimo.core.VertexObjectPool#free
      * @param {Picimo.core.VertexObject} vo - The vertex object
-     * @throws Will throw an error if something went wrong.
      */
 
     VertexObjectPool.prototype.free = function ( vo ) {
 
-        if ( vo.pool !== this ) {
-
-            throw new Error( "couldn't free(vo): vertex object is from other pool" );
-
-        }
-
         var idx = this.usedVOs.indexOf( vo );
-
-        if ( idx === -1 )  {
-
-            throw new Error( "couldn't free(vo): vertex object not found in usedVOs array!" );
-
-        }
+        
+        if ( idx === -1 ) return;
 
         var lastIdx = this.usedVOs.length - 1;
 
@@ -146,6 +141,8 @@
         this.usedVOs.pop();
         this.availableVOs.unshift( vo );
 
+        vo.vertexArray.copy( this.ZERO.vertexArray );
+
     };
 
 
@@ -159,7 +156,7 @@
         for ( i = 0; i < pool.capacity; i++ ) {
 
             vertexArray = pool.vertexArray.subarray( i );
-            vertexObject = pool.descriptor.createVertexObject( vertexArray, pool );
+            vertexObject = pool.descriptor.create( vertexArray, pool );
 
             pool.availableVOs.push( vertexObject );
 

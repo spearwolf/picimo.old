@@ -47,7 +47,11 @@
 
     }
 
-    VertexObject.prototype.destroy = function () {
+    /**
+     * @method Picimo.core.VertexObject#free
+     */
+
+    VertexObject.prototype.free = function () {
 
         if ( this.pool ) {
 
