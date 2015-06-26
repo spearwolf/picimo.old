@@ -1,14 +1,17 @@
 /* ------------- COLORS --------------- */
 /*@col-gray: #999999;   // gray*/
-/*@col-prim1: #f8f8f8;  // lite gray*/
+/*@col-prim1: #F8F9FA;  // lite gray*/
 /*@col-prim2: #2194CE;  // google blue*/
+/*@col-prim3: #CA2166;  // pink-red*/
+/*@col-prim3: #DA1146;  // pink-red*/
 /*@col-prim4: #1a9244;  // green*/
+/*@col-prim4: #15978E;  // green*/
 body {
   color: #404040;
   background-color: #ffffff;
 }
 .navigation {
-  background-color: #e9ecef;
+  background-color: #ebebeb;
 }
 h1.page-title {
   color: #949da4;
@@ -25,10 +28,10 @@ h3 a {
   color: #404040;
 }
 h4 {
-  color: #ca2166;
+  color: #da1156;
 }
 .code-caption {
-  color: #15978e;
+  color: #009744;
 }
 /* ------------- FONTS --------------- */
 .font-family-default {
@@ -50,6 +53,12 @@ h4 {
 }
 .font-family-monospace {
   font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+}
+.font-family-signature {
+  font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  /*-webkit-font-smoothing: antialiased;*/
+  font-weight: 400;
+  font-style: normal;
 }
 .font-famiy-headline {
   font-family: 'Lobster', cursive;
@@ -90,7 +99,7 @@ h5 {
 }
 h4 {
   font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
-  font-weight: 400;
+  font-weight: 700;
   font-style: normal;
   font-size: 16px;
 }
@@ -163,7 +172,7 @@ header.page {
 .main {
   display: block;
   margin: 0;
-  padding: 1rem 1rem;
+  padding: 1rem 3rem 1rem 1rem;
 }
 /* ------------- OTHER --------------- */
 .applicationName,
@@ -195,11 +204,11 @@ dd h5 + table.params ul {
 }
 /* ------------- prettyprint --------------- */
 pre.prettyprint {
-  background-color: #f2f4f6;
-  background: linear-gradient(to bottom right, #f2f4f6 0%, #ffffff 100%);
+  background-color: #faf7e5;
+  background: linear-gradient(to bottom right, #f8f4d8 0%, #ffffff 100%);
   /*border-right           : @pp-thin-border solid @pp-border-color;*/
   /*border-top             : @pp-thin-border solid @pp-border-color;*/
-  border-left: 4px solid #15978e;
+  border-left: 4px solid #ff6010;
   /*border-bottom          : @pp-thin-border solid @pp-border-color;*/
   border-radius: 2px;
   padding: 1em 1em;
@@ -219,8 +228,9 @@ pre.prettyprint {
   border-radius: 3px;
   /*border-top-right-radius: 3px;*/
   /*border-bottom-right-radius: 3px;*/
-  font-size: 10px;
-  font-family: "Gentium Basic", sans-serif;
+  font-size: 11px;
+  font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  /*-webkit-font-smoothing: antialiased;*/
   font-weight: 400;
   font-style: normal;
   line-height: normal;
@@ -239,16 +249,17 @@ pre.prettyprint {
   display: inline-block;
   color: #ffffff;
   /*background-color: @col_back;*/
-  border-left: 3px solid #15978e;
+  border-left: 3px solid #009744;
   /*border-right: 3px solid lighten(@col_back, 33%);*/
-  background-color: #5de8df;
-  background: linear-gradient(to bottom right, #15978e 0%, #6aeae1 100%);
+  background-color: #31ff8e;
+  background: linear-gradient(to bottom right, #009744 0%, #40ff96 100%);
   padding: 0.1em 0.5em 0.1em 0.4em;
   border-radius: 3px;
   /*border-top-right-radius: 3px;*/
   /*border-bottom-right-radius: 3px;*/
   font-size: 70%;
-  font-family: "Gentium Basic", sans-serif;
+  font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  /*-webkit-font-smoothing: antialiased;*/
   font-weight: 400;
   font-style: normal;
   line-height: normal;
@@ -271,8 +282,9 @@ pre.prettyprint {
   border-radius: 3px;
   /*border-top-right-radius: 3px;*/
   /*border-bottom-right-radius: 3px;*/
-  font-size: 10px;
-  font-family: "Gentium Basic", sans-serif;
+  font-size: 11px;
+  font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  /*-webkit-font-smoothing: antialiased;*/
   font-weight: 400;
   font-style: normal;
   line-height: normal;
@@ -284,11 +296,10 @@ pre.prettyprint {
 .main .type-signature.string,
 .main .type-signature.number,
 .main .type-signature.boolean {
-  color: #a6a6a6;
-  border-left: 3px solid #cbd3da;
-  /*border-right: 3px solid lighten(@col-prim1, 15%);*/
-  background-color: #ffffff;
-  background: linear-gradient(to bottom right, #cbd3da 0%, #ffffff 100%);
+  color: #ffffff;
+  border-left: 3px solid #ff6010;
+  background-color: #404040;
+  background: linear-gradient(to bottom right, #ff6315 0%, #ffae85 100%);
 }
 .main .type-signature.object,
 .main .type-signature.array,
@@ -296,30 +307,33 @@ pre.prettyprint {
 .main .type-signature.set,
 .main .type-signature.htmlcanvaselement,
 .main .type-signature.htmlelement,
-.main .type-signature.webglrenderingcontext {
-  border-left: 3px solid #15978e;
-  background-color: #5de8df;
-  background: linear-gradient(to bottom right, #15978e 0%, #6aeae1 100%);
+.main .type-signature.webglrenderingcontext,
+.main .type-signature.static {
+  border-left: 3px solid #009744;
+  background-color: #31ff8e;
+  background: linear-gradient(to bottom right, #009744 0%, #40ff96 100%);
 }
 .main .attrs > .type-signature {
   margin-left: 0;
   margin-right: 1.5em;
-  color: #ffffff;
-  border-left: 3px solid #404040;
-  background-color: #404040;
-  background: linear-gradient(to bottom right, #434343 0%, #7b7b7b 100%);
+  color: #a6a6a6;
+  border-left: 3px solid #d2d2d2;
+  background-color: #ffffff;
+  background: linear-gradient(to bottom right, #d2d2d2 0%, #ffffff 100%);
 }
 .signature .optional:before {
   content: ' [ ';
   color: #404040;
-  font-family: "Gentium Basic", sans-serif;
+  font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  /*-webkit-font-smoothing: antialiased;*/
   font-weight: 400;
   font-style: normal;
 }
 .signature .optional:after {
   content: ' ] ';
   color: #404040;
-  font-family: "Gentium Basic", sans-serif;
+  font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  /*-webkit-font-smoothing: antialiased;*/
   font-weight: 400;
   font-style: normal;
 }
@@ -330,7 +344,7 @@ dt.tag-see {
 }
 /* ------------- NAVIGATION --------------- */
 .navigation {
-  border-right: 1px solid #cbd3da;
+  border-right: 1px solid #d2d2d2;
 }
 .navigation .search {
   display: none;
@@ -352,8 +366,8 @@ dt.tag-see {
   text-decoration: underline;
 }
 .navigation ul li.item {
-  background-color: #f2f4f6;
-  border-bottom: 1px solid #cbd3da;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #d2d2d2;
   /*border-right: 1px solid @col-nav-border;*/
   /*&.current .title {*/
   /*background-color: @col-lite;*/
@@ -377,8 +391,8 @@ dt.tag-see {
   /*font-size: @font-size--big;*/
   /*border-bottom: 1px solid @col-gray;*/
   /*border-bottom: 1px solid lighten(@col-nav-border, 5%);*/
-  background-color: #f8f9fa;
-  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+  background-color: #f8f8f8;
+  background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
 }
 .navigation ul li.item .folder-icon {
   display: none;
@@ -404,8 +418,8 @@ dt.tag-see {
 }
 .navigation ul li.item.has-itemMembers.expanded .title {
   position: relative;
-  border-bottom: 1px solid #dae0e5;
-  background: linear-gradient(to right, #f8f9fa 0%, #e3e7eb 30%, #e3e7eb 70%, #f8f9fa 100%);
+  border-bottom: 1px solid #dfdfdf;
+  background: linear-gradient(to right, #f8f8f8 0%, #e6e6e6 30%, #e6e6e6 70%, #f8f8f8 100%);
   /*box-shadow: 0 1px 1px #aaa;*/
   border-bottom: 1px solid #ccc;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -421,8 +435,8 @@ dt.tag-see {
   border-bottom: 1px solid #ccc;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
-.navigation ul li.item.has-itemMembers.current .title a {
-  color: #ca2166;
+.navigation ul li.item.current .title a {
+  color: #da1156;
 }
 .navigation ul li.item ul.itemMembers {
   display: none;
@@ -475,19 +489,20 @@ td {
 }
 .main table .optional,
 .main table .nullable {
-  color: #B9AB38;
-  background-color: #fcfaee;
+  color: #949da4;
+  border: 1px solid #949da4;
   padding: 0.1em 0.4em;
   margin-right: 0.5em;
   border-radius: 3px;
   line-height: normal;
   font-size: 80%;
+  font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 }
 .main table th {
-  border-bottom: 2px solid #dae0e5;
+  border-bottom: 2px solid #dfdfdf;
 }
 .main table td {
-  border-bottom: 1px solid #dae0e5;
+  border-bottom: 1px solid #dfdfdf;
 }
 .main table td,
 .main table th {
@@ -505,7 +520,7 @@ td {
 .main table th {
   color: #000000;
   padding: 0.5em 1em 0 1.25em;
-  background-color: #f8f9fa;
+  background-color: #f8f8f8;
   font-family: "Gentium Basic", sans-serif;
   font-weight: 700;
   font-style: normal;
@@ -515,12 +530,24 @@ td {
 }
 .main table code {
   color: #000000;
-  background-color: #dbf0fb;
+  position: relative;
+}
+.main table code:after {
+  content: ' ';
+  display: block;
+  position: absolute;
+  bottom: -4px;
+  left: -4px;
+  right: -4px;
+  height: 6px;
+  background-color: #ffff44;
+  opacity: 0.55;
 }
 .main table table {
   margin-top: 0.8em;
 }
 .main table td.type {
+  font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
   font-size: 12px;
   color: #949da4;
 }
@@ -530,7 +557,7 @@ td {
 .main table td.default {
   font-family: "Inconsolata", Menlo, Consolas, "DejaVu Sans Mono", monospace;
   font-size: 12px;
-  color: #15978e;
+  color: #000000;
 }
 /* ---- more main styles ----- */
 .main img {
@@ -582,7 +609,8 @@ h3 {
   padding-left: 1rem;
   background-color: rgba(255, 255, 255, 0.8);
   background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.66) 100%);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 2px 0 rgba(255, 255, 255, 0.5);
+  /*box-shadow: 0 1px 0 rgba(0,0,0,0.1), 0 2px 0 rgba(255,255,255,0.5);*/
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.32);
 }
 .page-title-sticky .sticky-sub-title {
   display: block;

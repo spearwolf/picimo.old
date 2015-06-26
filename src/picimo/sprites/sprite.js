@@ -9,7 +9,6 @@
      * @classdesc
      * The default sprite class.
      * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
-     * @param {Picimo.core.VertexObjectPool} [pool] - Vertex object pool.
      */
 
     function Sprite () {

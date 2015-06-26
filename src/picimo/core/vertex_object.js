@@ -7,9 +7,8 @@
      * @class Picimo.core.VertexObject
      * @param {Picimo.core.VertexObjectDescriptor} [descriptor] - Vertex descriptor.
      * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
-     * @param {Picimo.core.VertexObjectPool} [pool] - Vertex object pool.
      */
-    function VertexObject ( descriptor, vertexArray, pool ) {
+    function VertexObject ( descriptor, vertexArray ) {
 
         if ( this.descriptor !== undefined ) return;
 
@@ -36,30 +35,7 @@
 
         }
 
-        /**
-         * @member {Picimo.core.VertexObjectPool} Picimo.core.VertexObject#pool - Vertex object pool or _null_.
-         * @readonly
-         */
-
-        var _pool = ! pool ? null : pool;
-        utils.object.definePropertyPrivateRO( this, 'pool', _pool );
-        //utils.object.definePropertyPrivate( this, 'poolId', 0 );
-
     }
-
-    /**
-     * @method Picimo.core.VertexObject#free
-     */
-
-    VertexObject.prototype.free = function () {
-
-        if ( this.pool ) {
-
-            this.pool.free( this );
-
-        }
-
-    };
 
     Object.defineProperties( VertexObject.prototype, {
 

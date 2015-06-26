@@ -98,7 +98,7 @@ var vod = new Picimo.core.VertexObjectDescriptor(
 
 vod.proto.numberOfBeast = function () {
 
-    return 999;
+    return 666;
 
 };
 

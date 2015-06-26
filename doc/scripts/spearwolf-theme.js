@@ -3,6 +3,8 @@ jQuery( function ( $ ) {
 
     "use strict";
 
+    window.highlightPageLink = function () {};
+
     var stickies = [];
 
     $( '.page-title' ).each( function () {
@@ -27,6 +29,10 @@ jQuery( function ( $ ) {
         $el.after( $stickyEl );
 
         stickies.push( $stickyEl );
+
+        var name = $( '.main header[data-current]' ).data( 'current' );
+        //console.debug( "current", name );
+        window.parent.highlightPageLink( name );
 
     });
 
@@ -82,20 +88,33 @@ jQuery( function ( $ ) {
 
             $( this ).addClass( 'has-itemMembers' );
 
-            $( 'a', this ).click( function() {
-
-                $( this ).closest( 'ul.list' ).find( '.current' ).removeClass( 'current' );
-                $( this ).closest( 'li.has-itemMembers' ).addClass( 'expanded current' );
-
-            });
-
-            $( '.folder-icon', this ).click( function () {
-
-                $( this ).closest( 'li.has-itemMembers' ).toggleClass( 'expanded' );
-
-            });
-
         }
+
+        $( 'a', this ).click( function() {
+
+            $( this ).closest( 'ul.list' ).find( '.current' ).removeClass( 'current' );
+            $( this ).closest( 'li.item' ).addClass( 'expanded current' );
+
+        });
+
+        $( '.folder-icon', this ).click( function () {
+
+            $( this ).closest( 'li.item' ).toggleClass( 'expanded' );
+
+        });
+
+    });
+
+    // =================================== ====== ===  ==   =
+
+    $( '.navigation' ).each( function () {
+
+        window.highlightPageLink = function ( name ) {
+
+            $( '.navigation li.item.current' ).removeClass( 'current' );
+            $( '.navigation li.item[data-name="' + name + '"]').addClass( 'current' );
+        
+        };
 
     });
 

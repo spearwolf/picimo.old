@@ -171,13 +171,12 @@
      * Create a new vertex object.
      * @method Picimo.core.VertexObjectDescriptor#create
      * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
-     * @param {Picimo.core.VertexObjectPool} [pool] - Vertex object pool.
      * @return {Picimo.core.VertexObject}
      */
-    VertexObjectDescriptor.prototype.create = function ( vertexArray, pool ) {
+    VertexObjectDescriptor.prototype.create = function ( vertexArray ) {
 
         var vo = Object.create( this.vertexObjectPrototype );
-        VertexObject.call( vo, this, vertexArray, pool );
+        VertexObject.call( vo, this, vertexArray );
 
         if ( VertexObject !== this.vertexObjectConstructor ) {
 

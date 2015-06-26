@@ -16,8 +16,9 @@
         utils.object.definePropertiesPrivateRO( this, {
             '_boundBuffers' : new utils.Map(),
             '_boundTextures': new utils.Map()
-        })
+        });
 
+        getExtensions( this );
         readWebGlParameters( this );
 
         Object.seal( this );
@@ -58,6 +59,18 @@
             MAX_TEXTURE_IMAGE_UNITS : gl.getParameter( gl.MAX_TEXTURE_IMAGE_UNITS )
 
         });
+
+    }
+
+    function getExtensions( webGlContext ) {
+
+        webGlContext.OES_element_index_uint = webGlContext.gl.getExtension("OES_element_index_uint");
+
+        if ( ! webGlContext.OES_element_index_uint ) {
+        
+            console.error( "WebGL don't support the OES_element_index_uint extension!" );
+        
+        }
 
     }
 

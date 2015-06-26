@@ -156,7 +156,7 @@
         for ( i = 0; i < pool.capacity; i++ ) {
 
             vertexArray = pool.vertexArray.subarray( i );
-            vertexObject = pool.descriptor.create( vertexArray, pool );
+            vertexObject = pool.descriptor.create( vertexArray );
 
             pool.availableVOs.push( vertexObject );
 
