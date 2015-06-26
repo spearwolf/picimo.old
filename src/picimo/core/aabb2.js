@@ -71,7 +71,7 @@
          * @readonly
          */
         'width': {
-            get: function () { return this.max_x - this.min_x; },
+            get: function () { return this.max_x - this.min_x + 1; },
             enumerable: true
         },
 
@@ -80,7 +80,25 @@
          * @readonly
          */
         'height': {
-            get: function () { return this.max_y - this.min_y; },
+            get: function () { return this.max_y - this.min_y + 1; },
+            enumerable: true
+        },
+
+        /**
+         * @member {Picimo.core.AABB2} Picimo.core.AABB2#center_x
+         * @readonly
+         */
+        'center_x': {
+            get: function () { return ( this.max_x - this.min_x ) / 2; },
+            enumerable: true
+        },
+
+        /**
+         * @member {Picimo.core.AABB2} Picimo.core.AABB2#center_y
+         * @readonly
+         */
+        'center_y': {
+            get: function () { return ( this.max_y - this.min_y ) / 2; },
             enumerable: true
         }
 
