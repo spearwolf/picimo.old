@@ -172,40 +172,6 @@
 	
         <tr>
             
-                <td class="name"><code>scene</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Picimo.sg.Scene</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>The parent scene</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
                 <td class="name"><code>display</code></td>
             
             
@@ -222,42 +188,6 @@
                 <td class="default">
                 
                     true
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>isRoot</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    false
                 
                 </td>
             
@@ -697,6 +627,51 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="children"><span class="attrs"></span>children<span class="type-signature type picimo.sg.node"><a href="Picimo.sg.Node.html">Picimo.sg.Node</a></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The child nodes array.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="display"><span class="attrs"></span>display<span class="type-signature type boolean">boolean</span> </h4>
     </div>
     
@@ -751,7 +726,52 @@ BUT initialization will be happen. (If you don't want the node to initialize set
 <dd>
     
     <div class="description">
-        <p><em>True</em> if this is the root node of the scene graph.</p>
+        <p><em>True</em> if this node has no parent.</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="parent"><span class="attrs"></span>parent<span class="type-signature type picimo.app"><a href="Picimo.App.html">Picimo.App</a></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The parent node.</p>
     </div>
     
     
@@ -799,54 +819,8 @@ BUT initialization will be happen. (If you don't want the node to initialize set
         <p>A node ist <em>not</em> ready if ..</p>
 <ol>
 <li>the state is set to <em>destroyed</em> or <em>error</em></li>
-<li>the parent <em>scene</em> is set or if not the <em>isRoot</em> flag is set to <em>true</em></li>
 <li>you explicitly set it to <em>false</em> (but default is <em>true</em>)</li>
 </ol>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="scene"><span class="attrs"></span>scene<span class="type-signature type picimo.sg.node"><a href="Picimo.sg.Node.html">Picimo.sg.Node</a></span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>The parent scene.</p>
     </div>
     
     
@@ -930,6 +904,114 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="addChild">
+            
+            addChild<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            sg/node.js, line 84
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.sg.Node.html">Picimo.sg.Node</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="destroy">
             
             destroy<span class="signature">()</span>
@@ -937,7 +1019,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
         
         <div class="tag-source">
-            sg/node.js, line 142
+            sg/node.js, line 174
         </div>
         
     </div>
@@ -1012,7 +1094,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
         
         <div class="tag-source">
-            sg/node.js, line 171
+            sg/node.js, line 211
         </div>
         
     </div>
@@ -1083,7 +1165,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
         
         <div class="tag-source">
-            sg/node.js, line 155
+            sg/node.js, line 195
         </div>
         
     </div>
@@ -1155,7 +1237,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 107
+            sg/node.js, line 120
         </div>
         
     </div>
@@ -1226,7 +1308,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 121
+            sg/node.js, line 153
         </div>
         
     </div>
@@ -1297,7 +1379,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 196
+            sg/node.js, line 236
         </div>
         
     </div>
@@ -1368,7 +1450,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 225
+            sg/node.js, line 265
         </div>
         
     </div>
@@ -1439,7 +1521,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 114
+            sg/node.js, line 127
         </div>
         
     </div>
@@ -1512,7 +1594,7 @@ Is called before the <em>destroy</em> event.</p>
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Fri Jun 26 2015 12:34:33 GMT+0200 (CEST)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Fri Jun 26 2015 13:43:32 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

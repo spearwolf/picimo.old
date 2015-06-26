@@ -14,9 +14,7 @@
      *
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
-     * @param {Picimo.sg.Scene} [options.scene] - The parent scene
      * @param {boolean} [options.display=true]
-     * @param {boolean} [options.isRoot=false]
      * @param {boolean} [options.ready=true]
      * @param {function} [options.onInit]
      * @param {function} [options.onInitGl]
@@ -53,17 +51,18 @@
         this.display = ( ! options ) || ( options.display !== false );
 
         /**
-         * @member {Picimo.sg.Node} Picimo.sg.Node#scene - The parent scene.
+         * @member {Picimo.App} Picimo.sg.Node#parent - The parent node.
          */
-        this.scene = ( options && options.scene != null ) ? options.scene : null;
-
-        /**
-         * @member {Picimo.sg.Node} Picimo.sg.Node#isRoot - *True* if this is the root node of the scene graph.
-         * @readonly
-         */
-        utils.object.definePropertyPublicRO( this, 'isRoot', ( ( !! options ) && options.isRoot === true ) );
 
         this._ready = ( ! options ) || options.ready !== false;
+
+        /**
+         * @member {Picimo.sg.Node} Picimo.sg.Node#children - The child nodes array.
+         */
+        this.children = [];
+
+    
+        utils.custom_event.eventize( this );
 
         if ( options !== undefined ) {
 
@@ -81,6 +80,20 @@
         }
 
     }
+
+    /**
+     * @method Picimo.sg.Node#addChild
+     * @param {Picimo.sg.Node}
+     */
+    Node.prototype.addChild = function ( node ) {
+
+        this.children.push( node );
+
+        node.parent = this;
+
+        return node;
+
+    };
 
     Node.prototype.renderFrame = function () {
 
@@ -118,6 +131,25 @@
                      */
                     this.emit( 'renderFrame' );
 
+                } catch ( err ) {
+
+                    console.error( '[frame,renderFrame]', err );
+
+                    this.ready = false;
+                    return;
+
+                }
+
+
+                for ( var i = 0; i < this.children.length; ++i ) {
+
+                    this.children[ i ].renderFrame();
+
+                }
+
+
+                try {
+
                     /**
                      * Is called after the on *frame* and *renderFrame* events.
                      * @event Picimo.sg.Node#frameEnd
@@ -127,7 +159,7 @@
 
                 } catch ( err ) {
 
-                    console.error( '[frame,renderFrame,frameEnd]', err );
+                    console.error( '[frameEnd]', err );
 
                     this.ready = false;
 
@@ -145,6 +177,14 @@
     Node.prototype.destroy = function () {
 
         if ( this.state.is( NodeState.DESTROYED ) ) return;
+
+
+        for ( var i = 0; i < this.children.length; ++i ) {
+
+            this.children[ i ].destroy();
+
+        }
+
 
         this.state.set( NodeState.DESTROYED );
 
@@ -203,11 +243,11 @@
             utils.Promise.all( initPromises ).then( onInitGl.bind( node, node ), onFail.bind( node, node ) );
 
         } catch ( err ) {
-        
+
             console.error( '[init]', err );
 
             this.ready = false;
-        
+
         }
 
     }
@@ -232,11 +272,11 @@
             utils.Promise.all( initGlPromises ).then( onInitDone.bind( node, node ), onFail.bind( node, node ) );
 
         } catch ( err ) {
-        
+
             console.error( '[initGl]', err );
 
             this.ready = false;
-        
+
         }
     }
 
@@ -281,22 +321,25 @@
     }
 
 
-    utils.custom_event.eventize( Node.prototype );
-
-    Node.prototype.scene          = null;
-    Node.prototype.display        = true;
-    Node.prototype.isRoot         = false;
-    Node.prototype._ready         = true;
-    Node.prototype._initialized   = false;
 
     Object.defineProperties( Node.prototype, {
+
+        /**
+         * @member {Picimo.sg.Node} Picimo.sg.Node#isRoot - *True* if this node has no parent.
+         * @readonly
+         */
+        'isRoot': {
+        
+            get: function () { return ! this.parent; },
+            enumerable: true
+
+        },
 
         /**
          * @member {boolean} Picimo.sg.Node#ready
          * @description
          * A node ist *not* ready if ..
          * 1. the state is set to *destroyed* or *error*
-         * 2. the parent *scene* is set or if not the *isRoot* flag is set to *true*
          * 3. you explicitly set it to *false* (but default is *true*)
          */
         'ready': {
@@ -304,8 +347,7 @@
             get: function () {
 
                 return ( ( !! this._ready ) &&
-                        ( ! this.state.is( NodeState.ERROR|NodeState.DESTROYED )) &&
-                        ( this.scene != null || this.isRoot ) );
+                        ( ! this.state.is( NodeState.ERROR|NodeState.DESTROYED )) );
 
             },
 
