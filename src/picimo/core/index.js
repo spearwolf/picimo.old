@@ -7,6 +7,7 @@
 
     module.exports = {
 
+        AABB2                  : require( './aabb2' ),
         Viewport               : require( './viewport' ),
 
         VertexArray            : require( './vertex_array' ),

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: VertexObjectPool</title>
+    <title>Class: AABB2</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.core.VertexObjectPool.html">Class: VertexObjectPool</h1>
+        <h1 class="page-title" data-filename="Picimo.core.AABB2.html">Class: AABB2</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.core.VertexObjectPool">
+<header data-current="Picimo.core.AABB2">
     <h2>
         <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.core.html">.core</a>.</span>
     
-    VertexObjectPool
+    AABB2
     </h2>
     
 </header>  
@@ -48,14 +48,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="VertexObjectPool">
+        <h4 class="name" id="AABB2">
             
-            new Picimo.core.VertexObjectPool<span class="signature">(descriptor, capacity, <span class="optional">vertexArray</span>)</span>
+            new Picimo.core.AABB2<span class="signature">(<span class="optional">x0</span>, <span class="optional">x1</span>, <span class="optional">y0</span>, <span class="optional">y1</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            core/vertex_object_pool.js, line 6
+            core/aabb2.js, line 6
         </div>
         
     </div>
@@ -64,6 +64,10 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Represents a 2d axis aligned boundary box.</p>
+    </div>
     
 
     
@@ -83,6 +87,8 @@
 		<th>Type</th>
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -93,35 +99,7 @@
 	
         <tr>
             
-                <td class="name"><code>descriptor</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Picimo.core.VertexObjectDescriptor.html">Picimo.core.VertexObjectDescriptor</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Vertex object descriptor.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>capacity</code></td>
+                <td class="name"><code>x0</code></td>
             
             
             <td class="type">
@@ -134,33 +112,11 @@
             </td>
             
             
-            
-            <td class="description last">
+                <td class="default">
                 
-                    
-                    
-                        
-                    
+                    0
                 
-                <p>Maximum number of vertex objects.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>vertexArray</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a></span>
-
-
-            
-            </td>
-            
+                </td>
             
             
             <td class="description last">
@@ -172,7 +128,115 @@
                         
                     
                 
-                <p>Vertex array.</p></td>
+                <p>x0</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>x1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>x1</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y0</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>y0</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>y1</p></td>
         </tr>
 	
 	
@@ -239,7 +303,48 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="availableCount"><span class="attrs"><span class="type-signature ">readonly</span></span>availableCount<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="height"><span class="attrs"><span class="type-signature ">readonly</span></span>height<span class="type-signature type picimo.core.aabb2"><a href="Picimo.core.AABB2.html">Picimo.core.AABB2</a></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="max_x"><span class="attrs"></span>max_x<span class="type-signature type picimo.core.aabb2"><a href="Picimo.core.AABB2.html">Picimo.core.AABB2</a></span> </h4>
     </div>
     
     
@@ -247,7 +352,7 @@
 <dd>
     
     <div class="description">
-        <p>Number of free and unused vertex objects.</p>
+        <p>Maximum x value</p>
     </div>
     
     
@@ -284,7 +389,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="capacity"><span class="attrs"><span class="type-signature ">readonly</span></span>capacity<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="max_y"><span class="attrs"></span>max_y<span class="type-signature type picimo.core.aabb2"><a href="Picimo.core.AABB2.html">Picimo.core.AABB2</a></span> </h4>
     </div>
     
     
@@ -292,7 +397,7 @@
 <dd>
     
     <div class="description">
-        <p>Maximum number of vertex objects.</p>
+        <p>Maximum y value</p>
     </div>
     
     
@@ -329,7 +434,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="descriptor"><span class="attrs"><span class="type-signature ">readonly</span></span>descriptor<span class="type-signature type picimo.core.vertexobjectdescriptor"><a href="Picimo.core.VertexObjectDescriptor.html">Picimo.core.VertexObjectDescriptor</a></span> </h4>
+        <h4 class="name" id="min_x"><span class="attrs"></span>min_x<span class="type-signature type picimo.core.aabb2"><a href="Picimo.core.AABB2.html">Picimo.core.AABB2</a></span> </h4>
     </div>
     
     
@@ -337,7 +442,7 @@
 <dd>
     
     <div class="description">
-        <p>Vertex object descriptor.</p>
+        <p>Minimum x value</p>
     </div>
     
     
@@ -374,7 +479,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="NEW"><span class="attrs"><span class="type-signature ">readonly</span></span>NEW<span class="type-signature type picimo.core.vertexobject"><a href="Picimo.core.VertexObject.html">Picimo.core.VertexObject</a></span> </h4>
+        <h4 class="name" id="min_y"><span class="attrs"></span>min_y<span class="type-signature type picimo.core.aabb2"><a href="Picimo.core.AABB2.html">Picimo.core.AABB2</a></span> </h4>
     </div>
     
     
@@ -382,7 +487,7 @@
 <dd>
     
     <div class="description">
-        <p>The <em>new</em> vertex object.</p>
+        <p>Minimum y value</p>
     </div>
     
     
@@ -419,106 +524,12 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="usedCount"><span class="attrs"><span class="type-signature ">readonly</span></span>usedCount<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="width"><span class="attrs"><span class="type-signature ">readonly</span></span>width<span class="type-signature type picimo.core.aabb2"><a href="Picimo.core.AABB2.html">Picimo.core.AABB2</a></span> </h4>
     </div>
     
     
 </dt>
 <dd>
-    
-    <div class="description">
-        <p>Number of in-use vertex objects.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="vertexArray"><span class="attrs"><span class="type-signature ">readonly</span></span>vertexArray<span class="type-signature type picimo.core.vertexarray"><a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a></span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Vertex array.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="ZERO"><span class="attrs"><span class="type-signature ">readonly</span></span>ZERO<span class="type-signature type picimo.core.vertexobject"><a href="Picimo.core.VertexObject.html">Picimo.core.VertexObject</a></span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>The <em>zero</em> vertex object.</p>
-    </div>
     
     
     
@@ -560,14 +571,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="alloc">
+        <h4 class="name" id="addPoint">
             
-            alloc<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.core.VertexObject.html">Picimo.core.VertexObject</a>}</span>
+            addPoint<span class="signature">(x, y)</span>
         </h4>
     
         
         <div class="tag-source">
-            core/vertex_object_pool.js, line 90
+            core/aabb2.js, line 90
         </div>
         
     </div>
@@ -577,113 +588,9 @@
 <dd>
     
     
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    <h5>Throws:</h5>
-    
-            
-
-    <div class="param-desc">
-    
-        <p>Will throw an error if capacity reached and no vertex object is available.</p>
-    
+    <div class="description">
+        <p>Extend the boundary box.</p>
     </div>
-
-
-        
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Picimo.core.VertexObject.html">Picimo.core.VertexObject</a>
-                        
-                    
-            </td>
-            <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="free">
-            
-            free<span class="signature">(vo)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            core/vertex_object_pool.js, line 115
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
     
 
     
@@ -713,13 +620,13 @@
 	
         <tr>
             
-                <td class="name"><code>vo</code></td>
+                <td class="name"><code>x</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Picimo.core.VertexObject.html">Picimo.core.VertexObject</a></span>
+<span class="param-type">number</span>
 
 
             
@@ -729,7 +636,30 @@
             
             <td class="description last">
                 
-                <p>The vertex object</p></td>
+                <p>x</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>y</p></td>
         </tr>
 	
 	
@@ -771,6 +701,319 @@
     
     
     
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="isInside">
+            
+            isInside<span class="signature">(x, y)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            core/aabb2.js, line 122
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Determinates wether or the 2d point is inside this AABB.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>x</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>y</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        boolean
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="isIntersection">
+            
+            isIntersection<span class="signature">(aabb)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            core/aabb2.js, line 144
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Determinates wether or not this AABB intersects <em>aabb</em>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>aabb</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">AABB2</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>aabb</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        boolean
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
     
     
     

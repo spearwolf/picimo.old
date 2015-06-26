@@ -37,6 +37,19 @@
          *   This is the *native* Implementation of your javascript environment or the polyfill/shim of the *core-js* library.
          */
         Promise : ( ( typeof Promise === 'undefined' ) ? core.Promise : Promise ),
+
+        /**
+         * @namespace Picimo.utils.glMatrix
+         *
+         * @description
+         *   The fantastic gl-matrix library.
+         *
+         * @see
+         * https://github.com/toji/gl-matrix
+         *
+         */
+        glMatrix : require( 'gl-matrix' )
+
     };
 
 })();

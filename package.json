@@ -13,6 +13,7 @@
   "devDependencies": {
     "brfs": "^1.4.0",
     "core-js": "^0.9.17",
+    "gl-matrix": "^2.3.1",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.8.0",
     "grunt-contrib-clean": "^0.6.0",
