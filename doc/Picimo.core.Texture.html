@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: VertexObjectDescriptor</title>
+    <title>Class: Texture</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.core.VertexObjectDescriptor.html">Class: VertexObjectDescriptor</h1>
+        <h1 class="page-title" data-filename="Picimo.core.Texture.html">Class: Texture</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.core.VertexObjectDescriptor">
+<header data-current="Picimo.core.Texture">
     <h2>
         <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.core.html">.core</a>.</span>
     
-    VertexObjectDescriptor
+    Texture
     </h2>
     
 </header>  
@@ -48,14 +48,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="VertexObjectDescriptor">
+        <h4 class="name" id="Texture">
             
-            new Picimo.core.VertexObjectDescriptor<span class="signature">(vertexObjectConstructor, vertexCount, vertexAttrCount, attributes, <span class="optional">aliases</span>)</span>
+            new Picimo.core.Texture<span class="signature">(<span class="optional">parent</span>, <span class="optional">x</span>, <span class="optional">y</span>, <span class="optional">width</span>, <span class="optional">height</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            core/vertex_object_descriptor.js, line 8
+            core/texture.js, line 4
         </div>
         
     </div>
@@ -83,6 +83,8 @@
 		<th>Type</th>
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -93,130 +95,22 @@
 	
         <tr>
             
-                <td class="name"><code>vertexObjectConstructor</code></td>
+                <td class="name"><code>parent</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="Picimo.core.Texture.html">Picimo.core.Texture</a></span>
 
 
             
             </td>
             
             
-            
-            <td class="description last">
+                <td class="default">
                 
-                    
-                    
-                        
-                    
-                
-                <p>Vertex object constructor function</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>vertexCount</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Vertex count</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>vertexAttrCount</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Vertex attribute count</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>attributes</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Vertex attribute descriptions</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>aliases</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
+                </td>
             
             
             <td class="description last">
@@ -228,7 +122,147 @@
                         
                     
                 
-                <p>Vertex attribute aliases</p></td>
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
         </tr>
 	
 	
@@ -277,46 +311,13 @@
         
 
     
-    <pre class="prettyprint"><code>var descriptor = new Picimo.core.VertexObjectDescriptor(
+    <pre class="prettyprint"><code>var t = new Picimo.core.Texture;
+t.image = document.createElement("canvas")
+t.width                                       // => 300
+t.height                                      // => 150
 
-    null,
-
-    4,   // vertexCount
-    12,  // vertexAttrCount
-
-    [    // attributes ..
-
-        { name: 'position',  size: 3, attrNames: [ 'x', 'y', 'z' ] },
-        { name: 'rotate',    size: 1, uniform: true },
-        { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
-        { name: 'translate', size: 2, attrNames: [ 'tx', 'ty' ], uniform: true },
-        { name: 'scale',     size: 1, uniform: true },
-        { name: 'opacity',   size: 1, uniform: true }
-
-    ],
-
-    {   // aliases ..
-
-        pos2d: { size: 2, offset: 0 },
-        posZ:  { size: 1, offset: 2, uniform: true },
-        uv:    'texCoords'
-
-    }
-
-);
-
-vo.proto.numberOfBeast = function () { return 666; };
-
-
-var vo = descriptor.create();
-
-vo.setPosition( 1,2,-1, 4,5,-1, 7,8,-1, 10,11,-1 );
-vo.x2                // => 7
-vo.y0                // => 2
-vo.posZ              // => -1
-vo.posZ = 23;
-vo.z1                // => 23
-vo.numberOfBeast()   // => 666</code></pre>
+var tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
+t.width                                       // => 100</code></pre>
     
 
     
@@ -342,16 +343,381 @@ vo.numberOfBeast()   // => 666</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="proto"><span class="attrs"><span class="type-signature ">readonly</span></span>proto<span class="type-signature type object">Object</span> </h4>
+        <h4 class="name" id="height"><span class="attrs"></span>height<span class="type-signature type number">number</span> </h4>
     </div>
     
     
 </dt>
 <dd>
     
-    <div class="description">
-        <p>The prototype object of the vertex object. You should add your own properties and methods here.</p>
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="image"><span class="attrs"></span>image<span class="type-signature type image">Image</span> <span class="type-signature type canvas">Canvas</span> </h4>
     </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="max_s"><span class="attrs"><span class="type-signature ">readonly</span></span>max_s<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="max_t"><span class="attrs"><span class="type-signature ">readonly</span></span>max_t<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="min_s"><span class="attrs"><span class="type-signature ">readonly</span></span>min_s<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="min_t"><span class="attrs"><span class="type-signature ">readonly</span></span>min_t<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="parent"><span class="attrs"></span>parent<span class="type-signature type picimo.core.texture"><a href="Picimo.core.Texture.html">Picimo.core.Texture</a></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="width"><span class="attrs"></span>width<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="x"><span class="attrs"></span>x<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="y"><span class="attrs"></span>y<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
     
     
     
@@ -393,14 +759,14 @@ vo.numberOfBeast()   // => 666</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="create">
+        <h4 class="name" id="setTexCoords">
             
-            create<span class="signature">(<span class="optional">vertexArray</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.core.VertexObject.html">Picimo.core.VertexObject</a>}</span>
+            setTexCoords<span class="signature">(obj)</span>
         </h4>
     
         
         <div class="tag-source">
-            core/vertex_object_descriptor.js, line 170
+            core/texture.js, line 275
         </div>
         
     </div>
@@ -409,10 +775,6 @@ vo.numberOfBeast()   // => 666</code></pre>
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Create a new vertex object.</p>
-    </div>
     
 
     
@@ -442,13 +804,13 @@ vo.numberOfBeast()   // => 666</code></pre>
 	
         <tr>
             
-                <td class="name"><code>vertexArray</code></td>
+                <td class="name"><code>obj</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -458,14 +820,7 @@ vo.numberOfBeast()   // => 666</code></pre>
             
             <td class="description last">
                 
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Vertex array.</p></td>
+                <p>Any object which has a <code>.setTexCoords()</code> method</p></td>
         </tr>
 	
 	
@@ -507,191 +862,6 @@ vo.numberOfBeast()   // => 666</code></pre>
     
     
     
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Picimo.core.VertexObject.html">Picimo.core.VertexObject</a>
-                        
-                    
-            </td>
-            <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="createVertexArray">
-            
-            createVertexArray<span class="signature">(<span class="optional">size</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a>}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            core/vertex_object_descriptor.js, line 159
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>size</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        <a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a>
-                        
-                    
-            </td>
-            <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
-
     
     
     

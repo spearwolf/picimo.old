@@ -10,6 +10,8 @@
         AABB2                  : require( './aabb2' ),
         Viewport               : require( './viewport' ),
 
+        Texture                : require( './texture' ),
+
         VertexArray            : require( './vertex_array' ),
         VertexIndexArray       : require( './vertex_index_array' ),
 
