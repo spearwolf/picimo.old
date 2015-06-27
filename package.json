@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "brfs": "^1.4.0",
+    "color-js": "^1.0.3",
     "core-js": "^0.9.17",
     "gl-matrix": "^2.3.1",
     "grunt": "^0.4.5",

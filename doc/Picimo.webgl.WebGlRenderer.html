@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: WebGlContext</title>
+    <title>Class: WebGlRenderer</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.webgl.WebGlContext.html">Class: WebGlContext</h1>
+        <h1 class="page-title" data-filename="Picimo.webgl.WebGlRenderer.html">Class: WebGlRenderer</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.webgl.WebGlContext">
+<header data-current="Picimo.webgl.WebGlRenderer">
     <h2>
         <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.webgl.html">.webgl</a>.</span>
     
-    WebGlContext
+    WebGlRenderer
     </h2>
     
 </header>  
@@ -48,14 +48,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="WebGlContext">
+        <h4 class="name" id="WebGlRenderer">
             
-            new Picimo.webgl.WebGlContext<span class="signature">()</span>
+            new Picimo.webgl.WebGlRenderer<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            webgl/web_gl_context.js, line 6
+            webgl/web_gl_renderer.js, line 6
         </div>
         
     </div>
@@ -131,61 +131,12 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="MAX_TEXTURE_IMAGE_UNITS"><span class="attrs"></span>MAX_TEXTURE_IMAGE_UNITS<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="app"><span class="attrs"><span class="type-signature ">readonly</span></span>app<span class="type-signature type picimo.app"><a href="Picimo.App.html">Picimo.App</a></span> </h4>
     </div>
     
     
 </dt>
 <dd>
-    
-    <div class="description">
-        <p>gl.MAX_TEXTURE_IMAGE_UNITS</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="MAX_TEXTURE_SIZE"><span class="attrs"></span>MAX_TEXTURE_SIZE<span class="type-signature type number">number</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>gl.MAX_TEXTURE_SIZE</p>
-    </div>
     
     
     
@@ -227,14 +178,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="glBindBuffer">
+        <h4 class="name" id="beginFrame">
             
-            glBindBuffer<span class="signature">(bufferType, buffer)</span>
+            beginFrame<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            webgl/web_gl_context.js, line 28
+            webgl/web_gl_renderer.js, line 21
         </div>
         
     </div>
@@ -250,63 +201,206 @@
     
     
     
+    
+    
+<dl class="details">
+    
         
+    
+    
+    
 
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
             
-                <td class="name"><code>bufferType</code></td>
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="endFrame">
             
+            endFrame<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_renderer.js, line 36
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
             
-            <td class="type">
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="initGl">
             
-            </td>
+            initGl<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_renderer.js, line 45
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
             
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="resize">
             
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>buffer</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
+            resize<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_renderer.js, line 58
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
     
     
     

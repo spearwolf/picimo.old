@@ -7,7 +7,8 @@
 
     module.exports = {
 
-        WebGlContext: require( './web_gl_context' )
+        WebGlContext  : require( './web_gl_context' ),
+        WebGlRenderer : require( './web_gl_renderer' )
 
     };
 

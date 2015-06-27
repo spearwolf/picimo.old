@@ -1,6 +1,11 @@
 /* global Picimo */
 
-var app  = new Picimo.App();
+var app  = new Picimo.App({
+    
+    appendTo : document.getElementById( 'picimo' ),
+    alpha    : true
+
+});
 
 // ========= nodes ============================================== {{{
 

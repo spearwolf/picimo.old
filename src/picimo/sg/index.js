@@ -3,7 +3,7 @@
 
     /**
      * @namespace Picimo.sg
-     * @description
+     * @summary
      * Scene-graph related objects and classes.
      */
 
