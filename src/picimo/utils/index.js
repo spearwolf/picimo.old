@@ -7,8 +7,6 @@
      * Helper functions, utilities and 3rd-party libraries.
      */
 
-    var core = require( 'core-js/library' );
-
     module.exports = {
 
         custom_event : require( './custom_event' ),
@@ -20,6 +18,8 @@
          */
         object : require( './object_utils' ),
 
+        Deferred : require( './deferred' ),
+
         /**
          * @class Picimo.utils.Map
          *
@@ -30,7 +30,7 @@
          *   An ES6 Map Implementation.
          *   This is the *native* Implementation of your javascript environment or the polyfill/shim of the *core-js* library.
          */
-        Map : ( ( typeof Map === 'undefined' ) ? core.Map : Map ),
+        Map : require( './map' ),
 
         /**
          * @class Picimo.utils.Promise
@@ -42,7 +42,7 @@
          *   An ES6 Promise Implementation.
          *   This is the *native* Implementation of your javascript environment or the polyfill/shim of the *core-js* library.
          */
-        Promise : ( ( typeof Promise === 'undefined' ) ? core.Promise : Promise ),
+        Promise : require( './promise' ),
 
         /**
          * @namespace Picimo.utils.glMatrix

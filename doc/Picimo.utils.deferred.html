@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: NodeState</title>
+    <title>Class: Deferred</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.sg.NodeState.html">Class: NodeState</h1>
+        <h1 class="page-title" data-filename="Picimo.utils.Deferred.html">Class: Deferred</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.sg.NodeState">
+<header data-current="Picimo.utils.Deferred">
     <h2>
-        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.sg.html">.sg</a>.</span>
+        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.utils.html">.utils</a>.</span>
     
-    NodeState
+    Deferred
     </h2>
     
 </header>  
@@ -48,18 +48,20 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="NodeState">
+        <h4 class="name" id="Deferred">
             
-            new Picimo.sg.NodeState<span class="signature">(<span class="optional">initialValue</span>)</span>
+            new Picimo.utils.Deferred<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/node_state.js, line 6
+            utils/deferred.js, line 7
         </div>
         
     </div>
 
+    
+    <p class="summary">A simple and generic deferred interface.</p>
     
 </dt>
 <dd>
@@ -70,66 +72,6 @@
     
     
     
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>initialValue</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>The initial state</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -191,7 +133,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".CREATE"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.CREATE</h4>
+        <h4 class="name" id="promise"><span class="attrs"></span>promise<span class="type-signature type picimo.utils.promise"><a href="Picimo.utils.Promise.html">Picimo.utils.Promise</a></span> </h4>
     </div>
     
     
@@ -232,130 +174,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".DESTROYED"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.DESTROYED</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".ERROR"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.ERROR</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".INIT"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.INIT</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".READY"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.sg.NodeState.READY</h4>
+        <h4 class="name" id="ready"><span class="attrs"></span>ready<span class="type-signature type boolean">boolean</span> </h4>
     </div>
     
     
@@ -402,14 +221,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="is">
+        <h4 class="name" id=".make">
             
-            is<span class="signature">(state)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+            <span class="type-signature static">static</span>Picimo.utils.Deferred.make<span class="signature">(obj)</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/node_state.js, line 18
+            utils/deferred.js, line 110
         </div>
         
     </div>
@@ -447,13 +266,13 @@
 	
         <tr>
             
-                <td class="name"><code>state</code></td>
+                <td class="name"><code>obj</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Object</span>
 
 
             
@@ -510,40 +329,12 @@
     
 
 
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        boolean
-                        
-                    
-            </td>
-            <td class="description last"></td>
-        </tr>
-    
-    </tbody>
-</table>
+
+obj
+
 
     
     
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code>state.is( NodeState.CREATE | NodeState.INIT )</code></pre>
-    
-
     
 </dd>
 
@@ -551,14 +342,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="set">
+        <h4 class="name" id=".then">
             
-            set<span class="signature">(state)</span>
+            <span class="type-signature static">static</span>Picimo.utils.Deferred.then<span class="signature">(obj, callback)</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/node_state.js, line 31
+            utils/deferred.js, line 126
         </div>
         
     </div>
@@ -596,13 +387,36 @@
 	
         <tr>
             
-                <td class="name"><code>state</code></td>
+                <td class="name"><code>obj</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
 
 
             
@@ -655,24 +469,254 @@
     
     
     
-    <h5>Returns:</h5>
-    
-
-
-
-<em>self</em>
-
-
     
     
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="forward">
+            
+            forward<span class="signature">(propertyName, callback)</span>
+        </h4>
     
-        <h5>Example</h5>
+        
+        <div class="tag-source">
+            utils/deferred.js, line 93
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
         
 
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>propertyName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
-    <pre class="prettyprint"><code>state.set( NodeState.READY )</code></pre>
+    
+    
+<dl class="details">
+    
+        
+    
+    
     
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="then">
+            
+            then<span class="signature">(callback)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            utils/deferred.js, line 68
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
     
 </dd>
 

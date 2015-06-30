@@ -13,6 +13,11 @@
     function ShaderSource ( shaderType, name, source ) {
 
         /**
+         * @member {Picimo.utils.Deferred} Picimo.webgl.ShaderSource#deferred
+         */
+        utils.Deferred.make( this );
+
+        /**
          * @member {string} Picimo.webgl.ShaderSource#shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
          */
         this.shaderType = shaderType;
@@ -32,21 +37,6 @@
          */
         this.url = null;
 
-        var self = this;
-
-        this._promise = new utils.Promise( function ( resolve, reject ) {
-
-            self._resolve = resolve;
-            self._reject  = reject;
-
-            if ( self.ready ) {
-
-                resolve( source );
-
-            }
-
-        });
-
     }
 
 
@@ -59,11 +49,7 @@
             set: function ( source ) {
 
                 this._source = source;
-
-                /**
-                 * @member {boolean} Picimo.webgl.ShaderSource#ready
-                 */
-                this.ready = typeof source === 'string' && source.trim().length !== 0;
+                this.deferred.ready = typeof source === 'string' && source.trim().length !== 0;
 
             },
 
@@ -81,19 +67,7 @@
 
     ShaderSource.prototype.getSource = function ( resolve ) {
 
-        if ( this.ready ) {
-
-            resolve( this.source );
-
-        } else {
-
-            this._promise.then( function ( self ) {
-
-                resolve( self.source );
-
-            });
-
-        }
+        this.deferred.forward( 'source', resolve );
 
     };
 
@@ -121,16 +95,8 @@
             if ( req.status >= 200 && req.status < 300 ) {
 
                 self.source = req.responseText;
-                self._resolve( self );
-
-            } else {
-
-                self._reject( new Error( req.statusText ) );
 
             }
-
-            delete self._resolve;
-            delete self._reject;
 
         };
 
