@@ -106,6 +106,12 @@
         this.backgroundColor = new utils.Color( options.bgColor !== undefined ? options.bgColor : ( this.glCtxAttrs.alpha ? 'transparent' : "#000000" ) );
 
         /**
+         * @member {Picimo.webgl.ShaderManager} Picimo.App#shader
+         */
+
+        this.shader = new webgl.ShaderManager( this );
+
+        /**
          * @member {Picimo.webgl.WebGlRenderer} Picimo.App#renderer
          */
 

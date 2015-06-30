@@ -71,7 +71,12 @@
         /**
          * @private
          */
-        addGlxProperty : require( './add_glx_property' )
+        addGlxProperty : require( './add_glx_property' ),
+
+        /**
+         * @private
+         */
+        addUid : require( './add_uid' )
 
     };
 

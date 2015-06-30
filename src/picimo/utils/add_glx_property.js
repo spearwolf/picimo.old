@@ -22,6 +22,4 @@
             });
     };
 
-    module.exports.addGlxProperty = module.exports;
-
 })();

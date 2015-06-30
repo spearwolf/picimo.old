@@ -13,6 +13,12 @@
     function ShaderSource ( shaderType, name, source ) {
 
         /**
+         * @member {number} Picimo.webgl.ShaderSource#uid
+         * @readonly
+         */
+        utils.addUid( this );
+
+        /**
          * @member {Picimo.utils.Deferred} Picimo.webgl.ShaderSource#deferred
          */
         utils.Deferred.make( this );
