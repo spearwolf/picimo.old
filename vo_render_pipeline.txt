@@ -1,0 +1,26 @@
+
+### user stories
+
+1. create single sprite
+2. create sprite group (dynamic)
+3. create sprite group (static)
+
+
+### user
+
+- new SpriteGroup(): dynamic/static plus texture
+- scene.addChild( spriteGroup )
+
+
+### vo_pipeline
+
+für jeden descriptor eine pipeline: VODescriptor <-> VORenderPipeline
+
+vo_pipeline:
+    - default pool size
+    *vertex_arrays: vo_pipeline_pool
+
+### vo_pipeline_pool
+    * Textures
+    - is dynamic/static
+
