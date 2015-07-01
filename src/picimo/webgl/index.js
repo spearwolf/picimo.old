@@ -7,6 +7,8 @@
 
     module.exports = {
 
+        cmd : require( './cmd' ),
+
         ShaderSource  : require( './shader_source' ),
         ShaderManager : require( './shader_manager' ),
         Program       : require( './program' ),

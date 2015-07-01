@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: Texture</title>
+    <title>Class: BlendMode</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,19 +24,21 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.core.Texture.html">Class: Texture</h1>
+        <h1 class="page-title" data-filename="Picimo.webgl.cmd.BlendMode.html">Class: BlendMode</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.core.Texture">
+<header data-current="Picimo.webgl.cmd.BlendMode">
     <h2>
-        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.core.html">.core</a>.</span>
+        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.webgl.html">.webgl</a><a href="Picimo.webgl.cmd.html">.cmd</a>.</span>
     
-    Texture
+    BlendMode
     </h2>
+    
+        <div class="class-description"><p>WebGL blend and depth mode state description.</p></div>
     
 </header>  
 
@@ -48,14 +50,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="Texture">
+        <h4 class="name" id="BlendMode">
             
-            new Picimo.core.Texture<span class="signature">(<span class="optional">parent</span>, <span class="optional">x</span>, <span class="optional">y</span>, <span class="optional">width</span>, <span class="optional">height</span>)</span>
+            new Picimo.webgl.cmd.BlendMode<span class="signature">(depthTest, <span class="optional">depthMask</span>, <span class="optional">depthFunc</span>, blend, <span class="optional">blendFuncSrc</span>, <span class="optional">blendFuncDst</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            core/texture.js, line 4
+            webgl/cmd/blend_mode.js, line 4
         </div>
         
     </div>
@@ -83,8 +85,6 @@
 		<th>Type</th>
 		
 		
-		<th>Default</th>
-		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -95,58 +95,46 @@
 	
         <tr>
             
-                <td class="name"><code>parent</code></td>
+                <td class="name"><code>depthTest</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Picimo.core.Texture.html">Picimo.core.Texture</a></span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
             
             
-                <td class="default">
-                
-                </td>
-            
             
             <td class="description last">
                 
-                    
-                        <span class="optional">optional</span>
                     
                     
                         
                     
                 
-                </td>
+                <p>Enable or disable depth test.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>x</code></td>
+                <td class="name"><code>depthMask</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
             
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
             
             
             <td class="description last">
@@ -158,31 +146,25 @@
                         
                     
                 
-                </td>
+                <p>Enable or disable depth buffer writes.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>y</code></td>
+                <td class="name"><code>depthFunc</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
             </td>
             
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
             
             
             <td class="description last">
@@ -194,63 +176,53 @@
                         
                     
                 
-                </td>
+                <p>Set the depth function.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>width</code></td>
+                <td class="name"><code>blend</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
             
             
-                <td class="default">
-                
-                </td>
-            
             
             <td class="description last">
                 
-                    
-                        <span class="optional">optional</span>
                     
                     
                         
                     
                 
-                </td>
+                <p>Enable or disable blending.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>height</code></td>
+                <td class="name"><code>blendFuncSrc</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
             </td>
             
-            
-                <td class="default">
-                
-                </td>
             
             
             <td class="description last">
@@ -262,7 +234,37 @@
                         
                     
                 
-                </td>
+                <p>Set the source blend function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>blendFuncDst</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Set the destination blend function.</p></td>
         </tr>
 	
 	
@@ -307,17 +309,18 @@
     
     
     
-        <h5>Example</h5>
+        <h5>Examples</h5>
         
 
     
-    <pre class="prettyprint"><code>var t = new Picimo.core.Texture;
-t.image = document.createElement("canvas")
-t.width                                       // => 300
-t.height                                      // => 150
+    <pre class="prettyprint"><code>// default settings
+new Picimo.webgl.cmd.BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' )</code></pre>
+    
 
-var tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
-t.width                                       // => 100</code></pre>
+
+    
+    <pre class="prettyprint"><code>// disable both
+new Picimo.webgl.cmd.BlendMode( false, false )</code></pre>
     
 
     
@@ -343,7 +346,7 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="height"><span class="attrs"></span>height<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id=".DEFAULT"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.webgl.cmd.BlendMode.DEFAULT</h4>
     </div>
     
     
@@ -384,7 +387,7 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="image"><span class="attrs"></span>image<span class="type-signature type image">Image</span> <span class="type-signature type canvas">Canvas</span> </h4>
+        <h4 class="name" id=".ISO3D"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.webgl.cmd.BlendMode.ISO3D</h4>
     </div>
     
     
@@ -425,7 +428,7 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="max_s"><span class="attrs"><span class="type-signature ">readonly</span></span>max_s<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="blend"><span class="attrs"></span>blend<span class="type-signature type boolean">boolean</span> </h4>
     </div>
     
     
@@ -466,7 +469,7 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="max_t"><span class="attrs"><span class="type-signature ">readonly</span></span>max_t<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="blendFuncDst"><span class="attrs"></span>blendFuncDst<span class="type-signature type string">string</span> </h4>
     </div>
     
     
@@ -507,7 +510,7 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="min_s"><span class="attrs"><span class="type-signature ">readonly</span></span>min_s<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="blendFuncSrc"><span class="attrs"></span>blendFuncSrc<span class="type-signature type string">string</span> </h4>
     </div>
     
     
@@ -548,7 +551,7 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="min_t"><span class="attrs"><span class="type-signature ">readonly</span></span>min_t<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="depthFunc"><span class="attrs"></span>depthFunc<span class="type-signature type string">string</span> </h4>
     </div>
     
     
@@ -589,7 +592,7 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="parent"><span class="attrs"></span>parent<span class="type-signature type picimo.core.texture"><a href="Picimo.core.Texture.html">Picimo.core.Texture</a></span> </h4>
+        <h4 class="name" id="depthMask"><span class="attrs"></span>depthMask<span class="type-signature type boolean">boolean</span> </h4>
     </div>
     
     
@@ -630,130 +633,7 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="root"><span class="attrs"><span class="type-signature ">readonly</span></span>root<span class="type-signature type picimo.core.texture"><a href="Picimo.core.Texture.html">Picimo.core.Texture</a></span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="width"><span class="attrs"></span>width<span class="type-signature type number">number</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="x"><span class="attrs"></span>x<span class="type-signature type number">number</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="y"><span class="attrs"></span>y<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="depthTest"><span class="attrs"></span>depthTest<span class="type-signature type boolean">boolean</span> </h4>
     </div>
     
     
@@ -800,14 +680,14 @@ t.width                                       // => 100</code></pre>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="setTexCoords">
+        <h4 class="name" id="activate">
             
-            setTexCoords<span class="signature">(obj)</span>
+            activate<span class="signature">(gl)</span>
         </h4>
     
         
         <div class="tag-source">
-            core/texture.js, line 292
+            webgl/cmd/blend_mode.js, line 80
         </div>
         
     </div>
@@ -845,13 +725,13 @@ t.width                                       // => 100</code></pre>
 	
         <tr>
             
-                <td class="name"><code>obj</code></td>
+                <td class="name"><code>gl</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">WebGlRenderingContext</span>
 
 
             
@@ -861,7 +741,7 @@ t.width                                       // => 100</code></pre>
             
             <td class="description last">
                 
-                <p>Any object which has a <code>.setTexCoords()</code> method</p></td>
+                <p>gl</p></td>
         </tr>
 	
 	
