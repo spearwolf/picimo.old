@@ -113,6 +113,7 @@
     
     };
 
+
     /**
      * @method Picimo.webgl.ShaderManager#getFragmentShader
      * @param {string} name

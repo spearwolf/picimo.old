@@ -114,6 +114,32 @@
 
 
     /**
+     * @method Picimo.webgl.ShaderSource#compile
+     * @param {WebGlRenderingContext} gl
+     * @return {number} - *gl id* or 0
+     */
+
+    ShaderSource.prototype.compile = function ( gl ) {
+
+        if ( ! this.deferred.ready ) return;
+
+        var id = gl.createShader( gl[ this.shaderType ] );
+
+        gl.shaderSource( id, this.source );
+        gl.compileShader( id );
+
+        if ( ! gl.getShaderParameter( id, gl.COMPILE_STATUS ) ) {
+
+            throw new Error( gl.getShaderInfoLog( id ) );
+
+        }
+
+        return id;
+
+    };
+
+
+    /**
      * @memberof Picimo.webgl.ShaderSource
      * @constant VERTEX_SHADER
      * @static
