@@ -66,6 +66,23 @@
         },
 
         /**
+         * @member {Picimo.core.Texture} Picimo.core.Texture#root
+         * @readonly
+         */
+
+        root: {
+
+            get: function () {
+
+                return this._parent ? this._parent : this;
+            
+            },
+
+            enumerable: true
+
+        },
+
+        /**
          * @member {Image|Canvas} Picimo.core.Texture#image
          */
 

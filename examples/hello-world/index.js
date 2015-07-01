@@ -115,4 +115,13 @@ console.log( "vo", vo );
 
 
 // -------------------------------------------------------------- }}}
+// ========= shaders ============================================ {{{
+
+app.shader.loadVertexShader( 'filmgrain', '/assets/shaders/filmgrain/shader.vert' );
+app.shader.loadFragmentShader( 'filmgrain', '/assets/shaders/filmgrain/shader.frag' );
+app.shader.addProgram( 'film', 'filmgrain', 'filmgrain' );
+
+//gl_program = app.glx.glProgram( app.shader.getProgram( 'film' ) );
+
+// -------------------------------------------------------------- }}}
 

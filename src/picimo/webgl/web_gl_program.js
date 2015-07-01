@@ -1,7 +1,9 @@
 (function(){
     "use strict";
 
-    //var utils = require( '../utils' );
+    var Uniform = require( './uniform' );
+    var Attrib  = require( './attrib' );
+
 
     function WebGlProgram ( program, glProgram, glx ) {
 
@@ -32,8 +34,8 @@
         var gl          = glProgram.glx.gl;
         var numUniforms = gl.getProgramParameter( glProgram.glProgram, gl.ACTIVE_UNIFORMS );
 
-        glProgram.activeUniforms = [];
-        glProgram.uniformNames   = [];
+        glProgram.uniformNames  = [];
+        glProgram.uniform       = {};
 
         var i, uniform;
 
@@ -41,12 +43,31 @@
 
             uniform = gl.getActiveUniform( glProgram.glProgram, i );
 
-            glProgram.activeUniforms.push( uniform );
+            glProgram.uniform[ uniform.name ] = new Uniform( glProgram, uniform );
             glProgram.uniformNames.push( uniform.name );
         
         }
 
-        // TODO setup uniform and attribute locations
+        Object.freeze( glProgram.uniform );
+
+
+        var numAttribs = gl.getProgramParameter( glProgram.glProgram, gl.ACTIVE_ATTRIBUTES );
+
+        glProgram.attribNames = [];
+        glProgram.attrib      = {};
+
+        var attr;
+
+        for ( i = 0; i < numAttribs ; ++i ) {
+
+            attr = gl.getActiveAttrib( glProgram.glProgram, i );
+
+            glProgram.attrib[ attr.name ] = new Attrib( glProgram, attr );
+            glProgram.attribNames.push( attr.name );
+        
+        }
+
+        Object.freeze( glProgram.attrib );
     
     }
 
