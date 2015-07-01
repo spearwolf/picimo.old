@@ -227,14 +227,121 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="glBindBuffer">
+        <h4 class="name" id="bindArrayBuffer">
             
-            glBindBuffer<span class="signature">(bufferType, buffer)</span>
+            bindArrayBuffer<span class="signature">(buffer)</span>
         </h4>
     
         
         <div class="tag-source">
-            webgl/web_gl_context.js, line 28
+            webgl/web_gl_context.js, line 50
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="bindBuffer">
+            
+            bindBuffer<span class="signature">(bufferType, buffer)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_context.js, line 33
         </div>
         
     </div>
@@ -277,13 +384,18 @@
             
             <td class="type">
             
+                
+<span class="param-type">number</span>
+
+
+            
             </td>
             
             
             
             <td class="description last">
                 
-                </td>
+                <p>gl.ARRAY_BUFFER or gl.ELEMENT_ARRAY_BUFFER</p></td>
         </tr>
 	
 	
@@ -348,6 +460,395 @@
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="bindElementArrayBuffer">
+            
+            bindElementArrayBuffer<span class="signature">(buffer)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_context.js, line 61
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>buffer</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="glProgram">
+            
+            glProgram<span class="signature">(program)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Picimo.webgl.WebGlProgram}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_context.js, line 100
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>program</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Picimo.webgl.Program</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Picimo.webgl.WebGlProgram
+                        
+                    
+            </td>
+            <td class="description last">The program object or <em>undefined</em></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="glShader">
+            
+            glShader<span class="signature">(shader)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{WebGLShader}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_context.js, line 72
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>shader</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.webgl.ShaderSource.html">Picimo.webgl.ShaderSource</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        WebGLShader
+                        
+                    
+            </td>
+            <td class="description last">The shader object or <em>undefined</em></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
         </dl>
     
     
@@ -365,7 +866,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Wed Jul 01 2015 08:26:21 GMT+0200 (CEST)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Wed Jul 01 2015 18:05:59 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

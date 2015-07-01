@@ -3,6 +3,7 @@
 
     var utils        = require( '../utils' );
     var ShaderSource = require( './shader_source' );
+    var Program      = require( './program' );
 
     /**
      * @class Picimo.webgl.ShaderManager
@@ -16,6 +17,7 @@
 
             _vertexShader   : new utils.Map(),
             _fragmentShader : new utils.Map(),
+            _programs       : new utils.Map(),
         
         });
 
@@ -23,8 +25,38 @@
 
 
     /**
+     * @method Picimo.webgl.ShaderManager#addProgram
+     * @param {string} name
+     * @param {string} [vertexShaderName=name]
+     * @param {string} [fragmentShaderName=name]
+     * @return {Picimo.webgl.ShaderManager} self
+     */
+
+    ShaderManager.prototype.addProgram = function ( name, vertexShaderName, fragmentShaderName ) {
+
+        this._programs.set( name, new Program( name, vertexShaderName, fragmentShaderName ) );
+
+        return this;
+    
+    };
+
+
+    /**
+     * @method Picimo.webgl.ShaderManager#getProgram
+     * @param {string} name
+     * @return {Picimo.webgl.Program} program
+     */
+
+    ShaderManager.prototype.getProgram = function ( name ) {
+
+        return this._programs.get( name );
+    
+    };
+
+
+    /**
      * @method Picimo.webgl.ShaderManager#addShader
-     * @param {Picimo.ShaderSource} shader
+     * @param {Picimo.webgl.ShaderSource} shader
      * @return {Picimo.webgl.ShaderManager} self
      */
 
@@ -104,7 +136,7 @@
     /**
      * @method Picimo.webgl.ShaderManager#getVertexShader
      * @param {string} name
-     * @return {Picimo.ShaderSource} shader
+     * @return {Picimo.webgl.ShaderSource} shader
      */
 
     ShaderManager.prototype.getVertexShader = function ( name ) {
@@ -117,7 +149,7 @@
     /**
      * @method Picimo.webgl.ShaderManager#getFragmentShader
      * @param {string} name
-     * @return {Picimo.ShaderSource} shader
+     * @return {Picimo.webgl.ShaderSource} shader
      */
 
     ShaderManager.prototype.getFragmentShader = function ( name ) {

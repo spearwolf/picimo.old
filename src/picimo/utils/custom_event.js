@@ -11,7 +11,23 @@
         //
         // =====================================================================
 
+
+        /**
+         * @function Picimo.utils.custom_event.eventize
+         * @description
+         *   Append the *CustomEvent* interface to an object.
+         * @param {Object} o - any object
+         * @return o
+         */
+
         api.eventize = function(o) {
+
+            /**
+             * A simple event interface for objects.
+             *
+             * @class Picimo.utils.custom_event.CustomEvent
+             *
+             */
 
             _defineHiddenPropertyRO(o, '_callbacks', { _id: 0 });
 
@@ -20,6 +36,17 @@
             // object.on( eventName, [ prio, ] callback )
             //
             // -----------------------------------------------------------------
+
+
+            /**
+             * @method Picimo.utils.custom_event.CustomEvent#on
+             * @description
+             * Execute the given function everytime when the event occurred.
+             * @param {string} eventName
+             * @param {number} [prio=0]
+             * @param {function} fn - The function to execute when the event occurred.
+             * @return {number} - A listener id
+             */
 
             o.on = function(eventName, prio, fn) {
 
@@ -61,6 +88,16 @@
             //
             // -----------------------------------------------------------------
 
+            /**
+             * @method Picimo.utils.custom_event.CustomEvent#once
+             * @description
+             * Execute the given function when the event occurred. *The function will only be called onced*.
+             * @param {string} eventName
+             * @param {number} [prio=0]
+             * @param {function} fn - The function to execute when the event occurred.
+             * @return {number} - A listener id
+             */
+
             o.once = function(eventName, prio, fn) {
 
                 if (arguments.length === 2) {
@@ -74,6 +111,7 @@
                 });
 
                 return lid;
+
             };
 
             // -----------------------------------------------------------------
@@ -81,6 +119,13 @@
             // object.off( id )
             //
             // -----------------------------------------------------------------
+
+            /**
+             * @method Picimo.utils.custom_event.CustomEvent#off
+             * @description
+             * Unsubsribe a listener.
+             * @param {number} id - listener id
+             */
 
             o.off = function(id) {
                 var cb, i, j, _callbacks, keys = Object.keys(this._callbacks);
@@ -101,6 +146,14 @@
             // object.emit( eventName [, arguments .. ] )
             //
             // -----------------------------------------------------------------
+
+            /**
+             * @method Picimo.utils.custom_event.CustomEvent#emit
+             * @description
+             * Trigger an event.
+             * @param {string} eventName - The event name.
+             * @param {...arguments} [...args] - Arguments for the event callback functions.
+             */
 
             o.emit = function(eventName /*, arguments ..*/) {
                 var args = Array.prototype.slice.call(arguments, 1);
@@ -124,6 +177,15 @@
             // object.emitReduce( eventName [, arguments .. ] )
             //
             // -----------------------------------------------------------------
+
+            /**
+             * @method Picimo.utils.custom_event.CustomEvent#emitReduce
+             * @description
+             * Trigger an event.
+             * @param {string} eventName - The event name.
+             * @param {Object} value - This will be the first argument given to all callback functions.
+             * @param {...arguments} [...args] - Arguments for the event callback functions.
+             */
 
             o.emitReduce = function(eventName /*, value, [arguments ..] */) {
                 var args = Array.prototype.slice.call(arguments, 1);

@@ -488,7 +488,8 @@ td {
   margin-bottom: 2em;
 }
 .main table .optional,
-.main table .nullable {
+.main table .nullable,
+.main table .repeatable {
   color: #949da4;
   border: 1px solid #949da4;
   padding: 0.1em 0.4em;

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Namespace: object</title>
+    <title>Class: CustomEvent</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.utils.object.html">Namespace: object</h1>
+        <h1 class="page-title" data-filename="Picimo.utils.custom_event.CustomEvent.html">Class: CustomEvent</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.utils.object">
+<header data-current="Picimo.utils.custom_event.CustomEvent">
     <h2>
-        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.utils.html">.utils</a>.</span>
+        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.utils.html">.utils</a><a href="Picimo.utils.custom_event.html">.custom_event</a>.</span>
     
-    object
+    CustomEvent
     </h2>
     
 </header>  
@@ -46,8 +46,37 @@
     
     
         
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="CustomEvent">
+            
+            new Picimo.utils.custom_event.CustomEvent<span class="signature">()</span>
+        </h4>
+    
         
+        <div class="tag-source">
+            utils/custom_event.js, line 25
+        </div>
         
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>A simple event interface for objects.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
 <dl class="details">
     
         
@@ -72,8 +101,20 @@
     
 </dl>
 
-        
-        
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
     
     </div>
     
@@ -96,14 +137,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".definePropertiesPrivateRO">
+        <h4 class="name" id="emit">
             
-            <span class="type-signature static">static</span>Picimo.utils.object.definePropertiesPrivateRO<span class="signature">(obj, The)</span>
+            emit<span class="signature">(eventName)</span>
         </h4>
     
         
         <div class="tag-source">
-            utils/object_utils.js, line 108
+            utils/custom_event.js, line 150
         </div>
         
     </div>
@@ -114,7 +155,7 @@
     
     
     <div class="description">
-        <p>Define <em>read-only</em> properties which are NOT <em>enumerable</em>, <em>writable</em> or <em>configurable</em>.</p>
+        <p>Trigger an event.</p>
     </div>
     
 
@@ -145,362 +186,7 @@
 	
         <tr>
             
-                <td class="name"><code>obj</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>The</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>name/value map</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties</a></li>
-        </ul>
-    </dd>
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-
-obj
-
-
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code>Picimo.utils.object.definePropertiesPrivateRO( obj, {
-    _FOO: 'foo',
-    _bar: 'plah!'
-});</code></pre>
-    
-
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".definePropertiesPublicRO">
-            
-            <span class="type-signature static">static</span>Picimo.utils.object.definePropertiesPublicRO<span class="signature">(obj, The)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            utils/object_utils.js, line 69
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Define <em>read-only</em> properties which are <em>enumerable</em> but not <em>writable</em> and <em>configurable</em>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>The</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>name/value map</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties</a></li>
-        </ul>
-    </dd>
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-
-obj
-
-
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code>Picimo.utils.object.definePropertiesPublicRO( obj, {
-    FOO: 'foo',
-    BAR: 'plah!'
-});</code></pre>
-    
-
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".definePropertyPrivate">
-            
-            <span class="type-signature static">static</span>Picimo.utils.object.definePropertyPrivate<span class="signature">(obj, name, value)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            utils/object_utils.js, line 26
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Define a property which is NOT <em>enumerable</em> and <em>configurable</em> BUT <em>writable</em>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>eventName</code></td>
             
             
             <td class="type">
@@ -516,17 +202,27 @@ obj
             
             <td class="description last">
                 
-                </td>
+                    
+                    
+                        
+                    
+                
+                <p>The event name.</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>...args</code></td>
             
             
             <td class="type">
+            
+                
+<span class="param-type">arguments</span>
+
+
             
             </td>
             
@@ -534,7 +230,16 @@ obj
             
             <td class="description last">
                 
-                </td>
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                        <span class="repeatable">repeatable</span>
+                    
+                
+                <p>Arguments for the event callback functions.</p></td>
         </tr>
 	
 	
@@ -563,13 +268,6 @@ obj
     
     
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty</a></li>
-        </ul>
-    </dd>
-    
     
     
 </dl>
@@ -584,15 +282,6 @@ obj
     
     
     
-    <h5>Returns:</h5>
-    
-
-
-
-obj
-
-
-    
     
     
 </dd>
@@ -601,14 +290,14 @@ obj
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".definePropertyPrivateRO">
+        <h4 class="name" id="emitReduce">
             
-            <span class="type-signature static">static</span>Picimo.utils.object.definePropertyPrivateRO<span class="signature">(obj, name, value)</span>
+            emitReduce<span class="signature">(eventName, value)</span>
         </h4>
     
         
         <div class="tag-source">
-            utils/object_utils.js, line 48
+            utils/custom_event.js, line 181
         </div>
         
     </div>
@@ -619,7 +308,7 @@ obj
     
     
     <div class="description">
-        <p>Define a <strong>read-only</strong> property which is NOT <em>enumerable</em>, <em>configurable</em> and <em>writable</em>.</p>
+        <p>Trigger an event.</p>
     </div>
     
 
@@ -650,30 +339,7 @@ obj
 	
         <tr>
             
-                <td class="name"><code>obj</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>eventName</code></td>
             
             
             <td class="type">
@@ -689,7 +355,12 @@ obj
             
             <td class="description last">
                 
-                </td>
+                    
+                    
+                        
+                    
+                
+                <p>The event name.</p></td>
         </tr>
 	
 	
@@ -701,13 +372,55 @@ obj
             
             <td class="type">
             
+                
+<span class="param-type">Object</span>
+
+
+            
             </td>
             
             
             
             <td class="description last">
                 
-                </td>
+                    
+                    
+                        
+                    
+                
+                <p>This will be the first argument given to all callback functions.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>...args</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">arguments</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                        <span class="repeatable">repeatable</span>
+                    
+                
+                <p>Arguments for the event callback functions.</p></td>
         </tr>
 	
 	
@@ -736,13 +449,6 @@ obj
     
     
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty</a></li>
-        </ul>
-    </dd>
-    
     
     
 </dl>
@@ -757,15 +463,6 @@ obj
     
     
     
-    <h5>Returns:</h5>
-    
-
-
-
-obj
-
-
-    
     
     
 </dd>
@@ -774,14 +471,14 @@ obj
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".definePropertyPublicRO">
+        <h4 class="name" id="off">
             
-            <span class="type-signature static">static</span>Picimo.utils.object.definePropertyPublicRO<span class="signature">(obj, name, value)</span>
+            off<span class="signature">(id)</span>
         </h4>
     
         
         <div class="tag-source">
-            utils/object_utils.js, line 4
+            utils/custom_event.js, line 123
         </div>
         
     </div>
@@ -792,7 +489,7 @@ obj
     
     
     <div class="description">
-        <p>Define a <em>read-only</em> property which is <em>enumerable</em> but not <em>writable</em> and <em>configurable</em>.</p>
+        <p>Unsubsribe a listener.</p>
     </div>
     
 
@@ -823,13 +520,13 @@ obj
 	
         <tr>
             
-                <td class="name"><code>obj</code></td>
+                <td class="name"><code>id</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">number</span>
 
 
             
@@ -839,48 +536,7 @@ obj
             
             <td class="description last">
                 
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
+                <p>listener id</p></td>
         </tr>
 	
 	
@@ -909,12 +565,200 @@ obj
     
     
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty</a></li>
-        </ul>
-    </dd>
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="on">
+            
+            on<span class="signature">(eventName, <span class="optional">prio</span>, fn)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            utils/custom_event.js, line 41
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Execute the given function everytime when the event occurred.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>eventName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>prio</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>The function to execute when the event occurred.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -934,9 +778,257 @@ obj
     
 
 
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        number
+                        
+                    
+            </td>
+            <td class="description last"><ul>
+<li>A listener id</li>
+</ul></td>
+        </tr>
+    
+    </tbody>
+</table>
 
-obj
+    
+    
+    
+</dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="once">
+            
+            once<span class="signature">(eventName, <span class="optional">prio</span>, fn)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            utils/custom_event.js, line 91
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Execute the given function when the event occurred. <em>The function will only be called onced</em>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Default</th>
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>eventName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>prio</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>The function to execute when the event occurred.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        number
+                        
+                    
+            </td>
+            <td class="description last"><ul>
+<li>A listener id</li>
+</ul></td>
+        </tr>
+    
+    </tbody>
+</table>
 
     
     

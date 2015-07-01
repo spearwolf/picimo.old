@@ -15,23 +15,28 @@
 
         utils.object.definePropertiesPrivateRO( this, {
             '_boundBuffers' : new utils.Map(),
-            '_boundTextures': new utils.Map()
+            '_boundTextures': new utils.Map(),
+            '_shaders'      : new utils.Map(),
+            '_programs'     : new utils.Map()
         });
 
         getExtensions( this );
         readWebGlParameters( this );
+
+        this.app           = null;
+        this.activeProgram = null;
 
         Object.seal( this );
 
     }
 
     /**
-     * @method Picimo.webgl.WebGlContext#glBindBuffer
-     * @param bufferType
+     * @method Picimo.webgl.WebGlContext#bindBuffer
+     * @param {number} bufferType - gl.ARRAY_BUFFER or gl.ELEMENT_ARRAY_BUFFER
      * @param buffer
      */
 
-    WebGlContext.prototype.glBindBuffer = function ( bufferType, buffer ) {
+    WebGlContext.prototype.bindBuffer = function ( bufferType, buffer ) {
 
         if ( this._boundBuffers.get( bufferType ) !== buffer ) {
 
@@ -41,6 +46,86 @@
         }
 
     };
+
+    /**
+     * @method Picimo.webgl.WebGlContext#bindArrayBuffer
+     * @param buffer
+     */
+
+    WebGlContext.prototype.bindArrayBuffer = function ( buffer ) {
+
+        this.bindBuffer( this.gl.ARRAY_BUFFER, buffer );
+
+    };
+
+    /**
+     * @method Picimo.webgl.WebGlContext#bindElementArrayBuffer
+     * @param buffer
+     */
+
+    WebGlContext.prototype.bindElementArrayBuffer = function ( buffer ) {
+
+        this.bindBuffer( this.gl.ELEMENT_ARRAY_BUFFER, buffer );
+
+    };
+
+    /**
+     * @method Picimo.webgl.WebGlContext#glShader
+     * @param {Picimo.webgl.ShaderSource} shader
+     * @return {WebGLShader} The shader object or *undefined*
+     */
+
+    WebGlContext.prototype.glShader = function ( shader ) {
+
+        if ( shader === undefined ) return;
+
+        var glShader = this._shaders.get( shader.uid );
+
+        if ( glShader === undefined ) {
+
+            glShader = shader.compile( this.gl );
+
+            if ( glShader !== undefined ) {
+
+                this._shaders.set( shader.uid, glShader );
+
+            }
+
+        }
+
+        return glShader;
+
+    };
+
+    /**
+     * @method Picimo.webgl.WebGlContext#glProgram
+     * @param {Picimo.webgl.Program} program
+     * @return {Picimo.webgl.WebGlProgram} The program object or *undefined*
+     */
+
+    WebGlContext.prototype.glProgram = function ( program ) {
+
+        if ( program === undefined ) return;
+
+        var glProgram = this._programs.get( program.uid );
+
+        if ( glProgram === undefined ) {
+        
+            glProgram = program.linkProgram( this.app );
+
+            if ( glProgram !== undefined ) {
+            
+                this._programs.set( program.uid, glProgram );
+            
+            }
+        
+        }
+
+        return glProgram;
+
+    };
+
+
 
     function readWebGlParameters( webGlContext ) {
 
@@ -67,9 +152,9 @@
         webGlContext.OES_element_index_uint = webGlContext.gl.getExtension("OES_element_index_uint");
 
         if ( ! webGlContext.OES_element_index_uint ) {
-        
+
             console.error( "WebGL don't support the OES_element_index_uint extension!" );
-        
+
         }
 
     }

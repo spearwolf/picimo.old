@@ -98,6 +98,7 @@
          */
 
         this.glx = createWebGlContext( this );
+        this.glx.app = this;
 
         /**
          * @member {Picimo.utils.Color} Picimo.App#backgroundColor

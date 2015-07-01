@@ -9,12 +9,17 @@
 
     module.exports = {
 
+        /**
+         * @namespace Picimo.utils.custom_event
+         * @summary
+         * A simple event library.
+         */
         custom_event : require( './custom_event' ),
 
         /**
          * @namespace Picimo.utils.object
          * @summary
-         * Generic object and properties helper functions.
+         * Common object properties helper functions.
          */
         object : require( './object_utils' ),
 
@@ -48,7 +53,7 @@
          * @namespace Picimo.utils.glMatrix
          *
          * @summary
-         *   The fantastic gl-matrix library.
+         *   The fantastic <b>gl-matrix</b> library.
          *
          * @see
          * https://github.com/toji/gl-matrix
@@ -60,7 +65,7 @@
          * @class Picimo.utils.Color
          *
          * @summary
-         *   The fantastic color management API net.brehaut.Color
+         *   The fantastic color management API <b>net.brehaut.Color</b>
          *
          * @see
          * https://github.com/brehaut/color-js

@@ -116,25 +116,25 @@
     /**
      * @method Picimo.webgl.ShaderSource#compile
      * @param {WebGlRenderingContext} gl
-     * @return {number} - *gl id* or 0
+     * @return {WebGLShader} - webgl shader object or *undefined*
      */
 
     ShaderSource.prototype.compile = function ( gl ) {
 
         if ( ! this.deferred.ready ) return;
 
-        var id = gl.createShader( gl[ this.shaderType ] );
+        var shader = gl.createShader( gl[ this.shaderType ] );
 
-        gl.shaderSource( id, this.source );
-        gl.compileShader( id );
+        gl.shaderSource( shader, this.source );
+        gl.compileShader( shader );
 
-        if ( ! gl.getShaderParameter( id, gl.COMPILE_STATUS ) ) {
+        if ( ! gl.getShaderParameter( shader, gl.COMPILE_STATUS ) ) {
 
-            throw new Error( gl.getShaderInfoLog( id ) );
+            throw new Error( gl.getShaderInfoLog( shader ) );
 
         }
 
-        return id;
+        return shader;
 
     };
 
