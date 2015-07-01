@@ -2,15 +2,19 @@
     "use strict";
 
     var utils     = require( '../utils' );
+    var events    = require( '../events' );
     var NodeState = require( './node_state' );
 
     /**
      * @class Picimo.sg.Node
+     * @extends Picimo.events.CustomEvent
+     *
      * @classdesc
      * The generic base class for all scene graph nodes.
      *
      * ### States and Events
      * <img src="images/node-events.png" srcset="images/node-events.png 1x,images/node-events@2x.png 2x" alt="Node Events and States">
+     *
      *
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
@@ -62,7 +66,7 @@
         this.children = [];
 
     
-        utils.custom_event.eventize( this );
+        events.eventize( this );
 
         if ( options !== undefined ) {
 

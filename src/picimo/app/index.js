@@ -2,12 +2,14 @@
 (function(){
     "use strict";
 
-    var utils = require( '../utils' );
-    var sg    = require( '../sg' );
-    var webgl = require( '../webgl' );
+    var utils  = require( '../utils' );
+    var events = require( '../events' );
+    var sg     = require( '../sg' );
+    var webgl  = require( '../webgl' );
 
     /**
      * @class Picimo.App
+     * @extends Picimo.events.CustomEvent
      *
      * @classdesc
      *   Create a new picimo app. This is your main app controller.
@@ -49,7 +51,7 @@
 
     function App ( canvas, options ) {
 
-        utils.custom_event.eventize( this );
+        events.eventize( this );
 
         /**
          * @member {number} Picimo.App#now - The number of seconds from application start.

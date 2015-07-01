@@ -13,7 +13,7 @@
 
 
         /**
-         * @function Picimo.utils.custom_event.eventize
+         * @function Picimo.events.eventize
          * @description
          *   Append the *CustomEvent* interface to an object.
          * @param {Object} o - any object
@@ -25,7 +25,7 @@
             /**
              * A simple event interface for objects.
              *
-             * @class Picimo.utils.custom_event.CustomEvent
+             * @class Picimo.events.CustomEvent
              *
              */
 
@@ -39,7 +39,7 @@
 
 
             /**
-             * @method Picimo.utils.custom_event.CustomEvent#on
+             * @method Picimo.events.CustomEvent#on
              * @description
              * Execute the given function everytime when the event occurred.
              * @param {string} eventName
@@ -89,7 +89,7 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.utils.custom_event.CustomEvent#once
+             * @method Picimo.events.CustomEvent#once
              * @description
              * Execute the given function when the event occurred. *The function will only be called onced*.
              * @param {string} eventName
@@ -121,7 +121,7 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.utils.custom_event.CustomEvent#off
+             * @method Picimo.events.CustomEvent#off
              * @description
              * Unsubsribe a listener.
              * @param {number} id - listener id
@@ -148,7 +148,7 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.utils.custom_event.CustomEvent#emit
+             * @method Picimo.events.CustomEvent#emit
              * @description
              * Trigger an event.
              * @param {string} eventName - The event name.
@@ -179,7 +179,7 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.utils.custom_event.CustomEvent#emitReduce
+             * @method Picimo.events.CustomEvent#emitReduce
              * @description
              * Trigger an event.
              * @param {string} eventName - The event name.

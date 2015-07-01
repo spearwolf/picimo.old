@@ -10,13 +10,6 @@
     module.exports = {
 
         /**
-         * @namespace Picimo.utils.custom_event
-         * @summary
-         * A simple event library.
-         */
-        custom_event : require( './custom_event' ),
-
-        /**
          * @namespace Picimo.utils.object
          * @summary
          * Common object properties helper functions.
