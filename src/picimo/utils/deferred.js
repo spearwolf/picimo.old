@@ -8,6 +8,7 @@
      * @class Picimo.utils.Deferred
      * @summary
      * A simple and generic deferred interface.
+     * @param {Object} obj - Any object.
      */
 
     function Deferred ( obj ) {
@@ -28,42 +29,39 @@
 
         }));
 
-    }
 
-    Object.defineProperties( Deferred.prototype, {
-    
-        /**
-         * @member {boolean} Picimo.utils.Deferred#ready
-         */
+        Object.defineProperties( obj, {
+        
+            'ready': {
 
-        'ready': {
+                get: function () { return deferred._ready; },
 
-            get: function () { return this._ready; },
+                set: function ( ready ) {
 
-            set: function ( ready ) {
-
-                if ( ! this._ready && !! ready ) {
-                
-                    this._ready = true;
+                    if ( ! deferred._ready && !! ready ) {
                     
-                    if ( this._resolve ) {
-                   
-                        this._resolve( this._obj );
-                        this._resolve = null;
+                        deferred._ready = true;
+                        
+                        if ( deferred._resolve ) {
+                       
+                            deferred._resolve( deferred._obj );
+                            deferred._resolve = null;
 
+                        }
+                    
+                    } else if ( !! deferred._ready && ! ready ) {
+                    
+                        deferred._ready = false;
+                    
                     }
-                
-                } else if ( !! this._ready && ! ready ) {
-                
-                    this._ready = false;
                 
                 }
             
             }
         
-        }
-    
-    });
+        });
+
+    }
 
     /**
      * @method Picimo.utils.Deferred#then

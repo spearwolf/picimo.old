@@ -1,27 +1,20 @@
 (function(){
     "use strict";
 
-    var utils = require( '../utils' );
+    var Resource = require( '../core' ).Resource;
 
     /**
      * @class Picimo.webgl.ShaderSource
+     * @extends Picimo.core.Resource
+     * @param {Picimo.App} app
      * @param {string} shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
      * @param {string} name -
      * @param {string} [source]
      */
 
-    function ShaderSource ( shaderType, name, source ) {
+    function ShaderSource ( app, shaderType, name, source ) {
 
-        /**
-         * @member {number} Picimo.webgl.ShaderSource#uid
-         * @readonly
-         */
-        utils.addUid( this );
-
-        /**
-         * @member {Picimo.utils.Deferred} Picimo.webgl.ShaderSource#deferred
-         */
-        utils.Deferred.make( this );
+        Resource.call( this, app, 'source' );
 
         /**
          * @member {string} Picimo.webgl.ShaderSource#shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
@@ -38,79 +31,10 @@
          */
         this.source = source;
 
-        /**
-         * @member {string} Picimo.webgl.ShaderSource#url
-         */
-        this.url = null;
-
     }
 
-
-    Object.defineProperties( ShaderSource.prototype, {
-
-        'source': {
-
-            get: function () { return this._source; },
-
-            set: function ( source ) {
-
-                this._source = source;
-                this.deferred.ready = typeof source === 'string' && source.trim().length !== 0;
-
-            },
-
-            enumerable: true
-
-        }
-
-    });
-
-
-    /**
-     * @method Picimo.webgl.ShaderSource#getSource
-     * @param {function} resolve
-     */
-
-    ShaderSource.prototype.getSource = function ( resolve ) {
-
-        this.deferred.forward( 'source', resolve );
-
-    };
-
-
-    /**
-     * @method Picimo.webgl.ShaderSource#load
-     * @param {string} url
-     * @return {Picimo.webgl.ShaderSource} - self
-     */
-
-    ShaderSource.prototype.load = function ( url ) {
-
-        var self = this;
-
-        this.url = url;
-
-        var req = new XMLHttpRequest();
-
-        req.open( "GET", url, true );
-
-        req.onreadystatechange = function () {
-
-            if ( req.readyState !== 4 /* DONE */ ) return;
-
-            if ( req.status >= 200 && req.status < 300 ) {
-
-                self.source = req.responseText;
-
-            }
-
-        };
-
-        req.send();
-
-        return this;
-
-    };
+    ShaderSource.prototype = Object.create( Resource.prototype );
+    ShaderSource.prototype.constructor = ShaderSource;
 
 
     /**
@@ -121,7 +45,7 @@
 
     ShaderSource.prototype.compile = function ( gl ) {
 
-        if ( ! this.deferred.ready ) return;
+        if ( ! this.ready ) return;
 
         var shader = gl.createShader( gl[ this.shaderType ] );
 

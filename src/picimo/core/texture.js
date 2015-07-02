@@ -51,12 +51,6 @@
 
             set: function ( parent ) {
 
-                if ( parent != null && this._image != null ) {
-
-                    throw new Error( "Texture can have a parent or an image but not both!" );
-
-                }
-
                 this._parent = parent;
 
             },
@@ -90,19 +84,91 @@
 
             get: function () {
 
-                return this._parent ? this._parent.image : this._image;
+                return this._image ? this._image : ( this._parent ? this._parent.image : null );
 
             },
 
             set: function ( image ) {
 
-                if ( image != null && this._parent != null ) {
+                this._image = image;
 
-                    throw new Error( "Texture can have a parent or an image but not both!" );
+            },
 
+            enumerable: true
+
+        },
+
+        /**
+         * @member {number} Picimo.core.Texture#root_width
+         * @readonly
+         */
+
+        root_width: {
+
+            get: function () {
+
+                var root = this.root;
+
+                if ( this === root ) {
+                
+                    if ( this._width != null ) {
+                    
+                        return this._width;
+
+                    } else if ( this._image ) {
+                    
+                        return this._image.width;
+                    
+                    } else {
+                    
+                        return 0;
+                    
+                    }
+                
+                } else {
+                
+                    return root.root_width;
+                
                 }
 
-                this._image = image;
+            },
+
+            enumerable: true
+
+        },
+
+        /**
+         * @member {number} Picimo.core.Texture#root_height
+         * @readonly
+         */
+
+        root_height: {
+
+            get: function () {
+
+                var root = this.root;
+
+                if ( this === root ) {
+                
+                    if ( this._height != null ) {
+                    
+                        return this._height;
+
+                    } else if ( this._image ) {
+                    
+                        return this._image.height;
+                    
+                    } else {
+                    
+                        return 0;
+                    
+                    }
+                
+                } else {
+                
+                    return root.root_height;
+                
+                }
 
             },
 
@@ -124,15 +190,7 @@
 
                 }
 
-                var image = this.image;
-
-                if ( image ) {
-
-                    return image.width;
-
-                }
-
-                return 0;
+                return this.root_width;
 
             },
 
@@ -160,15 +218,7 @@
 
                 }
 
-                var image = this.image;
-
-                if ( image ) {
-
-                    return image.height;
-
-                }
-
-                return 0;
+                return this.root_height;
 
             },
 
@@ -200,7 +250,7 @@
 
                 }
 
-                return x / this.image.width;
+                return x / this.root_width;
 
             },
 
@@ -226,7 +276,7 @@
 
                 }
 
-                return y / this.image.height;
+                return y / this.root_height;
 
             },
 
@@ -252,7 +302,7 @@
 
                 }
 
-                return x / this.image.width;
+                return x / this.root_width;
 
             },
 
@@ -278,7 +328,7 @@
 
                 }
 
-                return y / this.image.height;
+                return y / this.root_height;
 
             },
 

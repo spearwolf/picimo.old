@@ -7,10 +7,13 @@
 
     module.exports = {
 
+        Resource               : require( './resource' ),
+
         AABB2                  : require( './aabb2' ),
         Viewport               : require( './viewport' ),
 
         Texture                : require( './texture' ),
+        TextureAtlas           : require( './texture_atlas' ),
 
         VertexArray            : require( './vertex_array' ),
         VertexIndexArray       : require( './vertex_index_array' ),

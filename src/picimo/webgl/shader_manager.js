@@ -86,7 +86,7 @@
 
     ShaderManager.prototype.addVertexShader = function ( name, source ) {
 
-        return this.addShader( new ShaderSource( ShaderSource.VERTEX_SHADER, name, source ) );
+        return this.addShader( new ShaderSource( this.app, ShaderSource.VERTEX_SHADER, name, source ) );
 
     };
 
@@ -100,7 +100,7 @@
 
     ShaderManager.prototype.addFragmentShader = function ( name, source ) {
 
-        return this.addShader( new ShaderSource( ShaderSource.FRAGMENT_SHADER, name, source ) );
+        return this.addShader( new ShaderSource( this.app, ShaderSource.FRAGMENT_SHADER, name, source ) );
 
     };
 
@@ -114,7 +114,7 @@
 
     ShaderManager.prototype.loadVertexShader = function ( name, url ) {
 
-        return this.addShader( new ShaderSource( ShaderSource.VERTEX_SHADER, name ).load( url ) );
+        return this.addShader( new ShaderSource( this.app, ShaderSource.VERTEX_SHADER, name ).load( url ) );
 
     };
 
@@ -128,7 +128,7 @@
 
     ShaderManager.prototype.loadFragmentShader = function ( name, url ) {
 
-        return this.addShader( new ShaderSource( ShaderSource.FRAGMENT_SHADER, name ).load( url ) );
+        return this.addShader( new ShaderSource( this.app, ShaderSource.FRAGMENT_SHADER, name ).load( url ) );
 
     };
 

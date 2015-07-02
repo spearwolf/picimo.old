@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: ShaderSource</title>
+    <title>Class: Resource</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.webgl.ShaderSource.html">Class: ShaderSource</h1>
+        <h1 class="page-title" data-filename="Picimo.core.Resource.html">Class: Resource</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.webgl.ShaderSource">
+<header data-current="Picimo.core.Resource">
     <h2>
-        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.webgl.html">.webgl</a>.</span>
+        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.core.html">.core</a>.</span>
     
-    ShaderSource
+    Resource
     </h2>
     
 </header>  
@@ -48,14 +48,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="ShaderSource">
+        <h4 class="name" id="Resource">
             
-            new Picimo.webgl.ShaderSource<span class="signature">(app, shaderType, name, <span class="optional">source</span>)</span>
+            new Picimo.core.Resource<span class="signature">(app, dataPropAlias)</span>
         </h4>
     
         
         <div class="tag-source">
-            webgl/shader_source.js, line 6
+            core/resource.js, line 6
         </div>
         
     </div>
@@ -109,11 +109,6 @@
             
             <td class="description last">
                 
-                    
-                    
-                        
-                    
-                
                 </td>
         </tr>
 	
@@ -121,7 +116,7 @@
 	
         <tr>
             
-                <td class="name"><code>shaderType</code></td>
+                <td class="name"><code>dataPropAlias</code></td>
             
             
             <td class="type">
@@ -136,69 +131,6 @@
             
             
             <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>'VERTEX_SHADER' or 'FRAGMENT_SHADER'</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>-</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
                 
                 </td>
         </tr>
@@ -251,12 +183,6 @@
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="Picimo.core.Resource.html">Picimo.core.Resource</a></li>
-        </ul>
-    
     
     
     
@@ -270,88 +196,6 @@
         <h3 class="subsection-title">Members</h3>
         
         <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".FRAGMENT_SHADER"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.webgl.ShaderSource.FRAGMENT_SHADER</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".VERTEX_SHADER"><span class="attrs"><span class="type-signature static">static,constant</span></span>Picimo.webgl.ShaderSource.VERTEX_SHADER</h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
             
 <dt>
     <div class="nameContainer">
@@ -478,143 +322,12 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="name"><span class="attrs"></span>name<span class="type-signature type string">string</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="ready"><span class="attrs"></span>ready<span class="type-signature type boolean">boolean</span> </h4>
     </div>
     
     
 </dt>
 <dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="shaderType"><span class="attrs"></span>shaderType<span class="type-signature type string">string</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>'VERTEX_SHADER' or 'FRAGMENT_SHADER'</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="source"><span class="attrs"></span>source<span class="type-signature type string">string</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>The shader source</p>
-    </div>
     
     
     
@@ -738,152 +451,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="compile">
-            
-            compile<span class="signature">(gl)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{WebGLShader}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            webgl/shader_source.js, line 40
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>gl</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">WebGlRenderingContext</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        WebGLShader
-                        
-                    
-            </td>
-            <td class="description last"><ul>
-<li>webgl shader object or <em>undefined</em></li>
-</ul></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
         <h4 class="name" id="convertToData">
-            
-                <span class="inherited"><a href="Picimo.core.Resource.html#convertToData">inherited</a></span>
             
             convertToData<span class="signature">(data)</span>
         </h4>
@@ -994,10 +562,8 @@
         
             
 <dt>
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <h4 class="name" id="getData">
-            
-                <span class="inherited"><a href="Picimo.core.Resource.html#getData">inherited</a></span>
             
             getData<span class="signature">(resolve)</span>
         </h4>
@@ -1108,10 +674,8 @@
         
             
 <dt>
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <h4 class="name" id="load">
-            
-                <span class="inherited"><a href="Picimo.core.Resource.html#load">inherited</a></span>
             
             load<span class="signature">(url)</span>
         </h4>
@@ -1231,10 +795,8 @@ self
         
             
 <dt>
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <h4 class="name" id="parseData">
-            
-                <span class="inherited"><a href="Picimo.core.Resource.html#parseData">inherited</a></span>
             
             parseData<span class="signature">(data)</span>
         </h4>
