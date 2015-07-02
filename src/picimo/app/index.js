@@ -6,6 +6,7 @@
     var events = require( '../events' );
     var sg     = require( '../sg' );
     var webgl  = require( '../webgl' );
+    var core   = require( '../core' );
 
     /**
      * @class Picimo.App
@@ -224,6 +225,19 @@
         this.renderer.endFrame();
 
         requestAnimationFrame( this.onAnimationFrame );
+
+    };
+
+
+    /**
+     * @method Picimo.App#loadTextureAtlas
+     * @param {string} url
+     * @return {Picimo.utils.Promise} promise
+     */
+
+    App.prototype.loadTextureAtlas = function ( url ) {
+
+        return new core.TextureAtlas( this ).load( url ).deferred.promise;
 
     };
 
