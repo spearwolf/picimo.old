@@ -63,47 +63,6 @@
 
     }
 
-    /**
-     * @method Picimo.utils.Deferred#then
-     * @param {function} callback
-     */
-
-    Deferred.prototype.then = function ( callback ) {
-
-        if ( this.ready ) {
-
-            callback( this._obj );
-
-        } else {
-
-            var deferred = this;
-
-            this.promise.then( function () {
-
-                callback( deferred._obj );
-
-            });
-
-        }
-
-    };
-
-    /**
-     * @method Picimo.utils.Deferred#forward
-     * @param {string} propertyName
-     * @param {function} callback
-     */
-
-    Deferred.prototype.forward = function ( propertyName, callback ) {
-
-        this.then( function ( self ) {
-
-            callback( self[ propertyName ] );
-        
-        });
-
-    };
-
 
     /**
      * @memberof Picimo.utils.Deferred
@@ -115,30 +74,7 @@
     Deferred.make = function ( obj ) {
 
         object_utils.definePropertyPublicRO( obj, 'deferred', new Deferred( obj ) );
-
         return obj;
-
-    };
-
-
-    /**
-     * @memberof Picimo.utils.Deferred
-     * @function then
-     * @static
-     * @param {Object} obj
-     * @param {function} callback
-     */
-    Deferred.then = function ( obj, callback ) {
-
-        if ( obj.deferred !== undefined ) {
-
-            obj.deferred.then( callback );
-
-        } else {
-
-            callback( obj );
-
-        }
 
     };
 
