@@ -1,4 +1,5 @@
 /* global requestAnimationFrame */
+/* global URL */
 (function(){
     "use strict";
 
@@ -225,6 +226,53 @@
         this.renderer.endFrame();
 
         requestAnimationFrame( this.onAnimationFrame );
+
+    };
+
+
+    /**
+     * @method Picimo.App#getAssetUrl
+     * @param {string} url
+     * @return {string} url
+     */
+
+    App.prototype.getAssetUrl = function ( url ) {
+
+        var assetUrl;
+
+        if ( this.assetBaseUrl === undefined ) {
+            
+            assetUrl = url;
+
+        } else {
+
+            if ( this._regExpAbsoluteUrl == null ) {
+
+                this._regExpAbsoluteUrl = new RegExp( '^(https?:)?//', 'i' );
+            
+            }
+
+            if ( this._regExpAbsoluteUrl.test( url ) ) {
+            
+                if ( url[ 0 ] === '/' && this.assetBaseUrl[ this.assetBaseUrl.length - 1 ] === '/' ) {
+
+                    assetUrl = this.assetBaseUrl + url.substr( 1 );
+                
+                } else {
+                
+                    assetUrl = this.assetBaseUrl + url;
+                
+                }
+            
+            } else {
+            
+                assetUrl = url;
+
+            }
+
+        }
+
+        return assetUrl;
 
     };
 

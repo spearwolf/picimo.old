@@ -62,10 +62,10 @@
     Po2Image.prototype.load = function ( url ) {
 
         var img = document.createElement( 'img' );
-        img.src = url;
-
         this.domElement = img;
-        this.url = url;
+
+        this.url = this.app.getAssetUrl( url );
+        img.src = this.url;
 
         return this;
 

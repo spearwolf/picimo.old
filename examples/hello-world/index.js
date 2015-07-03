@@ -9,7 +9,7 @@ var app  = new Picimo.App({
 
 // ========= nodes ============================================== {{{
 
-var node = new Picimo.sg.Node( app, { isRoot: true } );
+var node = new Picimo.sg.Node( app );
 
 node.on( 'init', function ( done ) {
 

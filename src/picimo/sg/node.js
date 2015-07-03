@@ -238,7 +238,7 @@
         try {
 
             /**
-             * This is the first event. Is called only once.
+             * This is the first event. Will be called only once and never again.
              * @event Picimo.sg.Node#init
              * @memberof Picimo.sg.Node
              */
@@ -267,7 +267,7 @@
         try {
 
             /**
-             * Is called just after *init*. Should only be used to perform webgl related tasks.
+             * Will be called just after *init*. Should only be used to perform webgl related tasks.
              * @event Picimo.sg.Node#initGl
              * @memberof Picimo.sg.Node
              */
@@ -342,9 +342,11 @@
         /**
          * @member {boolean} Picimo.sg.Node#ready
          * @description
-         * A node ist *not* ready if ..
+         * A node is *not* ready if ..
          * 1. the state is set to *destroyed* or *error*
          * 3. you explicitly set it to *false* (but default is *true*)
+         *
+         * If a node is not ready, it will be ignored by the renderloop (no init or frame or .. events).
          */
         'ready': {
 

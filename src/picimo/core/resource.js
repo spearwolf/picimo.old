@@ -89,11 +89,11 @@
 
         var self = this;
 
-        this.url = url;
+        this.url = this.app.getAssetUrl( url );
 
         var req = new XMLHttpRequest();
 
-        req.open( "GET", url, true );
+        req.open( "GET", this.url, true );
 
         req.onreadystatechange = function () {
 
