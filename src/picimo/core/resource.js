@@ -60,11 +60,11 @@
 
 
     /**
-     * @method Picimo.core.Resource#convertToData
+     * @method Picimo.core.Resource#convertData
      * @param {Object} data
      */
 
-    Resource.prototype.convertToData = function ( data ) {
+    Resource.prototype.convertData = function ( data ) {
 
         return data;
 
@@ -72,11 +72,11 @@
 
 
     /**
-     * @method Picimo.core.Resource#parseData
+     * @method Picimo.core.Resource#onData
      * @param {Object} data
      */
 
-    Resource.prototype.parseData = function ( /* data */ ) { /* override */ };
+    Resource.prototype.onData = function ( /* data */ ) { /* override */ };
 
 
     /**
@@ -137,12 +137,12 @@
 
                 if ( data ) {
 
-                    var data_ = this.convertToData( data );
+                    var data_ = this.convertData( data );
 
                     if ( data_ ) {
 
                         this._data = data_;
-                        this.parseData( data_ );
+                        this.onData( data_ );
 
                     }
 

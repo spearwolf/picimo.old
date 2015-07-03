@@ -77,7 +77,7 @@
         },
 
         /**
-         * @member {Image|Canvas} Picimo.core.Texture#image
+         * @member {image|canvas} Picimo.core.Texture#image
          */
 
         image: {

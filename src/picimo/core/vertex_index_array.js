@@ -50,7 +50,7 @@
      * @param {Array} indices
      * @return {Picimo.core.VertexIndexArray}
      * @example
-     * // create a vertex index buffer for ten quads where each quad is constructed of two triangles
+     * // Create a VertexIndexBuffer for ten quads where each quad made up of two triangles (six vertices)
      * var quadIndices = Picimo.core.VertexIndexArray.Generate( 10, [ 0,1,2, 0,2,3 ] );
      * quadIndices.size                 // => 60
      * quadIndices.objectIndexCount     // => 6

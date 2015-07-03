@@ -34,22 +34,14 @@
     TextureAtlas.prototype.constructor = TextureAtlas;
 
 
-    TextureAtlas.prototype.convertToData = function ( conf ) {
+    TextureAtlas.prototype.convertData = function ( data ) {
 
-        if ( typeof conf === 'string' ) {
-
-            return JSON.parse( conf );
-
-        } else {
-
-            return conf;
-
-        }
+        return typeof data === 'string' ? JSON.parse( data ) : data;
 
     };
 
 
-    TextureAtlas.prototype.parseData = function ( conf ) {
+    TextureAtlas.prototype.onData = function ( conf ) {
 
         this.texture = new Texture();
         this.texture.width = conf.meta.size.w;
@@ -65,9 +57,7 @@
             if ( conf.frames.hasOwnProperty( name ) ) {
 
                 this.frameNames.push( name );
-
                 frame = conf.frames[ name ].frame;
-
                 this.frames.set( name, new Texture( this.texture, frame.x, frame.y, frame.w, frame.h ) );
             
             }

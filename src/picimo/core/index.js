@@ -12,6 +12,7 @@
         AABB2                  : require( './aabb2' ),
         Viewport               : require( './viewport' ),
 
+        Po2Image               : require( './po2image' ),
         Texture                : require( './texture' ),
         TextureAtlas           : require( './texture_atlas' ),
 

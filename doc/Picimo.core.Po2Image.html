@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: VertexObject</title>
+    <title>Class: Po2Image</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.core.VertexObject.html">Class: VertexObject</h1>
+        <h1 class="page-title" data-filename="Picimo.core.Po2Image.html">Class: Po2Image</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.core.VertexObject">
+<header data-current="Picimo.core.Po2Image">
     <h2>
         <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.core.html">.core</a>.</span>
     
-    VertexObject
+    Po2Image
     </h2>
     
 </header>  
@@ -48,14 +48,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="VertexObject">
+        <h4 class="name" id="Po2Image">
             
-            new Picimo.core.VertexObject<span class="signature">(<span class="optional">descriptor</span>, <span class="optional">vertexArray</span>)</span>
+            new Picimo.core.Po2Image<span class="signature">(app)</span>
         </h4>
     
         
         <div class="tag-source">
-            core/vertex_object.js, line 6
+            core/po2image.js, line 9
         </div>
         
     </div>
@@ -64,6 +64,10 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>A power-of-two image.</p>
+    </div>
     
 
     
@@ -93,13 +97,13 @@
 	
         <tr>
             
-                <td class="name"><code>descriptor</code></td>
+                <td class="name"><code>app</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Picimo.core.VertexObjectDescriptor.html">Picimo.core.VertexObjectDescriptor</a></span>
+<span class="param-type"><a href="Picimo.App.html">Picimo.App</a></span>
 
 
             
@@ -109,44 +113,7 @@
             
             <td class="description last">
                 
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Vertex descriptor.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>vertexArray</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Vertex array.</p></td>
+                </td>
         </tr>
 	
 	
@@ -213,16 +180,12 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="descriptor"><span class="attrs"><span class="type-signature ">readonly</span></span>descriptor<span class="type-signature type picimo.core.vertexobjectdescriptor"><a href="Picimo.core.VertexObjectDescriptor.html">Picimo.core.VertexObjectDescriptor</a></span> </h4>
+        <h4 class="name" id="app"><span class="attrs"><span class="type-signature ">readonly</span></span>app<span class="type-signature type picimo.app"><a href="Picimo.App.html">Picimo.App</a></span> </h4>
     </div>
     
     
 </dt>
 <dd>
-    
-    <div class="description">
-        <p>Vertex object descriptor.</p>
-    </div>
     
     
     
@@ -258,16 +221,217 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="vertexArray"><span class="attrs"></span>vertexArray<span class="type-signature type picimo.core.vertexarray"><a href="Picimo.core.VertexArray.html">Picimo.core.VertexArray</a></span> </h4>
+        <h4 class="name" id="deferred"><span class="attrs"><span class="type-signature ">readonly</span></span>deferred<span class="type-signature type picimo.utils.deferred"><a href="Picimo.utils.Deferred.html">Picimo.utils.Deferred</a></span> </h4>
     </div>
     
     
 </dt>
 <dd>
     
-    <div class="description">
-        <p>Vertex array.</p>
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="domElement"><span class="attrs"></span>domElement<span class="type-signature type htmlimageelement">HTMLImageElement</span> <span class="type-signature type htmlcanvaselement">HTMLCanvasElement</span> </h4>
     </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="image"><span class="attrs"></span>image<span class="type-signature type htmlimageelement">HTMLImageElement</span> <span class="type-signature type htmlcanvaselement">HTMLCanvasElement</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="ready"><span class="attrs"></span>ready<span class="type-signature type boolean">boolean</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="uid"><span class="attrs"><span class="type-signature ">readonly</span></span>uid<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="url"><span class="attrs"></span>url<span class="type-signature type string">String</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
     
     
     
