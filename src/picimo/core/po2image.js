@@ -116,6 +116,30 @@
 
             enumerable: true
 
+        },
+
+        'width': {
+
+            get: function () {
+
+                return this.image ? this.image.width : 0;
+
+            },
+
+            enumerable: true
+
+        },
+
+        'height': {
+
+            get: function () {
+
+                return this.image ? this.image.height : 0;
+
+            },
+
+            enumerable: true
+
         }
 
     });

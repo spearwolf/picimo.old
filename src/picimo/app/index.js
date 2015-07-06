@@ -1,5 +1,4 @@
 /* global requestAnimationFrame */
-/* global URL */
 (function(){
     "use strict";
 
