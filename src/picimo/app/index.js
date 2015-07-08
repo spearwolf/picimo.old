@@ -1,4 +1,5 @@
 /* global requestAnimationFrame */
+/* global URL */
 (function(){
     "use strict";
 
@@ -125,7 +126,7 @@
          * @member {Picimo.App} Picimo.App#assetBaseUrl - The base url for all assets. May be *undefined*.
          */
 
-        this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl;
+        this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
 
         /**
          * @member {Picimo.sg.Node} Picimo.App#root - The root node of the scene graph.
@@ -274,6 +275,42 @@
         return assetUrl;
 
     };
+
+
+    /**
+     * @method Picimo.App#joinAssetUrl
+     * @param {string} baseUrl
+     * @param {string} url
+     * @return {string} url
+     */
+
+    App.prototype.joinAssetUrl = function ( baseUrl, url ) {
+
+        var isAbsUrl = new RegExp( '^(https?:)?/', 'i' );
+
+        if ( isAbsUrl.test( url ) ) {
+        
+            return url;
+
+        }
+
+        return this.getAssetUrl( getUrlDir( baseUrl ? baseUrl : this.assetBaseUrl ) + url );
+
+    };
+
+    var urlDirRegExp = new RegExp( '^(.*/)[^/]+$', 'i' );
+
+    function getUrlDir( url ) {
+
+        if ( url[ url.length - 1 ] === '/' ) {
+        
+            return url;
+
+        }
+    
+        return urlDirRegExp.exec( url )[ 1 ];
+    
+    }
 
 
     /**

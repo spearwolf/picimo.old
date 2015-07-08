@@ -46,32 +46,15 @@
 
     TextureAtlas.prototype.getImageUrl = function ( url ) {
     
-        var isAbsUrl = new RegExp( '^(https?:)?/', 'i' );
-
         if ( this.imageUrl !== undefined ) {
 
             return this.imageUrl;
         
         }
 
-        if ( isAbsUrl.test( url ) ) {
-        
-            return url;
-
-        }
-
-        return getUrlDir( this.url ) + url;
+        return this.app.joinAssetUrl( this.url, url );
     
     };
-
-
-    var urlDirRegExp = new RegExp( '^(.*/)[^/]+$', 'i' );
-
-    function getUrlDir( url ) {
-    
-        return urlDirRegExp.exec( url )[ 1 ];
-    
-    }
 
 
     TextureAtlas.prototype.onData = function ( conf ) {

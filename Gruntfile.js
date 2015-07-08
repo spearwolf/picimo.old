@@ -26,6 +26,30 @@ module.exports = function( grunt ) {
                         standalone: 'Picimo'
                     }
                 }
+            },
+            'picimo-min': {
+                dest: '.tmp/picimo.js',
+                src: [
+                    "src/index.js"
+                ],
+                options: {
+                    transform: [ 'brfs' ],
+                    browserifyOptions: {
+                        debug: false,
+                        standalone: 'Picimo'
+                    }
+                }
+            }
+        },
+
+        uglify: {
+            picimo: {
+                options: {
+                    mangle: true
+                },
+                files: {
+                    'dist/picimo.min.js': [ '.tmp/picimo.js' ]
+                }
             }
         },
 
@@ -68,6 +92,7 @@ module.exports = function( grunt ) {
 
 
     grunt.registerTask('build:src', ['browserify:picimo-dev']);
+    grunt.registerTask('dist', [ 'browserify:picimo-min', 'uglify' ]);
     grunt.registerTask('doc', ['jsdoc', 'copy:jsdoc']);
 
     grunt.registerTask('default', [ 'build:src', 'doc', 'watch' ]);
