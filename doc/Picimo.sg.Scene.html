@@ -372,6 +372,108 @@
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>onResize</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onChildrenUpdated</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onProjectionUpdated</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
 	</tbody>
 </table>
             </td>
@@ -1197,7 +1299,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
         
         <div class="tag-source">
-            sg/node.js, line 95
+            sg/node.js, line 93
         </div>
         
     </div>
@@ -1307,7 +1409,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
         
         <div class="tag-source">
-            sg/node.js, line 210
+            sg/node.js, line 208
         </div>
         
     </div>
@@ -1714,7 +1816,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
         
         <div class="tag-source">
-            sg/node.js, line 110
+            sg/node.js, line 108
         </div>
         
     </div>
@@ -2433,7 +2535,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
         
         <div class="tag-source">
-            sg/scene.js, line 147
+            sg/scene.js, line 187
         </div>
         
     </div>
@@ -2585,7 +2687,7 @@ self
     
         
         <div class="tag-source">
-            sg/scene.js, line 433
+            sg/scene.js, line 473
         </div>
         
     </div>
@@ -2658,7 +2760,7 @@ self
     
         
         <div class="tag-source">
-            sg/node.js, line 247
+            sg/node.js, line 245
         </div>
         
     </div>
@@ -2731,7 +2833,7 @@ self
     
         
         <div class="tag-source">
-            sg/node.js, line 231
+            sg/node.js, line 229
         </div>
         
     </div>
@@ -2805,7 +2907,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 156
+            sg/node.js, line 154
         </div>
         
     </div>
@@ -2878,7 +2980,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 189
+            sg/node.js, line 187
         </div>
         
     </div>
@@ -2951,7 +3053,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 272
+            sg/node.js, line 270
         </div>
         
     </div>
@@ -3024,7 +3126,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 301
+            sg/node.js, line 299
         </div>
         
     </div>
@@ -3095,7 +3197,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/scene.js, line 365
+            sg/scene.js, line 405
         </div>
         
     </div>
@@ -3121,6 +3223,8 @@ Is called before the <em>destroy</em> event.</p>
     <thead>
 	<tr>
 		
+		<th>Name</th>
+		
 		
 		<th>Type</th>
 		
@@ -3134,6 +3238,8 @@ Is called before the <em>destroy</em> event.</p>
 	
 	
         <tr>
+            
+                <td class="name"><code>projection</code></td>
             
             
             <td class="type">
@@ -3209,7 +3315,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 163
+            sg/node.js, line 161
         </div>
         
     </div>
@@ -3269,6 +3375,168 @@ Is called before the <em>destroy</em> event.</p>
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="event:resize">
+            
+            resize
+        </h4>
+    
+        
+        <div class="tag-source">
+            sg/scene.js, line 171
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Announce a scene size ( width, height or pixelRatio ) change.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>pixelRatio</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
         </dl>
     
 </article>
@@ -3282,7 +3550,7 @@ Is called before the <em>destroy</em> event.</p>
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Thu Jul 09 2015 13:37:59 GMT+0200 (CEST)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Thu Jul 09 2015 16:04:07 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

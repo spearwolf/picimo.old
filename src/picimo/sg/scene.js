@@ -17,6 +17,9 @@
      * @param {number} [options.height] - Wanted scene height
      * @param {number} [options.pixelRatio] - Wanted pixel ratio
      * @param {boolean} [options.projection=true] - Determinates if this scene should have an own projection matrix.
+     * @param {function} [options.onResize]
+     * @param {function} [options.onChildrenUpdated]
+     * @param {function} [options.onProjectionUpdated]
      *
      */
 
@@ -130,18 +133,55 @@
 
         });
 
-        this.on( "frame", updateProjection.bind( this, this ) );
+        this.prevWidth      = null;
+        this.prevHeight     = null;
+        this.prevPixelRatio = null;
+
+        this.on( "frame", onFrame );
 
 
         this.on( options, {
+
+            'onResize'            : 'resize',
             'onChildrenUpdated'   : 'childrenUpdated',
             'onProjectionUpdated' : 'projectionUpdated',
+
         });
 
     }
 
     Scene.prototype = Object.create( Node.prototype );
     Scene.prototype.constructor = Scene;
+
+
+    function onFrame () {
+
+        updateProjection( this );
+
+        var width      = this.width;
+        var height     = this.height;
+        var pixelRatio = this.pixelRatio;
+
+        if ( width !== this.prevWidth || height !== this.prevHeight || pixelRatio !== this.prevPixelRatio ) {
+
+            this.prevWidth      = width;
+            this.prevHeight     = height;
+            this.prevPixelRatio = pixelRatio;
+        
+            /**
+             * Announce a scene size ( width, height or pixelRatio ) change.
+             * @event Picimo.sg.Scene#resize
+             * @memberof Picimo.sg.Scene
+             * @param {number} width
+             * @param {number} height
+             * @param {number} pixelRatio
+             */
+
+            this.emit( 'resize', width, height, pixelRatio );
+        
+        }
+
+    }
 
 
     /**
@@ -366,7 +406,7 @@
          * Announce a projection matrix change.
          * @event Picimo.sg.Scene#projectionUpdated
          * @memberof Picimo.sg.Scene
-         * @param {Picimo.math.Matrix4} - The changed projection matrix.
+         * @param {Picimo.math.Matrix4} projection - The changed projection matrix.
          */
 
         scene.emit( "projectionUpdated", scene.projection );

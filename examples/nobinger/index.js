@@ -4,8 +4,8 @@ console.log( 'welcome to the %c %cnobinger%c benchmark v1 %c%c a picimo demo! ',
 
 var app  = new Picimo.App({
 
-    appendTo : document.getElementById( 'picimo' ),
-    bgColor  : "#9ab",
+    canvas : document.getElementById( 'picimo' ),
+    alpha  : true,
 
 });
 

@@ -23,7 +23,6 @@
      * @param {string} [options.name]
      * @param {function} [options.onInit]
      * @param {function} [options.onInitGl]
-     * @param {function} [options.onResize]
      * @param {function} [options.onFrame]
      * @param {function} [options.onRenderFrame]
      * @param {function} [options.onFrameEnd]
@@ -80,7 +79,6 @@
             this.on( options, {
                 'onInit'       : 'init',
                 'onInitGl'     : 'initGl',
-                'onResize'     : 'resize',
                 'onFrame'      : 'frame',
                 'onRenderFrame': 'renderFrame',
                 'onFrameEnd'   : 'frameEnd',

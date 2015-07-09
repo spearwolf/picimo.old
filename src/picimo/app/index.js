@@ -76,11 +76,20 @@
          * @member {HTMLCanvasElement} Picimo.App#canvas
          */
 
-        canvas = canvas !== undefined ? canvas : document.createElement( "canvas" );
+        var canvasIsPredefined = canvas !== undefined;
+
+        canvas = canvasIsPredefined ? canvas : document.createElement( "canvas" );
         utils.object.definePropertyPublicRO( this, 'canvas', canvas );
 
-        var parentNode = !! options.appendTo ? options.appendTo : document.body;
-        parentNode.appendChild( canvas );
+        var parentNode;
+
+        if ( ! canvasIsPredefined ) {
+
+            parentNode = options.appendTo ? options.appendTo : document.body;
+            parentNode.appendChild( canvas );
+        
+        } 
+
         canvas.classList.add( 'picimo' );
 
 
