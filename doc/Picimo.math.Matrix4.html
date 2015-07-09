@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: WebGlRenderer</title>
+    <title>Class: Matrix4</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.webgl.WebGlRenderer.html">Class: WebGlRenderer</h1>
+        <h1 class="page-title" data-filename="Picimo.math.Matrix4.html">Class: Matrix4</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.webgl.WebGlRenderer">
+<header data-current="Picimo.math.Matrix4">
     <h2>
-        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.webgl.html">.webgl</a>.</span>
+        <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.math.html">.math</a>.</span>
     
-    WebGlRenderer
+    Matrix4
     </h2>
     
 </header>  
@@ -48,18 +48,20 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="WebGlRenderer">
+        <h4 class="name" id="Matrix4">
             
-            new Picimo.webgl.WebGlRenderer<span class="signature">()</span>
+            new Picimo.math.Matrix4<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            webgl/web_gl_renderer.js, line 6
+            math/matrix4.js, line 7
         </div>
         
     </div>
 
+    
+    <p class="summary">Wrapper for glMatrix *mat4*</p>
     
 </dt>
 <dd>
@@ -131,7 +133,7 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="app"><span class="attrs"><span class="type-signature ">readonly</span></span>app<span class="type-signature type picimo.app"><a href="Picimo.App.html">Picimo.App</a></span> </h4>
+        <h4 class="name" id="mat4"><span class="attrs"><span class="type-signature ">readonly</span></span>mat4<span class="type-signature type mat4">mat4</span> </h4>
     </div>
     
     
@@ -178,14 +180,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="beginFrame">
+        <h4 class="name" id="identity">
             
-            beginFrame<span class="signature">()</span>
+            identity<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            webgl/web_gl_renderer.js, line 21
+            math/matrix4.js, line 28
         </div>
         
     </div>
@@ -245,14 +247,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="endFrame">
+        <h4 class="name" id="ortho">
             
-            endFrame<span class="signature">()</span>
+            ortho<span class="signature">(width, height, zRange)</span>
         </h4>
     
         
         <div class="tag-source">
-            webgl/web_gl_renderer.js, line 36
+            math/matrix4.js, line 39
         </div>
         
     </div>
@@ -268,139 +270,96 @@
     
     
     
-    
-    
-<dl class="details">
-    
         
-    
-    
-    
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="initGl">
+                <td class="name"><code>width</code></td>
             
-            initGl<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            webgl/web_gl_renderer.js, line 45
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="resize">
+            <td class="type">
             
-            resize<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            webgl/web_gl_renderer.js, line 58
-        </div>
-        
-    </div>
+                
+<span class="param-type">number</span>
 
-    
-</dt>
-<dd>
-    
-    
 
-    
-    
-    
-    
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>zRange</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     

@@ -20,6 +20,7 @@
      * @param {Object} [options] - The options
      * @param {boolean} [options.display=true]
      * @param {boolean} [options.ready=true]
+     * @param {string} [options.name]
      * @param {function} [options.onInit]
      * @param {function} [options.onInitGl]
      * @param {function} [options.onResize]
@@ -61,11 +62,17 @@
         this._ready = ( ! options ) || options.ready !== false;
 
         /**
+         * @member {string} Picimo.sg.Node#name - The node name (optional).
+         */
+
+        this.name = options ? options.name : undefined;
+
+        /**
          * @member {Picimo.sg.Node} Picimo.sg.Node#children - The child nodes array.
          */
         this.children = [];
 
-    
+
         events.eventize( this );
 
         if ( options !== undefined ) {
@@ -89,6 +96,7 @@
      * @method Picimo.sg.Node#addChild
      * @param {Picimo.sg.Node}
      */
+
     Node.prototype.addChild = function ( node ) {
 
         this.children.push( node );
@@ -98,6 +106,32 @@
         return node;
 
     };
+
+    /**
+     * Find a child node by name.
+     * @method Picimo.sg.Node#find
+     * @param {string} name
+     * @return {Picimo.sg.Node}
+     */
+
+    Node.prototype.find = function ( name ) {
+
+        if ( name == null ) return;
+
+        if ( this.name === name ) return this;
+
+        var node, i;
+
+        for ( i = 0; i < this.children.length; ++i ) {
+
+                node = this.children[ i ].find( name );
+
+                if ( node ) return node;
+
+        }
+
+    };
+
 
     Node.prototype.renderFrame = function () {
 
@@ -114,8 +148,6 @@
         if ( this.state.is( NodeState.READY ) ) {
 
             // initialize -> ready to render
-
-            // TODO resize
 
             if ( this.display ) {
 
@@ -333,7 +365,7 @@
          * @readonly
          */
         'isRoot': {
-        
+
             get: function () { return ! this.parent; },
             enumerable: true
 

@@ -1,7 +1,8 @@
 /* global Picimo */
+/* global setTimeout */
 
 var app  = new Picimo.App({
-    
+
     appendTo : document.getElementById( 'picimo' ),
     alpha    : true
 
@@ -9,13 +10,13 @@ var app  = new Picimo.App({
 
 // ========= nodes ============================================== {{{
 
-var node = new Picimo.sg.Node( app );
+var node = new Picimo.sg.Scene( app );
 
 node.on( 'init', function ( done ) {
 
     console.log( 'init-ializing ..' );
 
-    done( function ( resolve, reject ) {
+    done( function ( resolve /*, reject */ ) {
 
         setTimeout( function () {
 
@@ -33,7 +34,7 @@ node.on( 'initGl', function ( done ) {
 
     console.log( 'initGl..' );
 
-    done( new Promise( function ( resolve, reject ) {
+    done( new Promise( function ( resolve /*, reject */ ) {
 
         console.log( '..done!' );
         resolve();
@@ -124,4 +125,3 @@ app.shader.addProgram( 'film', 'filmgrain', 'filmgrain' );
 //gl_program = app.glx.glProgram( app.shader.getProgram( 'film' ) );
 
 // -------------------------------------------------------------- }}}
-

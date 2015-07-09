@@ -10,6 +10,7 @@
     module.exports = {
 
         Node: require( './node' ),
+        Scene: require( './scene' ),
         NodeState: require( './node_state' )
 
     };

@@ -129,12 +129,6 @@
         this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
 
         /**
-         * @member {Picimo.sg.Node} Picimo.App#root - The root node of the scene graph.
-         */
-
-        utils.object.definePropertyPublicRO( this, 'root', new sg.Node( this ) );
-
-        /**
          * @member {number} Picimo.App#frameNo - The current frame number.
          */
 
@@ -148,6 +142,18 @@
 
         this.onAnimationFrame = this.renderFrame.bind( this );
         requestAnimationFrame( this.onAnimationFrame );
+
+
+        /**
+         * @member {Picimo.sg.Node} Picimo.App#root - The root node of the scene graph.
+         */
+
+        utils.object.definePropertyPublicRO( this, 'root', new sg.Scene( this, {
+
+            blendMode: webgl.cmd.BlendMode.DEFAULT,
+            pixelRatio: 1
+
+        } ) );
 
     }
 
@@ -230,6 +236,10 @@
     };
 
 
+    var re_absoluteHttpUrl = new RegExp( '^(https?:)?//', 'i' );
+    var re_absoluteUrlPath = new RegExp( '^(https?:)?/', 'i' );
+    var re_getUrlDir       = new RegExp( '^(.*/)[^/]+$', 'i' );
+
     /**
      * @method Picimo.App#getAssetUrl
      * @param {string} url
@@ -241,31 +251,25 @@
         var assetUrl;
 
         if ( this.assetBaseUrl === undefined ) {
-            
+
             assetUrl = url;
 
         } else {
 
-            if ( this._regExpAbsoluteUrl == null ) {
+            if ( re_absoluteHttpUrl.test( url ) ) {
 
-                this._regExpAbsoluteUrl = new RegExp( '^(https?:)?//', 'i' );
-            
-            }
-
-            if ( this._regExpAbsoluteUrl.test( url ) ) {
-            
                 if ( url[ 0 ] === '/' && this.assetBaseUrl[ this.assetBaseUrl.length - 1 ] === '/' ) {
 
                     assetUrl = this.assetBaseUrl + url.substr( 1 );
-                
+
                 } else {
-                
+
                     assetUrl = this.assetBaseUrl + url;
-                
+
                 }
-            
+
             } else {
-            
+
                 assetUrl = url;
 
             }
@@ -276,7 +280,6 @@
 
     };
 
-
     /**
      * @method Picimo.App#joinAssetUrl
      * @param {string} baseUrl
@@ -286,10 +289,8 @@
 
     App.prototype.joinAssetUrl = function ( baseUrl, url ) {
 
-        var isAbsUrl = new RegExp( '^(https?:)?/', 'i' );
+        if ( re_absoluteUrlPath.test( url ) ) {
 
-        if ( isAbsUrl.test( url ) ) {
-        
             return url;
 
         }
@@ -298,18 +299,16 @@
 
     };
 
-    var urlDirRegExp = new RegExp( '^(.*/)[^/]+$', 'i' );
-
     function getUrlDir( url ) {
 
         if ( url[ url.length - 1 ] === '/' ) {
-        
+
             return url;
 
         }
-    
-        return urlDirRegExp.exec( url )[ 1 ];
-    
+
+        return re_getUrlDir.exec( url )[ 1 ];
+
     }
 
 

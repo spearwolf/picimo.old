@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: Node</title>
+    <title>Class: Scene</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,22 +24,19 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.sg.Node.html">Class: Node</h1>
+        <h1 class="page-title" data-filename="Picimo.sg.Scene.html">Class: Scene</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.sg.Node">
+<header data-current="Picimo.sg.Scene">
     <h2>
         <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.sg.html">.sg</a>.</span>
     
-    Node
+    Scene
     </h2>
-    
-        <div class="class-description"><p>The generic base class for all scene graph nodes.</p>
-<h3>States and Events</h3><p><img src="images/node-events.png" srcset="images/node-events.png 1x,images/node-events@2x.png 2x" alt="Node Events and States"></p></div>
     
 </header>  
 
@@ -51,14 +48,14 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="Node">
+        <h4 class="name" id="Scene">
             
-            new Picimo.sg.Node<span class="signature">(app, <span class="optional">options</span>)</span>
+            new Picimo.sg.Scene<span class="signature">(app, <span class="optional">options</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/node.js, line 8
+            sg/scene.js, line 8
         </div>
         
     </div>
@@ -172,7 +169,177 @@
 	
         <tr>
             
-                <td class="name"><code>display</code></td>
+                <td class="name"><code>blendMode</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.webgl.cmd.BlendMode.html">Picimo.webgl.cmd.BlendMode</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Blend mode</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>renderPrio</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>The render priority determinates the render order.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Wanted scene width</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Wanted scene height</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>pixelRatio</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Wanted pixel ratio</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>projection</code></td>
             
             
             <td class="type">
@@ -201,349 +368,7 @@
                         
                     
                 
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>ready</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onInit</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onInitGl</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onResize</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onFrame</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onRenderFrame</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onFrameEnd</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onDestroy</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onDestroyGl</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
+                <p>Determinates if this scene should have an own projection matrix.</p></td>
         </tr>
 	
 	
@@ -603,7 +428,7 @@
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li><a href="Picimo.events.CustomEvent.html">Picimo.events.CustomEvent</a></li>
+            <li><a href="Picimo.sg.Node.html">Picimo.sg.Node</a></li>
         </ul>
     
     
@@ -632,6 +457,47 @@
     <div class="description">
         <p>The app instance</p>
     </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="blendMode"><span class="attrs"></span>blendMode<span class="type-signature type picimo.webgl.cmd.blendmode"><a href="Picimo.webgl.cmd.BlendMode.html">Picimo.webgl.cmd.BlendMode</a></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
     
     
     
@@ -712,6 +578,47 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="devicePixelRatio"><span class="attrs"><span class="type-signature ">readonly</span></span>devicePixelRatio<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="display"><span class="attrs"></span>display<span class="type-signature type boolean">boolean</span> </h4>
     </div>
     
@@ -723,6 +630,88 @@
         <p>If set to <em>false</em> the node won't be rendered. The <em>frame</em>, <em>renderFrame</em> and <em>frameEnd</em> events won't be emitted.
 BUT initialization will be happen. (If you don't want the node to initialize set the <em>ready</em> attribute to <em>false</em>).</p>
     </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="hasOwnProjection"><span class="attrs"><span class="type-signature ">readonly</span></span>hasOwnProjection<span class="type-signature type boolean">boolean</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="height"><span class="attrs"><span class="type-signature ">readonly</span></span>height<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
     
     
     
@@ -893,6 +882,88 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="pixelRatio"><span class="attrs"></span>pixelRatio<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="projection"><span class="attrs"><span class="type-signature ">readonly</span></span>projection<span class="type-signature type picimo.math.matrix4"><a href="Picimo.math.Matrix4.html">Picimo.math.Matrix4</a></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="ready"><span class="attrs"></span>ready<span class="type-signature type boolean">boolean</span> </h4>
     </div>
     
@@ -907,6 +978,92 @@ BUT initialization will be happen. (If you don't want the node to initialize set
 <li>you explicitly set it to <em>false</em> (but default is <em>true</em>)</li>
 </ol>
 <p>If a node is not ready, it will be ignored by the renderloop (no init or frame or .. events).</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="renderPrio"><span class="attrs"></span>renderPrio<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="scene"><span class="attrs"></span>scene<span class="type-signature type picimo.sg.scene"><a href="Picimo.sg.Scene.html">Picimo.sg.Scene</a></span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The parent scene.</p>
     </div>
     
     
@@ -980,6 +1137,47 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="width"><span class="attrs"><span class="type-signature ">readonly</span></span>width<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
         </dl>
     
     
@@ -989,8 +1187,10 @@ BUT initialization will be happen. (If you don't want the node to initialize set
         <dl>
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="addChild">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#addChild">inherited</a></span>
             
             addChild<span class="signature">()</span>
         </h4>
@@ -1097,8 +1297,10 @@ BUT initialization will be happen. (If you don't want the node to initialize set
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="destroy">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#destroy">inherited</a></span>
             
             destroy<span class="signature">()</span>
         </h4>
@@ -1502,8 +1704,10 @@ BUT initialization will be happen. (If you don't want the node to initialize set
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="find">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#find">inherited</a></span>
             
             find<span class="signature">(name)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.sg.Node.html">Picimo.sg.Node</a>}</span>
         </h4>
@@ -2218,6 +2422,150 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="setSize">
+            
+            setSize<span class="signature">(width, height)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            sg/scene.js, line 147
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Wanted scene width</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Wanted scene height</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+
+self
+
+
+    
+    
+    
+</dd>
+
         </dl>
     
     
@@ -2230,7 +2578,80 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="event:childrenUpdated">
+            
+            childrenUpdated
+        </h4>
+    
+        
+        <div class="tag-source">
+            sg/scene.js, line 433
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Announce a children update.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:destroy">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:destroy">inherited</a></span>
             
             destroy
         </h4>
@@ -2300,8 +2721,10 @@ BUT initialization will be happen. (If you don't want the node to initialize set
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:destroyGl">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:destroyGl">inherited</a></span>
             
             destroyGl
         </h4>
@@ -2372,8 +2795,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:frame">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:frame">inherited</a></span>
             
             frame
         </h4>
@@ -2443,8 +2868,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:frameEnd">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:frameEnd">inherited</a></span>
             
             frameEnd
         </h4>
@@ -2514,8 +2941,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:init">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:init">inherited</a></span>
             
             init
         </h4>
@@ -2585,8 +3014,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:initGl">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:initGl">inherited</a></span>
             
             initGl
         </h4>
@@ -2657,7 +3088,121 @@ Is called before the <em>destroy</em> event.</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="event:projectionUpdated">
+            
+            projectionUpdated
+        </h4>
+    
+        
+        <div class="tag-source">
+            sg/scene.js, line 365
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Announce a projection matrix change.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.math.Matrix4.html">Picimo.math.Matrix4</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The changed projection matrix.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:renderFrame">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:renderFrame">inherited</a></span>
             
             renderFrame
         </h4>

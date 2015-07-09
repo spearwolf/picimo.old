@@ -9,6 +9,8 @@
 
     module.exports = {
 
+        Matrix4: require( './matrix4' ),
+
         /**
          * @function Picimo.math.maxOf
          * @param {number} a
