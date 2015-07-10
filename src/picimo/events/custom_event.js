@@ -30,6 +30,7 @@
              */
 
             _defineHiddenPropertyRO(o, '_callbacks', { _id: 0 });
+            _defineHiddenPropertyRO(o, '_boundObjects', []);
 
             // -----------------------------------------------------------------
             //
@@ -124,21 +125,52 @@
              * @method Picimo.events.CustomEvent#off
              * @description
              * Unsubsribe a listener.
-             * @param {number} id - listener id
+             * @param {number|Object} - *listener id* or previously *bound object*
              */
 
             o.off = function(id) {
-                var cb, i, j, _callbacks, keys = Object.keys(this._callbacks);
-                for (j = 0; j < keys.length; j++) {
-                    _callbacks = this._callbacks[keys[j]];
-                    for (i = 0; i < _callbacks.length; i++) {
-                        cb = _callbacks[i];
-                        if (cb.id === id) {
-                            _callbacks.splice(i, 1);
-                            return;
+                var cb, i, j, _callbacks, keys;
+                if ( typeof id === 'number' ) {
+                    keys = Object.keys(this._callbacks);
+                    for (j = 0; j < keys.length; j++) {
+                        _callbacks = this._callbacks[keys[j]];
+                        for (i = 0; i < _callbacks.length; i++) {
+                            cb = _callbacks[i];
+                            if (cb.id === id) {
+                                _callbacks.splice(i, 1);
+                                return;
+                            }
                         }
                     }
+                } else {
+                    i = this._boundObjects.indexOf(id);
+                    if ( i >= 0 ) {
+                        this._boundObjects.splice(i, 1);
+                    }
                 }
+            };
+
+            // -----------------------------------------------------------------
+            //
+            // object.bind( object )
+            //
+            // -----------------------------------------------------------------
+
+            /**
+             * @method Picimo.events.CustomEvent#bind
+             * @description
+             * Bind an object to all events. TODO add example
+             * @param {object} obj - The *object* to bind.
+             * @return obj
+             */
+
+            o.bind = function(obj) {
+                if (!obj) return;
+                var i = this._boundObjects.indexOf(obj);
+                if (i === -1) {
+                    this._boundObjects.push(obj);
+                }
+                return obj;
             };
 
             // -----------------------------------------------------------------
@@ -167,6 +199,16 @@
                             cb.fn.apply(this, args);
                         } else {
                             cb.fn.emit(eventName, args);
+                        }
+                    }
+                }
+                len = this._boundObjects.length;
+                if (len) {
+                    args.unshift(this);
+                    for (i = 0; i < len; i++) {
+                        cb = this._boundObjects[i][eventName];
+                        if (typeof cb === 'function') {
+                            cb.apply(this._boundObjects[i], args);
                         }
                     }
                 }
@@ -200,6 +242,17 @@
                         cb = _callbacks[i];
                         args[0] = cb.isFunction ? cb.fn.apply(this, args) : cb.fn.emitReduce(eventName, args);
                     }
+                }
+                len = this._boundObjects.length;
+                if (len) {
+                    args.unshift(this);
+                    for (i = 0; i < len; i++) {
+                        cb = this._boundObjects[i][eventName];
+                        if (typeof cb === 'function') {
+                            args[1] = cb.apply(this._boundObjects[i], args);
+                        }
+                    }
+                    return args[1];
                 }
                 return args[0];
             };

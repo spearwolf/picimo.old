@@ -9,9 +9,11 @@
 
     module.exports = {
 
-        Node: require( './node' ),
-        Scene: require( './scene' ),
-        NodeState: require( './node_state' )
+        Scene       : require( './scene' ),
+        SpriteGroup : require( './sprite_group' ),
+
+        Node        : require( './node' ),
+        NodeState   : require( './node_state' ),
 
     };
 

@@ -1,9 +1,10 @@
 (function (){
     "use strict";
 
-    var Node  = require( './node' );
-    var utils = require( '../utils' );
-    var math  = require( '../math' );
+    var Node        = require( './node' );
+    var utils       = require( '../utils' );
+    var math        = require( '../math' );
+    var SpriteGroup = require( './sprite_group' );
 
     /**
      * @class Picimo.sg.Scene
@@ -551,6 +552,34 @@
         return -a.renderPrio - ( -b.renderPrio );
 
     }
+
+
+
+    /**
+     * @method Picimo.sg.Scene#appendSpriteGroup
+     * @param {Picimo.core.TextureAtlas|Promise} textureAtlas
+     * @param {options} [options]
+     * @param {object} [extension]
+     * @return Picimo.sg.SpriteGroup
+     */
+
+    Scene.prototype.appendSpriteGroup = function ( textureAtlas, options, extension ) {
+
+        if ( ! options ) options = {};
+
+        options.textureAtlas = textureAtlas;
+
+        var node = this.addChild( new SpriteGroup( this.app, options ) );
+
+        if ( extension ) {
+
+            node.bind( extension );
+
+        }
+
+        return node;
+
+    };
 
 
 

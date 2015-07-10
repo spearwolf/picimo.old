@@ -48,6 +48,7 @@
      * @function Picimo.core.VertexIndexArray.Generate
      * @param {number} vertexObjectCount
      * @param {Array} indices
+     * @param {number} [objectOffset=0]
      * @return {Picimo.core.VertexIndexArray}
      * @example
      * // Create a VertexIndexBuffer for ten quads where each quad made up of two triangles (six vertices)
@@ -56,16 +57,18 @@
      * quadIndices.objectIndexCount     // => 6
      *
      */
-    VertexIndexArray.Generate = function ( vertexObjectCount, indices ) {
+    VertexIndexArray.Generate = function ( vertexObjectCount, indices, objectOffset ) {
 
         var arr = new VertexIndexArray( vertexObjectCount, indices.length );
         var i, j;
+
+        if ( objectOffset === undefined ) objectOffset = 0;
 
         for ( i = 0; i < vertexObjectCount; ++i ) {
 
             for ( j = 0; j < indices.length; ++j ) {
 
-                arr[ ( i * arr.objectIndexCount ) + j ] = indices[ j ] + ( i * arr.objectIndexCount );
+                arr[ ( i * arr.objectIndexCount ) + j ] = indices[ j ] + ( ( i + objectOffset ) * arr.objectIndexCount );
 
             }
 
