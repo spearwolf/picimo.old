@@ -38,6 +38,11 @@
     Scene
     </h2>
     
+        <div class="class-description"><p>Allows you to determinate a <strong>blend mode</strong>.</p>
+<p>Can have a custom <strong>projection</strong> matrix which determinates the <strong>width, height</strong> and <strong>pixelRatio</strong>.</p>
+<p>Determinates the <em>render order</em> of all child nodes via the <strong>renderPrio</strong> attribute.</p>
+<p>Introduces new events such as <strong>onResize</strong>, <strong>onChildrenUpdated</strong> and <strong>onProjectionUpdated</strong>.</p></div>
+    
 </header>  
 
 <article>
@@ -299,6 +304,42 @@
                     
                 
                 <p>Wanted scene height</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>sizeVariety</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    "contain"
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p><em>cover</em> or <em>contain</em></p></td>
         </tr>
 	
 	
@@ -808,7 +849,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="height"><span class="attrs"><span class="type-signature ">readonly</span></span>height<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="height"><span class="attrs"></span>height<span class="type-signature type number">number</span> </h4>
     </div>
     
     
@@ -1202,6 +1243,51 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="sizeVariety"><span class="attrs"></span>sizeVariety<span class="type-signature type string">string</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p><em>cover</em> or <em>contain</em></p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="state"><span class="attrs"></span>state<span class="type-signature type picimo.sg.nodestate"><a href="Picimo.sg.NodeState.html">Picimo.sg.NodeState</a></span> </h4>
     </div>
     
@@ -1243,7 +1329,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="width"><span class="attrs"><span class="type-signature ">readonly</span></span>width<span class="type-signature type number">number</span> </h4>
+        <h4 class="name" id="width"><span class="attrs"></span>width<span class="type-signature type number">number</span> </h4>
     </div>
     
     
@@ -2530,12 +2616,12 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     <div class="nameContainer">
         <h4 class="name" id="setSize">
             
-            setSize<span class="signature">(width, height)</span>
+            setSize<span class="signature">(width, height, <span class="optional">sizeVariety</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/scene.js, line 187
+            sg/scene.js, line 202
         </div>
         
     </div>
@@ -2563,6 +2649,8 @@ BUT initialization will be happen. (If you don't want the node to initialize set
 		<th>Type</th>
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -2586,8 +2674,17 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             </td>
             
             
+                <td class="default">
+                
+                </td>
+            
             
             <td class="description last">
+                
+                    
+                    
+                        
+                    
                 
                 <p>Wanted scene width</p></td>
         </tr>
@@ -2609,10 +2706,55 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             </td>
             
             
+                <td class="default">
+                
+                </td>
+            
             
             <td class="description last">
                 
+                    
+                    
+                        
+                    
+                
                 <p>Wanted scene height</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>sizeVariety</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    "contain"
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p><em>cover</em> or <em>contain</em></p></td>
         </tr>
 	
 	
@@ -2687,7 +2829,7 @@ self
     
         
         <div class="tag-source">
-            sg/scene.js, line 473
+            sg/scene.js, line 529
         </div>
         
     </div>
@@ -3197,7 +3339,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/scene.js, line 405
+            sg/scene.js, line 461
         </div>
         
     </div>
@@ -3386,7 +3528,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/scene.js, line 171
+            sg/scene.js, line 186
         </div>
         
     </div>
@@ -3550,7 +3692,7 @@ Is called before the <em>destroy</em> event.</p>
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Thu Jul 09 2015 16:04:07 GMT+0200 (CEST)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Fri Jul 10 2015 09:45:42 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

@@ -9,12 +9,23 @@
      * @class Picimo.sg.Scene
      * @extends Picimo.sg.Node
      *
+     * @classdesc
+     * Allows you to determinate a **blend mode**.
+     *
+     * Can have a custom **projection** matrix which determinates the **width, height** and **pixelRatio**.
+     *
+     * Determinates the _render order_ of all child nodes via the **renderPrio** attribute.
+     *
+     * Introduces new events such as **onResize**, **onChildrenUpdated** and **onProjectionUpdated**.
+     *
+     *
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
      * @param {Picimo.webgl.cmd.BlendMode} [options.blendMode] - Blend mode
      * @param {number} [options.renderPrio] - The render priority determinates the render order.
      * @param {number} [options.width] - Wanted scene width
      * @param {number} [options.height] - Wanted scene height
+     * @param {string} [options.sizeVariety="contain"] - *cover* or *contain*
      * @param {number} [options.pixelRatio] - Wanted pixel ratio
      * @param {boolean} [options.projection=true] - Determinates if this scene should have an own projection matrix.
      * @param {function} [options.onResize]
@@ -40,6 +51,12 @@
          */
 
         this._renderPrio = parseFloat( options.renderPrio || 0 );
+
+        /**
+         * @member {string} Picimo.sg.Scene#sizeVariety - *cover* or *contain*
+         */
+
+        this._sizeVariety = options.sizeVariety === 'cover' ? 'cover' : 'contain';
 
 
         if ( options.projection === false ) {
@@ -68,7 +85,6 @@
 
                 /**
                  * @member {number} Picimo.sg.Scene#width
-                 * @readonly
                  */
 
                 'width' : { get: function () {
@@ -80,7 +96,6 @@
 
                 /**
                  * @member {number} Picimo.sg.Scene#height
-                 * @readonly
                  */
                 'height' : { get: function () {
 
@@ -120,7 +135,7 @@
         }
 
 
-        this.on( "childrenUpdated", onChildrenUpdated );
+        this.on( "childrenUpdated", onChildrenUpdated.bind( this, this ) );
 
         this.on( "init", Number.MAX_VALUE, function () {
 
@@ -137,7 +152,7 @@
         this.prevHeight     = null;
         this.prevPixelRatio = null;
 
-        this.on( "frame", onFrame );
+        this.on( "frame", onFrame.bind( this, this ) );
 
 
         this.on( options, {
@@ -154,19 +169,19 @@
     Scene.prototype.constructor = Scene;
 
 
-    function onFrame () {
+    function onFrame ( scene ) {
 
-        updateProjection( this );
+        updateProjection( scene );
 
-        var width      = this.width;
-        var height     = this.height;
-        var pixelRatio = this.pixelRatio;
+        var width      = scene.width;
+        var height     = scene.height;
+        var pixelRatio = scene.pixelRatio;
 
-        if ( width !== this.prevWidth || height !== this.prevHeight || pixelRatio !== this.prevPixelRatio ) {
+        if ( width !== scene.prevWidth || height !== scene.prevHeight || pixelRatio !== scene.prevPixelRatio ) {
 
-            this.prevWidth      = width;
-            this.prevHeight     = height;
-            this.prevPixelRatio = pixelRatio;
+            scene.prevWidth      = width;
+            scene.prevHeight     = height;
+            scene.prevPixelRatio = pixelRatio;
         
             /**
              * Announce a scene size ( width, height or pixelRatio ) change.
@@ -177,7 +192,7 @@
              * @param {number} pixelRatio
              */
 
-            this.emit( 'resize', width, height, pixelRatio );
+            scene.emit( 'resize', width, height, pixelRatio );
         
         }
 
@@ -188,10 +203,11 @@
      * @method Picimo.sg.Scene#setSize
      * @param {number} width - Wanted scene width
      * @param {number} height - Wanted scene height
+     * @param {string} [sizeVariety="contain"] - *cover* or *contain*
      * @return self
      */
 
-    Scene.prototype.setSize = function ( width, height ) {
+    Scene.prototype.setSize = function ( width, height, sizeVariety ) {
 
         var w = parseFloat( width );
         var h = parseFloat( height );
@@ -199,11 +215,12 @@
         if ( w && ! h ) h = w;
         else if ( h && ! w ) w = h;
 
-        if ( w && h && this._desiredWidth !== w || this._desiredHeight !== h ) {
+        if ( w && h && this._desiredWidth !== w || this._desiredHeight !== h || this.sizeVariety !== sizeVariety ) {
 
             this._desiredWidth         = w;
             this._desiredHeight        = h;
             this._desiredPixelRatio    = 0;
+            this.sizeVariety           = sizeVariety;
             this.projectionNeedsUpdate = true;
 
             updateProjection( this );
@@ -240,7 +257,6 @@
 
                 },
 
-                /*
                 set: function ( w ) {
 
                     var desiredWidth = parseFloat( w );
@@ -256,7 +272,6 @@
                     }
 
                 },
-                */
 
                 enumerable: true
 
@@ -270,7 +285,6 @@
 
                 },
 
-                /*
                 set: function ( h ) {
 
                     var desiredHeight = parseFloat( h );
@@ -286,7 +300,6 @@
                     }
 
                 },
-                */
 
                 enumerable: true
 
@@ -342,7 +355,33 @@
 
                 enumerable: true
 
-            }
+            },
+
+            'sizeVariety': {
+
+                get: function () {
+
+                    return this._sizeVariety;
+
+                },
+
+                set: function ( variety ) {
+
+                    var sizeVariety = variety === 'cover' ? 'cover' : 'contain';
+
+                    if ( this._sizeVariety !== sizeVariety ) {
+
+                        this._sizeVariety = sizeVariety;
+                        this.projectionNeedsUpdate = true;
+
+                    }
+
+                },
+
+                enumerable: true
+
+            },
+
 
         });
 
@@ -357,22 +396,39 @@
 
         var factor;
 
-        if ( scene._desiredWidth && scene._desiredHeight ) {
+        if ( scene._desiredWidth || scene._desiredHeight ) {
 
-            var appRatio = scene.app.height / scene.app.width;            // <1 : landscape, >1 : portrait
+            var appRatio   = scene.app.height / scene.app.width;            // <1 : landscape, >1 : portrait
             var sceneRatio = scene._desiredHeight / scene._desiredWidth;
+            var isCover    = scene._desiredWidth && scene._desiredHeight && scene.sizeVariety === 'cover';
 
-            if ( appRatio < sceneRatio ) {
+            if ( ( ! scene._desiredWidth && scene._desiredHeight ) || appRatio < sceneRatio ) {
 
-                factor = scene._desiredHeight / scene.app.height;
-                scene._computedWidth  = factor * scene.app.width;
+                scene._computedWidth  = ( scene._desiredHeight / scene.app.height ) * scene.app.width;
                 scene._computedHeight = scene._desiredHeight;
 
-            } else if ( appRatio > sceneRatio ) {
+                if ( isCover ) {
 
-                factor = scene._desiredWidth / scene.app.width;
+                    factor = scene._desiredWidth / scene._computedWidth;
+                    
+                    scene._computedWidth  *= factor;
+                    scene._computedHeight *= factor;
+                
+                }
+
+            } else if ( ( scene._desiredWidth && ! scene._desiredHeight ) || appRatio > sceneRatio ) {
+
                 scene._computedWidth  = scene._desiredWidth;
-                scene._computedHeight = factor * scene.app.height;
+                scene._computedHeight = ( scene._desiredWidth / scene.app.width ) * scene.app.height;
+
+                if ( isCover ) {
+
+                    factor = scene._desiredHeight / scene._computedHeight;
+                    
+                    scene._computedWidth  *= factor;
+                    scene._computedHeight *= factor;
+                
+                }
 
             } else {
 
@@ -383,16 +439,16 @@
 
             scene._computedPixelRatio = ( scene.app.width / scene._computedWidth ) / scene.app.devicePixelRatio;
 
+
         } else if ( scene._desiredPixelRatio ) {
 
             var parentScene = scene.scene;
-            var ratio = parentScene ? parentScene.pixelRatio : scene.app.devicePixelRatio;
+            var master      = parentScene ? parentScene : scene.app;
+            var ratio       = parentScene ? parentScene.pixelRatio : scene.app.devicePixelRatio;
 
             factor = scene._desiredPixelRatio * ratio;
 
-            var master = parentScene ? parentScene : scene.app;
-
-            scene._computedWidth  = master.width / factor;
+            scene._computedWidth  = master.width  / factor;
             scene._computedHeight = master.height / factor;
 
         }
@@ -483,9 +539,10 @@
     };
 
 
-    function onChildrenUpdated () {
 
-        this.children = this.children.sort( sortByRenderPrio );
+    function onChildrenUpdated ( scene ) {
+
+        scene.children = scene.children.sort( sortByRenderPrio );
 
     }
 
@@ -494,6 +551,7 @@
         return -a.renderPrio - ( -b.renderPrio );
 
     }
+
 
 
     module.exports = Scene;
