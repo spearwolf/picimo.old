@@ -154,10 +154,10 @@
 
 
         /**
-         * @member {Picimo.sg.Node} Picimo.App#root - The root node of the scene graph.
+         * @member {Picimo.sg.Scene} Picimo.App#scene - The root node of the scene graph.
          */
 
-        utils.object.definePropertyPublicRO( this, 'root', new sg.Scene( this, {
+        utils.object.definePropertyPublicRO( this, 'scene', new sg.Scene( this, {
 
             blendMode: webgl.cmd.BlendMode.DEFAULT,
             pixelRatio: 1
@@ -210,11 +210,6 @@
                 this.canvas.style.width  = Math.round( w / this.devicePixelRatio ) + "px";
                 this.canvas.style.height = Math.round( h / this.devicePixelRatio ) + "px";
 
-                // TODO resize
-                //if ( this.root && this.scene.resize ) {
-                    //this.scene.resize(this.glx, w, h);
-                //}
-
             }
         }
 
@@ -232,9 +227,9 @@
 
         this.renderer.beginFrame();
 
-        if ( this.root ) {
+        if ( this.scene ) {
 
-            this.root.renderFrame();
+            this.scene.renderFrame();
 
         }
 

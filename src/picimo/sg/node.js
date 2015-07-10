@@ -35,6 +35,8 @@
 
         if ( ! app ) throw new Error( '[Picimo.sg.Node] app is null!' );
 
+        this._readyFunc = null;
+
         /**
          * @member {Picimo.App} Picimo.sg.Node#app - The app instance
          * @readonly
@@ -89,6 +91,21 @@
         }
 
     }
+
+    /**
+     * @method Picimo.sg.Node#setReadyFunc
+     * @param {function} The *ready function* should return a boolean.
+     * @return self
+     */
+
+    Node.prototype.setReadyFunc = function ( readyFunc ) {
+
+        this._readyFunc = readyFunc;
+
+        return this;
+
+    };
+
 
     /**
      * @method Picimo.sg.Node#addChild
@@ -374,7 +391,8 @@
          * @description
          * A node is *not* ready if ..
          * 1. the state is set to *destroyed* or *error*
-         * 3. you explicitly set it to *false* (but default is *true*)
+         * 2. you explicitly set it to *false* (but default is *true*)
+         * 3. you defined a *ready function* ( via `setReadyFunc` ) and the function returned false
          *
          * If a node is not ready, it will be ignored by the renderloop (no init or frame or .. events).
          */
@@ -383,7 +401,8 @@
             get: function () {
 
                 return ( ( !! this._ready ) &&
-                        ( ! this.state.is( NodeState.ERROR|NodeState.DESTROYED )) );
+                        ( ! this.state.is( NodeState.ERROR|NodeState.DESTROYED )) &&
+                        ( ! this._readyFunc || !! this._readyFunc() ) );
 
             },
 
