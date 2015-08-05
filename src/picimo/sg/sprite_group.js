@@ -1,9 +1,10 @@
 (function (){
     "use strict";
 
-    var Node  = require( './node' );
-    //var utils = require( '../utils' );
-    var core  = require( '../core' );
+    var Node    = require( './node' );
+    //var utils   = require( '../utils' );
+    var core    = require( '../core' );
+    var sprites = require( '../sprites' );
 
     /**
      * @class Picimo.sg.SpriteGroup
@@ -12,6 +13,8 @@
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
      * @param {Picimo.core.TextureAtlas|Picimo.utils.Promise} [options.textureAtlas] - The texture atlas
+     * @param {Picimo.core.VertexObjectDescriptor} [options.spriteDescriptor=Picimo.sprites.SpriteDescriptor] - The sprite descriptor
+     * @param {number} [options.capacity=1000] - Max sprite capacity
      *
      */
 
@@ -21,9 +24,9 @@
 
         Node.call( this, app, options );
 
-        this.textureAtlas = options.textureAtlas;
-
-        //this.on( "init", onInit.bind( this, this ) );
+        this.textureAtlas     = options.textureAtlas;
+        this.spriteDescriptor = options.spriteDescriptor || sprites.SpriteDescriptor;
+        this.pool             = new core.VertexObjectPool( this.spriteDescriptor, options.capacity || 1000 );
 
     }
 

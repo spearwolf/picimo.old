@@ -15,22 +15,18 @@
      *
      * Can have a custom **projection** matrix which determinates the **width, height** and **pixelRatio**.
      *
-     * Determinates the _render order_ of all child nodes via the **renderPrio** attribute.
-     *
-     * Introduces new events such as **onResize**, **onChildrenUpdated** and **onProjectionUpdated**.
+     * Introduces new events such as **onResize** and **onProjectionUpdated**.
      *
      *
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
      * @param {Picimo.webgl.cmd.BlendMode} [options.blendMode] - Blend mode
-     * @param {number} [options.renderPrio] - The render priority determinates the render order.
      * @param {number} [options.width] - Wanted scene width
      * @param {number} [options.height] - Wanted scene height
      * @param {string} [options.sizeVariety="contain"] - *cover* or *contain*
      * @param {number} [options.pixelRatio] - Wanted pixel ratio
      * @param {boolean} [options.projection=true] - Determinates if this scene should have an own projection matrix.
      * @param {function} [options.onResize]
-     * @param {function} [options.onChildrenUpdated]
      * @param {function} [options.onProjectionUpdated]
      *
      */
@@ -46,12 +42,6 @@
          */
 
         this.blendMode = options.blendMode;
-
-        /**
-         * @member {number} Picimo.sg.Scene#renderPrio
-         */
-
-        this._renderPrio = parseFloat( options.renderPrio || 0 );
 
         /**
          * @member {string} Picimo.sg.Scene#sizeVariety - *cover* or *contain*
@@ -136,8 +126,6 @@
         }
 
 
-        this.on( "childrenUpdated", onChildrenUpdated.bind( this, this ) );
-
         this.on( "init", Number.MAX_VALUE, function () {
 
             if ( this.hasOwnProjection ) {
@@ -159,7 +147,6 @@
         this.on( options, {
 
             'onResize'            : 'resize',
-            'onChildrenUpdated'   : 'childrenUpdated',
             'onProjectionUpdated' : 'projectionUpdated',
 
         });
@@ -473,23 +460,6 @@
 
     Object.defineProperties( Scene.prototype, {
 
-        'renderPrio': {
-
-            get: function () { return this._renderPrio; },
-
-            set: function ( prio ) {
-
-                this._renderPrio = parseFloat( prio );
-
-                if ( this.parent ) this.parent.emit( "childrenUpdated" );
-
-            },
-
-            enumerable: true
-
-        },
-
-
         /**
          * @member {Picimo.sg.Scene} Picimo.sg.Scene#scene - The parent scene.
          */
@@ -521,38 +491,6 @@
         }
 
     });
-
-
-    Scene.prototype.addChild = function ( node ) {
-
-        Node.prototype.addChild.call( this, node );
-
-        /**
-         * Announce a children update.
-         * @event Picimo.sg.Scene#childrenUpdated
-         * @memberof Picimo.sg.Scene
-         */
-
-        this.emit( 'childrenUpdated' );
-
-        return node;
-
-    };
-
-
-
-    function onChildrenUpdated ( scene ) {
-
-        scene.children = scene.children.sort( sortByRenderPrio );
-
-    }
-
-    function sortByRenderPrio ( a, b ) {
-
-        return -a.renderPrio - ( -b.renderPrio );
-
-    }
-
 
 
     /**

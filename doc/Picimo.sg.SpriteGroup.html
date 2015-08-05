@@ -55,7 +55,7 @@
     
         
         <div class="tag-source">
-            sg/sprite_group.js, line 8
+            sg/sprite_group.js, line 9
         </div>
         
     </div>
@@ -157,6 +157,8 @@
 		<th>Type</th>
 		
 		
+		<th>Default</th>
+		
 		
 		<th class="last">Description</th>
 	</tr>
@@ -183,6 +185,10 @@
             </td>
             
             
+                <td class="default">
+                
+                </td>
+            
             
             <td class="description last">
                 
@@ -194,6 +200,78 @@
                     
                 
                 <p>The texture atlas</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>spriteDescriptor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.core.VertexObjectDescriptor.html">Picimo.core.VertexObjectDescriptor</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    Picimo.sprites.SpriteDescriptor
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>The sprite descriptor</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>capacity</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    1000
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>Max sprite capacity</p></td>
         </tr>
 	
 	
@@ -594,6 +672,47 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="renderPrio"><span class="attrs"></span>renderPrio<span class="type-signature type number">number</span> </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="state"><span class="attrs"></span>state<span class="type-signature type picimo.sg.nodestate"><a href="Picimo.sg.NodeState.html">Picimo.sg.NodeState</a></span> </h4>
     </div>
     
@@ -650,7 +769,7 @@ BUT initialization will be happen. (If you don't want the node to initialize set
     
         
         <div class="tag-source">
-            sg/node.js, line 110
+            sg/node.js, line 121
         </div>
         
     </div>
@@ -887,7 +1006,7 @@ obj
     
         
         <div class="tag-source">
-            sg/node.js, line 225
+            sg/node.js, line 247
         </div>
         
     </div>
@@ -1294,7 +1413,7 @@ obj
     
         
         <div class="tag-source">
-            sg/node.js, line 125
+            sg/node.js, line 147
         </div>
         
     </div>
@@ -2014,7 +2133,7 @@ obj
     
         
         <div class="tag-source">
-            sg/node.js, line 95
+            sg/node.js, line 106
         </div>
         
     </div>
@@ -2136,6 +2255,79 @@ self
             
 <dt>
     <div class="nameContainer inherited">
+        <h4 class="name" id="event:childrenUpdated">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:childrenUpdated">inherited</a></span>
+            
+            childrenUpdated
+        </h4>
+    
+        
+        <div class="tag-source">
+            sg/node.js, line 135
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Announce a children update.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:destroy">
             
                 <span class="inherited"><a href="Picimo.sg.Node.html#event:destroy">inherited</a></span>
@@ -2145,7 +2337,7 @@ self
     
         
         <div class="tag-source">
-            sg/node.js, line 262
+            sg/node.js, line 284
         </div>
         
     </div>
@@ -2218,7 +2410,7 @@ self
     
         
         <div class="tag-source">
-            sg/node.js, line 246
+            sg/node.js, line 268
         </div>
         
     </div>
@@ -2292,7 +2484,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 171
+            sg/node.js, line 193
         </div>
         
     </div>
@@ -2365,7 +2557,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 204
+            sg/node.js, line 226
         </div>
         
     </div>
@@ -2438,7 +2630,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 287
+            sg/node.js, line 309
         </div>
         
     </div>
@@ -2511,7 +2703,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 316
+            sg/node.js, line 338
         </div>
         
     </div>
@@ -2584,7 +2776,7 @@ Is called before the <em>destroy</em> event.</p>
     
         
         <div class="tag-source">
-            sg/node.js, line 178
+            sg/node.js, line 200
         </div>
         
     </div>
@@ -2657,7 +2849,7 @@ Is called before the <em>destroy</em> event.</p>
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Fri Jul 10 2015 14:16:33 GMT+0200 (CEST)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Fri Jul 10 2015 15:24:40 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

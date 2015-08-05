@@ -2,7 +2,7 @@
 
 console.log( 'welcome to the %c %cnobinger%c benchmark v1 %c%c a picimo demo! ', 'background-color:yellow', 'font-style:italic;background-color:yellow', 'font-style:normal;background-color:yellow', 'background-color:transparent', 'background-color:red;color:#fff' );
 
-// Setup picimo app
+// Setup
 var app = new Picimo.App({
 
     canvas : document.getElementById( 'picimo' ),
@@ -10,14 +10,14 @@ var app = new Picimo.App({
 
 });
 
-// Pixel resolution
+// Set pixel resolution
 app.scene.setSize( 800, 600, "contain" );
 
 // Load a texture atlas
 var atlas = app.loadTextureAtlas( './nobinger.json' );
 
 
-app.scene.appendSpriteGroup( atlas, null, {
+var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 5000 }, {
 
     init: function ( spriteGroup ) {
 
@@ -28,15 +28,19 @@ app.scene.appendSpriteGroup( atlas, null, {
 });
 
 
+window.spriteGroup = spriteGroup;  // DEBUG
 
 
-/*
- * TODO
- * ====
- *
- * - move renderPrio flag and childrenUpdated event one-level up to Node (is Scene)
- *
- */
+
+
+
+
+
+
+
+
+
+
 
 
 

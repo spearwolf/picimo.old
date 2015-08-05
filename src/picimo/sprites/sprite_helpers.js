@@ -74,6 +74,26 @@
 
         });
 
+        /**
+         * @member {number} Picimo.Sprite#z - z value
+         */
+
+        Object.defineProperty( Sprite_prototype, 'z', {
+
+            get: function () {
+                return this.z0;
+            },
+
+            set: function ( z ) {
+                this.z0 = z;
+                this.z1 = z;
+                this.z2 = z;
+                this.z3 = z;
+            },
+
+            enumerable: true
+
+        });
     };
 
 })();

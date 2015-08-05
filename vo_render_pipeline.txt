@@ -9,7 +9,7 @@
 ### user
 
 - new SpriteGroup(): dynamic/static plus texture
-- scene.addChild( spriteGroup )
+- DONE scene.addChild( spriteGroup )
 
 
 ### vo_pipeline
@@ -23,4 +23,19 @@ vo_pipeline:
 ### vo_pipeline_pool
     * Textures
     - is dynamic/static
+
+
+
+
+VODescriptor -- VORenderPipeline
+
+VORenderPipeline
+-----------------
+
+    {renderPrio} ->
+        {Texture} ->
+            {Shader} ->
+
+                VertexObjectPool
+            
 

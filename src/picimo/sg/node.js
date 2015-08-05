@@ -21,6 +21,7 @@
      * @param {boolean} [options.display=true]
      * @param {boolean} [options.ready=true]
      * @param {string} [options.name]
+     * @param {number} [options.renderPrio] - The render priority determinates the render order of the child nodes.
      * @param {function} [options.onInit]
      * @param {function} [options.onInitGl]
      * @param {function} [options.onFrame]
@@ -28,6 +29,7 @@
      * @param {function} [options.onFrameEnd]
      * @param {function} [options.onDestroy]
      * @param {function} [options.onDestroyGl]
+     * @param {function} [options.onChildrenUpdated]
      *
      */
 
@@ -36,6 +38,12 @@
         if ( ! app ) throw new Error( '[Picimo.sg.Node] app is null!' );
 
         this._readyFunc = null;
+
+        /**
+         * @member {number} Picimo.sg.Node#renderPrio
+         */
+
+        this._renderPrio = parseFloat( options.renderPrio || 0 );
 
         /**
          * @member {Picimo.App} Picimo.sg.Node#app - The app instance
@@ -79,13 +87,16 @@
         if ( options !== undefined ) {
 
             this.on( options, {
-                'onInit'       : 'init',
-                'onInitGl'     : 'initGl',
-                'onFrame'      : 'frame',
-                'onRenderFrame': 'renderFrame',
-                'onFrameEnd'   : 'frameEnd',
-                'onDestroyGl'  : 'destroyGl',
-                'onDestroy'    : 'destroy',
+
+                'onInit'            : 'init',
+                'onInitGl'          : 'initGl',
+                'onFrame'           : 'frame',
+                'onRenderFrame'     : 'renderFrame',
+                'onFrameEnd'        : 'frameEnd',
+                'onDestroyGl'       : 'destroyGl',
+                'onDestroy'         : 'destroy',
+                'onChildrenUpdated' : 'childrenUpdated',
+
             });
 
         }
@@ -117,6 +128,17 @@
         this.children.push( node );
 
         node.parent = this;
+
+        // resort child nodes
+        node.children = node.children.sort( sortByRenderPrio );
+
+        /**
+         * Announce a children update.
+         * @event Picimo.sg.Node#childrenUpdated
+         * @memberof Picimo.sg.Node
+         */
+
+        this.emit( 'childrenUpdated' );
 
         return node;
 
@@ -371,9 +393,32 @@
 
     }
 
+    function sortByRenderPrio ( a, b ) {
+
+        return -a.renderPrio - ( -b.renderPrio );
+
+    }
+
+
 
 
     Object.defineProperties( Node.prototype, {
+
+        'renderPrio': {
+
+            get: function () { return this._renderPrio; },
+
+            set: function ( prio ) {
+
+                this._renderPrio = parseFloat( prio || 0 );
+
+                if ( this.parent ) this.parent.emit( "childrenUpdated" );
+
+            },
+
+            enumerable: true
+
+        },
 
         /**
          * @member {Picimo.sg.Node} Picimo.sg.Node#isRoot - *True* if this node has no parent.
