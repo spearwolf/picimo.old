@@ -10,7 +10,7 @@
         this.program   = program;
         this.glProgram = glProgram;
         this.glx       = glx;
-        
+
         setupUniformsAndAttributes( this );
 
         Object.freeze( this );
@@ -23,19 +23,19 @@
 
             glx.activeProgram = this;
             glx.gl.useProgram( this.glProgram );
-        
+
         }
-    
+
     };
 
 
     function setupUniformsAndAttributes ( glProgram ) {
-    
-        var gl          = glProgram.glx.gl;
+
+        var gl = glProgram.glx.gl;
         var numUniforms = gl.getProgramParameter( glProgram.glProgram, gl.ACTIVE_UNIFORMS );
 
-        glProgram.uniformNames  = [];
-        glProgram.uniform       = {};
+        glProgram.uniformNames = [];
+        glProgram.uniform = {};
 
         var i, uniform;
 
@@ -45,7 +45,7 @@
 
             glProgram.uniform[ uniform.name ] = new Uniform( glProgram, uniform );
             glProgram.uniformNames.push( uniform.name );
-        
+
         }
 
         Object.freeze( glProgram.uniform );
@@ -54,7 +54,7 @@
         var numAttribs = gl.getProgramParameter( glProgram.glProgram, gl.ACTIVE_ATTRIBUTES );
 
         glProgram.attribNames = [];
-        glProgram.attrib      = {};
+        glProgram.attrib = {};
 
         var attr;
 
@@ -64,11 +64,11 @@
 
             glProgram.attrib[ attr.name ] = new Attrib( glProgram, attr );
             glProgram.attribNames.push( attr.name );
-        
+
         }
 
         Object.freeze( glProgram.attrib );
-    
+
     }
 
 

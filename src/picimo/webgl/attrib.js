@@ -2,7 +2,7 @@
     "use strict";
 
     var utils = require( '../utils' );
-
+    var addShaderValue = require( './add_shader_value' );
 
     function Attrib ( program, info ) {
         
@@ -14,10 +14,22 @@
         
         });
 
-        //Object.seal( this );
+        addShaderValue( this );
+
+        Object.seal( this );
 
     }
 
+    Attrib.prototype.upload = function ( gl ) {
+
+        if ( ! this.valueChanged ) return;
+
+        // TODO
+        //this.value.vertexAttribPointer( this.name, this.location );
+
+        this.valueChanged = false;
+
+    };
 
     module.exports = Attrib;
 

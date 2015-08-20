@@ -44,6 +44,12 @@
     };
 
 
+    /**
+     * @method Picimo.core.TextureAtlas#getImageUrl
+     * @param {string} url
+     * @return {string} url
+     */
+
     TextureAtlas.prototype.getImageUrl = function ( url ) {
     
         if ( this.imageUrl !== undefined ) {
@@ -56,6 +62,9 @@
     
     };
 
+    /**
+     * @private
+     */
 
     TextureAtlas.prototype.onData = function ( conf ) {
 
@@ -84,6 +93,11 @@
 
     };
 
+    /**
+     * @method Picimo.core.TextureAtlas#getTexture
+     * @param {string} name
+     * @return {Picimo.core.Texture} texture
+     */
 
     TextureAtlas.prototype.getTexture = function ( name ) {
 

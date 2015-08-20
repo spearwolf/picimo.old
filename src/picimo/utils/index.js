@@ -74,7 +74,17 @@
         /**
          * @private
          */
-        addUid : require( './add_uid' )
+        addUid : require( './add_uid' ),
+
+        /**
+         * @private
+         */
+        ObjectPool: require( './object_pool' ),
+
+        /**
+         * @private
+         */
+        Queue: require( './queue' )
 
     };
 

@@ -58,6 +58,11 @@
 
     }
 
+    /**
+     * @method Picimo.core.Po2Image#load
+     * @param {string} url
+     * @return self
+     */
 
     Po2Image.prototype.load = function ( url ) {
 

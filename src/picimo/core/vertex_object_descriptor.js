@@ -144,6 +144,7 @@
 
         }
 
+
         // ======= vertex object prototype =======
 
         this.vertexObjectPrototype = Object.create( this.vertexObjectConstructor.prototype, this.propertiesObject );

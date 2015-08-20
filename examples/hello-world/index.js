@@ -94,7 +94,7 @@ var vod = new Picimo.core.VertexObjectDescriptor(
 
     {
 
-        pos2d: { size: 2, offset: 0 },
+        pos2d: { size: 2, offset: 0, uniform: true },
         posZ:  { size: 1, offset: 2, uniform: true },
         uv:    'texCoords'
 

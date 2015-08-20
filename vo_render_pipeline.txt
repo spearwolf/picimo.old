@@ -1,4 +1,21 @@
 
+dynamic sprites/va arrays:
+
+double buffering: vertex array
+each frame:
+    copy all images,etc.. into active va
+
+
+
+
+
+
+
+
+
+
+
+
 ### user stories
 
 1. create single sprite
