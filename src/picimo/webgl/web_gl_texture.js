@@ -241,6 +241,9 @@
             gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap );
             gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap );
 
+            gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+            gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+
             gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, texture.width, texture.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null );
 
             texture.needsConf = false;
