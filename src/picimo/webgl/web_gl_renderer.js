@@ -159,6 +159,7 @@
 
         var glx = renderer.app.glx;
 
+        // TODO
         renderer.currentTexUnits = new Int16Array( glx.MAX_TEXTURE_IMAGE_UNITS );
         for ( var i = renderer.currentTexUnits.length; i--; ) renderer.currentTexUnits[ i ] = -1;
 

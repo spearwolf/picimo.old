@@ -25,7 +25,12 @@
         this.conf = conf;
 
         this.frameNames = null;
+
+        /**
+         * @member {Picimo.core.Texture} Picimo.core.TextureAtlas#texture - The root texture for the atlas image.
+         */
         this.texture = null;
+
         this.frames = null;
         this.imageUrl = imageUrl;
 

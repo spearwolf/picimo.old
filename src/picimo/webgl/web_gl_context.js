@@ -31,6 +31,23 @@
     }
 
     /**
+     * @method Picimo.webgl.WebGlContext#bindTexture
+     * @param {number} textureType - gl.TEXTURE_2D or ..
+     * @param texture
+     */
+
+    WebGlContext.prototype.bindTexture = function ( textureType, texture ) {
+
+        if ( this._boundTextures.get( textureType ) !== texture ) {
+
+            this._boundTextures.set( textureType, texture );
+            this.gl.bindTexture( textureType, texture );
+
+        }
+
+    };
+
+    /**
      * @method Picimo.webgl.WebGlContext#bindBuffer
      * @param {number} bufferType - gl.ARRAY_BUFFER or gl.ELEMENT_ARRAY_BUFFER
      * @param buffer

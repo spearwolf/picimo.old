@@ -15,8 +15,35 @@
         });
 
         addShaderValue( this );
+        addTexUnitProperties( this );
 
         Object.seal( this );
+
+    }
+
+
+    function addTexUnitProperties( uniform ) {
+
+        if ( uniform.info.type === uniform.program.glx.gl.SAMPLER_2D ) {
+
+            uniform.isSampler2d = true;
+            uniform.texUnit = uniform.program.texCount++;
+
+            Object.defineProperty( uniform, 'glTexUnit', {
+
+                get: function () {
+
+                    return this.program.glx.gl.TEXTURE0 + this.texUnit;
+
+                }
+
+            });
+
+        } else {
+
+            uniform.isSampler2d = false;
+
+        }
 
     }
 
@@ -48,7 +75,7 @@
                 break;
 
             case gl.SAMPLER_2D:
-                gl.uniform1i( this.location, /* TODO texture-unit */ 0 );
+                gl.uniform1i( this.location, this.texUnit );
                 break;
 
         }

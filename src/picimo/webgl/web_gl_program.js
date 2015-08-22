@@ -10,6 +10,7 @@
         this.program   = program;
         this.glProgram = glProgram;
         this.glx       = glx;
+        this.texCount  = 0;
 
         setupUniformsAndAttributes( this );
 
@@ -17,12 +18,12 @@
 
     }
 
-    WebGlProgram.prototype.use = function ( glx ) {
+    WebGlProgram.prototype.use = function () {
 
-        if ( glx.activeProgram !== this ) {
+        if ( this.glx.activeProgram !== this ) {
 
-            glx.activeProgram = this;
-            glx.gl.useProgram( this.glProgram );
+            this.glx.activeProgram = this;
+            this.glx.gl.useProgram( this.glProgram );
 
         }
 

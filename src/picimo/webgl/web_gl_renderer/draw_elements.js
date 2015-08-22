@@ -5,10 +5,10 @@
 
         try {
 
-            var gl          = re.app.gl;
-            var glx         = re.app.glx;
-            var program     = re.program; // => WebGlProgram
-            var forceUpdate = false;
+            var gl             = re.app.gl;
+            //var glx            = re.app.glx;
+            var program        = re.program; // = > WebGlProgram
+            var programChanged = false;
 
             var len, i, name, uniform, attr, etype;
 
@@ -21,8 +21,8 @@
             if ( !re.currentProgram || re.currentProgram !== program ) {
 
                 re.currentProgram = program;
-                program.use( glx );
-                forceUpdate = true;
+                program.use();
+                programChanged = true;
 
             }
 
@@ -38,12 +38,11 @@
                 uniform = re.program.uniform[ name ];
 
                 uniform.setValue( re.uniforms.get( name ) );
-                if ( forceUpdate ) uniform.valueChanged = true;
+                if ( programChanged ) uniform.valueChanged = true;
 
                 uniform.upload( gl );
 
-                // TODO
-                if (uniform.isTexture()) updateTexUnit(re, uniform);
+                if ( uniform.isSampler2d ) syncTexUnit( re, uniform );
 
             }
 
@@ -59,7 +58,7 @@
                 attr = re.program.attrib[ name ];
 
                 attr.setValue( re.attributes.get( name ) );
-                if ( forceUpdate ) attr.valueChanged = true;
+                if ( programChanged ) attr.valueChanged = true;
 
                 // TODO
                 attr.upload( gl );
@@ -73,6 +72,8 @@
             //==================================================================
 
             // TODO
+            // - fix
+            // - draw arrays
 
             etype = draw.elementType || gl.TRIANGLES;
             draw.buffer.webGlBuffer.bindBuffer();
@@ -86,9 +87,11 @@
         }
     };
 
-    function updateTexUnit(re, uniform) {
+    function syncTexUnit(re, uniform) {
 
         // TODO
+        // - activate gl texture unit (gl.activeTexture)
+        // - bind texture (if unbound <-> texUnit)
 
         var texUnit    = uniform.texUnit;
         var curTexUnit = re.currentTexUnits[texUnit];
