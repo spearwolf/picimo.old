@@ -126,6 +126,12 @@
         this.shader = new webgl.ShaderManager( this );
 
         /**
+         * @member {Picimo.webgl.TextureManager} Picimo.App#texture
+         */
+
+        this.texture = new webgl.TextureManager( this );
+
+        /**
          * @member {Picimo.webgl.WebGlRenderer} Picimo.App#renderer
          */
 

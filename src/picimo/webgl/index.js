@@ -10,8 +10,9 @@
         cmd : require( './cmd' ),
         Program : require( './program' ),
 
-        ShaderSource  : require( './shader_source' ),
-        ShaderManager : require( './shader_manager' ),
+        ShaderSource   : require( './shader_source' ),
+        ShaderManager  : require( './shader_manager' ),
+        TextureManager : require( './texture_manager' ),
 
         WebGlContext  : require( './web_gl_context' ),
         WebGlRenderer : require( './web_gl_renderer' ),

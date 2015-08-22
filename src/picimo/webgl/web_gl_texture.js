@@ -274,22 +274,6 @@
 
 
     /**
-     * @method Picimo.webgl.WebGlTexture#fromTexture
-     * @description
-     * Set image from **Picimo.core.Texture** or **Picimo.core.TextureAtlas** or *everything* which has an **image** property.
-     * @param {Picimo.core.Texture} texture
-     */
-
-    WebGlTexture.prototype.fromTexture = function ( texture ) {
-
-        var tex = texture.texture ? texture.texture : texture;
-        this.image = tex.image.domElement ? tex.image.domElement : tex.image;
-        this.isRepeatable = tex.root !== texture;
-
-    };
-
-
-    /**
      * @method Picimo.webgl.WebGlTexture#destroy
      */
 
