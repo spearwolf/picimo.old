@@ -11,20 +11,20 @@
      */
 
     function TextureManager ( app ) {
-        
+
         utils.object.definePropertyPublicRO( this, 'app', app );
 
         utils.object.definePropertiesPrivateRO( this, {
 
             _textureCache  : new utils.Map(),  // image -> texture
             _boundTextures : []                // [ texUnit ] -> image
-        
+
         });
 
         for ( var i = 0; i < app.glx.MAX_TEXTURE_IMAGE_UNITS; i++ ) {
 
             this._boundTextures[ i ] = null;
-        
+
         }
 
         this._lastBoundTexUnit = 0;
@@ -64,12 +64,17 @@
 
                 texUnit = this._lastBoundTexUnit;
 
+                var prevGlTex = this._boundTextures[ texUnit ];
+                if ( prevGlTex ) prevGlTex.texUnit = -1;
+
                 this._lastBoundTexUnit = ( this._lastBoundTexUnit + 1 ) % glx.MAX_TEXTURE_IMAGE_UNITS;
 
             }
 
             glx.activeTexture( texUnit );
             glx.bindTexture2d( glTexture.glId );
+
+            glTexture.texUnit = texUnit;
 
         }
 
@@ -101,11 +106,11 @@
             glTex.image = image;
 
             this._textureCache.set( uid, glTex );
-        
+
         }
 
         return glTex;
-    
+
     };
 
 

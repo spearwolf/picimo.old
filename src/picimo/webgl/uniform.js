@@ -1,8 +1,8 @@
 (function(){
     "use strict";
 
-    var utils          = require( '../utils' );
-    var addShaderValue = require( './add_shader_value' );
+    var utils            = require( '../utils' );
+    var addShaderValue   = require( './add_shader_value' );
 
     function Uniform ( program, info ) {
 
@@ -31,18 +31,6 @@
 
             Object.defineProperties( uniform, {
             
-                /*
-                glTexUnit: {
-
-                    get: function () {
-
-                        return this.program.glx.gl.TEXTURE0 + this._texUnit;
-
-                    }
-
-                },
-                */
-
                 texUnit: {
 
                     get: function () {

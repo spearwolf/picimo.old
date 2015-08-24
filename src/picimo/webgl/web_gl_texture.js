@@ -12,10 +12,13 @@
     function WebGlTexture ( glx, repeatable ) {
 
         this.glx = glx;
+
         this.width = 0;
         this.height = 0;
         this.isRepeatable = repeatable === true;
         this.image = null;
+
+        reset( this );
 
         Object.seal( this );
 
@@ -40,46 +43,14 @@
 
         texture.texUnit = -1;
 
-        // TODO unbind texture
-
     }
 
     Object.defineProperties( WebGlTexture.prototype, {
 
         /**
-         * @member {WebGlContext} Picimo.webgl.WebGlTexture#glx
-         */
-
-        /**
-         * @member {WebGlRenderingContext} Picimo.webgl.WebGlTexture#gl
-         */
-
-        glx: {
-
-            set: function ( glx ) {
-
-                if ( glx !== this._glx ) {
-
-                    this._glx = glx;
-                    this.gl = glx.gl;
-
-                    reset( this );
-
-                }
-
-            },
-
-            get: function () {
-
-                return this._glx;
-
-            }
-
-        },
-
-        /**
          * @member {boolean} Picimo.webgl.WebGlTexture#isRepeatable
          */
+
         isRepeatable: {
 
             get: function () {
@@ -219,7 +190,7 @@
 
         if ( ! this.glId ) initialize( this );
 
-        this.texUnit = this.glx.app.texture.bindWebGlTexture( this );
+        return this.glx.app.texture.bindWebGlTexture( this );
 
     };
 
@@ -227,7 +198,7 @@
 
         if ( texture.needsInit ) {
 
-            texture.glId = texture.gl.createTexture();
+            texture.glId = texture.glx.gl.createTexture();
             texture.needsInit = false;
 
         }
@@ -242,7 +213,7 @@
 
             texture.bind();
 
-            var gl = texture.gl;
+            var gl = texture.glx.gl;
 
             gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true );
             gl.pixelStorei( gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false );
@@ -278,7 +249,7 @@
 
             this.bind();
 
-            var gl = this.gl;
+            var gl = this.glx.gl;
 
             gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image );
 
