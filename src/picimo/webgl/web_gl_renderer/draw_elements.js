@@ -42,8 +42,6 @@
 
                 uniform.upload( gl );
 
-                if ( uniform.isSampler2d ) syncTexUnit( re, uniform );
-
             }
 
             //==================================================================
@@ -86,30 +84,5 @@
 
         }
     };
-
-    function syncTexUnit(re, uniform) {
-
-        // TODO
-        // - activate gl texture unit (gl.activeTexture)
-        // - bind texture (if unbound <-> texUnit)
-
-        var texUnit    = uniform.texUnit;
-        var curTexUnit = re.currentTexUnits[texUnit];
-        var gl         = re.app.gl;
-
-        var glTexUnit;
-
-        if (curTexUnit === -1 || (curTexUnit !== uniform.value)) {
-            re.currentTexUnits[texUnit] = uniform.value;
-            glTexUnit = gl.TEXTURE0 + texUnit;
-
-            if (!re.currentGlTexUnit || (re.currentGlTexUnit !== glTexUnit)) {
-                re.currentGlTexUnit = glTexUnit;
-                gl.activeTexture(glTexUnit);
-            }
-
-            uniform.value.bind();
-        }
-    }
 
 })();

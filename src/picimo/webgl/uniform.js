@@ -27,15 +27,42 @@
         if ( uniform.info.type === uniform.program.glx.gl.SAMPLER_2D ) {
 
             uniform.isSampler2d = true;
-            uniform.texUnit = uniform.program.texCount++;
+            uniform._texUnit = -1;
 
-            Object.defineProperty( uniform, 'glTexUnit', {
+            Object.defineProperties( uniform, {
+            
+                /*
+                glTexUnit: {
 
-                get: function () {
+                    get: function () {
 
-                    return this.program.glx.gl.TEXTURE0 + this.texUnit;
+                        return this.program.glx.gl.TEXTURE0 + this._texUnit;
 
-                }
+                    }
+
+                },
+                */
+
+                texUnit: {
+
+                    get: function () {
+                    
+                        return this._texUnit;
+
+                    },
+
+                    set: function ( texUnit ) {
+
+                        if ( this._texUnit !== texUnit ) {
+
+                            this._texUnit = texUnit;
+                            this.valueChanged = true;
+                        
+                        }
+                    
+                    }
+                
+                },
 
             });
 
@@ -49,6 +76,12 @@
 
 
     Uniform.prototype.upload = function ( gl ) {
+
+        if ( this.isSampler2d ) {
+
+            this.texUnit = this.value.upload().bind();
+
+        }
 
         if ( ! this.valueChanged ) return;
 

@@ -212,7 +212,7 @@
 
     /**
      * @method Picimo.webgl.WebGlTexture#bind
-     * @returns {number} texture unit
+     * @return {number} texture unit
      */
 
     WebGlTexture.prototype.bind = function () {
@@ -267,6 +267,7 @@
     /**
      * @method Picimo.webgl.WebGlTexture#upload
      * @see Picimo.webgl.WebGlTexture#needsUpload
+     * @return self
      */
 
     WebGlTexture.prototype.upload = function () {
@@ -284,6 +285,8 @@
             this.needsUpload = false;
 
         }
+
+        return this;
 
     };
 

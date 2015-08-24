@@ -10,7 +10,6 @@
         this.program   = program;
         this.glProgram = glProgram;
         this.glx       = glx;
-        this.texCount  = 0;
 
         setupUniformsAndAttributes( this );
 

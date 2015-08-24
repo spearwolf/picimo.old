@@ -162,7 +162,6 @@
         renderer.program          = null;
 
         renderer.currentProgram   = null;
-        renderer.currentGlTexUnit = null;
         renderer.currentPipeline  = null;
 
         renderer.defaultBlendMode = cmd.BlendMode.DEFAULT;
