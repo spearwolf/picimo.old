@@ -16,14 +16,14 @@
 
         utils.object.definePropertiesPrivateRO( this, {
 
-            _textures    : new utils.Map(),  // image -> texture
-            _boundImages : []                // [ texUnit ] -> image
+            _textureCache  : new utils.Map(),  // image -> texture
+            _boundTextures : []                // [ texUnit ] -> image
         
         });
 
         for ( var i = 0; i < app.glx.MAX_TEXTURE_IMAGE_UNITS; i++ ) {
 
-            this._boundImages[ i ] = null;
+            this._boundTextures[ i ] = null;
         
         }
 
@@ -42,16 +42,16 @@
 
     TextureManager.prototype.bindWebGlTexture = function ( glTexture ) {
 
-        var texUnit = this._boundImages.indexOf( glTexture );
+        var texUnit = this._boundTextures.indexOf( glTexture );
 
         if ( texUnit < 0 ) {
 
-            for ( var i = 0; i < this._boundImages.length; i++ ) {
+            for ( var i = 0; i < this._boundTextures.length; i++ ) {
 
-                if ( ! this._boundImages[ i ] ) {
+                if ( ! this._boundTextures[ i ] ) {
 
                     texUnit = i;
-                    this._boundImages[ i ] = glTexture;
+                    this._boundTextures[ i ] = glTexture;
                     break;
 
                 }
@@ -93,14 +93,14 @@
         var image = tex.image.domElement ? tex.image.domElement : tex.image;
         var uid = tex.image.uid ? tex.image.uid : image;
 
-        var glTex = this._textures.get( uid );
+        var glTex = this._textureCache.get( uid );
 
         if ( ! glTex ) {
 
             glTex = new WebGlTexture( this.app.glx );
             glTex.image = image;
 
-            this._textures.set( uid, glTex );
+            this._textureCache.set( uid, glTex );
         
         }
 
