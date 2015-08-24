@@ -31,7 +31,16 @@
         /**
          * @member {boolean} Picimo.webgl.WebGlTexture#needsUpload
          */
+
         texture.needsUpload = true;
+
+        /**
+         * @member {number} Picimo.webgl.WebGlTexture#texUnit
+         */
+
+        texture.texUnit = -1;
+
+        // TODO unbind texture
 
     }
 
@@ -203,12 +212,14 @@
 
     /**
      * @method Picimo.webgl.WebGlTexture#bind
+     * @returns {number} texture unit
      */
 
     WebGlTexture.prototype.bind = function () {
 
         if ( ! this.glId ) initialize( this );
-        this.glx.bindTexture( this.gl.TEXTURE_2D, this.glId );
+
+        this.texUnit = this.glx.app.texture.bindWebGlTexture( this );
 
     };
 
@@ -229,9 +240,9 @@
 
         if ( texture.needsConf && texture.canConf ) {
 
-            var gl = texture.gl;
+            texture.bind();
 
-            texture.glx.bindTexture( gl.TEXTURE_2D, texture.glId );
+            var gl = texture.gl;
 
             gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true );
             gl.pixelStorei( gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false );
@@ -264,9 +275,10 @@
 
         if ( this.needsUpload && this.canUpload ) {
 
+            this.bind();
+
             var gl = this.gl;
 
-            this.glx.bindTexture( gl.TEXTURE_2D, this.glId );
             gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image );
 
             this.needsUpload = false;

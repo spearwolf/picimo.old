@@ -16,11 +16,66 @@
 
         utils.object.definePropertiesPrivateRO( this, {
 
-            _textures : new utils.Map(),  // image -> texture
+            _textures    : new utils.Map(),  // image -> texture
+            _boundImages : []                // [ texUnit ] -> image
         
         });
 
+        for ( var i = 0; i < app.glx.MAX_TEXTURE_IMAGE_UNITS; i++ ) {
+
+            this._boundImages[ i ] = null;
+        
+        }
+
+        this._lastBoundTexUnit = 0;
+
     }
+
+
+    /**
+     * @method Picimo.webgl.TextureManager#bindWebGlTexture
+     * @description
+     * Bind the given *texture* to a *webgl texture unit*.
+     * @param {Picimo.webgl.WebGlTexture} glTexture
+     * @return {number} texture unit
+     */
+
+    TextureManager.prototype.bindWebGlTexture = function ( glTexture ) {
+
+        var texUnit = this._boundImages.indexOf( glTexture );
+
+        if ( texUnit < 0 ) {
+
+            for ( var i = 0; i < this._boundImages.length; i++ ) {
+
+                if ( ! this._boundImages[ i ] ) {
+
+                    texUnit = i;
+                    this._boundImages[ i ] = glTexture;
+                    break;
+
+                }
+
+            }
+
+            var glx = this.app.glx;
+
+            if ( texUnit < 0 ) {
+
+                texUnit = this._lastBoundTexUnit;
+
+                this._lastBoundTexUnit = ( this._lastBoundTexUnit + 1 ) % glx.MAX_TEXTURE_IMAGE_UNITS;
+
+            }
+
+            glx.activeTexture( texUnit );
+            glx.bindTexture2d( glTexture.glId );
+
+        }
+
+        return texUnit;
+
+    };
 
 
     /**

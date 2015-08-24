@@ -15,7 +15,6 @@
 
         utils.object.definePropertiesPrivateRO( this, {
             '_boundBuffers' : new utils.Map(),
-            '_boundTextures': new utils.Map(),
             '_shaders'      : new utils.Map(),
             '_programs'     : new utils.Map()
         });
@@ -26,22 +25,54 @@
         this.app           = null;
         this.activeProgram = null;
 
+        this.activeTexture( 0 );
+        this._boundTextures = [];
+
+        for ( var i = 0; i < this.MAX_TEXTURE_IMAGE_UNITS; i++ ) {
+        
+            this._boundTextures[ i ] = { TEXTURE_2D: null };
+        
+        }
+
         Object.seal( this );
 
     }
 
     /**
-     * @method Picimo.webgl.WebGlContext#bindTexture
+     * @method Picimo.webgl.WebGlContext#activeTexture
+     * @param {number} texUnit - texture unit
+     */
+
+    WebGlContext.prototype.activeTexture = function ( texUnit ) {
+
+        var gl = this.gl;
+        var tex = gl.TEXTURE0 + texUnit;
+
+        if ( this.activeTexUnit !== tex ) {
+
+            this.activeTexUnit = tex;
+            gl.activeTexture( this.activeTexUnit );
+        
+        }
+
+    };
+
+    /**
+     * @method Picimo.webgl.WebGlContext#bindTexture2d
      * @param {number} textureType - gl.TEXTURE_2D or ..
      * @param texture
      */
 
-    WebGlContext.prototype.bindTexture = function ( textureType, texture ) {
+    WebGlContext.prototype.bindTexture2d = function ( texture ) {
 
-        if ( this._boundTextures.get( textureType ) !== texture ) {
+        var gl = this.gl;
+        var boundTextures = this._boundTextures[ this.activeTexUnit - gl.TEXTURE0 ];
 
-            this._boundTextures.set( textureType, texture );
-            this.gl.bindTexture( textureType, texture );
+        if ( boundTextures.TEXTURE_2D !== texture ) {
+
+            boundTextures.TEXTURE_2D = texture;
+
+            gl.bindTexture( gl.TEXTURE_2D, texture );
 
         }
 

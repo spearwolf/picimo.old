@@ -1,4 +1,3 @@
-/* global Int16Array */
 (function(){
     "use strict";
 
@@ -55,9 +54,8 @@
 
     WebGlRenderer.prototype.initGl = function () {
 
-        var gl = this.app.gl;
-
-        gl.activeTexture( gl.TEXTURE0 ); // TODO remove
+        //var gl = this.app.gl;
+        //gl.activeTexture( gl.TEXTURE0 );
 
     };
 
@@ -156,12 +154,6 @@
 
 
     function createRenderState( renderer ) {
-
-        var glx = renderer.app.glx;
-
-        // TODO
-        renderer.currentTexUnits = new Int16Array( glx.MAX_TEXTURE_IMAGE_UNITS );
-        for ( var i = renderer.currentTexUnits.length; i--; ) renderer.currentTexUnits[ i ] = -1;
 
         renderer._cmdQueue = new utils.Queue();
 
