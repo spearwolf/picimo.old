@@ -111,6 +111,6 @@ module.exports = function( grunt ) {
 
     grunt.registerTask('doc', ['jsdoc', 'copy:jsdoc']);
 
-    grunt.registerTask('default', [ 'build', 'doc', 'watch' ]);
+    grunt.registerTask('default', [ 'build', 'watch' ]);
 
 };
