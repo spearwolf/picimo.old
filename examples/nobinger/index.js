@@ -22,13 +22,11 @@ var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 5000 }, {
     init: function ( spriteGroup ) {
 
         console.log( "spriteGroup ready!", spriteGroup.textureAtlas.frameNames.join( ", " ) );
-    
+
     },
 
 });
 
-
-window.spriteGroup = spriteGroup;  // DEBUG
 
 
 
@@ -54,7 +52,7 @@ app.loadTextureAtlas( './nobinger.json' ).then( function ( atlas ) {
     spriteGroup.on( "initGl", function () {
 
         console.log( "spriteGroup initialized: ", this.textureAtlas.frameNames.join( ", " ) );
-    
+
     });
 
 });
@@ -67,4 +65,3 @@ app.loadTextureAtlas( './nobinger.json' ).then( function ( atlas ) {
 
     }) ;
     */
-
