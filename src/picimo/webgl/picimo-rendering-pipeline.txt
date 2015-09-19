@@ -1,0 +1,13 @@
+https://www.websequencediagrams.com/
+---
+title Picimo rendering pipeline
+
+Picimo.App->WebGlRenderer: initGl()
+Picimo.App->WebGlRenderer: resize()
+note left of Picimo.App: requestAnimationFrame
+Picimo.App->WebGlRenderer: beginFrame()
+Picimo.App->sg.Node: renderFrame()
+note left of sg.Node: initGl
+sg.Node->Pipeline: create or find Pipeline
+note left of sg.Node: renderFrame
+Picimo.App->WebGlRenderer: endFrame()

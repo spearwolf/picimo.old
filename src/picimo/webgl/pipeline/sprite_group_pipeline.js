@@ -4,17 +4,18 @@
     var utils = require( '../../utils' );
 
     /**
-     * @class Picimo.webgl.pipeline.SpritePipeline
+     * @class Picimo.webgl.pipeline.SpriteGroupPipeline
      */
 
-    function SpritePipeline ( renderer, programName, voDescriptor, capacity ) {
+    function SpriteGroupPipeline ( app, program, voDescriptor, capacity ) {
 
-        this.renderer     = renderer;
-        this.programName  = programName;
+        this.app          = app;
+        this.program      = program;
         this.voDescriptor = voDescriptor;
         this.capacity     = capacity;
 
         // TODO
+        // - create web gl vertex buffer from voDescriptor and capacity
 
         reset( this );
 
@@ -23,7 +24,7 @@
     }
 
 
-    SpritePipeline.prototype.initGl = function () {
+    SpriteGroupPipeline.prototype.initGl = function () {
 
         var self = this;
     
@@ -70,6 +71,6 @@
     }
 
 
-    module.exports = SpritePipeline;
+    module.exports = SpriteGroupPipeline;
 
 })();

@@ -7,7 +7,8 @@
 
     module.exports = {
 
-        SpritePipeline : require( './sprite_pipeline' )
+        SpritePipeline      : require( './sprite_pipeline' ),
+        SpriteGroupPipeline : require( './sprite_group_pipeline' )
 
     };
 

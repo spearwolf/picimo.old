@@ -18,6 +18,7 @@
         utils.object.definePropertyPublicRO( this, 'app', app );
 
         createRenderState( this );
+        initializePipelines( this );
 
     }
 
@@ -28,7 +29,7 @@
 
     WebGlRenderer.prototype.beginFrame = function () {
 
-        if ( ! this.pipeline ) initializePipelines( this );
+        //if ( ! this.pipeline ) initializePipelines( this );
 
         var gl = this.app.gl;
         var bgColor = this.app.backgroundColor;
@@ -70,6 +71,23 @@
         var gl = this.app.gl;
 
         gl.viewport( 0, 0, app.width, app.height );
+
+    };
+
+
+    WebGlRenderer.prototype.addPipeline = function ( name, pipe ) {
+
+        if ( name && ! pipe ) {
+
+            pipe = name;
+            name = "pipe_" + this._pipelines.length;
+
+        }
+
+        this.pipeline[ name ] = pipe;
+        this._pipelines.push( pipe );
+
+        return pipe;
 
     };
 
@@ -144,12 +162,12 @@
     function initializePipelines( renderer ) {
 
         // TODO
-    
+
         renderer.pipeline = new utils.Map();
         renderer._pipelines = [];
 
         //renderer.addPipeline( 'images', new SpritePipeline(re, "sprite", 1024, re.app.spriteDescriptor ));
-    
+
     }
 
 
