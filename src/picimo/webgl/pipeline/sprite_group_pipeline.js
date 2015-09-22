@@ -30,7 +30,6 @@
         // TODO
         // - texture(s)
 
-        this.vertexArray      = null;
         this.indexArray       = null;
         this.webGlBuffer      = null;
         this.webGlIndexBuffer = null;
@@ -43,25 +42,43 @@
 
     SpriteGroupPipeline.prototype.initGl = function () {
 
-        var self = this;
+        initBuffers( this );
+        initRenderCmds( this );
 
-        if ( ! this.webGlBuffer ) {
+    };
 
-            this.webGlBuffer = WebGlBuffer.fromVertexArray( this.app.glx, this.pool.descriptor, {
 
-                drawType    : this.app.gl.DYNAMIC_DRAW,  // TODO chosse vertex buffer type (static,dynamic or stream?)
-                vertexArray : this.pool.vertexArray
+    SpriteGroupPipeline.prototype.render = function () {
+
+        // TODO render whole vertex array (-> render command)
+
+    };
+
+
+    function initBuffers ( self ) {
+
+        if ( ! self.webGlBuffer ) {
+
+            self.webGlBuffer = WebGlBuffer.fromVertexArray( self.app.glx, self.pool.descriptor, {
+
+                drawType    : self.app.gl.DYNAMIC_DRAW,  // TODO chosse vertex buffer type (static,dynamic or stream?)
+                vertexArray : self.pool.vertexArray
 
             });
 
-            this.indexArray = VertexIndexArray.Generate( this.pool.capacity, [ 0,1,2, 0,2,3 ] );
-            this.webGlIndexBuffer = WebGlBuffer.fromVertexIndexArray( this.app.glx, this.indexArray );
+            self.indexArray = VertexIndexArray.Generate( self.pool.capacity, [ 0,1,2, 0,2,3 ] );
+            self.webGlIndexBuffer = WebGlBuffer.fromVertexIndexArray( self.app.glx, self.indexArray );
 
         }
 
-        if ( ! this.renderCmdObj ) {
+    }
 
-            this.renderCmdObj = new utils.ObjectPool( function () {
+
+    function initRenderCmds ( self ) {
+    
+        if ( ! self.renderCmdObj ) {
+
+            self.renderCmdObj = new utils.ObjectPool( function () {
 
                 var obj = {
                     program      : self.program,
@@ -88,8 +105,8 @@
             });
 
         }
-
-    };
+    
+    }
 
 
     function reset( pipeline ) {

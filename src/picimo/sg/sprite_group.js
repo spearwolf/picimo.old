@@ -32,7 +32,7 @@
         this.pipeline         = null;
 
         this.on( "initGl", onInitGl.bind( this, this ) );
-        this.on( "renderFrame", onRenderFrame.bind( this, this ) );
+        this.on( "renderFrame", -1000, onRenderFrame.bind( this, this ) );
 
     }
 
@@ -49,11 +49,13 @@
 
     function onRenderFrame ( spriteGroup ) {
 
-        //if ( spriteGroup.app.frameNo === 120 ) {
+        if ( spriteGroup.app.frameNo === 120 ) {
         
-            //console.log( 'SpriteGroup->renderFrame' );
+            console.log( 'SpriteGroup->renderFrame' );
         
-        //}
+        }
+
+        spriteGroup.pipeline.render();
 
     }
 
