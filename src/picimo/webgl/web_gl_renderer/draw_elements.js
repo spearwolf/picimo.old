@@ -17,7 +17,7 @@
             // program
             //
             //==================================================================
-
+      
             if ( !re.currentProgram || re.currentProgram !== program ) {
 
                 re.currentProgram = program;

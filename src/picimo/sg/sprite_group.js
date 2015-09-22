@@ -41,19 +41,19 @@
 
     function onInitGl ( spriteGroup ) {
 
-        spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.spriteDescriptor, spriteGroup.pool.capacity );
-        spriteGroup.app.renderer.addPipeline( spriteGroup.pipeline );
+        spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool );
         spriteGroup.pipeline.initGl();
+        spriteGroup.app.renderer.addPipeline( spriteGroup.pipeline );
 
     }
 
     function onRenderFrame ( spriteGroup ) {
 
-        if ( spriteGroup.app.frameNo === 120 ) {
+        //if ( spriteGroup.app.frameNo === 120 ) {
         
-            console.log( 'SpriteGroup->renderFrame' );
+            //console.log( 'SpriteGroup->renderFrame' );
         
-        }
+        //}
 
     }
 

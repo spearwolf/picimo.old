@@ -50,7 +50,7 @@
     <div class="nameContainer">
         <h4 class="name" id="WebGlBuffer">
             
-            new Picimo.webgl.WebGlBuffer<span class="signature">(glx)</span>
+            new Picimo.webgl.WebGlBuffer<span class="signature">(glx, options)</span>
         </h4>
     
         
@@ -64,6 +64,10 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>An object-orientated wrapper for the WebGL buffer api.</p>
+    </div>
     
 
     
@@ -100,6 +104,29 @@
             
                 
 <span class="param-type"><a href="Picimo.webgl.WebGlContext.html">Picimo.webgl.WebGlContext</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
 
 
             
@@ -178,6 +205,307 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id=".fromVertexArray">
+            
+            <span class="type-signature static">static</span>Picimo.webgl.WebGlBuffer.fromVertexArray<span class="signature">(glx, voDescriptor, options)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_buffer.js, line 156
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns a new WebGlBuffer.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>glx</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.webgl.WebGlContext.html">Picimo.webgl.WebGlContext</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>voDescriptor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Picimo.core.VertexArrayDescriptor</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id=".fromVertexIndexArray">
+            
+            <span class="type-signature static">static</span>Picimo.webgl.WebGlBuffer.fromVertexIndexArray<span class="signature">(glx, vertexIndexArray)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_buffer.js, line 188
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns a new WebGlBuffer.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>glx</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.webgl.WebGlContext.html">Picimo.webgl.WebGlContext</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>vertexIndexArray</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Picimo.core.VertexIndexArray.html">Picimo.core.VertexIndexArray</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="bindBuffer">
             
             bindBuffer<span class="signature">()</span>
@@ -185,7 +513,7 @@
     
         
         <div class="tag-source">
-            webgl/web_gl_buffer.js, line 31
+            webgl/web_gl_buffer.js, line 34
         </div>
         
     </div>
@@ -237,6 +565,15 @@
     
     
     
+    <h5>Returns:</h5>
+    
+
+
+
+self
+
+
+    
     
     
 </dd>
@@ -252,7 +589,7 @@
     
         
         <div class="tag-source">
-            webgl/web_gl_buffer.js, line 42
+            webgl/web_gl_buffer.js, line 46
         </div>
         
     </div>
@@ -344,6 +681,194 @@
     
     
     
+    <h5>Returns:</h5>
+    
+
+
+
+self
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="bufferSubData">
+            
+            bufferSubData<span class="signature">(arr, count, <span class="optional">offset</span>)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_buffer.js, line 64
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arr</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>count</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+
+self
+
+
+    
     
     
 </dd>
@@ -359,7 +884,7 @@
     
         
         <div class="tag-source">
-            webgl/web_gl_buffer.js, line 58
+            webgl/web_gl_buffer.js, line 135
         </div>
         
     </div>
@@ -415,6 +940,337 @@
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="drawElements">
+            
+            drawElements<span class="signature">(elemType, numItems, offset)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_buffer.js, line 117
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>elemType</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>numItems</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="vertexAttribPointer">
+            
+            vertexAttribPointer<span class="signature">(pointer, itemSize, stride, offset, normalized)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            webgl/web_gl_buffer.js, line 92
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>pointer</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>itemSize</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>stride</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>normalized</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+
+self
+
+
+    
+    
+    
+</dd>
+
         </dl>
     
     
@@ -432,7 +1288,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Sat Sep 19 2015 18:04:06 GMT+0200 (CEST)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Sep 22 2015 08:52:06 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
