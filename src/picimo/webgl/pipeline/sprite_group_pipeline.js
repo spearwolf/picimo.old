@@ -17,19 +17,26 @@
 
     function SpriteGroupPipeline ( app, program, pool ) {
 
-        this.app          = app;
-        this.program      = program;
-        this.spritePool   = pool;
-        this.voDescriptor = pool.descriptor;
-        this.capacity     = pool.capacity;
+        utils.object.definePropertiesPrivateRO( this, {
+
+            app     : app,
+            program : program,
+            pool    : pool,
+        
+        });
 
         reset( this );
 
         // TODO
         // - texture(s)
 
-        this.webGlBuffer  = null;
-        this.renderCmdObj = null;
+        this.vertexArray      = null;
+        this.indexArray       = null;
+        this.webGlBuffer      = null;
+        this.webGlIndexBuffer = null;
+        this.renderCmdObj     = null;
+
+        Object.seal( this );
 
     }
 
@@ -40,14 +47,14 @@
 
         if ( ! this.webGlBuffer ) {
 
-            this.webGlBuffer = WebGlBuffer.fromVertexArray( this.app.glx, this.voDescriptor, {
+            this.webGlBuffer = WebGlBuffer.fromVertexArray( this.app.glx, this.pool.descriptor, {
 
                 drawType    : this.app.gl.DYNAMIC_DRAW,  // TODO chosse vertex buffer type (static,dynamic or stream?)
-                vertexArray : this.spritePool.vertexArray
+                vertexArray : this.pool.vertexArray
 
             });
 
-            this.indexArray = VertexIndexArray.Generate( this.capacity, [ 0,1,2, 0,2,3 ] );
+            this.indexArray = VertexIndexArray.Generate( this.pool.capacity, [ 0,1,2, 0,2,3 ] );
             this.webGlIndexBuffer = WebGlBuffer.fromVertexIndexArray( this.app.glx, this.indexArray );
 
         }

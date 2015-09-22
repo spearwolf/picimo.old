@@ -3,6 +3,8 @@
 (function(){
     'use strict';
 
+    var utils = require( '../utils' );
+
     /**
      * @class Picimo.webgl.WebGlBuffer
      * @description
@@ -14,20 +16,26 @@
 
     function WebGlBuffer ( glx, options ) {
 
-        this.glx = glx;
-
         var gl = glx.gl;
 
-        this.glBuffer = gl.createBuffer();
+        utils.object.definePropertiesPrivateRO( this, {
 
-        this.drawType   = options.drawType   || gl.DYNAMIC_DRAW;
-        this.bufferType = options.bufferType || gl.ARRAY_BUFFER;
-        this.itemType   = options.itemType   || ( this.bufferType === gl.ARRAY_BUFFER ? gl.FLOAT : gl.UNSIGNED_SHORT );
-        this.arrType    = options.arrType    || ( this.itemType === gl.FLOAT ? Float32Array : Uint16Array );
+            glx        : glx,
+            glBuffer   : gl.createBuffer(),
 
-        this.itemSize   = options.itemSize;
+            drawType   : ( options.drawType || gl.DYNAMIC_DRAW ),
+            bufferType : ( options.bufferType || gl.ARRAY_BUFFER ),
+            itemType   : ( options.itemType || ( this.bufferType === gl.ARRAY_BUFFER ? gl.FLOAT : gl.UNSIGNED_SHORT ) ),
+            arrType    : ( options.arrType || ( this.itemType === gl.FLOAT ? Float32Array : Uint16Array ) ),
+
+            itemSize   : options.itemSize,
+
+        });
+
         this.numItems   = options.numItems || 0;
         this.dataArray  = options.dataArray;
+
+        Object.seal( this );
 
     }
 
@@ -158,18 +166,18 @@
      * @memberof Picimo.webgl.WebGlBuffer
      * @method fromVertexArray
      * @param {Picimo.webgl.WebGlContext} glx
-     * @param {Picimo.core.VertexArrayDescriptor} voDescriptor
+     * @param {Picimo.core.VertexArrayDescriptor} descriptor
      * @param {Object} options
      * @static
      */
 
-    WebGlBuffer.fromVertexArray = function ( glx, voDescriptor, options ) {
+    WebGlBuffer.fromVertexArray = function ( glx, descriptor, options ) {
 
         var opts = {
 
             drawType   : ( options && options.drawType ? options.drawType : glx.gl.DYNAMIC_DRAW ),
             bufferType : glx.gl.ARRAY_BUFFER,
-            itemSize   : voDescriptor.vertexAttrCount,
+            itemSize   : descriptor.vertexAttrCount,
 
         };
 
@@ -208,7 +216,6 @@
         };
 
         var buffer = new WebGlBuffer( glx, opts );
-
         buffer.bufferData( vertexIndexArray.indices );
 
         return buffer;

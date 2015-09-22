@@ -68,7 +68,7 @@
 
             for ( j = 0; j < indices.length; ++j ) {
 
-                arr[ ( i * arr.objectIndexCount ) + j ] = indices[ j ] + ( ( i + objectOffset ) * arr.objectIndexCount );
+                arr.indices[ ( i * arr.objectIndexCount ) + j ] = indices[ j ] + ( ( i + objectOffset ) * arr.objectIndexCount );
 
             }
 
