@@ -3,6 +3,7 @@
 
     var Node                = require( './node' );
     var core                = require( '../core' );
+    var utils               = require( '../utils' );
     var sprites             = require( '../sprites' );
     var SpriteGroupPipeline = require( '../webgl/pipeline' ).SpriteGroupPipeline;
 
@@ -13,9 +14,9 @@
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
      * @param {Picimo.core.TextureAtlas|Picimo.utils.Promise} [options.textureAtlas] - The texture atlas
-     * @param {string} [options.program="spriteGroup"] - The webgl program name
-     * @param {Picimo.core.VertexObjectDescriptor} [options.spriteDescriptor=Picimo.sprites.SpriteDescriptor] - The sprite descriptor
+     * @param {string} [options.program="sprite"] - The webgl program name
      * @param {number} [options.capacity=1000] - Max sprite capacity
+     * @param {Picimo.core.VertexObjectDescriptor} [options.spriteDescriptor=Picimo.sprites.SpriteDescriptor] - The sprite descriptor
      *
      */
 
@@ -25,8 +26,9 @@
 
         Node.call( this, app, options );
 
-        this.textureAtlas     = options.textureAtlas;
-        this.program          = options.program || "spriteGroup";
+        initTextureAtlas( this, options.textureAtlas );
+
+        this.program          = options.program || "sprite";
         this.spriteDescriptor = options.spriteDescriptor || sprites.SpriteDescriptor;
         this.pool             = new core.VertexObjectPool( this.spriteDescriptor, options.capacity || 1000 );
         this.pipeline         = null;
@@ -39,9 +41,30 @@
     SpriteGroup.prototype = Object.create( Node.prototype );
     SpriteGroup.prototype.constructor = SpriteGroup;
 
+
+    function initTextureAtlas ( spriteGroup, textureAtlas ) {
+
+        spriteGroup.textureAtlas = null;
+        spriteGroup.setReadyFunc( false );
+
+        utils.Promise.resolve( textureAtlas )
+
+            .then( function ( atlas ) {
+
+                    spriteGroup.textureAtlas = atlas;
+                    return atlas.deferred.promise;
+
+                })
+
+            .then ( function ( atlas ) { return atlas.texture.image.deferred.promise; })
+            .then ( function () { spriteGroup.setReadyFunc( true ); })
+            ;
+
+    }
+
     function onInitGl ( spriteGroup ) {
 
-        spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool );
+        spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool, spriteGroup.textureAtlas );
         spriteGroup.pipeline.initGl();
         spriteGroup.app.renderer.addPipeline( spriteGroup.pipeline );
 
@@ -49,52 +72,52 @@
 
     function onRenderFrame ( spriteGroup ) {
 
-        if ( spriteGroup.app.frameNo === 120 ) {
-        
-            console.log( 'SpriteGroup->renderFrame' );
-        
-        }
-
         spriteGroup.pipeline.render();
+
+        if ( spriteGroup.app.frameNo === 120 ) {
+
+            console.log( 'SpriteGroup->renderFrame', spriteGroup.pipeline.renderCmd );
+
+        }
 
     }
 
     Object.defineProperties( SpriteGroup.prototype, {
-    
+
         "textureAtlas": {
 
             get: function () { return this._textureAtlas; },
 
             set: function ( ta ) {
-            
+
                 this._textureAtlas = ta;
 
                 if ( ta instanceof core.TextureAtlas ) {
-                
+
                     this.ready = true;
 
                 } else {
-                
+
                     this.ready = false;
 
                     if ( ta && ta.then ) {
 
                         var self = this;
-                    
+
                         ta.then( function ( ta_ ) {
-                        
+
                             self.textureAtlas = ta_;
 
                         });
-                    
+
                     }
-                
+
                 }
-            
+
             }
-        
+
         }
-    
+
     });
 
 

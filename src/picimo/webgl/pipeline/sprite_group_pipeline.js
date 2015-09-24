@@ -1,9 +1,9 @@
 (function(){
     "use strict";
 
-    var utils = require( '../../utils' );
-    var WebGlBuffer = require( '../web_gl_buffer' );
+    var utils            = require( '../../utils' );
     var VertexIndexArray = require( '../../core/vertex_index_array.js' );
+    var WebGlBuffer      = require( '../web_gl_buffer' );
 
     /**
      * @class Picimo.webgl.pipeline.SpriteGroupPipeline
@@ -12,17 +12,18 @@
      *
      *   TODO
      *     - update strategy ( all-at-once, blocks, ..? )
-     *     
+     *
      */
 
-    function SpriteGroupPipeline ( app, program, pool ) {
+    function SpriteGroupPipeline ( app, program, pool, texture ) {
 
         utils.object.definePropertiesPrivateRO( this, {
 
             app     : app,
             program : program,
             pool    : pool,
-        
+            texture : texture,
+
         });
 
         reset( this );
@@ -33,7 +34,7 @@
         this.indexArray       = null;
         this.webGlBuffer      = null;
         this.webGlIndexBuffer = null;
-        this.renderCmdObj     = null;
+        this.renderCmd        = null;
 
         Object.seal( this );
 
@@ -50,7 +51,7 @@
 
     SpriteGroupPipeline.prototype.render = function () {
 
-        // TODO render whole vertex array (-> render command)
+        this.app.renderer.add( this.renderCmd );
 
     };
 
@@ -75,37 +76,44 @@
 
 
     function initRenderCmds ( self ) {
-    
-        if ( ! self.renderCmdObj ) {
 
-            self.renderCmdObj = new utils.ObjectPool( function () {
+        if ( ! self.renderCmd ) {
 
-                var obj = {
-                    program      : self.program,
-                    uniforms     : null,
-                    attributes   : null,
-                    drawElements : {
-                        buffer      : self.vertexIndexBuffer,
-                        elementType : self.app.gl.TRIANGLES
-                    }
-                };
+            self.renderCmd = {
 
-                // TODO
-                //for attr in @program.attributeNames
-                    //obj.attributes[attr] = @vertexBuffer
+                program: self.program,
+                uniforms: {
+                    tex: self.app.texture.findOrCreateWebGlTexture( self.texture )
+                },
+                attributes: {},
+                drawElements: {
+                    buffer: self.webGlIndexBuffer,
+                    elementType: self.app.gl.TRIANGLES
+                }
 
-                // TODO
-                //obj.drawElements.buffer      = @vertexIndexBuffer
-                //obj.drawElements.elementType = gl.TRIANGLES
+            };
 
-                Object.seal( obj );
+            var name, attr = self.pool.descriptor.attr;
 
-                return obj;
+            for ( name in attr) {
 
-            });
+                if ( attr.hasOwnProperty( name ) ) {
+
+                    self.renderCmd.attributes[ name ] = {
+                        offset : attr[ name ].offset,
+                        size   : attr[ name ].size,
+                        stride : self.pool.descriptor.vertexAttrCount,
+                        buffer : self.webGlBuffer,
+                    };
+
+                }
+
+            }
+
+            Object.seal( self.renderCmdj );
 
         }
-    
+
     }
 
 

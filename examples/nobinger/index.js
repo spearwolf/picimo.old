@@ -10,6 +10,10 @@ var app = new Picimo.App({
 
 });
 
+app.shader.loadVertexShader( 'sprite', '/assets/shaders/sprite/shader.vert' );
+app.shader.loadFragmentShader( 'sprite', '/assets/shaders/sprite/shader.frag' );
+app.shader.addProgram( 'sprite', 'sprite', 'sprite' );
+
 // Set pixel resolution
 app.scene.setSize( 800, 600, "contain" );
 

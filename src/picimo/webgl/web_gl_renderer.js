@@ -46,6 +46,16 @@
 
     WebGlRenderer.prototype.endFrame = function () {
 
+        if ( this.app.frameNo === 120 ) {
+        
+            console.log( this._cmdQueue );
+        
+        }
+
+        this.renderAll();
+
+        this._cmdQueue.clear();
+
     };
 
 
@@ -132,7 +142,15 @@
 
     WebGlRenderer.prototype.renderAll = function() {
 
-        for ( var i = this._pipelines.length; i--; ) this._pipelines[ i ].finish();
+        var i, pipe;
+
+        for ( i = this._pipelines.length; i--; ) {
+            
+            pipe = this._pipelines[ i ];
+            
+            if ( pipe.finish ) pipe.finish();
+
+        }
 
         //if ( this.debugOutFrame ) this.logCommandQueueToConsole();
 

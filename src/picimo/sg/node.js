@@ -111,6 +111,16 @@
 
     Node.prototype.setReadyFunc = function ( readyFunc ) {
 
+        if ( readyFunc === false ) {
+
+            readyFunc = function () { return false; };
+
+        } else if ( readyFunc === true ) {
+
+            readyFunc = null;
+
+        }
+
         this._readyFunc = readyFunc;
 
         return this;

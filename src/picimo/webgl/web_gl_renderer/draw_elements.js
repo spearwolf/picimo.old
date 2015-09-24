@@ -8,7 +8,7 @@
             var gl             = re.app.gl;
             //var glx            = re.app.glx;
             var program        = re.program; // = > WebGlProgram
-            var programChanged = false;
+            var programChanged = true; // TODO set to false;
 
             var len, i, name, uniform, attr, etype;
 
@@ -74,8 +74,10 @@
             // - draw arrays
 
             etype = draw.elementType || gl.TRIANGLES;
-            draw.buffer.webGlBuffer.bindBuffer();
-            draw.buffer.webGlBuffer.drawElements(etype, draw.count, draw.offset);
+
+            //draw.buffer
+                //.bindBuffer()
+                //.drawElements(etype, draw.count, draw.offset);
 
         } catch (err) {
 

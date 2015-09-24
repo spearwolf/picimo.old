@@ -25,7 +25,9 @@
         if ( ! this.valueChanged ) return;
 
         // TODO
-        //this.value.vertexAttribPointer( this.name, this.location );
+        //this.value.buffer.vertexAttribPointer( this.name, this.location );
+        var val = this.value;
+        val.buffer.vertexAttribPointer( this.location, val.size, val.stride, val.offset );
 
         this.valueChanged = false;
 
