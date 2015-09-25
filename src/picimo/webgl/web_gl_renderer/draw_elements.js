@@ -1,23 +1,28 @@
-(function(){
+(function () {
     'use strict';
 
     module.exports = function drawElements ( re/*nderer*/, draw ) {
 
         try {
 
-            var gl             = re.app.gl;
-            //var glx            = re.app.glx;
-            var program        = re.program; // = > WebGlProgram
-            var programChanged = true; // TODO set to false;
+            var gl = re.app.gl;
 
-            var len, i, name, uniform, attr, etype;
+            var program = re.program;   // = > WebGlProgram
+            var programChanged = false; // TODO set to false;
+
+            var attr;
+            var etype;
+            var i;
+            var len;
+            var name;
+            var uniform;
 
             //==================================================================
             //
             // program
             //
             //==================================================================
-      
+
             if ( !re.currentProgram || re.currentProgram !== program ) {
 
                 re.currentProgram = program;
@@ -58,7 +63,6 @@
                 attr.setValue( re.attributes.get( name ) );
                 if ( programChanged ) attr.valueChanged = true;
 
-                // TODO
                 attr.upload( gl );
 
             }
@@ -75,9 +79,9 @@
 
             etype = draw.elementType || gl.TRIANGLES;
 
-            //draw.buffer
-                //.bindBuffer()
-                //.drawElements(etype, draw.count, draw.offset);
+            draw.buffer
+                .bindBuffer()
+                .drawElements( etype, draw.count, draw.offset );
 
         } catch (err) {
 

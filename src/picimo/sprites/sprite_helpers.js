@@ -47,11 +47,20 @@
             var half_width  = width  * 0.5;
             var half_height = height * 0.5;
 
-            this.setPos2d(
-                    -half_width, -half_height,
-                     half_width, -half_height,
-                     half_width,  half_height,
-                    -half_width,  half_height
+            //this.setPos2d(
+                    //-half_width, -half_height,
+                     //half_width, -half_height,
+                     //half_width,  half_height,
+                    //-half_width,  half_height
+                    //);
+
+            var z = this.z;
+
+            this.setPosition(
+                    -half_width, -half_height, z,
+                     half_width, -half_height, z,
+                     half_width,  half_height, z,
+                    -half_width,  half_height, z
                     );
 
         };

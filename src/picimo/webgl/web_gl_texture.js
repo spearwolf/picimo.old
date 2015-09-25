@@ -1,4 +1,4 @@
-(function(){
+(function () {
     'use strict';
 
     /**
@@ -215,7 +215,7 @@
 
             var gl = texture.glx.gl;
 
-            gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, true );
+            gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false );
             gl.pixelStorei( gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false );
 
             var wrap = texture.isRepeatable ? gl.REPEAT : gl.CLAMP_TO_EDGE;

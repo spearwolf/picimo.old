@@ -1,5 +1,5 @@
 /* global Uint32Array */
-(function(){
+(function () {
     "use strict";
 
     var utils = require( '../utils' );
@@ -49,26 +49,29 @@
      * @param {number} vertexObjectCount
      * @param {Array} indices
      * @param {number} [objectOffset=0]
+     * @param {number} [stride=4]
      * @return {Picimo.core.VertexIndexArray}
      * @example
-     * // Create a VertexIndexBuffer for ten quads where each quad made up of two triangles (six vertices)
-     * var quadIndices = Picimo.core.VertexIndexArray.Generate( 10, [ 0,1,2, 0,2,3 ] );
+     * // Create a VertexIndexBuffer for ten quads where each quad made up of 2x triangles (4x vertices and 6x indices)
+     * var quadIndices = Picimo.core.VertexIndexArray.Generate( 10, [ 0,1,2, 0,2,3 ], 4 );
      * quadIndices.size                 // => 60
      * quadIndices.objectIndexCount     // => 6
      *
      */
-    VertexIndexArray.Generate = function ( vertexObjectCount, indices, objectOffset ) {
+
+    VertexIndexArray.Generate = function ( vertexObjectCount, indices, objectOffset, stride ) {
 
         var arr = new VertexIndexArray( vertexObjectCount, indices.length );
         var i, j;
 
+        if ( stride === undefined ) stride = 4;
         if ( objectOffset === undefined ) objectOffset = 0;
 
         for ( i = 0; i < vertexObjectCount; ++i ) {
 
             for ( j = 0; j < indices.length; ++j ) {
 
-                arr.indices[ ( i * arr.objectIndexCount ) + j ] = indices[ j ] + ( ( i + objectOffset ) * arr.objectIndexCount );
+                arr.indices[ ( i * arr.objectIndexCount ) + j ] = indices[ j ] + ( ( i + objectOffset ) * stride );
 
             }
 

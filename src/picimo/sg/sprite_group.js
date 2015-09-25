@@ -1,4 +1,4 @@
-(function (){
+(function () {
     "use strict";
 
     var Node                = require( './node' );
@@ -65,7 +65,7 @@
     function onInitGl ( spriteGroup ) {
 
         spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool, spriteGroup.textureAtlas );
-        spriteGroup.pipeline.initGl();
+        spriteGroup.pipeline.onInitGl();
         spriteGroup.app.renderer.addPipeline( spriteGroup.pipeline );
 
     }
@@ -74,19 +74,13 @@
 
         spriteGroup.pipeline.render();
 
-        if ( spriteGroup.app.frameNo === 120 ) {
-
-            console.log( 'SpriteGroup->renderFrame', spriteGroup.pipeline.renderCmd );
-
-        }
-
     }
 
     Object.defineProperties( SpriteGroup.prototype, {
 
         "textureAtlas": {
 
-            get: function () { return this._textureAtlas; },
+            get: function () { return this._textureAtlas; },
 
             set: function ( ta ) {
 

@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     var utils = require( '../utils' );
@@ -14,18 +14,18 @@
         
         });
 
+        program.glx.gl.enableVertexAttribArray( this.location );  // TODO understand why this is important and validate that this is the best location to call it
+
         addShaderValue( this );
 
         Object.seal( this );
 
     }
 
-    Attrib.prototype.upload = function ( gl ) {
+    Attrib.prototype.upload = function () {  //} gl ) {
 
         if ( ! this.valueChanged ) return;
 
-        // TODO
-        //this.value.buffer.vertexAttribPointer( this.name, this.location );
         var val = this.value;
         val.buffer.vertexAttribPointer( this.location, val.size, val.stride, val.offset );
 

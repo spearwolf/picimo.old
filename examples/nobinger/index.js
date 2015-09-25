@@ -21,11 +21,21 @@ app.scene.setSize( 800, 600, "contain" );
 var atlas = app.loadTextureAtlas( './nobinger.json' );
 
 
-var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 5000 }, {
+var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 10 }, {
 
-    init: function ( spriteGroup ) {
+    init: function () {
 
         console.log( "spriteGroup ready!", spriteGroup.textureAtlas.frameNames.join( ", " ) );
+
+        var s = spriteGroup.pool.alloc();                                      // create sprite
+        spriteGroup.textureAtlas.getRandomTexture().setTexCoords( s );         // assign texture
+
+        s.setPositionBySize( 100, 100 );                                       // size, position, ..
+        //s.setTranslate( 100, 150 );
+        s.scale = 1;
+        s.opacity = 1;
+
+        window.mySprite = s;
 
     },
 

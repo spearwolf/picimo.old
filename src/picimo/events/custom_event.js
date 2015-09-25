@@ -1,7 +1,7 @@
-(function() {
+(function () {
     "use strict";
 
-    (function(api) {
+    (function (api) {
 
         _definePublicPropertyRO(api, 'VERSION', "0.10.2");
 
@@ -15,15 +15,15 @@
         /**
          * @function Picimo.events.eventize
          * @description
-         *   Append the *CustomEvent* interface to an object.
+         *   Add all the methods from the *CustomEvent* api to the given object.
          * @param {Object} o - any object
          * @return o
          */
 
-        api.eventize = function(o) {
+        api.eventize = function (o) {
 
             /**
-             * A simple event interface for objects.
+             * A simple publish/subscribe interface for any object.
              *
              * @class Picimo.events.CustomEvent
              *
@@ -42,16 +42,15 @@
             /**
              * @method Picimo.events.CustomEvent#on
              * @description
-             * Execute the given function everytime when the event occurred.
+             * Register a function as event callback. The function will be called after the named event is triggered by `.emit()`.
              * @param {string} eventName
              * @param {number} [prio=0]
-             * @param {function} fn - The function to execute when the event occurred.
-             * @return {number} - A listener id
+             * @param {function} fn - The function to call when the event occurred.
+             * @return {number} - A listener id.
              */
 
-            o.on = function(eventName, prio, fn) {
+            o.on = function (eventName, prio, fn) {
 
-                // TODO create own bind() method
                 if (arguments.length === 2 && typeof arguments[0] === 'object' && typeof arguments[1] === 'object') {
                     return setListenerFromOptions(this, arguments[0], arguments[1]);
                 }
@@ -61,9 +60,8 @@
                     prio = 0;
                 }
 
-                var eventListener = this._callbacks[eventName] || (this._callbacks[eventName] = [])
-                  , listenerId = ++this._callbacks._id
-                  ;
+                var eventListener = this._callbacks[eventName] || (this._callbacks[eventName] = []),
+                    listenerId = ++this._callbacks._id;
 
                 var listener = _definePublicPropertiesRO({}, {
                     id: listenerId,
@@ -79,7 +77,7 @@
 
             };
 
-            function sortListenerByPrio(a, b) {
+            function sortListenerByPrio (a, b) {
                 return b.prio - a.prio;
             }
 
@@ -99,14 +97,14 @@
              * @return {number} - A listener id
              */
 
-            o.once = function(eventName, prio, fn) {
+            o.once = function (eventName, prio, fn) {
 
                 if (arguments.length === 2) {
                     fn = prio;
                     prio = 0;
                 }
 
-                var lid = o.on(eventName, prio, function() {
+                var lid = o.on(eventName, prio, function () {
                     o.off(lid);
                     return fn.apply(this, arguments);
                 });
@@ -128,7 +126,7 @@
              * @param {number|Object} - *listener id* or previously *bound object*
              */
 
-            o.off = function(id) {
+            o.off = function (id) {
                 var cb, i, j, _callbacks, keys;
                 if ( typeof id === 'number' ) {
                     keys = Object.keys(this._callbacks);
@@ -164,7 +162,7 @@
              * @return obj
              */
 
-            o.bind = function(obj) {
+            o.bind = function (obj) {
                 if (!obj) return;
                 var i = this._boundObjects.indexOf(obj);
                 if (i === -1) {
@@ -187,7 +185,7 @@
              * @param {...arguments} [...args] - Arguments for the event callback functions.
              */
 
-            o.emit = function(eventName /*, arguments ..*/) {
+            o.emit = function (eventName /*, arguments ..*/) {
                 var args = Array.prototype.slice.call(arguments, 1);
                 var _callbacks = this._callbacks[eventName];
                 var i, len, cb;
@@ -229,7 +227,7 @@
              * @param {...arguments} [...args] - Arguments for the event callback functions.
              */
 
-            o.emitReduce = function(eventName /*, value, [arguments ..] */) {
+            o.emitReduce = function (eventName /*, value, [arguments ..] */) {
                 var args = Array.prototype.slice.call(arguments, 1);
                 var _callbacks = this._callbacks[eventName];
                 var i, len, cb;
@@ -268,7 +266,7 @@
 
         // .on( options, { onProjectionUpdated: [100, 'projectionUpdated'], onFrame: 'frame', onFrameEnd: 'frameEnd' } )
 
-        function setListenerFromOptions(obj, options, listenerMap) {
+        function setListenerFromOptions (obj, options, listenerMap) {
 
             var eventName, listenName, listenFunc, prio;
 
@@ -280,7 +278,7 @@
                         if (Array.isArray(eventName)) {
                             prio = eventName[0];
                             eventName = eventName[1];
-                        } else {
+                        } else {
                             prio = 0;
                         }
                         obj.on(eventName, prio, listenFunc);
@@ -296,7 +294,7 @@
         //
         // =====================================================================
 
-        function _definePublicPropertyRO(obj, name, value) {
+        function _definePublicPropertyRO (obj, name, value) {
             Object.defineProperty(obj, name, {
                 value        : value,
                 configurable : true,
@@ -305,7 +303,7 @@
             return obj;
         }
 
-        function _definePublicPropertiesRO(obj, attrs) {
+        function _definePublicPropertiesRO (obj, attrs) {
             var i, keys = Object.keys(attrs);
             for (i = keys.length; i--;) {
                 _definePublicPropertyRO(obj, keys[i], attrs[keys[i]]);
@@ -313,7 +311,7 @@
             return obj;
         }
 
-        function _defineHiddenPropertyRO(obj, name, value) {
+        function _defineHiddenPropertyRO (obj, name, value) {
             Object.defineProperty(obj, name, {
                 value        : value,
                 configurable : true

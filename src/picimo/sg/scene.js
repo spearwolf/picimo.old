@@ -1,4 +1,4 @@
-(function (){
+(function () {
     "use strict";
 
     var Node        = require( './node' );
@@ -40,15 +40,12 @@
         /**
          * @member {Picimo.webgl.cmd.BlendMode} Picimo.sg.Scene#blendMode
          */
-
         this.blendMode = options.blendMode;
 
         /**
          * @member {string} Picimo.sg.Scene#sizeVariety - *cover* or *contain*
          */
-
         this._sizeVariety = options.sizeVariety === 'cover' ? 'cover' : 'contain';
-
 
         if ( options.projection === false ) {
 
@@ -58,14 +55,12 @@
                  * @member {Picimo.math.Matrix4} Picimo.sg.Scene#projection
                  * @readonly
                  */
-
                 projection : null,
 
                 /**
                  * @member {boolean} Picimo.sg.Scene#hasOwnProjection
                  * @readonly
                  */
-
                 hasOwnProjection : false,
 
                 projectionNeedsUpdate : false
@@ -88,6 +83,7 @@
                 /**
                  * @member {number} Picimo.sg.Scene#height
                  */
+
                 'height' : { get: function () {
 
                     var parent = this.scene;
@@ -98,6 +94,7 @@
                 /**
                  * @member {number} Picimo.sg.Scene#pixelRatio
                  */
+
                 'pixelRatio' : { get: function () {
 
                     var parent = this.scene;
@@ -125,7 +122,6 @@
 
         }
 
-
         this.on( "init", Number.MAX_VALUE, function () {
 
             if ( this.hasOwnProjection ) {
@@ -143,6 +139,7 @@
 
         this.on( "frame", onFrame.bind( this, this ) );
 
+        if ( this.isRoot ) initRootScene( this );
 
         this.on( options, {
 
@@ -155,6 +152,27 @@
 
     Scene.prototype = Object.create( Node.prototype );
     Scene.prototype.constructor = Scene;
+
+
+    function initRootScene ( scene ) {
+
+        scene.rootRenderCmd = {
+
+            uniforms: {
+
+                iGlobalTime: 0,
+                iFrameNo: 0,
+                iResolution: [0, 0],
+
+                projectionMatrix: scene.projection
+
+            }
+
+        };
+
+        scene.on( "frame", onRootFrame.bind( scene, scene ) );
+
+    }
 
 
     function onFrame ( scene ) {
@@ -170,7 +188,7 @@
             scene.prevWidth      = width;
             scene.prevHeight     = height;
             scene.prevPixelRatio = pixelRatio;
-        
+
             /**
              * Announce a scene size ( width, height or pixelRatio ) change.
              * @event Picimo.sg.Scene#resize
@@ -181,8 +199,22 @@
              */
 
             scene.emit( 'resize', width, height, pixelRatio );
-        
+
         }
+
+    }
+
+    function onRootFrame ( scene ) {
+
+        var uniforms = scene.rootRenderCmd.uniforms;
+        var app = scene.app;
+
+        uniforms.iGlobalTime    = app.now;
+        uniforms.iFrameNo       = app.frameNo;
+        uniforms.iResolution[0] = app.width;
+        uniforms.iResolution[1] = app.height;
+
+        app.renderer.addRenderCommand( scene.rootRenderCmd );
 
     }
 
@@ -398,10 +430,10 @@
                 if ( isCover ) {
 
                     factor = scene._desiredWidth / scene._computedWidth;
-                    
+
                     scene._computedWidth  *= factor;
                     scene._computedHeight *= factor;
-                
+
                 }
 
             } else if ( ( scene._desiredWidth && ! scene._desiredHeight ) || appRatio > sceneRatio ) {
@@ -412,10 +444,10 @@
                 if ( isCover ) {
 
                     factor = scene._desiredHeight / scene._computedHeight;
-                    
+
                     scene._computedWidth  *= factor;
                     scene._computedHeight *= factor;
-                
+
                 }
 
             } else {

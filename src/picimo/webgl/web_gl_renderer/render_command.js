@@ -1,9 +1,9 @@
-(function(){
+(function () {
     'use strict';
 
     var drawElements = require("./draw_elements");
 
-    module.exports = function renderCommand( re/*nderer*/, cmd ) {
+    module.exports = function renderCommand ( re/*nderer*/, cmd ) {
 
         // blend-mode
         //====================================
@@ -22,12 +22,7 @@
 
             }
 
-            if ( re.currentBlendMode !== blendMode ) {
-
-                re.currentBlendMode = blendMode;
-                blendMode.activate( re.app.gl );
-
-            }
+            re.activateBlendMode( blendMode );
 
         }
 

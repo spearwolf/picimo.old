@@ -115,6 +115,22 @@
     };
 
 
+    /**
+     * @method Picimo.core.TextureAtlas#getRandomTexture
+     * @return {Picimo.core.Texture} texture
+     */
+
+    TextureAtlas.prototype.getRandomTexture = function () {
+
+        if ( this.frames ) {
+
+            return this.frames.get( this.frameNames[ parseInt( this.frameNames.length * Math.random(), 10 ) ] );
+        
+        }
+
+    };
+
+
     module.exports = TextureAtlas;
 
 })();

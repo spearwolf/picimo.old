@@ -1,6 +1,4 @@
-/* global Uint16Array */
-/* global Float32Array */
-(function(){
+(function () {
     'use strict';
 
     var utils = require( '../utils' );
@@ -114,9 +112,9 @@
         gl.vertexAttribPointer( pointer,
             ( itemSize || this.itemSize ),
             this.itemType,
-            ( !! normalized ? gl.TRUE : gl.FALSE ),
+            ( normalized ? gl.TRUE : gl.FALSE ),
             ( stride || 0 ) * this.arrType.BYTES_PER_ELEMENT,
-            ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
+            ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
 
         return this;
 
@@ -133,10 +131,7 @@
 
         var gl = this.glx.gl;
 
-        gl.drawElements(
-            ( elemType || gl.TRIANGLES ),
-            ( numItems || this.numItems ),
-            ( offset || 0 ) );
+        gl.drawElements( ( elemType || gl.TRIANGLES ), ( numItems || this.numItems ), this.itemType, ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
 
     };
 
@@ -177,6 +172,8 @@
 
             drawType   : ( options && options.drawType ? options.drawType : glx.gl.DYNAMIC_DRAW ),
             bufferType : glx.gl.ARRAY_BUFFER,
+            itemType   : glx.gl.FLOAT,
+            arrType    : Float32Array,
             itemSize   : descriptor.vertexAttrCount,
 
         };

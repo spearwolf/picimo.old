@@ -1,6 +1,6 @@
 /* global requestAnimationFrame */
 /* global URL */
-(function(){
+(function () {
     "use strict";
 
     var utils  = require( '../utils' );
@@ -141,7 +141,7 @@
          * @member {Picimo.App} Picimo.App#assetBaseUrl - The base url for all assets. May be *undefined*.
          */
 
-        this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
+        this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
 
         /**
          * @member {number} Picimo.App#frameNo - The current frame number.
@@ -150,7 +150,7 @@
         this.frameNo = 0;
 
 
-        this.renderer.initGl();
+        this.renderer.onInitGl();
         this.resize();
 
         window.addEventListener( 'resize', this.resize.bind( this ), false );
@@ -204,7 +204,7 @@
 
             if ( this.renderer ) {
 
-                this.renderer.resize();
+                this.renderer.onResize();
 
             }
 
@@ -231,7 +231,7 @@
         this.now = window.performance.now() / 1000.0;
         ++this.frameNo;
 
-        this.renderer.beginFrame();
+        this.renderer.onStartFrame();
 
         if ( this.scene ) {
 
@@ -239,7 +239,7 @@
 
         }
 
-        this.renderer.endFrame();
+        this.renderer.onEndFrame();
 
         requestAnimationFrame( this.onAnimationFrame );
 
@@ -309,7 +309,7 @@
 
     };
 
-    function getUrlDir( url ) {
+    function getUrlDir ( url ) {
 
         if ( url[ url.length - 1 ] === '/' ) {
 

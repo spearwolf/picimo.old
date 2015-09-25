@@ -1,8 +1,8 @@
-(function(){
+(function () {
     "use strict";
 
     var utils         = require( '../utils' );
-    var cmd           = require( './cmd' );
+    var BlendMode     = require( './cmd' ).BlendMode;
     var renderCommand = require( './web_gl_renderer/render_command' );
 
     /**
@@ -17,99 +17,169 @@
          */
         utils.object.definePropertyPublicRO( this, 'app', app );
 
-        createRenderState( this );
+        initialize( this );
         initializePipelines( this );
 
     }
 
+    function initialize ( renderer ) {  // {{{
 
-    /**
-     * @method Picimo.webgl.WebGlRenderer#beginFrame
-     */
+        renderer.cmdQueue = new utils.Queue();
 
-    WebGlRenderer.prototype.beginFrame = function () {
+        renderer.uniforms = new utils.Map();
+        renderer.attributes = new utils.Map();
 
-        //if ( ! this.pipeline ) initializePipelines( this );
+        renderer.program = null;
+        renderer.currentProgram = null;
+        renderer.currentPipeline = null;
 
-        var gl = this.app.gl;
-        var bgColor = this.app.backgroundColor;
+        renderer.defaultBlendMode = BlendMode.DEFAULT;  // TODO let defaultBlendMode be configurable from outside (eg. Picimo.App)
+        renderer.currentBlendMode = null;
+
+        renderer.renderToTexture = null;
+
+        renderer.debugOutFrame = false;
+
+    }
+    // }}}
+    function initializePipelines ( renderer ) {  // {{{
+
+        // TODO
+
+        renderer.pipeline = new utils.Map();
+        renderer.pipelines = [];
+
+        //renderer.addPipeline( 'images', new SpritePipeline(re, "sprite", 1024, re.app.spriteDescriptor ));
+
+    }
+    // }}}
+
+
+    WebGlRenderer.prototype.onInitGl = function () {
+        // nothing to do here
+    };
+
+    WebGlRenderer.prototype.onResize = function () {
+
+        var app = this.app;
+        app.gl.viewport( 0, 0, app.width, app.height );
+
+    };
+
+    WebGlRenderer.prototype.onStartFrame = function () {
+
+        resetInternalRenderState( this );
+        callPipelines( this, "reset" );
+        resetWebGlState( this );
+        this.activateBlendMode( this.defaultBlendMode );
+
+    };
+
+    function resetWebGlState ( renderer ) {  // {{{
+    
+        var gl = renderer.app.gl;
+        var bgColor = renderer.app.backgroundColor;
 
         gl.clearColor( bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), bgColor.getAlpha() );
         gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
-    };
+    }
+    // }}}
+    function resetInternalRenderState ( renderer ) {  // {{{
+
+        renderer.cmdQueue.clear();
+
+        renderer.currentPipeline  = null;
+        renderer.renderToTexture  = null;
+
+        renderer.debugOutFrame = false;
+
+    }
+    // }}}
 
 
-    /**
-     * @method Picimo.webgl.WebGlRenderer#endFrame
-     */
+    WebGlRenderer.prototype.activateBlendMode = function ( blendMode ) {
 
-    WebGlRenderer.prototype.endFrame = function () {
+        if ( this.currentBlendMode !== blendMode ) {
 
-        if ( this.app.frameNo === 120 ) {
-        
-            console.log( this._cmdQueue );
-        
-        }
-
-        this.renderAll();
-
-        this._cmdQueue.clear();
-
-    };
-
-
-    /**
-     * @method Picimo.webgl.WebGlRenderer#initGl
-     */
-
-    WebGlRenderer.prototype.initGl = function () {
-
-        //var gl = this.app.gl;
-        //gl.activeTexture( gl.TEXTURE0 );
-
-    };
-
-
-    /**
-     * @method Picimo.webgl.WebGlRenderer#resize
-     */
-
-    WebGlRenderer.prototype.resize = function () {
-
-        var app = this.app;
-        var gl = this.app.gl;
-
-        gl.viewport( 0, 0, app.width, app.height );
-
-    };
-
-
-    WebGlRenderer.prototype.addPipeline = function ( name, pipe ) {
-
-        if ( name && ! pipe ) {
-
-            pipe = name;
-            name = "pipe_" + this._pipelines.length;
+            this.currentBlendMode = blendMode;
+            if ( blendMode ) blendMode.activate( this.app.gl );
 
         }
 
-        this.pipeline[ name ] = pipe;
-        this._pipelines.push( pipe );
+    };
 
-        return pipe;
+
+    WebGlRenderer.prototype.onEndFrame = function () {
+
+        if ( this.app.frameNo === 120 ) this.dumpCommandQueue();  // TODO remove me!
+
+        renderAll( this );
 
     };
 
 
-    // ============================================================
-    //
-    // render commands
-    //
-    // ============================================================
+    /**
+     * @method Picimo.webgl.WebGlRenderer#addPipeline
+     * @param {string} name
+     * @param {object} pipeline
+     * @return pipeline
+     *
+     */
 
-    // flush
-    // -----
+    WebGlRenderer.prototype.addPipeline = function ( name, pipeline ) {
+
+        if ( name && ! pipeline ) {
+
+            pipeline = name;
+            name = "pipe_" + this.pipelines.length;
+
+        }
+
+        this.pipeline[ name ] = pipeline;
+        this.pipelines.push( pipeline );
+
+        return pipeline;
+
+    };
+
+    /**
+     * @method Picimo.webgl.WebGlRenderer#activatePipeline
+     * @param pipeline
+     * @return self
+     *
+     */
+
+    WebGlRenderer.prototype.activatePipeline = function ( pipeline ) {
+
+        if ( pipeline !== this.currentPipeline ) {
+
+            if ( this.currentPipeline && this.currentPipeline.flush ) this.currentPipeline.flush();
+            
+            this.currentPipeline = pipeline;
+
+        }
+
+        return this;
+
+    };
+
+    /**
+     * @method Picimo.webgl.WebGlRenderer#addRenderCommand
+     * @param cmd
+     * @param [pipeline] - activate pipeline before
+     *
+     */
+
+    WebGlRenderer.prototype.addRenderCommand = function ( cmd, pipeline ) {
+
+        if ( pipeline ) this.activatePipeline( pipeline );
+
+        if ( cmd.renderToTexture ) this.flush();
+
+        this.cmdQueue.push( cmd );
+
+    };
 
     WebGlRenderer.prototype.flush = function () {
 
@@ -117,97 +187,79 @@
 
     };
 
-    // dumpCommandQueue
-    // ----------------
-
     WebGlRenderer.prototype.dumpCommandQueue = function () {
 
         this.debugOutFrame = true;
 
     };
 
-    // add( renderCommand )
-    // --------------------
 
-    WebGlRenderer.prototype.add = function ( cmd ) {
+    function renderAll ( renderer ) {  // {{{
 
-        if ( cmd.renderToTexture ) this.flush();
+        callPipelines( renderer, "finish" );
 
-        this._cmdQueue.push( cmd );
+        if ( renderer.debugOutFrame ) {
 
-    };
-
-    // renderAll
-    // ---------
-
-    WebGlRenderer.prototype.renderAll = function() {
-
-        var i, pipe;
-
-        for ( i = this._pipelines.length; i--; ) {
-            
-            pipe = this._pipelines[ i ];
-            
-            if ( pipe.finish ) pipe.finish();
+            console.groupCollapsed( "Picimo.webgl.WebGlRenderer Command Queue (" + renderer.cmdQueue.length + ")" );
+            logCommandQueueToConsole( renderer );
 
         }
 
-        //if ( this.debugOutFrame ) this.logCommandQueueToConsole();
+        renderCommandQueue( renderer );
 
-        renderCommandQueue( this );
+        if ( renderer.debugOutFrame ) {
+            
+            console.debug( "WebGlRenderer", renderer );
+            console.groupEnd();
 
-        //if ( this.debugOutFrame ) console.debug("WebGlRenderer", this);
+        }
 
-    };
+    }
+    // }}}
+    function renderCommandQueue ( renderer ) {  // {{{
 
-    // _renderCommandQueue
-    // -------------------
-
-    function renderCommandQueue ( renderer ) {
-
-        var len = renderer._cmdQueue.length;
+        var len = renderer.cmdQueue.length;
         var i;
 
         for ( i = 0; i < len; i++ ) {
 
-             renderCommand( renderer, renderer._cmdQueue.entries[ i ].data );
+             renderCommand( renderer, renderer.cmdQueue.entries[ i ].data );
 
         }
 
     }
+    // }}}
+    function logCommandQueueToConsole ( renderer ) {  // {{{
 
+        renderer.cmdQueue.forEach( function ( cmd ) {
 
-    function initializePipelines( renderer ) {
+            if ('id' in cmd) {
+                console.log(cmd.id, cmd);
+            } else {
+                console.log(cmd);
+            }
 
-        // TODO
-
-        renderer.pipeline = new utils.Map();
-        renderer._pipelines = [];
-
-        //renderer.addPipeline( 'images', new SpritePipeline(re, "sprite", 1024, re.app.spriteDescriptor ));
-
-    }
-
-
-    function createRenderState( renderer ) {
-
-        renderer._cmdQueue = new utils.Queue();
-
-        renderer.uniforms         = new utils.Map();
-        renderer.attributes       = new utils.Map();
-        renderer.program          = null;
-
-        renderer.currentProgram   = null;
-        renderer.currentPipeline  = null;
-
-        renderer.defaultBlendMode = cmd.BlendMode.DEFAULT;
-        renderer.currentBlendMode = null;
-
-        renderer.renderToTexture  = null;
-
-        renderer.debugOutFrame = false;
+        });
 
     }
+    // }}}
+    function callPipelines ( renderer, funcName ) {  // {{{
+    
+        var i;
+        var pipe;
+        var fn;
+
+        for ( i = renderer.pipelines.length; i--; ) {
+
+            pipe = renderer.pipelines[ i ];
+            fn = pipe[ funcName ];
+
+            if ( fn ) fn.call( pipe );
+
+        }
+    
+    }
+    // }}}
 
 
     module.exports = WebGlRenderer;

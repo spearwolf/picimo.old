@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     var utils            = require( '../../utils' );
@@ -11,7 +11,7 @@
      * @description
      *
      *   TODO
-     *     - update strategy ( all-at-once, blocks, ..? )
+     *     - buffer update strategy ( all-at-once, blocks, ..? )
      *
      */
 
@@ -26,11 +26,6 @@
 
         });
 
-        reset( this );
-
-        // TODO
-        // - texture(s)
-
         this.indexArray       = null;
         this.webGlBuffer      = null;
         this.webGlIndexBuffer = null;
@@ -41,7 +36,7 @@
     }
 
 
-    SpriteGroupPipeline.prototype.initGl = function () {
+    SpriteGroupPipeline.prototype.onInitGl = function () {
 
         initBuffers( this );
         initRenderCmds( this );
@@ -51,7 +46,17 @@
 
     SpriteGroupPipeline.prototype.render = function () {
 
-        this.app.renderer.add( this.renderCmd );
+        this.app.renderer.addRenderCommand( this.renderCmd, this );
+
+    };
+
+
+    SpriteGroupPipeline.prototype.finish = function () {
+
+        if ( this.app.frameNo === 120 ) console.log('finish!');
+
+        this.webGlBuffer.bufferSubData();  // TODO always upload the complete vertex buffer - is this a good idea?
+        //this.webGlBuffer.bufferData( this.pool.vertexArray.vertices );
 
     };
 
@@ -67,7 +72,7 @@
 
             });
 
-            self.indexArray = VertexIndexArray.Generate( self.pool.capacity, [ 0,1,2, 0,2,3 ] );
+            self.indexArray = VertexIndexArray.Generate( self.pool.capacity, [ 0, 1, 2, 0, 2, 3 ] );
             self.webGlIndexBuffer = WebGlBuffer.fromVertexIndexArray( self.app.glx, self.indexArray );
 
         }
@@ -117,17 +122,17 @@
     }
 
 
-    function reset( pipeline ) {
+    //function reset ( pipeline ) {
 
         //pipeline.currentSpriteCount  = 0;
         //pipeline.currentSpriteOffset = 0;
-        pipeline.totalSpritesCount   = 0;
+        //pipeline.totalSpritesCount   = 0;
         //pipeline.texture             = null;
         //pipeline.currentProgram      = null;
 
-        if ( pipeline.renderCmdObj ) pipeline.renderCmdObj.releaseAll();
+        //if ( pipeline.renderCmdObj ) pipeline.renderCmdObj.releaseAll();
 
-    }
+    //}
 
 
     module.exports = SpriteGroupPipeline;
