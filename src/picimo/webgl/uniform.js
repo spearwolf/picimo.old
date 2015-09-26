@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     var utils            = require( '../utils' );
@@ -22,7 +22,7 @@
     }
 
 
-    function addTexUnitProperties( uniform ) {
+    function addTexUnitProperties ( uniform ) {
 
         if ( uniform.info.type === uniform.program.glx.gl.SAMPLER_2D ) {
 

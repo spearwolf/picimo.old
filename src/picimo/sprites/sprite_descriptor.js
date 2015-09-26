@@ -111,7 +111,7 @@
              * @param {number} y3 - y3
              */
 
-            pos2d: { size: 2, offset: 0, uniform: true },
+            pos2d: { size: 2, offset: 0 },
 
             /**
              * @member {number} Picimo.sprites.Sprite#posZ

@@ -5,16 +5,18 @@
      * @class Picimo.webgl.WebGlTexture
      *
      * @param {Picimo.webgl.WebGlContext} glx
+     * @param {boolean} [flipY=false]
      * @param {boolean} [repeatable=false]
      *
      */
 
-    function WebGlTexture ( glx, repeatable ) {
+    function WebGlTexture ( glx, flipY, repeatable ) {
 
         this.glx = glx;
 
         this.width = 0;
         this.height = 0;
+        this.isFlipY = flipY === true;
         this.isRepeatable = repeatable === true;
         this.image = null;
 
@@ -215,7 +217,7 @@
 
             var gl = texture.glx.gl;
 
-            gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, false );
+            gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, texture.isFlipY );
             gl.pixelStorei( gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false );
 
             var wrap = texture.isRepeatable ? gl.REPEAT : gl.CLAMP_TO_EDGE;

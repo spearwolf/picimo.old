@@ -478,6 +478,8 @@
 
         scene.projection.ortho( scene.width, scene.height );
 
+        ++scene.projection.serial;
+
         /**
          * Announce a projection matrix change.
          * @event Picimo.sg.Scene#projectionUpdated

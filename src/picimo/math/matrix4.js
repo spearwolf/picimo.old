@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     var utils = require( '../utils' );
@@ -20,7 +20,9 @@
 
         utils.object.definePropertyPublicRO( this, 'mat4', mat4.create() );
 
-        Object.freeze( this );
+        this.serial = 1;
+
+        Object.seal( this );
     
     }
 
@@ -47,7 +49,7 @@
    
         var hw = width >> 1;
         var hh = height >> 1;
-        var hz = ( zRange ? zRange : Math.pow(2,14) ) >> 1;
+        var hz = ( zRange ? zRange : Math.pow(2, 14) ) >> 1;
 
         mat4.ortho( this.mat4, -hw, hw, -hh, hh, -hz, hz );
 
