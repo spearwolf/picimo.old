@@ -131,7 +131,7 @@
 
         var gl = this.glx.gl;
 
-        gl.drawElements( ( elemType || gl.TRIANGLES ), ( numItems || this.numItems ), this.itemType, ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
+        gl.drawElements( ( elemType || gl.TRIANGLES ), ( numItems || this.numItems ) * this.itemSize, this.itemType, ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
 
     };
 

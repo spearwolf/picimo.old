@@ -28,10 +28,13 @@
 
         initTextureAtlas( this, options.textureAtlas );
 
-        this.program          = options.program || "sprite";
-        this.spriteDescriptor = options.spriteDescriptor || sprites.SpriteDescriptor;
-        this.pool             = new core.VertexObjectPool( this.spriteDescriptor, options.capacity || 1000 );
-        this.pipeline         = null;
+        this.program             = options.program || "sprite";
+        this.spriteDescriptor    = options.spriteDescriptor || sprites.SpriteDescriptor;
+        this.pipeline            = null;
+        this.defaultSpriteWidth  = options.defaultWidth || 0;
+        this.defaultSpriteHeight = options.defaultHeight || options.defaultWidth;
+
+        initSpritePool( this, this.spriteDescriptor, options.capacity || 1000 );
 
         this.on( "initGl", onInitGl.bind( this, this ) );
         this.on( "renderFrame", -1000, onRenderFrame.bind( this, this ) );
@@ -41,6 +44,89 @@
     SpriteGroup.prototype = Object.create( Node.prototype );
     SpriteGroup.prototype.constructor = SpriteGroup;
 
+
+    /**
+     * @method Picimo.sg.SpriteGroup#createSprite
+     * @param {string|Picimo.core.Texture} [texture]
+     * @param {number} [width]
+     * @param {number} [height]
+     * @return {Picimo.sprites.Sprite} sprite
+     */
+
+    SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
+
+        var sprite = this.pool.alloc();
+
+        var tex = typeof texture === 'string'
+            ? this.textureAtlas.getTexture( texture )
+            : ( texture == null
+                ? this.textureAtlas.getRandomTexture()
+                : texture );
+
+        tex.setTexCoords( sprite );
+
+        if ( width === undefined ) {
+
+            if ( this.hasDefaultSpriteSize ) {
+            
+                return sprite;
+            
+            }
+
+            width = tex.width;
+            height = tex.height;
+        
+        } else {
+
+            if ( height === undefined ) height = width;
+        
+        }
+
+        sprite.setPositionBySize( width, height );
+
+        return sprite;
+
+    };
+
+    /**
+     * @method Picimo.sg.SpriteGroup#setDefaultSpriteSize
+     * @param {number} width
+     * @param {number} height
+     * @return self
+     */
+
+    SpriteGroup.prototype.setDefaultSpriteSize = function ( width, height ) {
+
+        this.defaultSpriteWidth = width || 0;
+        this.defaultSpriteHeight = height || width;
+
+        updateDefaultSpriteSize( this );
+
+    };
+
+
+    function initSpritePool ( spriteGroup, descriptor, capacity ) {
+
+        spriteGroup.pool = new core.VertexObjectPool( descriptor, capacity );
+
+        var newSpritePrototype = spriteGroup.pool.NEW;
+
+        newSpritePrototype.scale = 1;
+        newSpritePrototype.opacity = 1;
+
+        updateDefaultSpriteSize( spriteGroup );
+
+    }
+
+    function updateDefaultSpriteSize ( spriteGroup ) {
+
+        if ( spriteGroup.hasDefaultSpriteSize ) {
+
+            spriteGroup.pool.NEW.setPositionBySize( spriteGroup.defaultSpriteWidth, spriteGroup.defaultSpriteHeight );
+        
+        }
+
+    }
 
     function initTextureAtlas ( spriteGroup, textureAtlas ) {
 
@@ -107,6 +193,16 @@
                     }
 
                 }
+
+            }
+
+        },
+
+        'hasDefaultSpriteSize': {
+
+            get: function () {
+
+                return this.defaultSpriteWidth > 0 && this.defaultSpriteHeight > 0;
 
             }
 

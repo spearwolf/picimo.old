@@ -27,13 +27,24 @@ var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 10 }, {
 
         console.log( "spriteGroup ready!", spriteGroup.textureAtlas.frameNames.join( ", " ) );
 
-        var s = spriteGroup.pool.alloc();                                      // create sprite
-        spriteGroup.textureAtlas.getRandomTexture().setTexCoords( s );         // assign texture
+        var s;
 
-        s.setPositionBySize( 100, 100 );                                       // size, position, ..
+        //s = spriteGroup.pool.alloc();                                      // create sprite
+        //spriteGroup.textureAtlas.getRandomTexture().setTexCoords( s );         // assign texture
+        //s.setPositionBySize( 100, 100 );                                       // size, position, ..
         //s.setTranslate( 100, 150 );
-        s.scale = 1;
-        s.opacity = 1;
+        //s.scale = 1;
+        //s.opacity = 1;
+
+        //s = spriteGroup.createSprite( spriteGroup.textureAtlas.getRandomTexture(), 100 );
+
+        spriteGroup.setDefaultSpriteSize( 100 );
+        s = spriteGroup.createSprite();
+
+        spriteGroup.createSprite().setTranslate( 200, 0 );
+        spriteGroup.createSprite().setTranslate( 400, 0 );
+        spriteGroup.createSprite().setTranslate( -200, 0 );
+        spriteGroup.createSprite().setTranslate( -400, 0 );
 
         window.mySprite = s;
 

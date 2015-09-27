@@ -53,10 +53,7 @@
 
     SpriteGroupPipeline.prototype.finish = function () {
 
-        if ( this.app.frameNo === 120 ) console.log('finish!');
-
         this.webGlBuffer.bufferSubData();  // TODO always upload the complete vertex buffer - is this a good idea?
-        //this.webGlBuffer.bufferData( this.pool.vertexArray.vertices );
 
     };
 

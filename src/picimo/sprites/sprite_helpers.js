@@ -48,10 +48,10 @@
             var half_height = height * 0.5;
 
             this.setPos2d(
-                    -half_width, -half_height,
-                     half_width, -half_height,
+                    -half_width,  half_height,
                      half_width,  half_height,
-                    -half_width,  half_height
+                     half_width, -half_height,
+                    -half_width, -half_height
                     );
 
         };

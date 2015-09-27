@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     var utils = require( '../utils' );
@@ -146,7 +146,7 @@
     };
 
 
-    function createVertexObjects( pool ) {
+    function createVertexObjects ( pool ) {
 
         pool.availableVOs = [];
 
@@ -156,7 +156,9 @@
         for ( i = 0; i < pool.capacity; i++ ) {
 
             vertexArray = pool.vertexArray.subarray( i );
+
             vertexObject = pool.descriptor.create( vertexArray );
+            vertexObject.destroy = pool.free.bind( pool, vertexObject );
 
             pool.availableVOs.push( vertexObject );
 
