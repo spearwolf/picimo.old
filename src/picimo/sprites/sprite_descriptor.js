@@ -7,8 +7,34 @@
 
         null,
 
-        4,
-        12,
+        4,  // vertices
+        12, // attrs per vertex
+
+        // ## current sprite features
+        //
+        // +-+-+-+-+ +-+-+-+-+ +-+-+-+-+
+        // |0|1|2|3| |4|5|6|7| |8|9|A|B|
+        // +-+-+-+-+ +-+-+-+-+ +-+-+-+-+
+        //
+        // |o-o-o|                       (3) position: x,y,z
+        //       |o|                     (1) rotate
+        //           |o-o|               (2) tex-coords: s, t
+        //               |o-o|           (3) translate: tx, ty
+        //                     |o|       (1) scale
+        //                       |o|     (1) opacity
+        //                     
+
+        // ## full featured alternative
+        //
+        // (16 attrs per vertex)
+        //
+        // [ (xw, yh), (w, h) ], [ (sx, sy), (x, y) ], [ (s, t), (rot, tex) ], [ (r, g), (b, a) ]
+        //
+        // pos: x, y -> ( xw * w * sx + x, yh * h * sy + y )
+        // size: w, h
+        // scale: sx, sy
+        // tex-coords: s, t
+        // color+opacity: r, g, b, a
 
         [
 

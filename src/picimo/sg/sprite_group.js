@@ -10,6 +10,13 @@
     /**
      * @class Picimo.sg.SpriteGroup
      * @extends Picimo.sg.Node
+     * @classdesc
+     * The SpriteGroup expects that a sprite (which is described by the *spriteDescriptor* option) has the following properties/setters:
+     *
+     * 1. `setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)`
+     * 2. `setSize(w, h)`
+     * 3. `scale=` (as *property*) **or** `setScale(w, h)`
+     * 4. `opacity=` (as *property*)
      *
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
@@ -47,9 +54,18 @@
 
     /**
      * @method Picimo.sg.SpriteGroup#createSprite
+     * @description
+     * Return a sprite from the pool.
+     *
+     * If no *width* or *height* given the size will be read from the texture
+     * (or if you defined the default size via `setDefaultSpriteSize()` the *default width* and *height* will be used).
+     *
+     * If no *texture* is specified a random texture (from *textureAtlas*) will be choosen.
+     *
      * @param {string|Picimo.core.Texture} [texture]
      * @param {number} [width]
      * @param {number} [height]
+     * @throws Will throw an error if pool capacity reached and no more sprites available.
      * @return {Picimo.sprites.Sprite} sprite
      */
 
@@ -67,7 +83,7 @@
 
         if ( width === undefined ) {
 
-            if ( this.hasDefaultSpriteSize ) {
+            if ( this.hasDefaultSpriteSize || ! tex ) {
             
                 return sprite;
             
@@ -82,7 +98,7 @@
         
         }
 
-        sprite.setPositionBySize( width, height );
+        sprite.setSize( width, height );
 
         return sprite;
 
@@ -111,8 +127,9 @@
 
         var newSpritePrototype = spriteGroup.pool.NEW;
 
-        newSpritePrototype.scale = 1;
-        newSpritePrototype.opacity = 1;
+        if ( descriptor.hasAttribute( 'scale', 1 ) ) newSpritePrototype.scale = 1;
+        if ( descriptor.hasAttribute( 'scale', 2 ) ) newSpritePrototype.setScale( 1, 1 );
+        if ( descriptor.hasAttribute( 'opacity' ) ) newSpritePrototype.opacity = 1;
 
         updateDefaultSpriteSize( spriteGroup );
 
@@ -122,7 +139,7 @@
 
         if ( spriteGroup.hasDefaultSpriteSize ) {
 
-            spriteGroup.pool.NEW.setPositionBySize( spriteGroup.defaultSpriteWidth, spriteGroup.defaultSpriteHeight );
+            spriteGroup.pool.NEW.setSize( spriteGroup.defaultSpriteWidth, spriteGroup.defaultSpriteHeight );
         
         }
 

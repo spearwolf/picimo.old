@@ -164,6 +164,8 @@
                 iFrameNo: 0,
                 iResolution: [0, 0],
 
+                renderPrio: 1,  // TODO remove!!!
+
                 projectionMatrix: scene.projection
 
             }

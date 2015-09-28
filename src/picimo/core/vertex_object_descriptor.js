@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     //var utils = require( '../utils' );
@@ -186,6 +186,13 @@
         }
 
         return vo;
+
+    };
+
+    VertexObjectDescriptor.prototype.hasAttribute = function ( name, size ) {
+
+        var attr = this.attr[ name ];
+        return attr && attr.size === ( size || 1 );
 
     };
 
@@ -597,7 +604,7 @@
     }
 
 
-    function camelize( name ) {
+    function camelize ( name ) {
 
         return name[ 0 ].toUpperCase() + name.substr( 1 );
 

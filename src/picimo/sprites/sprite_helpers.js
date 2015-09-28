@@ -37,15 +37,15 @@
 
 
         /**
-         * @method Picimo.sprites.Sprite#setPositionBySize
+         * @method Picimo.sprites.Sprite#setSize
          * @param {number} width - width
          * @param {number} height - height
          */
 
-        Sprite_prototype.setPositionBySize = function ( width, height ) {
+        Sprite_prototype.setSize = function ( width, height ) {
 
             var half_width  = width  * 0.5;
-            var half_height = height * 0.5;
+            var half_height = ( height == null ? width : height ) * 0.5;
 
             this.setPos2d(
                     -half_width,  half_height,

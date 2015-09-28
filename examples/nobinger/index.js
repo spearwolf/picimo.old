@@ -31,7 +31,7 @@ var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 10 }, {
 
         //s = spriteGroup.pool.alloc();                                      // create sprite
         //spriteGroup.textureAtlas.getRandomTexture().setTexCoords( s );         // assign texture
-        //s.setPositionBySize( 100, 100 );                                       // size, position, ..
+        //s.setSize( 100, 100 );                                                 // size, position, ..
         //s.setTranslate( 100, 150 );
         //s.scale = 1;
         //s.opacity = 1;
@@ -52,41 +52,3 @@ var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 10 }, {
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-app.loadTextureAtlas( './nobinger.json' ).then( function ( atlas ) {
-
-    console.debug( "loaded TextureAtlas", atlas );
-
-    var spriteGroup = app.scene.addChild( new Picimo.sg.SpriteGroup( app, { textureAtlas: atlas } ) );
-
-    spriteGroup.on( "initGl", function () {
-
-        console.log( "spriteGroup initialized: ", this.textureAtlas.frameNames.join( ", " ) );
-
-    });
-
-});
-*/
-
-/*
-    .on( "init", function () {
-
-        console.log( "spriteGroup initialized:", this.textureAtlas.frameNames.join( ", " ) );
-
-    }) ;
-    */
