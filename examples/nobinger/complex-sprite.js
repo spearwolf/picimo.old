@@ -10,20 +10,20 @@ var app = new Picimo.App({
 
 });
 
-app.shader.loadVertexShader( 'complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.vert' );
-app.shader.loadFragmentShader( 'complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.frag' );
-app.shader.addProgram( 'complex-sprite', 'complex-sprite', 'complex-sprite' );
-
 // Set pixel resolution
 app.scene.setSize( 800, 600, "contain" );
 
 // Load a texture atlas
 var atlas = app.loadTextureAtlas( './nobinger.json' );
 
+// Define custom sprite shader
+app.shader.loadVertexShader( 'complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.vert' );
+app.shader.loadFragmentShader( 'complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.frag' );
+app.shader.addProgram( 'complex-sprite', 'complex-sprite', 'complex-sprite' );
 
 // Define a custom sprite class
-var spriteDescriptor = new Picimo.core.VertexObjectDescriptor(
-    
+var myCustomSpriteDescriptor = new Picimo.core.VertexObjectDescriptor(
+
     function () {
 
         this.setXwyh( -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5 );  // anchor
@@ -51,26 +51,29 @@ var spriteDescriptor = new Picimo.core.VertexObjectDescriptor(
 
     });
 
+// Create Scene
+var spriteGroup = app.scene.appendSpriteGroup( atlas, {
 
-var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 10, program: 'complex-sprite', spriteDescriptor: spriteDescriptor }, {
+        capacity         : 10,
+        program          : 'complex-sprite',
+        spriteDescriptor : myCustomSpriteDescriptor,
+        defaultWidth     : 100,
+        defaultHeight    : 100,
 
-    init: function () {
+    }, {
 
-        console.log( "spriteGroup ready!", spriteGroup.textureAtlas.frameNames.join( ", " ) );
+        init: function () {
 
-        var s;
+            var s = spriteGroup.createSprite();
 
-        spriteGroup.setDefaultSpriteSize( 100 );
-        s = spriteGroup.createSprite();
+            spriteGroup.createSprite().setPos( 200, 0 );
+            spriteGroup.createSprite().setPos( 400, 0 );
+            spriteGroup.createSprite().setPos( -200, 0 );
+            spriteGroup.createSprite().setPos( -400, 0 );
 
-        spriteGroup.createSprite().setPos( 200, 0 );
-        spriteGroup.createSprite().setPos( 400, 0 );
-        spriteGroup.createSprite().setPos( -200, 0 );
-        spriteGroup.createSprite().setPos( -400, 0 );
+            window.mySprite = s;
 
-        window.mySprite = s;
+        },
 
-    },
-
-});
+    });
 
