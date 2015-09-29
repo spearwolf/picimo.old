@@ -38,13 +38,52 @@
     SpriteGroup
     </h2>
     
-        <div class="class-description"><p>The SpriteGroup expects that a sprite (which is described by the <em>spriteDescriptor</em> option) has the following properties/setters:</p>
-<ol>
-<li><code>setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)</code></li>
-<li><code>setSize(w, h)</code></li>
-<li><code>scale=</code> (as <em>property</em>) <strong>or</strong> <code>setScale(w, h)</code></li>
-<li><code>opacity=</code> (as <em>property</em>)</li>
-</ol></div>
+        <div class="class-description"><p>A SpriteGroup renders a group of sprites to the screen.
+All vertex data will be will be uploaded to the GPU <em>every frame</em>.
+So choose the capacity carefully.</p>
+<p>A SpriteGroup expects that a sprite instance (which is described by the <em>spriteDescriptor</em> option) has the following properties and methods:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition</th>
+<th>Required</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Method</td>
+<td><code>setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)</code></td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>Method</td>
+<td><code>setSize(w, h)</code></td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>Method</td>
+<td><code>setScale(sx, sy)</code></td>
+<td>no</td>
+<td>Either this or <em>scale</em></td>
+</tr>
+<tr>
+<td>Property</td>
+<td><code>scale=</code></td>
+<td>no</td>
+<td>Either this or <em>setScale</em></td>
+</tr>
+<tr>
+<td>Property</td>
+<td><code>opacity=</code></td>
+<td>no</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
     
 </header>  
 
@@ -68,6 +107,8 @@
         
     </div>
 
+    
+    <p class="summary">Represents a group of sprites.</p>
     
 </dt>
 <dd>
@@ -207,7 +248,7 @@
                         
                     
                 
-                <p>The texture atlas</p></td>
+                </td>
         </tr>
 	
 	
@@ -315,7 +356,7 @@
                         
                     
                 
-                <p>The sprite descriptor</p></td>
+                </td>
         </tr>
 	
 	
@@ -913,133 +954,6 @@ BUT initialization will be happen. (If you don't want the node to initialize set
         
             
 <dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="bind">
-            
-                <span class="inherited"><a href="Picimo.events.CustomEvent.html#bind">inherited</a></span>
-            
-            bind<span class="signature">(obj)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            events/custom_event.js, line 157
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Bind an object to all events. TODO add example</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>obj</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>The <em>object</em> to bind.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-
-obj
-
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
     <div class="nameContainer">
         <h4 class="name" id="createSprite">
             
@@ -1048,7 +962,7 @@ obj
     
         
         <div class="tag-source">
-            sg/sprite_group.js, line 55
+            sg/sprite_group.js, line 66
         </div>
         
     </div>
@@ -1059,10 +973,10 @@ obj
     
     
     <div class="description">
-        <p>Return a sprite from the pool.</p>
-<p>If no <em>width</em> or <em>height</em> given the size will be read from the texture
-(or if you defined the default size via <code>setDefaultSpriteSize()</code> the <em>default width</em> and <em>height</em> will be used).</p>
-<p>If no <em>texture</em> is specified a random texture (from <em>textureAtlas</em>) will be choosen.</p>
+        <p>Returns a sprite from the internal sprite pool. If pool capacity is reached an error will be thrown.</p>
+<p>If no <em>width</em> or <em>height</em> given the size will be read out from the texture.
+Otherwise when you previously called <code>setDefaultSpriteSize(w, h)</code> the default width and height will be used.</p>
+<p>If no <em>texture</em> is given a random texture (from the <em>textureAtlas</em>) will be choosen.</p>
     </div>
     
 
@@ -1226,7 +1140,7 @@ obj
 
     <div class="param-desc">
     
-        <p>Will throw an error if pool capacity reached and no more sprites available.</p>
+        <p>If pool capacity is reached an error will be thrown.</p>
     
     </div>
 
@@ -1295,344 +1209,6 @@ obj
     
     
     
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="emit">
-            
-                <span class="inherited"><a href="Picimo.events.CustomEvent.html#emit">inherited</a></span>
-            
-            emit<span class="signature">(eventName)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            events/custom_event.js, line 180
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Trigger an event.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>eventName</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>The event name.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>...args</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">arguments</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                        <span class="repeatable">repeatable</span>
-                    
-                
-                <p>Arguments for the event callback functions.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="emitReduce">
-            
-                <span class="inherited"><a href="Picimo.events.CustomEvent.html#emitReduce">inherited</a></span>
-            
-            emitReduce<span class="signature">(eventName, value)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            events/custom_event.js, line 221
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Trigger an event.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>eventName</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>The event name.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>This will be the first argument given to all callback functions.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>...args</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">arguments</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                        <span class="repeatable">repeatable</span>
-                    
-                
-                <p>Arguments for the event callback functions.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -1824,588 +1400,15 @@ obj
         
             
 <dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="off">
-            
-                <span class="inherited"><a href="Picimo.events.CustomEvent.html#off">inherited</a></span>
-            
-            off<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            events/custom_event.js, line 122
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Unsubsribe a listener.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p><em>listener id</em> or previously <em>bound object</em></p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="on">
-            
-                <span class="inherited"><a href="Picimo.events.CustomEvent.html#on">inherited</a></span>
-            
-            on<span class="signature">(eventName, <span class="optional">prio</span>, fn)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            events/custom_event.js, line 42
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Register a function as event callback. The function will be called after the named event is triggered by <code>.emit()</code>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>eventName</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>prio</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>fn</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>The function to call when the event occurred.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        number
-                        
-                    
-            </td>
-            <td class="description last"><ul>
-<li>A listener id.</li>
-</ul></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="once">
-            
-                <span class="inherited"><a href="Picimo.events.CustomEvent.html#once">inherited</a></span>
-            
-            once<span class="signature">(eventName, <span class="optional">prio</span>, fn)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            events/custom_event.js, line 90
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Execute the given function when the event occurred. <em>The function will only be called onced</em>.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>eventName</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>prio</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>fn</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>The function to execute when the event occurred.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        number
-                        
-                    
-            </td>
-            <td class="description last"><ul>
-<li>A listener id</li>
-</ul></td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
     <div class="nameContainer">
         <h4 class="name" id="setDefaultSpriteSize">
             
-            setDefaultSpriteSize<span class="signature">(width, height)</span>
+            setDefaultSpriteSize<span class="signature">(width, height)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.sg.SpriteGroup.html">Picimo.sg.SpriteGroup</a>}</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/sprite_group.js, line 107
+            sg/sprite_group.js, line 122
         </div>
         
     </div>
@@ -2414,6 +1417,10 @@ obj
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Set the width and height for all new sprites. Note that this won't affect any previously created sprites.</p>
+    </div>
     
 
     
@@ -2511,6 +1518,13 @@ obj
     
     
     
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Picimo.sg.SpriteGroup.html#createSprite">Picimo.sg.SpriteGroup#createSprite</a></li>
+        </ul>
+    </dd>
+    
     
     
 </dl>
@@ -2529,9 +1543,29 @@ obj
     
 
 
-
-self
-
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Picimo.sg.SpriteGroup.html">Picimo.sg.SpriteGroup</a>
+                        
+                    
+            </td>
+            <td class="description last"><em>self</em></td>
+        </tr>
+    
+    </tbody>
+</table>
 
     
     
@@ -3267,7 +2301,7 @@ Is called before the <em>destroy</em> event.</p>
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Mon Sep 28 2015 15:10:37 GMT+0200 (CEST)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Sep 29 2015 11:05:40 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

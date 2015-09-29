@@ -10,20 +10,31 @@
     /**
      * @class Picimo.sg.SpriteGroup
      * @extends Picimo.sg.Node
-     * @classdesc
-     * The SpriteGroup expects that a sprite (which is described by the *spriteDescriptor* option) has the following properties/setters:
-     *
-     * 1. `setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)`
-     * 2. `setSize(w, h)`
-     * 3. `scale=` (as *property*) **or** `setScale(w, h)`
-     * 4. `opacity=` (as *property*)
-     *
+     * 
      * @param {Picimo.App} app - The app instance
      * @param {Object} [options] - The options
-     * @param {Picimo.core.TextureAtlas|Picimo.utils.Promise} [options.textureAtlas] - The texture atlas
+     * @param {Picimo.core.TextureAtlas|Picimo.utils.Promise} [options.textureAtlas]
      * @param {string} [options.program="sprite"] - The webgl program name
      * @param {number} [options.capacity=1000] - Max sprite capacity
-     * @param {Picimo.core.VertexObjectDescriptor} [options.spriteDescriptor=Picimo.sprites.SpriteDescriptor] - The sprite descriptor
+     * @param {Picimo.core.VertexObjectDescriptor} [options.spriteDescriptor=Picimo.sprites.SpriteDescriptor]
+     *
+     * @summary
+     * Represents a group of sprites.
+     *
+     * @classdesc
+     * A SpriteGroup renders a group of sprites to the screen.
+     * All vertex data will be will be uploaded to the GPU *every frame*.
+     * So choose the capacity carefully.
+     *
+     * A SpriteGroup expects that a sprite instance (which is described by the *spriteDescriptor* option) has the following properties and methods:
+     * 
+     * | Type | Definition | Required | Comment |
+     * |------|------------|----------|---------|
+     * | Method | `setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)` | yes | |
+     * | Method | `setSize(w, h)` | yes | |
+     * | Method | `setScale(sx, sy)` | no | Either this or *scale* |
+     * | Property | `scale=` | no | Either this or *setScale* |
+     * | Property | `opacity=` | no | |
      *
      */
 
@@ -54,19 +65,23 @@
 
     /**
      * @method Picimo.sg.SpriteGroup#createSprite
-     * @description
-     * Return a sprite from the pool.
-     *
-     * If no *width* or *height* given the size will be read from the texture
-     * (or if you defined the default size via `setDefaultSpriteSize()` the *default width* and *height* will be used).
-     *
-     * If no *texture* is specified a random texture (from *textureAtlas*) will be choosen.
      *
      * @param {string|Picimo.core.Texture} [texture]
      * @param {number} [width]
      * @param {number} [height]
-     * @throws Will throw an error if pool capacity reached and no more sprites available.
-     * @return {Picimo.sprites.Sprite} sprite
+     *
+     * @returns {Picimo.sprites.Sprite} sprite
+     *
+     * @throws  If pool capacity is reached an error will be thrown.
+     *
+     * @description
+     * Returns a sprite from the internal sprite pool. If pool capacity is reached an error will be thrown.
+     *
+     * If no *width* or *height* given the size will be read out from the texture.
+     * Otherwise when you previously called `setDefaultSpriteSize(w, h)` the default width and height will be used.
+     *
+     * If no *texture* is given a random texture (from the *textureAtlas*) will be choosen.
+     *
      */
 
     SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
@@ -106,9 +121,17 @@
 
     /**
      * @method Picimo.sg.SpriteGroup#setDefaultSpriteSize
+     *
      * @param {number} width
      * @param {number} height
-     * @return self
+     *
+     * @returns {Picimo.sg.SpriteGroup} *self*
+     *
+     * @see Picimo.sg.SpriteGroup#createSprite
+     *
+     * @description
+     * Set the width and height for all new sprites. Note that this won't affect any previously created sprites.
+     *
      */
 
     SpriteGroup.prototype.setDefaultSpriteSize = function ( width, height ) {
@@ -128,7 +151,7 @@
         var newSpritePrototype = spriteGroup.pool.NEW;
 
         if ( descriptor.hasAttribute( 'scale', 1 ) ) newSpritePrototype.scale = 1;
-        if ( descriptor.hasAttribute( 'scale', 2 ) ) newSpritePrototype.setScale( 1, 1 );
+        else if ( descriptor.hasAttribute( 'scale', 2 ) ) newSpritePrototype.setScale( 1, 1 );
         if ( descriptor.hasAttribute( 'opacity' ) ) newSpritePrototype.opacity = 1;
 
         updateDefaultSpriteSize( spriteGroup );

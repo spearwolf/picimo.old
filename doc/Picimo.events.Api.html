@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: CustomEvent</title>
+    <title>Class: Api</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,18 +24,18 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.events.CustomEvent.html">Class: CustomEvent</h1>
+        <h1 class="page-title" data-filename="Picimo.events.Api.html">Class: Api</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.events.CustomEvent">
+<header data-current="Picimo.events.Api">
     <h2>
         <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.events.html">.events</a>.</span>
     
-    CustomEvent
+    Api
     </h2>
     
 </header>  
@@ -48,9 +48,9 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="CustomEvent">
+        <h4 class="name" id="Api">
             
-            new Picimo.events.CustomEvent<span class="signature">()</span>
+            new Picimo.events.Api<span class="signature">()</span>
         </h4>
     
         
@@ -142,7 +142,7 @@
     
         
         <div class="tag-source">
-            events/custom_event.js, line 186
+            events/custom_event.js, line 184
         </div>
         
     </div>
@@ -153,7 +153,7 @@
     
     
     <div class="description">
-        <p>For all events emitted to the host object a function (with the same name as the event has) gets called.</p>
+        <p>For all events emitted to <em>host object</em> a method (which has the same name as the event) from <em>listener object</em> gets called.</p>
     </div>
     
 
@@ -200,7 +200,7 @@
             
             <td class="description last">
                 
-                <p>Bind an <em>object</em> to all events.</p></td>
+                <p>Bind an <em>listener object</em> to all events from the <em>host object</em>.</p></td>
         </tr>
 	
 	
@@ -258,17 +258,18 @@ obj
         
 
     
-    <pre class="prettyprint"><code>var hostObject = Picimo.events.eventize({});
+    <pre class="prettyprint"><code>var host = Picimo.events.eventize({});
 
 var listener = {
     foo: function () { console.log('foo'); },
     bar: function () { console.log('bar'); },
 };
 
-hostObject.bind(listener);
+host.bind(listener);
 
-hostObject.emit('foo');   // => "foo"
-hostObject.emit('bar');   // => "bar"</code></pre>
+host.emit('foo');   // => "foo"
+host.emit('bar');   // => "bar"
+host.emit('plah');  // nothing happens here</code></pre>
     
 
     
@@ -285,7 +286,7 @@ hostObject.emit('bar');   // => "bar"</code></pre>
     
         
         <div class="tag-source">
-            events/custom_event.js, line 226
+            events/custom_event.js, line 225
         </div>
         
     </div>
@@ -297,6 +298,7 @@ hostObject.emit('bar');   // => "bar"</code></pre>
     
     <div class="description">
         <p>Fire an event.</p>
+<p>The listener functions calling order is determinated by priority.</p>
     </div>
     
 
@@ -450,9 +452,9 @@ hostObject.emit('bar');   // => "bar"</code></pre>
     
     <div class="description">
         <p>Fire an event and returns a result.</p>
-<p>The returned result from a listener function is the new value for the next listeners.
-The result of this function is the returned value from the last called listener function.
-The calling order is determinated by priority.</p>
+<p>The returned result from a listener function is the new value for the next listener.
+Thats means that the <em>result</em> is the returned value from the <em>last</em> called listener function.</p>
+<p>The calling order is determinated by listener priority.</p>
     </div>
     
 
@@ -607,6 +609,15 @@ The calling order is determinated by priority.</p>
     
     
     
+    <h5>Returns:</h5>
+    
+
+
+
+result
+
+
+    
     
     
 </dd>
@@ -622,7 +633,7 @@ The calling order is determinated by priority.</p>
     
         
         <div class="tag-source">
-            events/custom_event.js, line 146
+            events/custom_event.js, line 144
         </div>
         
     </div>
@@ -633,7 +644,7 @@ The calling order is determinated by priority.</p>
     
     
     <div class="description">
-        <p>Removes a listener from an event or a previously <em>bound object</em>.</p>
+        <p>Removes a listener from an event or removes a previously bound <em>listener object</em>.</p>
     </div>
     
 
@@ -679,7 +690,7 @@ The calling order is determinated by priority.</p>
             
             <td class="description last">
                 
-                <p>The <em>listener id</em> or previously <em>bound object</em></p></td>
+                <p>The <em>listener id</em> or previously bound <em>listener object</em></p></td>
         </tr>
 	
 	
@@ -711,7 +722,7 @@ The calling order is determinated by priority.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Picimo.events.CustomEvent.html#bind">Picimo.events.CustomEvent#bind</a></li>
+            <li><a href="Picimo.events.Api.html#bind">Picimo.events.Api#bind</a></li>
         </ul>
     </dd>
     
@@ -756,8 +767,7 @@ The calling order is determinated by priority.</p>
     
     <div class="description">
         <p>Adds a listener to an event name.</p>
-<p>When the event is emitted <a href="Picimo.events.CustomEvent.html#emit"><code>Picimo.events.CustomEvent#emit</code></a>
-all the listener functions will be called in priority based order.</p>
+<p>When the event is fired all listener functions will be called in priority order.</p>
     </div>
     
 
@@ -883,7 +893,7 @@ all the listener functions will be called in priority based order.</p>
                         
                     
                 
-                <p>The function that gets called when the event is emitted.</p></td>
+                <p>The function that gets called when the event is fired.</p></td>
         </tr>
 	
 	
@@ -915,7 +925,7 @@ all the listener functions will be called in priority based order.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Picimo.events.CustomEvent.html#emit">Picimo.events.CustomEvent#emit</a></li>
+            <li><a href="Picimo.events.Api.html#emit">Picimo.events.Api#emit</a></li>
         </ul>
     </dd>
     
@@ -956,7 +966,7 @@ all the listener functions will be called in priority based order.</p>
                     
             </td>
             <td class="description last"><ul>
-<li>A listener id.</li>
+<li>listener id.</li>
 </ul></td>
         </tr>
     
@@ -979,7 +989,7 @@ all the listener functions will be called in priority based order.</p>
     
         
         <div class="tag-source">
-            events/custom_event.js, line 103
+            events/custom_event.js, line 102
         </div>
         
     </div>
@@ -991,9 +1001,8 @@ all the listener functions will be called in priority based order.</p>
     
     <div class="description">
         <p>Adds a listener to an event name.</p>
-<p><em>This listener will be removed after the function gets called once.</em></p>
-<p>When the event is emitted <a href="Picimo.events.CustomEvent.html#emit"><code>Picimo.events.CustomEvent#emit</code></a>
-all the listener functions will be called in priority based order.</p>
+<p><strong>The listener will be removed after the function gets called once.</strong></p>
+<p>When the event is fired all listener functions will be called in priority order.</p>
     </div>
     
 
@@ -1119,7 +1128,7 @@ all the listener functions will be called in priority based order.</p>
                         
                     
                 
-                <p>The function that gets called when the event is emitted.</p></td>
+                <p>The function that gets called when the event is fired.</p></td>
         </tr>
 	
 	
@@ -1151,7 +1160,7 @@ all the listener functions will be called in priority based order.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="Picimo.events.CustomEvent.html#emit">Picimo.events.CustomEvent#emit</a></li>
+            <li><a href="Picimo.events.Api.html#emit">Picimo.events.Api#emit</a></li>
         </ul>
     </dd>
     
@@ -1192,7 +1201,7 @@ all the listener functions will be called in priority based order.</p>
                     
             </td>
             <td class="description last"><ul>
-<li>A listener id</li>
+<li>listener id</li>
 </ul></td>
         </tr>
     
@@ -1221,7 +1230,7 @@ all the listener functions will be called in priority based order.</p>
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Sep 29 2015 10:44:24 GMT+0200 (CEST)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Sep 29 2015 11:05:40 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

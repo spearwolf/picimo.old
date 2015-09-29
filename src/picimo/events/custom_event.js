@@ -14,18 +14,22 @@
 
         /**
          * @function Picimo.events.eventize
+         *
          * @description
-         *   Add all the methods from the *CustomEvent* api to the given object.
+         *   Attach the custom events api ( all methods from {@link Picimo.events.Api} ) to an object.
+         *
          * @param {Object} o - any object
+         *
          * @return o
+         *
          */
 
         api.eventize = function (o) {
 
             /**
-             * A simple publish/subscribe interface for any object.
-             *
-             * @class Picimo.events.CustomEvent
+             * @class Picimo.events.Api
+             * @summary
+             * A simple publish/subscribe event api for custom objects.
              *
              */
 
@@ -40,13 +44,21 @@
 
 
             /**
-             * @method Picimo.events.CustomEvent#on
+             * @method Picimo.events.Api#on
+             *
+             * @param {string} eventName - The name of event to listen to.
+             * @param {number} [prio=0] - Set a custom priority for this listener.
+             * @param {function} fn - The function that gets called when the event is fired.
+             *
+             * @return {number} - listener id.
+             *
+             * @see Picimo.events.Api#emit
+             *
              * @description
-             * Register a function as event callback. The function will be called after the named event is triggered by `.emit()`.
-             * @param {string} eventName
-             * @param {number} [prio=0]
-             * @param {function} fn - The function to call when the event occurred.
-             * @return {number} - A listener id.
+             * Adds a listener to an event name.
+             *
+             * When the event is fired all listener functions will be called in priority order.
+             *
              */
 
             o.on = function (eventName, prio, fn) {
@@ -88,13 +100,23 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.events.CustomEvent#once
+             * @method Picimo.events.Api#once
+             *
+             * @param {string} eventName - The name of event to listen to.
+             * @param {number} [prio=0] - Set a custom priority for this listener.
+             * @param {function} fn - The function that gets called when the event is fired.
+             *
+             * @return {number} - listener id
+             *
+             * @see Picimo.events.Api#emit
+             *
              * @description
-             * Execute the given function when the event occurred. *The function will only be called onced*.
-             * @param {string} eventName
-             * @param {number} [prio=0]
-             * @param {function} fn - The function to execute when the event occurred.
-             * @return {number} - A listener id
+             * Adds a listener to an event name.
+             *
+             * __The listener will be removed after the function gets called once.__
+             *
+             * When the event is fired all listener functions will be called in priority order.
+             *
              */
 
             o.once = function (eventName, prio, fn) {
@@ -120,10 +142,15 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.events.CustomEvent#off
+             * @method Picimo.events.Api#off
+             *
+             * @param {number|Object} - The *listener id* or previously bound *listener object*
+             *
+             * @see Picimo.events.Api#bind
+             *
              * @description
-             * Unsubsribe a listener.
-             * @param {number|Object} - *listener id* or previously *bound object*
+             * Removes a listener from an event or removes a previously bound *listener object*.
+             *
              */
 
             o.off = function (id) {
@@ -155,11 +182,29 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.events.CustomEvent#bind
-             * @description
-             * Bind an object to all events. TODO add example
-             * @param {object} obj - The *object* to bind.
+             * @method Picimo.events.Api#bind
+             *
+             * @param {object} obj - Bind an *listener object* to all events from the *host object*.
+             *
              * @return obj
+             *
+             * @description
+             * For all events emitted to _host object_ a method (which has the same name as the event) from _listener object_ gets called.
+             *
+             * @example
+             * var host = Picimo.events.eventize({});
+             *
+             * var listener = {
+             *     foo: function () { console.log('foo'); },
+             *     bar: function () { console.log('bar'); },
+             * };
+             *
+             * host.bind(listener);
+             *
+             * host.emit('foo');   // => "foo"
+             * host.emit('bar');   // => "bar"
+             * host.emit('plah');  // nothing happens here
+             *
              */
 
             o.bind = function (obj) {
@@ -178,11 +223,15 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.events.CustomEvent#emit
+             * @method Picimo.events.Api#emit
+             *
+             * @param {string} eventName - The name of event
+             * @param {...arguments} [...args] - Optionally parameters for the listener functions.
+             *
              * @description
-             * Trigger an event.
-             * @param {string} eventName - The event name.
-             * @param {...arguments} [...args] - Arguments for the event callback functions.
+             * Fire an event.
+             *
+             * The listener functions calling order is determinated by priority.
              */
 
             o.emit = function (eventName /*, arguments ..*/) {
@@ -219,12 +268,22 @@
             // -----------------------------------------------------------------
 
             /**
-             * @method Picimo.events.CustomEvent#emitReduce
+             * @method Picimo.events.Api#emitReduce
+             *
+             * @param {string} eventName - The name of event
+             * @param {Object} value - This will be the first parameter for the listener functions. 
+             * @param {...arguments} [...args] - Optionally extra parameters for the listener functions.
+             *
+             * @returns result
+             *
              * @description
-             * Trigger an event.
-             * @param {string} eventName - The event name.
-             * @param {Object} value - This will be the first argument given to all callback functions.
-             * @param {...arguments} [...args] - Arguments for the event callback functions.
+             * Fire an event and returns a result.
+             *
+             * The returned result from a listener function is the new value for the next listener.
+             * Thats means that the *result* is the returned value from the *last* called listener function.
+             *
+             * The calling order is determinated by listener priority.
+             *
              */
 
             o.emitReduce = function (eventName /*, value, [arguments ..] */) {
