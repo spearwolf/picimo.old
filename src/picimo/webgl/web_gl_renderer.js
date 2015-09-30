@@ -32,6 +32,7 @@
         renderer.program = null;
         renderer.currentProgram = null;
         renderer.currentPipeline = null;
+        renderer.currentProgramFromCmds = null;
 
         renderer.defaultBlendMode = BlendMode.DEFAULT;  // TODO let defaultBlendMode be configurable from outside (eg. Picimo.App)
         renderer.currentBlendMode = null;
@@ -76,7 +77,7 @@
     };
 
     function resetWebGlState ( renderer ) {  // {{{
-    
+
         var gl = renderer.app.gl;
         var bgColor = renderer.app.backgroundColor;
 
@@ -91,6 +92,8 @@
 
         renderer.currentPipeline  = null;
         renderer.renderToTexture  = null;
+
+        renderer.currentProgramFromCmds = null;
 
         renderer.debugOutFrame = false;
 
@@ -155,7 +158,7 @@
         if ( pipeline !== this.currentPipeline ) {
 
             if ( this.currentPipeline && this.currentPipeline.flush ) this.currentPipeline.flush();
-            
+
             this.currentPipeline = pipeline;
 
         }
@@ -173,9 +176,70 @@
 
     WebGlRenderer.prototype.addRenderCommand = function ( cmd, pipeline ) {
 
-        if ( pipeline ) this.activatePipeline( pipeline );
+        if ( pipeline ) {
 
-        if ( cmd.renderToTexture ) this.flush();
+            this.activatePipeline( pipeline );
+
+        }
+
+        if ( cmd.renderToTexture ) {
+
+            this.flush();
+
+        }
+
+        var program;
+
+        if ( cmd.program ) {
+
+            if ( typeof cmd.program === 'string' ) {  // Convert program to WebGlProgram
+
+                program = this.app.shader.getProgram( cmd.program );
+
+                if ( ! program ) {
+
+                    _warn( 'unknown program:', cmd.program );
+                    return;
+
+                }
+
+                cmd.program = this.app.glx.glProgram( program );
+
+            }
+
+            this.currentProgramFromCmds = cmd.program;
+
+        }
+
+        if ( cmd.drawElements ) {  // Save current uniform context (all current values)
+
+            var saveUniforms = cmd.drawElements.uniforms;
+            if ( ! saveUniforms ) cmd.drawElements.uniforms = saveUniforms = {};
+
+            program = this.currentProgramFromCmds;
+            if ( ! program ) {
+
+                _warn('drawElements command without program context!, cmd:', cmd);
+                return;
+
+            }
+
+            var key, uniformStack;
+
+            for ( var i = 0; i < program.uniformNames.length; i++ ) {
+
+                key = program.uniformNames[ i ];
+                uniformStack = this.uniforms.get( key );
+
+                if ( uniformStack ) {
+
+                    saveUniforms[ key ] = uniformStack.value;
+
+                }
+
+            }
+
+        }
 
         this.cmdQueue.push( cmd );
 
@@ -208,7 +272,7 @@
         renderCommandQueue( renderer );
 
         if ( renderer.debugOutFrame ) {
-            
+
             console.debug( "WebGlRenderer", renderer );
             console.groupEnd();
 
@@ -244,7 +308,7 @@
     }
     // }}}
     function callPipelines ( renderer, funcName ) {  // {{{
-    
+
         var i;
         var pipe;
         var fn;
@@ -257,9 +321,16 @@
             if ( fn ) fn.call( pipe );
 
         }
-    
+
     }
     // }}}
+
+
+    function _warn () {
+
+        console.warn.apply( console, [ '[Picimo.webgl.WebGlRenderer]'].concat( Array.prototype.slice.apply( arguments ) ) );
+
+    }
 
 
     module.exports = WebGlRenderer;

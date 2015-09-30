@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     /**
@@ -7,7 +7,8 @@
 
     module.exports = {
 
-        BlendMode : require( './blend_mode' ),
+        BlendMode    : require( './blend_mode' ),
+        UniformValue : require( './uniform_value' ),
 
     };
 

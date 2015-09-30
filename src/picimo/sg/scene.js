@@ -1,10 +1,11 @@
 (function () {
     "use strict";
 
-    var Node        = require( './node' );
-    var utils       = require( '../utils' );
-    var math        = require( '../math' );
-    var SpriteGroup = require( './sprite_group' );
+    var Node         = require( './node' );
+    var utils        = require( '../utils' );
+    var math         = require( '../math' );
+    var UniformValue = require( '../webgl/cmd' ).UniformValue;
+    var SpriteGroup  = require( './sprite_group' );
 
     /**
      * @class Picimo.sg.Scene
@@ -122,6 +123,10 @@
 
         }
 
+        // TODO Every scene should have a transformation matrix
+        this.transform = new math.Matrix4();
+        this.transformUniform = new UniformValue();
+
         this.on( "init", Number.MAX_VALUE, function () {
 
             if ( this.hasOwnProjection ) {
@@ -136,6 +141,13 @@
         this.prevWidth      = null;
         this.prevHeight     = null;
         this.prevPixelRatio = null;
+
+        this.renderCmd = {
+            uniforms: {                             // -> onFrame
+                sceneInfo: [0, 0, 0],               // [ width, height, pixelRatio ]
+                transform: this.transformUniform,
+            }
+        };
 
         this.on( "frame", onFrame.bind( this, this ) );
 
@@ -164,8 +176,6 @@
                 iFrameNo: 0,
                 iResolution: [0, 0],
 
-                renderPrio: 1,  // TODO remove!!!
-
                 projectionMatrix: scene.projection
 
             }
@@ -184,12 +194,17 @@
         var width      = scene.width;
         var height     = scene.height;
         var pixelRatio = scene.pixelRatio;
+        var uniforms   = scene.renderCmd.uniforms;
 
         if ( width !== scene.prevWidth || height !== scene.prevHeight || pixelRatio !== scene.prevPixelRatio ) {
 
             scene.prevWidth      = width;
             scene.prevHeight     = height;
             scene.prevPixelRatio = pixelRatio;
+
+            uniforms.sceneInfo[ 0 ] = scene.width;
+            uniforms.sceneInfo[ 1 ] = scene.height;
+            uniforms.sceneInfo[ 2 ] = scene.pixelRatio;
 
             /**
              * Announce a scene size ( width, height or pixelRatio ) change.
@@ -203,6 +218,10 @@
             scene.emit( 'resize', width, height, pixelRatio );
 
         }
+
+        uniforms.renderPrio = scene.renderPrio;
+
+        scene.app.renderer.addRenderCommand( scene.renderCmd );
 
     }
 

@@ -1,7 +1,8 @@
 (function () {
     'use strict';
 
-    var drawElements = require("./draw_elements");
+    var drawElements      = require("./draw_elements");
+    var UniformValueStack = require("./uniform_value_stack");
 
     module.exports = function renderCommand ( re/*nderer*/, cmd ) {
 
@@ -50,14 +51,23 @@
         // uniforms
         //=================================================
 
-        var key;
+        var key, uniformStack;
 
         if ( cmd.uniforms ) {
 
             for ( key in cmd.uniforms ) {
                 if ( cmd.uniforms.hasOwnProperty( key ) ) {
 
-                    re.uniforms.set( key, cmd.uniforms[ key ] );
+                    uniformStack = re.uniforms.get( key );
+
+                    if ( ! uniformStack ) {
+
+                        uniformStack = new UniformValueStack();
+                        re.uniforms.set( key, uniformStack );
+
+                    }
+
+                    uniformStack.exec( cmd.uniforms[ key ] );
 
                 }
             }
@@ -82,13 +92,7 @@
         // program
         //=================================================
 
-        if ( cmd.program ) {
-
-            re.program = re.app.glx.glProgram( typeof cmd.program === 'string' ?
-                            re.app.shader.getProgram( cmd.program )
-                                : cmd.program );
-
-        }
+        if ( cmd.program ) re.program = cmd.program;
 
         // drawElements
         //=================================================

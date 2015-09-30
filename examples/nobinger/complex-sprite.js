@@ -15,9 +15,10 @@ var app = new Picimo.App({
 //
 app.scene.setSize( 800, 600, "contain" );
 
-// Load a texture atlas
+// Load texture atlas
 //
 var atlas = app.loadTextureAtlas( './nobinger.json' );
+var amigaballs = app.loadTextureAtlas( '/assets/images/atlas/amigaballs/amigaballs.json' );
 
 // Define custom sprite shader
 //
@@ -59,6 +60,30 @@ var myCustomSpriteDescriptor = new Picimo.core.VertexObjectDescriptor(
 
 // Create a fantastic scene
 //
+var balls = app.scene.appendSpriteGroup( amigaballs, {
+
+        capacity         : 10,
+        program          : 'complex-sprite',
+        spriteDescriptor : myCustomSpriteDescriptor,
+        defaultWidth     : 42,
+        defaultHeight    : 42,
+
+    }, {
+
+        init: function () {
+
+            balls.createSprite().setPos( 0, 100 );
+            balls.createSprite().setPos( 100, 100 );
+            balls.createSprite().setPos( 200, 100 );
+            balls.createSprite().setPos( 300, 100 );
+            balls.createSprite().setPos( -100, 100 );
+            balls.createSprite().setPos( -200, 100 );
+            balls.createSprite().setPos( -300, 100 );
+
+        },
+
+    });
+
 var spriteGroup = app.scene.appendSpriteGroup( atlas, {
 
         capacity         : 10,

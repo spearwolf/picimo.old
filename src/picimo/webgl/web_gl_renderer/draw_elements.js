@@ -37,13 +37,30 @@
             //
             //==================================================================
 
+            var uniformValue;
+
             for ( i = 0, len = program.uniformNames.length; i < len; i++ ) {
 
                 name = program.uniformNames[ i ];
                 uniform = re.program.uniform[ name ];
 
-                uniform.setValue( re.uniforms.get( name ) );
-                if ( programChanged ) uniform.valueChanged = true;
+                uniformValue = draw.uniforms
+                    ? draw.uniforms[ name ]
+                    : null;
+
+                if ( uniformValue == null ) {
+
+                    uniformValue = re.uniforms.get( name );
+                    if ( uniformValue != null ) uniformValue = uniformValue.value;
+
+                }
+
+                if ( uniformValue != null ) {
+
+                    uniform.setValue( uniformValue );
+                    if ( programChanged ) uniform.valueChanged = true;
+
+                }
 
                 uniform.upload( gl );
 

@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     var utils     = require( '../utils' );
@@ -43,7 +43,7 @@
          * @member {number} Picimo.sg.Node#renderPrio
          */
 
-        this._renderPrio = parseFloat( options.renderPrio || 0 );
+        this._renderPrio = parseFloat( options.renderPrio || 0 );
 
         /**
          * @member {Picimo.App} Picimo.sg.Node#app - The app instance
@@ -113,7 +113,7 @@
 
         if ( readyFunc === false ) {
 
-            readyFunc = function () { return false; };
+            readyFunc = function () { return false; };
 
         } else if ( readyFunc === true ) {
 
@@ -420,7 +420,7 @@
 
             set: function ( prio ) {
 
-                this._renderPrio = parseFloat( prio || 0 );
+                this._renderPrio = parseFloat( prio || 0 );
 
                 if ( this.parent ) this.parent.emit( "childrenUpdated" );
 
