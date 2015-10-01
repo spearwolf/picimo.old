@@ -112,7 +112,7 @@
 
             }
 
-            Object.seal( self.renderCmdj );
+            Object.seal( self.renderCmd );
 
         }
 
