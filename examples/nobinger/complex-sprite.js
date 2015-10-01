@@ -62,23 +62,20 @@ var myCustomSpriteDescriptor = new Picimo.core.VertexObjectDescriptor(
 //
 var balls = app.scene.appendSpriteGroup( amigaballs, {
 
-        capacity         : 10,
+        capacity         : 50,
         program          : 'complex-sprite',
         spriteDescriptor : myCustomSpriteDescriptor,
-        defaultWidth     : 42,
-        defaultHeight    : 42,
+        defaultWidth     : 24,
+        defaultHeight    : 24,
 
     }, {
 
         init: function () {
 
-            balls.createSprite().setPos( 0, 100 );
-            balls.createSprite().setPos( 100, 100 );
-            balls.createSprite().setPos( 200, 100 );
-            balls.createSprite().setPos( 300, 100 );
-            balls.createSprite().setPos( -100, 100 );
-            balls.createSprite().setPos( -200, 100 );
-            balls.createSprite().setPos( -300, 100 );
+            var i;
+
+            for ( i = 0; i < 25; i++ ) balls.createSprite().setPos( i * 25, -64 );
+            for ( i = 1; i < 25; i++ ) balls.createSprite().setPos( -i * 25, -64 );
 
         },
 

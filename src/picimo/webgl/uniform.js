@@ -65,9 +65,6 @@
 
     Uniform.prototype.upload = function ( gl ) {
 
-        // TODO remove
-        if ( ! this.value ) return;
-
         if ( this.isSampler2d ) {
 
             this.texUnit = this.value.upload().bind();

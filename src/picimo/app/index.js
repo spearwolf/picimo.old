@@ -202,12 +202,6 @@
 
             this.height = h;
 
-            if ( this.renderer ) {
-
-                this.renderer.onResize();
-
-            }
-
             if ( this.canvas.width !== w || this.canvas.height !== h ) {
 
                 this.canvas.width  = w;
@@ -217,6 +211,13 @@
                 this.canvas.style.height = Math.round( h / this.devicePixelRatio ) + "px";
 
             }
+
+            if ( this.renderer ) {
+
+                this.renderer.onResize();
+
+            }
+
         }
 
     };

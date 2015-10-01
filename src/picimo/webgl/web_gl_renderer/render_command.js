@@ -92,7 +92,26 @@
         // program
         //=================================================
 
-        if ( cmd.program ) re.program = cmd.program;
+        var program;
+
+        if ( cmd.program ) {
+
+            if ( typeof cmd.program === 'string' ) {  // Convert program to WebGlProgram
+
+                program = re.app.shader.getProgram( cmd.program );
+
+                if ( ! program ) {
+
+                    _warn( 'unknown program:', cmd.program );
+                    return;
+
+                }
+
+                re.program = cmd.program = re.app.glx.glProgram( program );
+
+            }
+
+        }
 
         // drawElements
         //=================================================
@@ -100,5 +119,11 @@
         if ( cmd.drawElements ) drawElements( re, cmd.drawElements );
 
     };
+
+    function _warn () {
+
+        console.warn.apply( console, [ '[Picimo.webgl.WebGlRenderer#renderCommand]'].concat( Array.prototype.slice.apply( arguments ) ) );
+
+    }
 
 })();

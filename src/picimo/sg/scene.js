@@ -141,6 +141,7 @@
         this.prevWidth      = null;
         this.prevHeight     = null;
         this.prevPixelRatio = null;
+        this.parentResolution = { width: null, height: null, pixelRatio: null, devicePixelRatio: null };
 
         this.renderCmd = {
             uniforms: {                             // -> onFrame
@@ -188,6 +189,21 @@
 
 
     function onFrame ( scene ) {
+
+        var parent = scene.scene || scene.app;
+
+        if (   parent.width !== this.parentResolution.width
+            || parent.height !== this.parentResolution.height
+            || parent.pixelRatio !== this.parentResolution.pixelRatio
+            || parent.devicePixelRatio !== this.parentResolution.devicePixelRatio ) {
+
+                this.parentResolution.width = this.parentResolution.width;
+                this.parentResolution.height = this.parentResolution.height;
+                this.parentResolution.pixelRatio = this.parentResolution.pixelRatio;
+                this.parentResolution.devicePixelRatio = this.parentResolution.devicePixelRatio;
+                
+                scene.projectionNeedsUpdate = true;
+            }
 
         updateProjection( scene );
 
@@ -433,7 +449,7 @@
 
     function updateProjection ( scene ) {
 
-        if ( ! scene.hasOwnProjection ) return;
+        if ( ! scene.hasOwnProjection || ! scene.projectionNeedsUpdate ) return;  // TODO updateProjection -> projectionNeedsUpdate
 
         var factor;
 
@@ -498,8 +514,6 @@
         scene.projectionNeedsUpdate = false;
 
         scene.projection.ortho( scene.width, scene.height );
-
-        ++scene.projection.serial;
 
         /**
          * Announce a projection matrix change.

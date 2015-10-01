@@ -41,26 +41,30 @@
 
             for ( i = 0, len = program.uniformNames.length; i < len; i++ ) {
 
-                name = program.uniformNames[ i ];
-                uniform = re.program.uniform[ name ];
+                name         = program.uniformNames[ i ];
+                uniform      = re.program.uniform[ name ];
+                uniformValue = re.uniforms.get( name );
 
-                uniformValue = draw.uniforms
-                    ? draw.uniforms[ name ]
-                    : null;
+                if ( uniformValue != null ) uniformValue = uniformValue.value;
 
-                if ( uniformValue == null ) {
+                if ( re.debugOutFrame ) {
 
-                    uniformValue = re.uniforms.get( name );
-                    if ( uniformValue != null ) uniformValue = uniformValue.value;
+                    console.groupCollapsed('%cuniform', 'font-weight:bold;color:#26f', name);
+                    console.log(uniform);
+                    console.log(uniformValue);
+
+                }
+
+                uniform.setValue( uniformValue, re.debugOutFrame );
+
+                if ( re.debugOutFrame ) {
+
+                    if ( programChanged ) console.log('programChanged', programChanged );
+                    console.groupEnd(name);
 
                 }
 
-                if ( uniformValue != null ) {
-
-                    uniform.setValue( uniformValue );
-                    if ( programChanged ) uniform.valueChanged = true;
-
-                }
+                if ( programChanged ) uniform.valueChanged = true;
 
                 uniform.upload( gl );
 

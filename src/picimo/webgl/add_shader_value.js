@@ -3,24 +3,42 @@
 
     module.exports = function addShaderValue ( obj ) {
 
-        obj.setValue = function ( val ) {
+        obj.setValue = function ( val, debug ) {
 
-            this.valueChanged = val !== this.value;
+            var hasSerial = val.serial != null;
 
-            if ( ! this.valueChanged && val.serial && val.serial !== this.valueSerial ) {
+            if ( debug ) {
+            
+                console.log(
+                    'setValue(): hasSerial=', hasSerial,
+                    'valueChanged=', this.valueChanged,
+                    'val!==this.value', (val!==this.value),
+                    'val.serial=', val.serial,
+                    'this.valueSerial=', this.valueSerial,
+                    'val.serial!==this.valueSerial=', (val.serial!==this.valueSerial) );
+            
+            }
 
-                this.valueSerial = val.serial;
-                this.valueChanged = true;
+            if ( ! this.valueChanged ) {
+
+                this.valueChanged = val !== this.value;
+
+                if ( ! this.valueChanged && hasSerial ) {
+
+                    this.valueChanged = val.serial !== this.valueSerial;
+                }
 
             }
+
+            if ( hasSerial ) this.valueSerial = val.serial;
 
             this.value = val;
 
         };
 
-        obj.value = null;
+        obj.value        = null;
+        obj.valueSerial  = 0;
         obj.valueChanged = false;
-        obj.valueSerial = 0;
 
     };
 

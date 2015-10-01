@@ -24,11 +24,12 @@
 
     Attrib.prototype.upload = function () {  //} gl ) {
 
+        var val = this.value;
+        val.buffer.bindBuffer();
+
         if ( ! this.valueChanged ) return;
 
-        var val = this.value;
         val.buffer.vertexAttribPointer( this.location, val.size, val.stride, val.offset );
-
         this.valueChanged = false;
 
     };

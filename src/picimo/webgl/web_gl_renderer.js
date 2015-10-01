@@ -188,59 +188,6 @@
 
         }
 
-        var program;
-
-        if ( cmd.program ) {
-
-            if ( typeof cmd.program === 'string' ) {  // Convert program to WebGlProgram
-
-                program = this.app.shader.getProgram( cmd.program );
-
-                if ( ! program ) {
-
-                    _warn( 'unknown program:', cmd.program );
-                    return;
-
-                }
-
-                cmd.program = this.app.glx.glProgram( program );
-
-            }
-
-            this.currentProgramFromCmds = cmd.program;
-
-        }
-
-        if ( cmd.drawElements ) {  // Save current uniform context (all current values)
-
-            var saveUniforms = cmd.drawElements.uniforms;
-            if ( ! saveUniforms ) cmd.drawElements.uniforms = saveUniforms = {};
-
-            program = this.currentProgramFromCmds;
-            if ( ! program ) {
-
-                _warn('drawElements command without program context!, cmd:', cmd);
-                return;
-
-            }
-
-            var key, uniformStack;
-
-            for ( var i = 0; i < program.uniformNames.length; i++ ) {
-
-                key = program.uniformNames[ i ];
-                uniformStack = this.uniforms.get( key );
-
-                if ( uniformStack ) {
-
-                    saveUniforms[ key ] = uniformStack.value;
-
-                }
-
-            }
-
-        }
-
         this.cmdQueue.push( cmd );
 
     };
