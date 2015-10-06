@@ -4,10 +4,8 @@ pic*i*mo is a sprite engine for javascript running in a modern browser. it is bu
 
 it is written in pure ES5 javascript (no transpilers are used).
 
-it is, however, under active development and building an awesome sprite engine together with an incredible easy api is difficult to get correct. if you are comfortable with bleeding-edge software please try picimo and share your feedback with me.
+it is, however, under active development and building an awesome sprite engine together with an incredible easy-and-fun-to-use api is difficult to get correct. if you are comfortable with bleeding-edge software please try picimo and share your feedback with me.
 
-have fun!
-
-😉
+*have fun!* 😉
 
 
