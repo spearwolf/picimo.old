@@ -32,7 +32,8 @@ var myCustomSpriteDescriptor = new Picimo.core.VertexObjectDescriptor(
 
     function () {
 
-        this.setXwyh( -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5 );  // anchor
+        //this.setXwyh( -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5 );  // anchor
+        this.setAnchor( 0, 0 );  // anchor
         this.setRgb( 1, 1, 1 );
 
     },
@@ -57,6 +58,14 @@ var myCustomSpriteDescriptor = new Picimo.core.VertexObjectDescriptor(
         'color'       : { size: 4, offset: 12, uniform: true },
 
     });
+
+
+myCustomSpriteDescriptor.proto.setAnchor = function ( x, y ) {
+
+    this.setXwyh( -0.5 - x, 0.5 - y, 0.5 - x, 0.5 - y, 0.5 - x, -0.5 - y, -0.5 - x, -0.5 - y );
+
+};
+
 
 // Create a fantastic scene
 //
@@ -105,4 +114,3 @@ var spriteGroup = app.scene.appendSpriteGroup( atlas, {
         },
 
     });
-
