@@ -1,3 +1,5 @@
 node_modules
 .tmp
 vendor/jaguarjs-jsdoc
+npm-debug.log
+dist/picimo.min.js

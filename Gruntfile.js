@@ -1,4 +1,4 @@
-module.exports = function( grunt ) {
+module.exports = function ( grunt ) {
 
     require( "load-grunt-tasks" )( grunt ); // npm install --save-dev load-grunt-tasks
 
@@ -97,6 +97,12 @@ module.exports = function( grunt ) {
                     base: '.',
                     keepalive: true,
                 }
+            },
+            serve_n_build: {
+                options: {
+                    port: 8000,
+                    base: '.',
+                }
             }
         },
 
@@ -110,6 +116,8 @@ module.exports = function( grunt ) {
     grunt.registerTask('release', [ 'dist' ]);
 
     grunt.registerTask('doc', ['jsdoc', 'copy:jsdoc']);
+
+    grunt.registerTask('server', [ 'build', 'connect:serve_n_build', 'watch' ]);
 
     grunt.registerTask('default', [ 'build', 'watch' ]);
 

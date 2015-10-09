@@ -1,0 +1,7 @@
+.tmp
+Gruntfile.js
+assets/images/doc
+jsdoc.conf.json
+picimo-doc.graffle
+src
+vendor
