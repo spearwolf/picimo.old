@@ -3,3 +3,4 @@ node_modules
 vendor/jaguarjs-jsdoc
 npm-debug.log
 dist/picimo.min.js
+dist/picimo.js
