@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     /**
@@ -10,6 +10,7 @@
     module.exports = {
 
         Scene       : require( './scene' ),
+        Picture     : require( './picture' ),
         SpriteGroup : require( './sprite_group' ),
 
         Node        : require( './node' ),

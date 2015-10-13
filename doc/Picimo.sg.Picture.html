@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: Node</title>
+    <title>Class: Picture</title>
     
     
     <link href='http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700' rel='stylesheet' type='text/css'>
@@ -24,22 +24,22 @@
 
 <div id="wrap">
     <div class="main">
-        <h1 class="page-title" data-filename="Picimo.sg.Node.html">Class: Node</h1>
+        <h1 class="page-title" data-filename="Picimo.sg.Picture.html">Class: Picture</h1>
         
 
 
 
 <section>
     
-<header data-current="Picimo.sg.Node">
+<header data-current="Picimo.sg.Picture">
     <h2>
         <span class="ancestors"><a href="Picimo.html">Picimo</a><a href="Picimo.sg.html">.sg</a>.</span>
     
-    Node
+    Picture
     </h2>
     
-        <div class="class-description"><p>The generic base class for all scene graph nodes.</p>
-<h3>States and Events</h3><p><img src="images/node-events.png" srcset="images/node-events.png 1x,images/node-events@2x.png 2x" alt="Node Events and States"></p></div>
+        <div class="class-description"><p>A Picture renders an single image to the screen.
+All vertex data will be will be uploaded to the GPU <em>every frame</em>.</p></div>
     
 </header>  
 
@@ -51,18 +51,20 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="Node">
+        <h4 class="name" id="Picture">
             
-            new Picimo.sg.Node<span class="signature">(app, <span class="optional">options</span>)</span>
+            new Picimo.sg.Picture<span class="signature">(app, <span class="optional">options</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            sg/node.js, line 8
+            sg/picture.js, line 10
         </div>
         
     </div>
 
+    
+    <p class="summary">Represents a single picture.</p>
     
 </dt>
 <dd>
@@ -172,13 +174,16 @@
 	
         <tr>
             
-                <td class="name"><code>display</code></td>
+                <td class="name"><code>textureAtlas</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type"><a href="Picimo.core.TextureAtlas.html">Picimo.core.TextureAtlas</a></span>
+|
+
+<span class="param-type"><a href="Picimo.utils.Promise.html">Picimo.utils.Promise</a></span>
 
 
             
@@ -186,8 +191,6 @@
             
             
                 <td class="default">
-                
-                    true
                 
                 </td>
             
@@ -208,43 +211,7 @@
 	
         <tr>
             
-                <td class="name"><code>ready</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>program</code></td>
             
             
             <td class="type">
@@ -259,6 +226,8 @@
             
                 <td class="default">
                 
+                    "sprite"
+                
                 </td>
             
             
@@ -271,14 +240,14 @@
                         
                     
                 
-                </td>
+                <p>The webgl program name</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>renderPrio</code></td>
+                <td class="name"><code>capacity</code></td>
             
             
             <td class="type">
@@ -293,39 +262,7 @@
             
                 <td class="default">
                 
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>The render priority determinates the render order of the child nodes.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onInit</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
+                    1000
                 
                 </td>
             
@@ -339,20 +276,20 @@
                         
                     
                 
-                </td>
+                <p>Max sprite capacity</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>onInitGl</code></td>
+                <td class="name"><code>spriteDescriptor</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="Picimo.core.VertexObjectDescriptor.html">Picimo.core.VertexObjectDescriptor</a></span>
 
 
             
@@ -361,209 +298,7 @@
             
                 <td class="default">
                 
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onFrame</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onRenderFrame</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onFrameEnd</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onDestroy</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onDestroyGl</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>onChildrenUpdated</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
+                    Picimo.sprites.SpriteDescriptor
                 
                 </td>
             
@@ -637,7 +372,7 @@
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li>Picimo.events.CustomEvent</li>
+            <li><a href="Picimo.sg.Node.html">Picimo.sg.Node</a></li>
         </ul>
     
     
@@ -1065,8 +800,10 @@ BUT initialization will be happen. (If you don't want the node to initialize set
         <dl>
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="addChild">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#addChild">inherited</a></span>
             
             addChild<span class="signature">()</span>
         </h4>
@@ -1174,7 +911,239 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="createSprite">
+            
+            createSprite<span class="signature">(<span class="optional">texture</span>, <span class="optional">width</span>, <span class="optional">height</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.sprites.Sprite.html">Picimo.sprites.Sprite</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            sg/picture.js, line 55
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns a sprite from the internal sprite pool. If pool capacity is reached an error will be thrown.</p>
+<p>If no <em>width</em> or <em>height</em> given the size will be read out from the texture.
+Otherwise when you previously called <code>setDefaultSpriteSize(w, h)</code> the default width and height will be used.</p>
+<p>If no <em>texture</em> is given a random texture (from the <em>textureAtlas</em>) will be choosen.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>texture</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="Picimo.core.Texture.html">Picimo.core.Texture</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+
+    <div class="param-desc">
+    
+        <p>If pool capacity is reached an error will be thrown.</p>
+    
+    </div>
+
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Picimo.sprites.Sprite.html">Picimo.sprites.Sprite</a>
+                        
+                    
+            </td>
+            <td class="description last">sprite</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer inherited">
         <h4 class="name" id="destroy">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#destroy">inherited</a></span>
             
             destroy<span class="signature">()</span>
         </h4>
@@ -1240,8 +1209,10 @@ BUT initialization will be happen. (If you don't want the node to initialize set
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="find">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#find">inherited</a></span>
             
             find<span class="signature">(name)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.sg.Node.html">Picimo.sg.Node</a>}</span>
         </h4>
@@ -1386,7 +1357,184 @@ BUT initialization will be happen. (If you don't want the node to initialize set
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="setDefaultSpriteSize">
+            
+            setDefaultSpriteSize<span class="signature">(width, height)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Picimo.sg.Picture.html">Picimo.sg.Picture</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            sg/picture.js, line 111
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set the width and height for all new sprites. Note that this won't affect any previously created sprites.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Picimo.sg.Picture.html#createSprite">Picimo.sg.Picture#createSprite</a></li>
+        </ul>
+    </dd>
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="Picimo.sg.Picture.html">Picimo.sg.Picture</a>
+                        
+                    
+            </td>
+            <td class="description last"><em>self</em></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer inherited">
         <h4 class="name" id="setReadyFunc">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#setReadyFunc">inherited</a></span>
             
             setReadyFunc<span class="signature">(The)</span>
         </h4>
@@ -1514,8 +1662,10 @@ self
         <dl>
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:childrenUpdated">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:childrenUpdated">inherited</a></span>
             
             childrenUpdated
         </h4>
@@ -1585,8 +1735,10 @@ self
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:destroy">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:destroy">inherited</a></span>
             
             destroy
         </h4>
@@ -1656,8 +1808,10 @@ self
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:destroyGl">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:destroyGl">inherited</a></span>
             
             destroyGl
         </h4>
@@ -1728,8 +1882,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:frame">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:frame">inherited</a></span>
             
             frame
         </h4>
@@ -1799,8 +1955,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:frameEnd">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:frameEnd">inherited</a></span>
             
             frameEnd
         </h4>
@@ -1870,8 +2028,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:init">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:init">inherited</a></span>
             
             init
         </h4>
@@ -1941,8 +2101,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:initGl">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:initGl">inherited</a></span>
             
             initGl
         </h4>
@@ -2012,8 +2174,10 @@ Is called before the <em>destroy</em> event.</p>
         
             
 <dt>
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <h4 class="name" id="event:renderFrame">
+            
+                <span class="inherited"><a href="Picimo.sg.Node.html#event:renderFrame">inherited</a></span>
             
             renderFrame
         </h4>
