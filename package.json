@@ -21,6 +21,7 @@
     "start": "grunt server"
   },
   "devDependencies": {
+    "babelify": "^6.3.0",
     "brfs": "^1.4.1",
     "color-js": "^1.0.3",
     "core-js": "^1.2.1",

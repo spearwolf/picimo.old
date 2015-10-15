@@ -21,7 +21,7 @@ module.exports = function ( grunt ) {
                     "src/index.js"
                 ],
                 options: {
-                    transform: [ 'brfs' ],
+                    transform: [ 'brfs', 'babelify' ],
                     browserifyOptions: {
                         debug: true,
                         standalone: 'Picimo'
@@ -35,7 +35,7 @@ module.exports = function ( grunt ) {
                     "src/index.js"
                 ],
                 options: {
-                    transform: [ 'brfs' ],
+                    transform: [ 'brfs', 'babelify' ],
                     browserifyOptions: {
                         debug: false,
                         standalone: 'Picimo'
