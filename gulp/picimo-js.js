@@ -10,9 +10,9 @@ import watchify from 'watchify';
 
 const LOG_NAMESPACE = 'picimo.js';
 
-gulp.task('build-picimo-js', () => bundle(build()));
+gulp.task('build:picimo-js', () => bundle(build()));
 
-gulp.task('build-n-watch-picimo-js', () => {
+gulp.task('build:watch:picimo-js', () => {
 
     let b = build();
     b.on('update', bundle.bind(global, b));
