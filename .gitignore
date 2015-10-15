@@ -4,4 +4,7 @@ vendor/jaguarjs-jsdoc
 npm-debug.log
 dist/picimo.min.js
 dist/picimo.js
+build/picimo.js
+build/picimo.js.map
 doc
+package-grunt.json
