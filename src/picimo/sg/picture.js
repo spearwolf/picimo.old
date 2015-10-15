@@ -35,11 +35,9 @@
 
         initTextureAtlas( this, options.textureAtlas );
 
-        this.program             = options.program || "sprite";
-        this.spriteDescriptor    = options.spriteDescriptor || sprites.SpriteDescriptor;
-        this.pipeline            = null;
-        this.defaultSpriteWidth  = options.defaultWidth || 0;
-        this.defaultSpriteHeight = options.defaultHeight || options.defaultWidth;
+        this.program          = options.program || "sprite";
+        this.spriteDescriptor = options.spriteDescriptor || sprites.SpriteDescriptor;
+        this.pipeline         = null;
 
         initSpritePool( this, this.spriteDescriptor, options.capacity || 1000 );
 
@@ -87,7 +85,7 @@
 
         if ( width === undefined ) {
 
-            if ( this.hasDefaultSpriteSize || ! tex ) {
+            if ( ! tex ) {
 
                 return sprite;
 
@@ -108,30 +106,6 @@
 
     };
 
-    /**
-     * @method Picimo.sg.Picture#setDefaultSpriteSize
-     *
-     * @param {number} width
-     * @param {number} height
-     *
-     * @returns {Picimo.sg.Picture} *self*
-     *
-     * @see Picimo.sg.Picture#createSprite
-     *
-     * @description
-     * Set the width and height for all new sprites. Note that this won't affect any previously created sprites.
-     *
-     */
-
-    Picture.prototype.setDefaultSpriteSize = function ( width, height ) {
-
-        this.defaultSpriteWidth = width || 0;
-        this.defaultSpriteHeight = height || width;
-
-        updateDefaultSpriteSize( this );
-
-    };
-
 
     function initSpritePool ( spriteGroup, descriptor, capacity ) {
 
@@ -142,18 +116,6 @@
         if ( descriptor.hasAttribute( 'scale', 1 ) ) newSpritePrototype.scale = 1;
         else if ( descriptor.hasAttribute( 'scale', 2 ) ) newSpritePrototype.setScale( 1, 1 );
         if ( descriptor.hasAttribute( 'opacity' ) ) newSpritePrototype.opacity = 1;
-
-        updateDefaultSpriteSize( spriteGroup );
-
-    }
-
-    function updateDefaultSpriteSize ( spriteGroup ) {
-
-        if ( spriteGroup.hasDefaultSpriteSize ) {
-
-            spriteGroup.pool.NEW.setSize( spriteGroup.defaultSpriteWidth, spriteGroup.defaultSpriteHeight );
-
-        }
 
     }
 
@@ -226,16 +188,6 @@
             }
 
         },
-
-        'hasDefaultSpriteSize': {
-
-            get: function () {
-
-                return this.defaultSpriteWidth > 0 && this.defaultSpriteHeight > 0;
-
-            }
-
-        }
 
     });
 
