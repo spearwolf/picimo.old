@@ -8,6 +8,7 @@ import uglify from 'gulp-uglify';
 import gutil from 'gulp-util';
 import watchify from 'watchify';
 
+const LOG_NAMESPACE = 'picimo.js';
 
 gulp.task('build-picimo-js', () => bundle(build()));
 
@@ -31,15 +32,16 @@ function build () {
 
     b.transform(babelify.configure({
         sourceMapRelative: '.',
+        stage: 0,
         optional: [
-            "es7.asyncFunctions",
-            "es7.classProperties",
-            "es7.decorators",
+            //"es7.asyncFunctions",
+            //"es7.classProperties",
+            //"es7.decorators",
             "runtime"
         ]
     }));
 
-    b.on('log', gutil.log.bind(gutil, '[picimo.js]'));
+    b.on('log', gutil.log.bind(gutil, '[' + gutil.colors.cyan(LOG_NAMESPACE) + ']'));
 
     return b;
 
@@ -53,7 +55,7 @@ function bundle ( b ) {
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
-        .on('error', gutil.log)
+        .on('error', gutil.log.bind(gutil, '[' + gutil.colors.cyan(LOG_NAMESPACE) + ']', gutil.colors.bold.red('error')))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./build/'))
         ;
