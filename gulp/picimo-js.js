@@ -32,11 +32,11 @@ function build () {
 
     b.transform(babelify.configure({
         sourceMapRelative: '.',
-        stage: 0,
+        //stage: 0,
         optional: [
-            //"es7.asyncFunctions",
-            //"es7.classProperties",
-            //"es7.decorators",
+            "es7.asyncFunctions",
+            "es7.classProperties",
+            "es7.decorators",
             "runtime"
         ]
     }));
@@ -50,15 +50,23 @@ function build () {
 function bundle ( b ) {
 
     return b.bundle()
-        //.on('error', gutil.log.bind(gutil, 'Browserify error'))
+        .on('error', log_error('Browserify'))
         .pipe(source('picimo.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
-        .on('error', gutil.log.bind(gutil, '[' + gutil.colors.cyan(LOG_NAMESPACE) + ']', gutil.colors.bold.red('error')))
+        .on('error', log_error('Sourcemaps'))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./build/'))
         ;
 
+}
+
+function log_error ( prefix ) {
+    let log = gutil.log.bind(gutil, '[' + gutil.colors.cyan(LOG_NAMESPACE) + ']', gutil.colors.red(prefix));
+    return function ( err ) {
+        log(gutil.colors.red(err.toString()));
+        //gutil.log(JSON.stringify(err, null, 2));
+    };
 }
 

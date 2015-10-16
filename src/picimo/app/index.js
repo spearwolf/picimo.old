@@ -1,367 +1,377 @@
-/* global requestAnimationFrame */
-/* global URL */
-(function () {
-    "use strict";
+'use strict';
 
-    var utils  = require( '../utils' );
-    var events = require( '../events' );
-    var sg     = require( '../sg' );
-    var webgl  = require( '../webgl' );
-    var core   = require( '../core' );
+import utils from '../utils';
+import events from '../events';
+import sg from '../sg';
+import webgl from '../webgl';
+import core from '../core';
+
+/**
+ * @class Picimo.App
+ * @extends Picimo.events.CustomEvent
+ *
+ * @classdesc
+ *   Create a new picimo app. This is your main app controller.
+ *
+ *   ##### Initialization
+ *
+ *   Um eine Picimo App Instanz (und einen WebGL Canvas) zu erzeugen, reicht ein einfacher Aufruf:
+ *
+ *   ```
+ *   var app = new Picimo.App({ *options* });
+ *   ```
+ *
+ *   Es wird ein `<canvas>` Element erzeugt und unterhalb des `<body>` Elements der Seite eingehängt.
+ *   Mit der Option **appendTo** kann man an Stelle des `<body>` ein anderes Container Element bestimmen.
+ *
+ *   Möchte man das `<canvas>` Element selbst erzeugen oder ein vorhandenes verwenden, gibt man dieses einfach als ersten Parameter an:
+ *
+ *   ```
+ *   var app = new Picimo.App(document.getElementById('picimo-canvas'));
+ *   ```
+ *
+ *   oder einfach als **canvas** Option:
+ *
+ *   ```
+ *   var app = new Picimo.App({ canvas: document.getElementById('picimo-canvas') });
+ *   ```
+ *
+ *
+ * @param {HTMLCanvasElement|object} [canvas]                   - The canvas dom element or the options.
+ * @param {object} [options]                                    - The options.
+ * @param {boolean} [options.alpha=false]                       - Create a transparent WebGL canvas.
+ * @param {boolean} [options.antialias=false]                   - Enable antialiasing.
+ * @param {boolean} [options.stats=false]                       - Create the [ mrdoob/stats.js ]( https://github.com/mrdoob/stats.js/ ) widget and append it to the container element.
+ * @param {HTMLCanvasElement} [options.canvas]                  - The canvas dom element.
+ * @param {HTMLElement} [options.appendTo=document.body]        - Set the container element. The WebGL Canvas (and the stats element) will be appended to this element. The container element also defines the size of the canvas. If this is the body element you will get an fullscreen WebGL canvas. *When the __canvas__ option is used, this option will be ignored.*
+ * @param {string|Picimo.utils.Color} [options.bgColor=#000000] - Background color of the WebGL canvas. Use any CSS color format you like.
+ * @param {string} [options.assetBaseUrl]                       - Set the base url prefix for all assets (images, json, ..). As an alternative to this option you could define a global var **PICIMO_ASSET_BASE_URL** before creating your Picimo instance. But the preferred way should be using *assetBaseUrl*!
+ *
+ */
+
+export default function App ( canvas, options ) {
+
+    events.eventize( this );
 
     /**
-     * @class Picimo.App
-     * @extends Picimo.events.CustomEvent
-     *
-     * @classdesc
-     *   Create a new picimo app. This is your main app controller.
-     *
-     *   ##### Initialization
-     *
-     *   Um eine Picimo App Instanz (und einen WebGL Canvas) zu erzeugen, reicht ein einfacher Aufruf:
-     *
-     *   ```
-     *   var app = new Picimo.App({ *options* });
-     *   ```
-     *
-     *   Es wird ein `<canvas>` Element erzeugt und unterhalb des `<body>` Elements der Seite eingehängt.
-     *   Mit der Option **appendTo** kann man an Stelle des `<body>` ein anderes Container Element bestimmen.
-     *
-     *   Möchte man das `<canvas>` Element selbst erzeugen oder ein vorhandenes verwenden, gibt man dieses einfach als ersten Parameter an:
-     *
-     *   ```
-     *   var app = new Picimo.App(document.getElementById('picimo-canvas'));
-     *   ```
-     *
-     *   oder einfach als **canvas** Option:
-     *
-     *   ```
-     *   var app = new Picimo.App({ canvas: document.getElementById('picimo-canvas') });
-     *   ```
-     *
-     *
-     * @param {HTMLCanvasElement|object} [canvas]                   - The canvas dom element or the options.
-     * @param {object} [options]                                    - The options.
-     * @param {boolean} [options.alpha=false]                       - Create a transparent WebGL canvas.
-     * @param {boolean} [options.antialias=false]                   - Enable antialiasing.
-     * @param {boolean} [options.stats=false]                       - Create the [ mrdoob/stats.js ]( https://github.com/mrdoob/stats.js/ ) widget and append it to the container element.
-     * @param {HTMLCanvasElement} [options.canvas]                  - The canvas dom element.
-     * @param {HTMLElement} [options.appendTo=document.body]        - Set the container element. The WebGL Canvas (and the stats element) will be appended to this element. The container element also defines the size of the canvas. If this is the body element you will get an fullscreen WebGL canvas. *When the __canvas__ option is used, this option will be ignored.*
-     * @param {string|Picimo.utils.Color} [options.bgColor=#000000] - Background color of the WebGL canvas. Use any CSS color format you like.
-     * @param {string} [options.assetBaseUrl]                       - Set the base url prefix for all assets (images, json, ..). As an alternative to this option you could define a global var **PICIMO_ASSET_BASE_URL** before creating your Picimo instance. But the preferred way should be using *assetBaseUrl*!
+     * @member {number} Picimo.App#now - The number of seconds from application start.
      */
 
-    function App ( canvas, options ) {
+    this.now = window.performance.now() / 1000.0;
 
-        events.eventize( this );
+    if ( typeof canvas === 'object' && ! ( 'nodeName' in canvas ) ) {
 
-        /**
-         * @member {number} Picimo.App#now - The number of seconds from application start.
-         */
+        options = canvas;
+        canvas  = options.canvas;
 
-        this.now = window.performance.now() / 1000.0;
+    } else if ( options == null ) {
 
-        if ( typeof canvas === 'object' && ! ( 'nodeName' in canvas ) ) {
-
-            options = canvas;
-            canvas  = options.canvas;
-
-        } else if ( options == null ) {
-
-            options = {};
-
-        }
-
-        /**
-         * @member {HTMLCanvasElement} Picimo.App#canvas
-         */
-
-        var canvasIsPredefined = canvas !== undefined;
-
-        canvas = canvasIsPredefined ? canvas : document.createElement( "canvas" );
-        utils.object.definePropertyPublicRO( this, 'canvas', canvas );
-
-        var parentNode;
-
-        if ( ! canvasIsPredefined ) {
-
-            parentNode = options.appendTo ? options.appendTo : document.body;
-            parentNode.appendChild( canvas );
-        
-        } 
-
-        canvas.classList.add( 'picimo' );
-
-
-        /**
-         * @member {WebGlRenderingContext} Picimo.App#gl
-         */
-
-        utils.addGlxProperty( this );
-
-        this.glCtxAttrs = {
-
-            alpha     : ( options.alpha === true ),
-            antialias : ( options.antialias === true )
-
-        };
-
-        /**
-         * @member {WebGlContext} Picimo.App#glx
-         */
-
-        this.glx = createWebGlContext( this );
-        this.glx.app = this;
-
-        /**
-         * @member {Picimo.utils.Color} Picimo.App#backgroundColor
-         */
-
-        this.backgroundColor = new utils.Color( options.bgColor !== undefined ? options.bgColor : ( this.glCtxAttrs.alpha ? 'transparent' : "#000000" ) );
-
-        /**
-         * @member {Picimo.webgl.ShaderManager} Picimo.App#shader
-         */
-
-        this.shader = new webgl.ShaderManager( this );
-
-        /**
-         * @member {Picimo.webgl.TextureManager} Picimo.App#texture
-         */
-
-        this.texture = new webgl.TextureManager( this );
-
-        /**
-         * @member {Picimo.webgl.WebGlRenderer} Picimo.App#renderer
-         */
-
-        this.renderer = new webgl.WebGlRenderer( this );
-
-        /**
-         * @member {Picimo.App} Picimo.App#assetBaseUrl - The base url for all assets. May be *undefined*.
-         */
-
-        this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
-
-        /**
-         * @member {number} Picimo.App#frameNo - The current frame number.
-         */
-
-        this.frameNo = 0;
-
-
-        this.renderer.onInitGl();
-        this.resize();
-
-        window.addEventListener( 'resize', this.resize.bind( this ), false );
-
-        this.onAnimationFrame = this.renderFrame.bind( this );
-        requestAnimationFrame( this.onAnimationFrame );
-
-
-        /**
-         * @member {Picimo.sg.Scene} Picimo.App#scene - The root node of the scene graph.
-         */
-
-        utils.object.definePropertyPublicRO( this, 'scene', new sg.Scene( this, {
-
-            blendMode: webgl.cmd.BlendMode.DEFAULT,
-            pixelRatio: 1
-
-        } ) );
+        options = {};
 
     }
 
     /**
-     * @member {number} Picimo.App#devicePixelRatio - The device pixel ratio.
+     * @member {HTMLCanvasElement} Picimo.App#canvas
      */
 
-    utils.object.definePropertyPublicRO( App.prototype, 'devicePixelRatio', ( window.devicePixelRatio || 1 ) );
+    var canvasIsPredefined = canvas !== undefined;
+
+    canvas = canvasIsPredefined ? canvas : document.createElement( "canvas" );
+    utils.object.definePropertyPublicRO( this, 'canvas', canvas );
+
+    var parentNode;
+
+    if ( ! canvasIsPredefined ) {
+
+        parentNode = options.appendTo ? options.appendTo : document.body;
+        parentNode.appendChild( canvas );
+
+    }
+
+    canvas.classList.add( 'picimo' );
 
 
     /**
-     * @method Picimo.App#resize
+     * @member {WebGlRenderingContext} Picimo.App#gl
      */
 
-    App.prototype.resize = function () {
+    utils.addGlxProperty( this );
 
-        var w = Math.round( this.canvas.parentNode.clientWidth * this.devicePixelRatio );
-        var h = Math.round( this.canvas.parentNode.clientHeight * this.devicePixelRatio );
+    this.glCtxAttrs = {
 
-        if ( this.width !== w || this.height !== h ) {
-
-            /**
-             * @member {number} Picimo.App#width - The _real_ device pixel width.
-             */
-
-            this.width = w;
-
-            /**
-             * @member {number} Picimo.App#height - The _real_ device pixel height.
-             */
-
-            this.height = h;
-
-            if ( this.canvas.width !== w || this.canvas.height !== h ) {
-
-                this.canvas.width  = w;
-                this.canvas.height = h;
-
-                this.canvas.style.width  = Math.round( w / this.devicePixelRatio ) + "px";
-                this.canvas.style.height = Math.round( h / this.devicePixelRatio ) + "px";
-
-            }
-
-            if ( this.renderer ) {
-
-                this.renderer.onResize();
-
-            }
-
-        }
+        alpha     : ( options.alpha === true ),
+        antialias : ( options.antialias === true )
 
     };
 
-
     /**
-     * @method Picimo.App#renderFrame
+     * @member {WebGlContext} Picimo.App#glx
      */
 
-    App.prototype.renderFrame = function () {
+    this.glx = createWebGlContext( this );
+    this.glx.app = this;
 
-        this.now = window.performance.now() / 1000.0;
-        ++this.frameNo;
+    /**
+     * @member {Picimo.utils.Color} Picimo.App#backgroundColor
+     */
 
-        this.renderer.onStartFrame();
+    this.backgroundColor = new utils.Color( options.bgColor !== undefined ? options.bgColor : ( this.glCtxAttrs.alpha ? 'transparent' : "#000000" ) );
 
-        if ( this.scene ) {
+    /**
+     * @member {Picimo.webgl.ShaderManager} Picimo.App#shader
+     */
 
-            this.scene.renderFrame();
+    this.shader = new webgl.ShaderManager( this );
+
+    /**
+     * @member {Picimo.webgl.TextureManager} Picimo.App#texture
+     */
+
+    this.texture = new webgl.TextureManager( this );
+
+    /**
+     * @member {Picimo.webgl.WebGlRenderer} Picimo.App#renderer
+     */
+
+    this.renderer = new webgl.WebGlRenderer( this );
+
+    /**
+     * @member {Picimo.App} Picimo.App#assetBaseUrl - The base url for all assets. May be *undefined*.
+     */
+
+    this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
+
+    /**
+     * @member {number} Picimo.App#frameNo - The current frame number.
+     */
+
+    this.frameNo = 0;
+
+    this.renderer.onInitGl();
+    this.resize();
+
+    this.onResize = this.resize.bind( this );
+    window.addEventListener( 'resize', this.onResize, false );
+
+    this.onAnimationFrame = this.renderFrame.bind( this );
+    requestAnimationFrame( this.onAnimationFrame );
+
+
+    /**
+     * @member {Picimo.sg.Scene} Picimo.App#scene - The root node of the scene graph.
+     */
+
+    utils.object.definePropertyPublicRO( this, 'scene', new sg.Scene( this, {
+
+        blendMode: webgl.cmd.BlendMode.DEFAULT,
+        pixelRatio: 1
+
+    } ) );
+
+}
+
+/**
+ * @member {number} Picimo.App#devicePixelRatio - The device pixel ratio.
+ */
+
+utils.object.definePropertyPublicRO( App.prototype, 'devicePixelRatio', ( window.devicePixelRatio || 1 ) );
+
+
+/**
+ * @method Picimo.App#resize
+ */
+
+App.prototype.resize = function () {
+
+    var w = Math.round( this.canvas.parentNode.clientWidth * this.devicePixelRatio );
+    var h = Math.round( this.canvas.parentNode.clientHeight * this.devicePixelRatio );
+
+    if ( this.width !== w || this.height !== h ) {
+
+        /**
+         * @member {number} Picimo.App#width - The _real_ device pixel width.
+         */
+
+        this.width = w;
+
+        /**
+         * @member {number} Picimo.App#height - The _real_ device pixel height.
+         */
+
+        this.height = h;
+
+        if ( this.canvas.width !== w || this.canvas.height !== h ) {
+
+            this.canvas.width  = w;
+            this.canvas.height = h;
+
+            this.canvas.style.width  = Math.round( w / this.devicePixelRatio ) + "px";
+            this.canvas.style.height = Math.round( h / this.devicePixelRatio ) + "px";
 
         }
 
-        this.renderer.onEndFrame();
+        if ( this.renderer ) {
 
-        requestAnimationFrame( this.onAnimationFrame );
+            this.renderer.onResize();
 
-    };
+        }
+
+    }
+
+};
 
 
-    var re_absoluteHttpUrl = new RegExp( '^(https?:)?//', 'i' );
-    var re_absoluteUrlPath = new RegExp( '^(https?:)?/', 'i' );
-    var re_getUrlDir       = new RegExp( '^(.*/)[^/]+$', 'i' );
+/**
+ * @method Picimo.App#renderFrame
+ */
 
-    /**
-     * @method Picimo.App#getAssetUrl
-     * @param {string} url
-     * @return {string} url
-     */
+App.prototype.renderFrame = function () {
 
-    App.prototype.getAssetUrl = function ( url ) {
+    this.now = window.performance.now() / 1000.0;
+    ++this.frameNo;
 
-        var assetUrl;
+    this.renderer.onStartFrame();
 
-        if ( this.assetBaseUrl === undefined ) {
+    if ( this.scene ) {
 
-            assetUrl = url;
+        this.scene.renderFrame();
 
-        } else {
+    }
 
-            if ( re_absoluteHttpUrl.test( url ) ) {
+    this.renderer.onEndFrame();
 
-                if ( url[ 0 ] === '/' && this.assetBaseUrl[ this.assetBaseUrl.length - 1 ] === '/' ) {
+    requestAnimationFrame( this.onAnimationFrame );
 
-                    assetUrl = this.assetBaseUrl + url.substr( 1 );
+};
 
-                } else {
 
-                    assetUrl = this.assetBaseUrl + url;
+var regExpAbsHttpUrl = new RegExp( '^(https?:)?//', 'i' );
+var regExpAbsUrlPath = new RegExp( '^(https?:)?/', 'i' );
+var regExpUrlDir     = new RegExp( '^(.*/)[^/]+$', 'i' );
 
-                }
+/**
+ * @method Picimo.App#getAssetUrl
+ * @param {string} url
+ * @return {string} url
+ */
+
+App.prototype.getAssetUrl = function ( url ) {
+
+    var assetUrl;
+
+    if ( this.assetBaseUrl === undefined ) {
+
+        assetUrl = url;
+
+    } else {
+
+        if ( regExpAbsHttpUrl.test( url ) ) {
+
+            if ( url[ 0 ] === '/' && this.assetBaseUrl[ this.assetBaseUrl.length - 1 ] === '/' ) {
+
+                assetUrl = this.assetBaseUrl + url.substr( 1 );
 
             } else {
 
-                assetUrl = url;
+                assetUrl = this.assetBaseUrl + url;
 
             }
 
-        }
+        } else {
 
-        return assetUrl;
-
-    };
-
-    /**
-     * @method Picimo.App#joinAssetUrl
-     * @param {string} baseUrl
-     * @param {string} url
-     * @return {string} url
-     */
-
-    App.prototype.joinAssetUrl = function ( baseUrl, url ) {
-
-        if ( re_absoluteUrlPath.test( url ) ) {
-
-            return url;
+            assetUrl = url;
 
         }
-
-        return this.getAssetUrl( getUrlDir( baseUrl ? baseUrl : this.assetBaseUrl ) + url );
-
-    };
-
-    function getUrlDir ( url ) {
-
-        if ( url[ url.length - 1 ] === '/' ) {
-
-            return url;
-
-        }
-
-        return re_getUrlDir.exec( url )[ 1 ];
 
     }
 
+    return assetUrl;
 
-    /**
-     * @method Picimo.App#loadTextureAtlas
-     * @param {string} url
-     * @return {Picimo.utils.Promise} promise
-     */
+};
 
-    App.prototype.loadTextureAtlas = function ( url ) {
+/**
+ * @method Picimo.App#joinAssetUrl
+ * @param {string} baseUrl
+ * @param {string} url
+ * @return {string} url
+ */
 
-        return new core.TextureAtlas( this ).load( url ).deferred.promise;
+App.prototype.joinAssetUrl = function ( baseUrl, url ) {
 
-    };
+    if ( regExpAbsUrlPath.test( url ) ) {
 
-
-    function createWebGlContext ( app ) {
-
-        var gl;
-
-        try {
-
-            gl = app.canvas.getContext( "webgl", app.glCtxAttrs ) ||
-                 app.canvas.getContext( "experimental-webgl", app.glCtxAttrs );
-
-        } catch ( err ) {
-
-            console.error( err );
-
-        }
-
-        if ( ! gl ) {
-
-            throw new Error( "Could not initialize the WebGL context!" );
-
-        }
-
-        return new webgl.WebGlContext( gl );
+        return url;
 
     }
 
+    return this.getAssetUrl( getUrlDir( baseUrl ? baseUrl : this.assetBaseUrl ) + url );
 
-    module.exports = App;
+};
 
-})();
+function getUrlDir ( url ) {
+
+    if (url[url.length - 1] === '/') return url;
+    return regExpUrlDir.exec(url)[1];
+
+}
+
+
+/**
+ * @method Picimo.App#loadTextureAtlas
+ * @param {string} url
+ * @return {Promise} promise
+ */
+
+App.prototype.loadTextureAtlas = function ( url ) {
+
+    return new core.TextureAtlas( this ).load( url ).deferred.promise;
+
+};
+
+
+/**
+ * Load an image and create a texture with it.
+ * @method Picimo.App#loadTexture
+ * @param {string} url
+ * @return {Promise} promise will be fulfilled with a Picimo.core.Texture
+ */
+
+App.prototype.loadTexture = function ( url ) {
+
+    var texture = new core.Texture();
+    var img = new core.Po2Image(this).load(url);
+    texture.image = img;
+
+    return img.deferred.promise.then(() => texture);
+
+};
+
+
+function createWebGlContext ( app ) {
+
+    var gl;
+
+    try {
+
+        gl = app.canvas.getContext( "webgl", app.glCtxAttrs ) ||
+             app.canvas.getContext( "experimental-webgl", app.glCtxAttrs );
+
+    } catch ( err ) {
+
+        console.error( err );
+
+    }
+
+    if ( ! gl ) {
+
+        throw new Error( "Could not initialize the WebGL context!" );
+
+    }
+
+    return new webgl.WebGlContext( gl );
+
+}
+
+
+module.exports = App;
+

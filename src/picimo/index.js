@@ -1,20 +1,18 @@
-(function(){
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo
-     */
+/**
+ * @namespace Picimo
+ */
 
-    module.exports = {
+module.exports = {
 
-        App     : require( './app' ),
-        sg      : require( './sg' ),
-        webgl   : require( './webgl' ),
-        utils   : require( './utils' ),
-        math    : require( './math' ),
-        core    : require( './core' ),
-        sprites : require( './sprites' )
+    App     : require( './app' ),
+    sg      : require( './sg' ),
+    webgl   : require( './webgl' ),
+    utils   : require( './utils' ),
+    math    : require( './math' ),
+    core    : require( './core' ),
+    sprites : require( './sprites' )
 
-    };
+};
 
-})();

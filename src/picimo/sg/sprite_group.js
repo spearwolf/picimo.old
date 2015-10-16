@@ -1,256 +1,250 @@
-(function () {
-    "use strict";
+'use strict';
 
-    var Node                = require( './node' );
-    var core                = require( '../core' );
-    var utils               = require( '../utils' );
-    var sprites             = require( '../sprites' );
-    var SpriteGroupPipeline = require( '../webgl/pipeline' ).SpriteGroupPipeline;
+import Node from './node';
+import core from '../core';
+import sprites from '../sprites';
+import {SpriteGroupPipeline} from '../webgl/pipeline';
 
-    /**
-     * @class Picimo.sg.SpriteGroup
-     * @extends Picimo.sg.Node
-     * 
-     * @param {Picimo.App} app - The app instance
-     * @param {Object} [options] - The options
-     * @param {Picimo.core.TextureAtlas|Picimo.utils.Promise} [options.textureAtlas]
-     * @param {string} [options.program="sprite"] - The webgl program name
-     * @param {number} [options.capacity=1000] - Max sprite capacity
-     * @param {Picimo.core.VertexObjectDescriptor} [options.spriteDescriptor=Picimo.sprites.SpriteDescriptor]
-     *
-     * @summary
-     * Represents a group of sprites.
-     *
-     * @classdesc
-     * A SpriteGroup renders a group of sprites to the screen.
-     * All vertex data will be will be uploaded to the GPU *every frame*.
-     * So choose the capacity carefully.
-     *
-     * A SpriteGroup expects that a sprite instance (which is described by the *spriteDescriptor* option) has the following properties and methods:
-     * 
-     * | Type | Definition | Required | Comment |
-     * |------|------------|----------|---------|
-     * | Method | `setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)` | yes | |
-     * | Method | `setSize(w, h)` | yes | |
-     * | Method | `setScale(sx, sy)` | no | Either this or *scale* |
-     * | Property | `scale=` | no | Either this or *setScale* |
-     * | Property | `opacity=` | no | |
-     *
-     */
+/**
+ * @class Picimo.sg.SpriteGroup
+ * @extends Picimo.sg.Node
+ *
+ * @param {Picimo.App} app - The app instance
+ * @param {object} [options] - The options
+ * @param {Picimo.core.TextureAtlas|Promise} [options.textureAtlas]
+ * @param {string} [options.program="sprite"] - The webgl program name
+ * @param {number} [options.capacity=1000] - Max sprite capacity
+ * @param {Picimo.core.VertexObjectDescriptor} [options.spriteDescriptor=Picimo.sprites.SpriteDescriptor]
+ *
+ * @summary
+ * Represents a group of sprites.
+ *
+ * @classdesc
+ * A SpriteGroup renders a group of sprites to the screen.
+ * All vertex data will be will be uploaded to the GPU *every frame*.
+ * So choose the capacity carefully.
+ *
+ * A SpriteGroup expects that a sprite instance (which is described by the *spriteDescriptor* option) has the following properties and methods:
+ *
+ * | Type | Definition | Required | Comment |
+ * |------|------------|----------|---------|
+ * | Method | `setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)` | yes | |
+ * | Method | `setSize(w, h)` | yes | |
+ * | Method | `setScale(sx, sy)` | no | Either this or *scale* |
+ * | Property | `scale=` | no | Either this or *setScale* |
+ * | Property | `opacity=` | no | |
+ *
+ */
 
-    function SpriteGroup ( app, options ) {
+export default function SpriteGroup ( app, options ) {
 
-        if ( options === undefined ) options = {};
+    if ( options === undefined ) options = {};
 
-        Node.call( this, app, options );
+    Node.call( this, app, options );
 
-        initTextureAtlas( this, options.textureAtlas );
+    initTextureAtlas( this, options.textureAtlas );
 
-        this.program             = options.program || "sprite";
-        this.spriteDescriptor    = options.spriteDescriptor || sprites.SpriteDescriptor;
-        this.pipeline            = null;
-        this.defaultSpriteWidth  = options.defaultWidth || 0;
-        this.defaultSpriteHeight = options.defaultHeight || options.defaultWidth;
+    this.program             = options.program || "sprite";
+    this.spriteDescriptor    = options.spriteDescriptor || sprites.SpriteDescriptor;
+    this.pipeline            = null;
+    this.defaultSpriteWidth  = options.defaultWidth || 0;
+    this.defaultSpriteHeight = options.defaultHeight || options.defaultWidth;
 
-        initSpritePool( this, this.spriteDescriptor, options.capacity || 1000 );
+    initSpritePool( this, this.spriteDescriptor, options.capacity || 1000 );
 
-        this.on( "initGl", onInitGl.bind( this, this ) );
-        this.on( "renderFrame", -1000, onRenderFrame.bind( this, this ) );
+    this.on( "initGl", onInitGl.bind( this, this ) );
+    this.on( "renderFrame", -1000, onRenderFrame.bind( this, this ) );
 
-    }
+}
 
-    SpriteGroup.prototype = Object.create( Node.prototype );
-    SpriteGroup.prototype.constructor = SpriteGroup;
+SpriteGroup.prototype = Object.create( Node.prototype );
+SpriteGroup.prototype.constructor = SpriteGroup;
 
 
-    /**
-     * @method Picimo.sg.SpriteGroup#createSprite
-     *
-     * @param {string|Picimo.core.Texture} [texture]
-     * @param {number} [width]
-     * @param {number} [height]
-     *
-     * @returns {Picimo.sprites.Sprite} sprite
-     *
-     * @throws  If pool capacity is reached an error will be thrown.
-     *
-     * @description
-     * Returns a sprite from the internal sprite pool. If pool capacity is reached an error will be thrown.
-     *
-     * If no *width* or *height* given the size will be read out from the texture.
-     * Otherwise when you previously called `setDefaultSpriteSize(w, h)` the default width and height will be used.
-     *
-     * If no *texture* is given a random texture (from the *textureAtlas*) will be choosen.
-     *
-     */
+/**
+ * @method Picimo.sg.SpriteGroup#createSprite
+ *
+ * @param {string|Picimo.core.Texture} [texture]
+ * @param {number} [width]
+ * @param {number} [height]
+ *
+ * @returns {Picimo.sprites.Sprite} sprite
+ *
+ * @throws  If pool capacity is reached an error will be thrown.
+ *
+ * @description
+ * Returns a sprite from the internal sprite pool. If pool capacity is reached an error will be thrown.
+ *
+ * If no *width* or *height* given the size will be read out from the texture.
+ * Otherwise when you previously called `setDefaultSpriteSize(w, h)` the default width and height will be used.
+ *
+ * If no *texture* is given a random texture (from the *textureAtlas*) will be choosen.
+ *
+ */
 
-    SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
+SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
 
-        var sprite = this.pool.alloc();
+    var sprite = this.pool.alloc();
 
-        var tex = typeof texture === 'string'
-            ? this.textureAtlas.getTexture( texture )
-            : ( texture == null
-                ? this.textureAtlas.getRandomTexture()
-                : texture );
+    var tex = typeof texture === 'string'
+        ? this.textureAtlas.getTexture( texture )
+        : ( texture == null
+            ? this.textureAtlas.getRandomTexture()
+            : texture );
 
-        tex.setTexCoords( sprite );
+    tex.setTexCoords( sprite );
 
-        if ( width === undefined ) {
+    if ( width === undefined ) {
 
-            if ( this.hasDefaultSpriteSize || ! tex ) {
-            
-                return sprite;
-            
-            }
+        if ( this.hasDefaultSpriteSize || ! tex ) {
 
-            width = tex.width;
-            height = tex.height;
-        
-        } else {
+            return sprite;
 
-            if ( height === undefined ) height = width;
-        
         }
 
-        sprite.setSize( width, height );
+        width = tex.width;
+        height = tex.height;
 
-        return sprite;
+    } else {
 
-    };
-
-    /**
-     * @method Picimo.sg.SpriteGroup#setDefaultSpriteSize
-     *
-     * @param {number} width
-     * @param {number} height
-     *
-     * @returns {Picimo.sg.SpriteGroup} *self*
-     *
-     * @see Picimo.sg.SpriteGroup#createSprite
-     *
-     * @description
-     * Set the width and height for all new sprites. Note that this won't affect any previously created sprites.
-     *
-     */
-
-    SpriteGroup.prototype.setDefaultSpriteSize = function ( width, height ) {
-
-        this.defaultSpriteWidth = width || 0;
-        this.defaultSpriteHeight = height || width;
-
-        updateDefaultSpriteSize( this );
-
-    };
-
-
-    function initSpritePool ( spriteGroup, descriptor, capacity ) {
-
-        spriteGroup.pool = new core.VertexObjectPool( descriptor, capacity );
-
-        var newSpritePrototype = spriteGroup.pool.NEW;
-
-        if ( descriptor.hasAttribute( 'scale', 1 ) ) newSpritePrototype.scale = 1;
-        else if ( descriptor.hasAttribute( 'scale', 2 ) ) newSpritePrototype.setScale( 1, 1 );
-        if ( descriptor.hasAttribute( 'opacity' ) ) newSpritePrototype.opacity = 1;
-
-        updateDefaultSpriteSize( spriteGroup );
+        if ( height === undefined ) height = width;
 
     }
 
-    function updateDefaultSpriteSize ( spriteGroup ) {
+    sprite.setSize( width, height );
 
-        if ( spriteGroup.hasDefaultSpriteSize ) {
+    return sprite;
 
-            spriteGroup.pool.NEW.setSize( spriteGroup.defaultSpriteWidth, spriteGroup.defaultSpriteHeight );
-        
-        }
+};
+
+/**
+ * @method Picimo.sg.SpriteGroup#setDefaultSpriteSize
+ *
+ * @param {number} width
+ * @param {number} height
+ *
+ * @returns {Picimo.sg.SpriteGroup} *self*
+ *
+ * @see Picimo.sg.SpriteGroup#createSprite
+ *
+ * @description
+ * Set the width and height for all new sprites. Note that this won't affect any previously created sprites.
+ *
+ */
+
+SpriteGroup.prototype.setDefaultSpriteSize = function ( width, height ) {
+
+    this.defaultSpriteWidth = width || 0;
+    this.defaultSpriteHeight = height || width;
+
+    updateDefaultSpriteSize( this );
+
+};
+
+
+function initSpritePool ( spriteGroup, descriptor, capacity ) {
+
+    spriteGroup.pool = new core.VertexObjectPool( descriptor, capacity );
+
+    var newSpritePrototype = spriteGroup.pool.NEW;
+
+    if ( descriptor.hasAttribute( 'scale', 1 ) ) newSpritePrototype.scale = 1;
+    else if ( descriptor.hasAttribute( 'scale', 2 ) ) newSpritePrototype.setScale( 1, 1 );
+    if ( descriptor.hasAttribute( 'opacity' ) ) newSpritePrototype.opacity = 1;
+
+    updateDefaultSpriteSize( spriteGroup );
+
+}
+
+function updateDefaultSpriteSize ( spriteGroup ) {
+
+    if ( spriteGroup.hasDefaultSpriteSize ) {
+
+        spriteGroup.pool.NEW.setSize( spriteGroup.defaultSpriteWidth, spriteGroup.defaultSpriteHeight );
 
     }
 
-    function initTextureAtlas ( spriteGroup, textureAtlas ) {
+}
 
-        spriteGroup.textureAtlas = null;
-        spriteGroup.setReadyFunc( false );
+function initTextureAtlas ( spriteGroup, textureAtlas ) {
 
-        utils.Promise.resolve( textureAtlas )
+    spriteGroup.textureAtlas = null;
+    spriteGroup.setReadyFunc( false );
 
-            .then( function ( atlas ) {
+    Promise.resolve( textureAtlas )
 
-                    spriteGroup.textureAtlas = atlas;
-                    return atlas.deferred.promise;
+        .then( function ( atlas ) {
 
-                })
+                spriteGroup.textureAtlas = atlas;
+                return atlas.deferred.promise;
 
-            .then ( function ( atlas ) { return atlas.texture.image.deferred.promise; })
-            .then ( function () { spriteGroup.setReadyFunc( true ); })
-            ;
+            })
 
-    }
+        .then ( function ( atlas ) { return atlas.texture.image.deferred.promise; })
+        .then ( function () { spriteGroup.setReadyFunc( true ); })
+        ;
 
-    function onInitGl ( spriteGroup ) {
+}
 
-        spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool, spriteGroup.textureAtlas );
-        spriteGroup.pipeline.onInitGl();
-        spriteGroup.app.renderer.addPipeline( spriteGroup.pipeline );
+function onInitGl ( spriteGroup ) {
 
-    }
+    spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool, spriteGroup.textureAtlas );
+    spriteGroup.pipeline.onInitGl();
+    spriteGroup.app.renderer.addPipeline( spriteGroup.pipeline );
 
-    function onRenderFrame ( spriteGroup ) {
+}
 
-        spriteGroup.pipeline.render();
+function onRenderFrame ( spriteGroup ) {
 
-    }
+    spriteGroup.pipeline.render();
 
-    Object.defineProperties( SpriteGroup.prototype, {
+}
 
-        "textureAtlas": {
+Object.defineProperties( SpriteGroup.prototype, {
 
-            get: function () { return this._textureAtlas; },
+    "textureAtlas": {
 
-            set: function ( ta ) {
+        get: function () { return this._textureAtlas; },
 
-                this._textureAtlas = ta;
+        set: function ( ta ) {
 
-                if ( ta instanceof core.TextureAtlas ) {
+            this._textureAtlas = ta;
 
-                    this.ready = true;
+            if ( ta instanceof core.TextureAtlas ) {
 
-                } else {
+                this.ready = true;
 
-                    this.ready = false;
+            } else {
 
-                    if ( ta && ta.then ) {
+                this.ready = false;
 
-                        var self = this;
+                if ( ta && ta.then ) {
 
-                        ta.then( function ( ta_ ) {
+                    var self = this;
 
-                            self.textureAtlas = ta_;
+                    ta.then( function ( ta_ ) {
 
-                        });
+                        self.textureAtlas = ta_;
 
-                    }
+                    });
 
                 }
 
             }
 
-        },
+        }
 
-        'hasDefaultSpriteSize': {
+    },
 
-            get: function () {
+    'hasDefaultSpriteSize': {
 
-                return this.defaultSpriteWidth > 0 && this.defaultSpriteHeight > 0;
+        get: function () {
 
-            }
+            return this.defaultSpriteWidth > 0 && this.defaultSpriteHeight > 0;
 
         }
 
-    });
+    }
 
+});
 
-    module.exports = SpriteGroup;
-
-})();

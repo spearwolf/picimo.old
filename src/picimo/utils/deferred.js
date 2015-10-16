@@ -1,84 +1,71 @@
-(function(){
-    "use strict";
+'use strict';
 
-    var Promise      = require( './promise' );
-    var object_utils = require( './object_utils' );
+import object_utils from './object_utils';
 
-    /**
-     * @class Picimo.utils.Deferred
-     * @summary
-     * A simple and generic deferred interface.
-     * @param {Object} obj - Any object.
-     */
+// usage:
+//
+//    var foo = {}
+//    Deferred.make(foo);
+//
+//    foo.ready               // => false
+//    foo.deferred.promise    // pending
+//
+//    foo.ready = true        // fulfill the promise -> foo.deferred._resolve( foo )
+//
 
-    function Deferred ( obj ) {
+export default function Deferred ( obj ) {
 
-        object_utils.definePropertyPrivateRO( this, '_obj', obj );
+    object_utils.definePropertyPrivateRO( this, '_obj', obj );
 
-        this._ready = false;
+    this._ready = false;
 
-        var deferred = this;
+    var deferred = this;
 
-        /**
-         * @member {Picimo.utils.Promise} Picimo.utils.Deferred#promise
-         */
+    object_utils.definePropertyPublicRO( this, 'promise', new Promise( function ( resolve ) {
 
-        object_utils.definePropertyPublicRO( this, 'promise', new Promise( function ( resolve ) {
+        object_utils.definePropertyPrivate( deferred, '_resolve', resolve );
 
-            object_utils.definePropertyPrivate( deferred, '_resolve', resolve );
-
-        }));
+    }));
 
 
-        Object.defineProperties( obj, {
-        
-            'ready': {
+    Object.defineProperties( obj, {
 
-                get: function () { return deferred._ready; },
+        'ready': {
 
-                set: function ( ready ) {
+            get: function () { return deferred._ready; },
 
-                    if ( ! deferred._ready && !! ready ) {
-                    
-                        deferred._ready = true;
-                        
-                        if ( deferred._resolve ) {
-                       
-                            deferred._resolve( deferred._obj );
-                            deferred._resolve = null;
+            set: function ( ready ) {
 
-                        }
-                    
-                    } else if ( !! deferred._ready && ! ready ) {
-                    
-                        deferred._ready = false;
-                    
+                if ( ! deferred._ready && !! ready ) {
+
+                    deferred._ready = true;
+
+                    if ( deferred._resolve ) {
+
+                        deferred._resolve( deferred._obj );
+                        deferred._resolve = null;
+
                     }
-                
+
+                } else if ( !! deferred._ready && ! ready ) {
+
+                    deferred._ready = false;
+
                 }
-            
+
             }
-        
-        });
 
-    }
+        }
 
+    });
 
-    /**
-     * @memberof Picimo.utils.Deferred
-     * @function make
-     * @static
-     * @param {Object} obj
-     * @return obj
-     */
-    Deferred.make = function ( obj ) {
-
-        object_utils.definePropertyPublicRO( obj, 'deferred', new Deferred( obj ) );
-        return obj;
-
-    };
+}
 
 
-    module.exports = Deferred;
+Deferred.make = function ( obj ) {
 
-})();
+    object_utils.definePropertyPublicRO( obj, 'deferred', new Deferred( obj ) );
+    return obj;
+
+};
+

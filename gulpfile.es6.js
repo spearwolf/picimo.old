@@ -1,5 +1,5 @@
 require('./gulp/picimo-js');
-require('./gulp/api-docs');
+//require('./gulp/api-docs');
 
 import gulp from 'gulp';
 

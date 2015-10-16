@@ -1,479 +1,474 @@
-(function () {
-    "use strict";
+'use strict';
 
-    var utils     = require( '../utils' );
-    var events    = require( '../events' );
-    var NodeState = require( './node_state' );
+import utils from '../utils';
+import events from '../events';
+import NodeState from './node_state';
+
+/**
+ * @class Picimo.sg.Node
+ * @extends Picimo.events.CustomEvent
+ *
+ * @classdesc
+ * The generic base class for all scene graph nodes.
+ *
+ * ### States and Events
+ * <img src="images/node-events.png" srcset="images/node-events.png 1x,images/node-events@2x.png 2x" alt="Node Events and States">
+ *
+ *
+ * @param {Picimo.App} app - The app instance
+ * @param {object} [options] - The options
+ * @param {boolean} [options.display=true]
+ * @param {boolean} [options.ready=true]
+ * @param {string} [options.name]
+ * @param {number} [options.renderPrio] - The render priority determinates the render order of the child nodes.
+ * @param {function} [options.onInit]
+ * @param {function} [options.onInitGl]
+ * @param {function} [options.onFrame]
+ * @param {function} [options.onRenderFrame]
+ * @param {function} [options.onFrameEnd]
+ * @param {function} [options.onDestroy]
+ * @param {function} [options.onDestroyGl]
+ * @param {function} [options.onChildrenUpdated]
+ *
+ */
+
+export default function Node ( app, options ) {
+
+    if ( ! app ) throw new Error( '[Picimo.sg.Node] app is null!' );
+
+    this._readyFunc = null;
 
     /**
-     * @class Picimo.sg.Node
-     * @extends Picimo.events.CustomEvent
-     *
-     * @classdesc
-     * The generic base class for all scene graph nodes.
-     *
-     * ### States and Events
-     * <img src="images/node-events.png" srcset="images/node-events.png 1x,images/node-events@2x.png 2x" alt="Node Events and States">
-     *
-     *
-     * @param {Picimo.App} app - The app instance
-     * @param {Object} [options] - The options
-     * @param {boolean} [options.display=true]
-     * @param {boolean} [options.ready=true]
-     * @param {string} [options.name]
-     * @param {number} [options.renderPrio] - The render priority determinates the render order of the child nodes.
-     * @param {function} [options.onInit]
-     * @param {function} [options.onInitGl]
-     * @param {function} [options.onFrame]
-     * @param {function} [options.onRenderFrame]
-     * @param {function} [options.onFrameEnd]
-     * @param {function} [options.onDestroy]
-     * @param {function} [options.onDestroyGl]
-     * @param {function} [options.onChildrenUpdated]
-     *
+     * @member {number} Picimo.sg.Node#renderPrio
      */
 
-    function Node ( app, options ) {
+    this._renderPrio = parseFloat( options.renderPrio || 0 );
 
-        if ( ! app ) throw new Error( '[Picimo.sg.Node] app is null!' );
+    /**
+     * @member {Picimo.App} Picimo.sg.Node#app - The app instance
+     * @readonly
+     */
+    utils.object.definePropertyPublicRO( this, 'app', app );
 
-        this._readyFunc = null;
+    /**
+     * @member {Picimo.sg.NodeState} Picimo.sg.Node#state
+     */
+    this.state = new NodeState( NodeState.CREATE );
 
-        /**
-         * @member {number} Picimo.sg.Node#renderPrio
-         */
+    /**
+     * @member {boolean} Picimo.sg.Node#display
+     * @description
+     * If set to *false* the node won't be rendered. The *frame*, *renderFrame* and *frameEnd* events won't be emitted.
+     * BUT initialization will be happen. (If you don't want the node to initialize set the *ready* attribute to *false*).
+     */
+    this.display = ( ! options ) || ( options.display !== false );
 
-        this._renderPrio = parseFloat( options.renderPrio || 0 );
+    /**
+     * @member {Picimo.App} Picimo.sg.Node#parent - The parent node.
+     */
 
-        /**
-         * @member {Picimo.App} Picimo.sg.Node#app - The app instance
-         * @readonly
-         */
-        utils.object.definePropertyPublicRO( this, 'app', app );
+    this._ready = ( ! options ) || options.ready !== false;
 
-        /**
-         * @member {Picimo.sg.NodeState} Picimo.sg.Node#state
-         */
-        this.state = new NodeState( NodeState.CREATE );
+    /**
+     * @member {string} Picimo.sg.Node#name - The node name (optional).
+     */
 
-        /**
-         * @member {boolean} Picimo.sg.Node#display
-         * @description
-         * If set to *false* the node won't be rendered. The *frame*, *renderFrame* and *frameEnd* events won't be emitted.
-         * BUT initialization will be happen. (If you don't want the node to initialize set the *ready* attribute to *false*).
-         */
-        this.display = ( ! options ) || ( options.display !== false );
+    this.name = options ? options.name : undefined;
 
-        /**
-         * @member {Picimo.App} Picimo.sg.Node#parent - The parent node.
-         */
-
-        this._ready = ( ! options ) || options.ready !== false;
-
-        /**
-         * @member {string} Picimo.sg.Node#name - The node name (optional).
-         */
-
-        this.name = options ? options.name : undefined;
-
-        /**
-         * @member {Picimo.sg.Node} Picimo.sg.Node#children - The child nodes array.
-         */
-        this.children = [];
+    /**
+     * @member {Picimo.sg.Node} Picimo.sg.Node#children - The child nodes array.
+     */
+    this.children = [];
 
 
-        events.eventize( this );
+    events.eventize( this );
 
-        if ( options !== undefined ) {
+    if ( options !== undefined ) {
 
-            this.on( options, {
+        this.on( options, {
 
-                'onInit'            : 'init',
-                'onInitGl'          : 'initGl',
-                'onFrame'           : 'frame',
-                'onRenderFrame'     : 'renderFrame',
-                'onFrameEnd'        : 'frameEnd',
-                'onDestroyGl'       : 'destroyGl',
-                'onDestroy'         : 'destroy',
-                'onChildrenUpdated' : 'childrenUpdated',
+            'onInit'            : 'init',
+            'onInitGl'          : 'initGl',
+            'onFrame'           : 'frame',
+            'onRenderFrame'     : 'renderFrame',
+            'onFrameEnd'        : 'frameEnd',
+            'onDestroyGl'       : 'destroyGl',
+            'onDestroy'         : 'destroy',
+            'onChildrenUpdated' : 'childrenUpdated',
 
-            });
+        });
+
+    }
+
+}
+
+/**
+ * @method Picimo.sg.Node#setReadyFunc
+ * @param {function} The *ready function* should return a boolean.
+ * @return self
+ */
+
+Node.prototype.setReadyFunc = function ( readyFunc ) {
+
+    if ( readyFunc === false ) {
+
+        readyFunc = function () { return false; };
+
+    } else if ( readyFunc === true ) {
+
+        readyFunc = null;
+
+    }
+
+    this._readyFunc = readyFunc;
+
+    return this;
+
+};
+
+
+/**
+ * @method Picimo.sg.Node#addChild
+ * @param {Picimo.sg.Node}
+ */
+
+Node.prototype.addChild = function ( node ) {
+
+    this.children.push( node );
+
+    node.parent = this;
+
+    // resort child nodes
+    node.children = node.children.sort( sortByRenderPrio );
+
+    /**
+     * Announce a children update.
+     * @event Picimo.sg.Node#childrenUpdated
+     * @memberof Picimo.sg.Node
+     */
+
+    this.emit( 'childrenUpdated' );
+
+    return node;
+
+};
+
+/**
+ * Find a child node by name.
+ * @method Picimo.sg.Node#find
+ * @param {string} name
+ * @return {Picimo.sg.Node}
+ */
+
+Node.prototype.find = function ( name ) {
+
+    if ( name == null ) return;
+
+    if ( this.name === name ) return this;
+
+    var node, i;
+
+    for ( i = 0; i < this.children.length; ++i ) {
+
+            node = this.children[ i ].find( name );
+
+            if ( node ) return node;
+
+    }
+
+};
+
+
+Node.prototype.renderFrame = function () {
+
+    if ( ! this.ready ) return;
+
+    if ( this.state.is( NodeState.CREATE ) ) {
+
+        // create -> initialize
+
+        onInit( this );
+
+    }
+
+    if ( this.state.is( NodeState.READY ) ) {
+
+        // initialize -> ready to render
+
+        if ( this.display ) {
+
+            try {
+
+                /**
+                 * Is called only if node is *ready* and *display*-able.
+                 * @event Picimo.sg.Node#frame
+                 * @memberof Picimo.sg.Node
+                 */
+                this.emit( 'frame' );
+
+                /**
+                 * Is called just after the *frame* event and before the *frameEnd* event. The *render commands* should be generated here.
+                 * @event Picimo.sg.Node#renderFrame
+                 * @memberof Picimo.sg.Node
+                 */
+                this.emit( 'renderFrame' );
+
+            } catch ( err ) {
+
+                console.error( '[frame,renderFrame]', err );
+
+                this.ready = false;
+                return;
+
+            }
+
+
+            for ( var i = 0; i < this.children.length; ++i ) {
+
+                this.children[ i ].renderFrame();
+
+            }
+
+
+            try {
+
+                /**
+                 * Is called after the on *frame* and *renderFrame* events.
+                 * @event Picimo.sg.Node#frameEnd
+                 * @memberof Picimo.sg.Node
+                 */
+                this.emit( 'frameEnd' );
+
+            } catch ( err ) {
+
+                console.error( '[frameEnd]', err );
+
+                this.ready = false;
+
+            }
 
         }
 
     }
 
-    /**
-     * @method Picimo.sg.Node#setReadyFunc
-     * @param {function} The *ready function* should return a boolean.
-     * @return self
-     */
+};
 
-    Node.prototype.setReadyFunc = function ( readyFunc ) {
+/**
+ * @method Picimo.sg.Node#destroy
+ */
+Node.prototype.destroy = function () {
 
-        if ( readyFunc === false ) {
+    if ( this.state.is( NodeState.DESTROYED ) ) return;
 
-            readyFunc = function () { return false; };
 
-        } else if ( readyFunc === true ) {
+    for ( var i = 0; i < this.children.length; ++i ) {
 
-            readyFunc = null;
+        this.children[ i ].destroy();
+
+    }
+
+
+    this.state.set( NodeState.DESTROYED );
+
+    if ( this._initialized ) {
+
+        try {
+
+            /**
+             * Is only called if the *init* event successfully resolved. *Even if the *initGl* event failed*.
+             * Is called before the *destroy* event.
+             * @event Picimo.sg.Node#destroyGl
+             * @memberof Picimo.sg.Node
+             */
+            this.emit( 'destroyGl' );
+
+        } catch ( err ) {
+
+            console.error( '[destroyGl]', err );
 
         }
 
-        this._readyFunc = readyFunc;
+        try {
 
-        return this;
+            /**
+             * Is only called if the *init* event successfully resolved and just after the *destroyGl* event.
+             * @event Picimo.sg.Node#destroy
+             * @memberof Picimo.sg.Node
+             */
+            this.emit( 'destroy' );
 
-    };
+        } catch ( err ) {
 
+            console.error( '[destroy]', err );
 
-    /**
-     * @method Picimo.sg.Node#addChild
-     * @param {Picimo.sg.Node}
-     */
+        }
 
-    Node.prototype.addChild = function ( node ) {
+    }
 
-        this.children.push( node );
+};
 
-        node.parent = this;
+function onInit ( node ) {
 
-        // resort child nodes
-        node.children = node.children.sort( sortByRenderPrio );
+    node.state.set( NodeState.INIT );
+
+    var initPromises = [];
+
+    try {
 
         /**
-         * Announce a children update.
-         * @event Picimo.sg.Node#childrenUpdated
+         * This is the first event. Will be called only once and never again.
+         * @event Picimo.sg.Node#init
          * @memberof Picimo.sg.Node
          */
+        node.emit( 'init', makeDoneFunc( initPromises, node ) );
 
-        this.emit( 'childrenUpdated' );
+        Promise.all( initPromises ).then( onInitGl.bind( node, node ), onFail.bind( node, node ) );
 
-        return node;
+    } catch ( err ) {
 
-    };
+        console.error( '[init]', err );
 
-    /**
-     * Find a child node by name.
-     * @method Picimo.sg.Node#find
-     * @param {string} name
-     * @return {Picimo.sg.Node}
-     */
+        this.ready = false;
 
-    Node.prototype.find = function ( name ) {
+    }
 
-        if ( name == null ) return;
+}
 
-        if ( this.name === name ) return this;
+function onInitGl ( node ) {
 
-        var node, i;
+    node._initialized = true;
 
-        for ( i = 0; i < this.children.length; ++i ) {
+    if ( ! node.ready ) return;
 
-                node = this.children[ i ].find( name );
+    var initGlPromises = [];
 
-                if ( node ) return node;
+    try {
 
-        }
+        /**
+         * Will be called just after *init*. Should only be used to perform webgl related tasks.
+         * @event Picimo.sg.Node#initGl
+         * @memberof Picimo.sg.Node
+         */
+        node.emit( 'initGl', makeDoneFunc( initGlPromises, node ) );
 
-    };
+        Promise.all( initGlPromises ).then( onInitDone.bind( node, node ), onFail.bind( node, node ) );
 
+    } catch ( err ) {
 
-    Node.prototype.renderFrame = function () {
+        console.error( '[initGl]', err );
 
-        if ( ! this.ready ) return;
+        this.ready = false;
 
-        if ( this.state.is( NodeState.CREATE ) ) {
+    }
+}
 
-            // create -> initialize
+function onInitDone ( node ) {
 
-            onInit( this );
+    if ( node.ready ) {
 
-        }
+        node.state.set( NodeState.READY );
 
-        if ( this.state.is( NodeState.READY ) ) {
+    }
 
-            // initialize -> ready to render
+}
 
-            if ( this.display ) {
+function makeDoneFunc ( arr ) {
 
-                try {
+    return function ( promise ) {
 
-                    /**
-                     * Is called only if node is *ready* and *display*-able.
-                     * @event Picimo.sg.Node#frame
-                     * @memberof Picimo.sg.Node
-                     */
-                    this.emit( 'frame' );
+        if ( promise ) {
 
-                    /**
-                     * Is called just after the *frame* event and before the *frameEnd* event. The *render commands* should be generated here.
-                     * @event Picimo.sg.Node#renderFrame
-                     * @memberof Picimo.sg.Node
-                     */
-                    this.emit( 'renderFrame' );
+            if ( typeof promise === 'function' ) {
 
-                } catch ( err ) {
-
-                    console.error( '[frame,renderFrame]', err );
-
-                    this.ready = false;
-                    return;
-
-                }
-
-
-                for ( var i = 0; i < this.children.length; ++i ) {
-
-                    this.children[ i ].renderFrame();
-
-                }
-
-
-                try {
-
-                    /**
-                     * Is called after the on *frame* and *renderFrame* events.
-                     * @event Picimo.sg.Node#frameEnd
-                     * @memberof Picimo.sg.Node
-                     */
-                    this.emit( 'frameEnd' );
-
-                } catch ( err ) {
-
-                    console.error( '[frameEnd]', err );
-
-                    this.ready = false;
-
-                }
+                promise = new Promise( promise );
 
             }
+
+            arr.push( promise );
 
         }
 
     };
 
-    /**
-     * @method Picimo.sg.Node#destroy
-     */
-    Node.prototype.destroy = function () {
+}
 
-        if ( this.state.is( NodeState.DESTROYED ) ) return;
+function onFail ( node ) {
 
+    if ( node.ready ) {
 
-        for ( var i = 0; i < this.children.length; ++i ) {
-
-            this.children[ i ].destroy();
-
-        }
-
-
-        this.state.set( NodeState.DESTROYED );
-
-        if ( this._initialized ) {
-
-            try {
-
-                /**
-                 * Is only called if the *init* event successfully resolved. *Even if the *initGl* event failed*.
-                 * Is called before the *destroy* event.
-                 * @event Picimo.sg.Node#destroyGl
-                 * @memberof Picimo.sg.Node
-                 */
-                this.emit( 'destroyGl' );
-
-            } catch ( err ) {
-
-                console.error( '[destroyGl]', err );
-
-            }
-
-            try {
-
-                /**
-                 * Is only called if the *init* event successfully resolved and just after the *destroyGl* event.
-                 * @event Picimo.sg.Node#destroy
-                 * @memberof Picimo.sg.Node
-                 */
-                this.emit( 'destroy' );
-
-            } catch ( err ) {
-
-                console.error( '[destroy]', err );
-
-            }
-
-        }
-
-    };
-
-    function onInit ( node ) {
-
-        node.state.set( NodeState.INIT );
-
-        var initPromises = [];
-
-        try {
-
-            /**
-             * This is the first event. Will be called only once and never again.
-             * @event Picimo.sg.Node#init
-             * @memberof Picimo.sg.Node
-             */
-            node.emit( 'init', makeDoneFunc( initPromises, node ) );
-
-            utils.Promise.all( initPromises ).then( onInitGl.bind( node, node ), onFail.bind( node, node ) );
-
-        } catch ( err ) {
-
-            console.error( '[init]', err );
-
-            this.ready = false;
-
-        }
+        node.state.set( NodeState.ERROR );
 
     }
 
-    function onInitGl ( node ) {
+}
 
-        node._initialized = true;
+function sortByRenderPrio ( a, b ) {
 
-        if ( ! node.ready ) return;
+    return -a.renderPrio - ( -b.renderPrio );
 
-        var initGlPromises = [];
-
-        try {
-
-            /**
-             * Will be called just after *init*. Should only be used to perform webgl related tasks.
-             * @event Picimo.sg.Node#initGl
-             * @memberof Picimo.sg.Node
-             */
-            node.emit( 'initGl', makeDoneFunc( initGlPromises, node ) );
-
-            utils.Promise.all( initGlPromises ).then( onInitDone.bind( node, node ), onFail.bind( node, node ) );
-
-        } catch ( err ) {
-
-            console.error( '[initGl]', err );
-
-            this.ready = false;
-
-        }
-    }
-
-    function onInitDone ( node ) {
-
-        if ( node.ready ) {
-
-            node.state.set( NodeState.READY );
-
-        }
-
-    }
-
-    function makeDoneFunc ( arr ) {
-
-        return function ( promise ) {
-
-            if ( promise ) {
-
-                if ( typeof promise === 'function' ) {
-
-                    promise = new utils.Promise( promise );
-
-                }
-
-                arr.push( promise );
-
-            }
-
-        };
-
-    }
-
-    function onFail ( node ) {
-
-        if ( node.ready ) {
-
-            node.state.set( NodeState.ERROR );
-
-        }
-
-    }
-
-    function sortByRenderPrio ( a, b ) {
-
-        return -a.renderPrio - ( -b.renderPrio );
-
-    }
+}
 
 
 
 
-    Object.defineProperties( Node.prototype, {
+Object.defineProperties( Node.prototype, {
 
-        'renderPrio': {
+    'renderPrio': {
 
-            get: function () { return this._renderPrio; },
+        get: function () { return this._renderPrio; },
 
-            set: function ( prio ) {
+        set: function ( prio ) {
 
-                this._renderPrio = parseFloat( prio || 0 );
+            this._renderPrio = parseFloat( prio || 0 );
 
-                if ( this.parent ) this.parent.emit( "childrenUpdated" );
-
-            },
-
-            enumerable: true
+            if ( this.parent ) this.parent.emit( "childrenUpdated" );
 
         },
 
-        /**
-         * @member {Picimo.sg.Node} Picimo.sg.Node#isRoot - *True* if this node has no parent.
-         * @readonly
-         */
-        'isRoot': {
+        enumerable: true
 
-            get: function () { return ! this.parent; },
-            enumerable: true
+    },
+
+    /**
+     * @member {Picimo.sg.Node} Picimo.sg.Node#isRoot - *True* if this node has no parent.
+     * @readonly
+     */
+    'isRoot': {
+
+        get: function () { return ! this.parent; },
+        enumerable: true
+
+    },
+
+    /**
+     * @member {boolean} Picimo.sg.Node#ready
+     * @description
+     * A node is *not* ready if ..
+     * 1. the state is set to *destroyed* or *error*
+     * 2. you explicitly set it to *false* (but default is *true*)
+     * 3. you defined a *ready function* ( via `setReadyFunc` ) and the function returned false
+     *
+     * If a node is not ready, it will be ignored by the renderloop (no init or frame or .. events).
+     */
+    'ready': {
+
+        get: function () {
+
+            return ( ( !! this._ready ) &&
+                    ( ! this.state.is( NodeState.ERROR|NodeState.DESTROYED )) &&
+                    ( ! this._readyFunc || !! this._readyFunc() ) );
 
         },
 
-        /**
-         * @member {boolean} Picimo.sg.Node#ready
-         * @description
-         * A node is *not* ready if ..
-         * 1. the state is set to *destroyed* or *error*
-         * 2. you explicitly set it to *false* (but default is *true*)
-         * 3. you defined a *ready function* ( via `setReadyFunc` ) and the function returned false
-         *
-         * If a node is not ready, it will be ignored by the renderloop (no init or frame or .. events).
-         */
-        'ready': {
+        set: function ( ready ) {
 
-            get: function () {
+            this._ready = !! ready;
 
-                return ( ( !! this._ready ) &&
-                        ( ! this.state.is( NodeState.ERROR|NodeState.DESTROYED )) &&
-                        ( ! this._readyFunc || !! this._readyFunc() ) );
+        },
 
-            },
+        enumerable: true
 
-            set: function ( ready ) {
+    }
 
-                this._ready = !! ready;
+});
 
-            },
-
-            enumerable: true
-
-        }
-
-    });
-
-
-    module.exports = Node;
-
-})();

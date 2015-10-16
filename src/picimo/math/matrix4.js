@@ -1,43 +1,39 @@
-(function () {
-    "use strict";
+'use strict';
 
-    var utils = require( '../utils' );
-    var mat4 = utils.glMatrix.mat4;
+import utils from '../utils';
+
+var {mat4} = utils.glMatrix;
+var {publicRO} = utils.object.decorator;
+
+
+/**
+ * @class Picimo.math.Matrix4
+ */
+
+export default class Matrix4 {
+
+    serial = 1;
 
     /**
-     * @class Picimo.math.Matrix4
-     * @summary
-     *   Wrapper for glMatrix *mat4*
-     *
+     * @member {mat4} Picimo.math.Matrix4#mat4
+     * @readonly
      */
 
-    function Matrix4 () {
+    @publicRO
+    mat4 = mat4.create();
 
-        /**
-         * @member {mat4} Picimo.math.Matrix4#mat4
-         * @readonly
-         */
-
-        utils.object.definePropertyPublicRO( this, 'mat4', mat4.create() );
-
-        this.serial = 1;
-
-        Object.seal( this );
-    
+    constructor () {
+        Object.seal(this);
     }
-
 
     /**
      * @method Picimo.math.Matrix4#identity
      */
 
-    Matrix4.prototype.identity = function () {
-   
-        mat4.identity( this.mat4 );
-
+    identity () {
+        mat4.identity(this.mat4);
         ++this.serial;
-
-    };
+    }
 
 
     /**
@@ -47,19 +43,16 @@
      * @param {number} zRange
      */
 
-    Matrix4.prototype.ortho = function ( width, height, zRange ) {
-   
-        var hw = width >> 1;
-        var hh = height >> 1;
-        var hz = ( zRange ? zRange : Math.pow(2, 14) ) >> 1;
+    ortho ( width, height, zRange ) {
+
+        let hw = width >> 1;
+        let hh = height >> 1;
+        let hz = ( zRange ? zRange : Math.pow(2, 14) ) >> 1;
 
         mat4.ortho( this.mat4, -hw, hw, -hh, hh, -hz, hz );
-
         ++this.serial;
 
-    };
+    }
 
+}
 
-    module.exports = Matrix4;
-
-})();
