@@ -176,13 +176,11 @@ function initTextureAtlas ( spriteGroup, textureAtlas ) {
         .then( function ( atlas ) {
 
                 spriteGroup.textureAtlas = atlas;
-                return atlas.deferred.promise;
+                return atlas.promise;
 
             })
-
-        .then ( function ( atlas ) { return atlas.texture.image.deferred.promise; })
-        .then ( function () { spriteGroup.setReadyFunc( true ); })
-        ;
+        .then ( function ( atlas ) { return atlas.texture.image.promise })
+        .then ( function () { spriteGroup.setReadyFunc( true ) });
 
 }
 

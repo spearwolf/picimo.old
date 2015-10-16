@@ -24,15 +24,11 @@
         utils.addUid( this );
 
         /**
-         * @member {Picimo.utils.Deferred} Picimo.core.Resource#deferred
-         * @readonly
-         */
-
-        /**
          * @member {boolean} Picimo.core.Resource#ready
          */
 
-        utils.Deferred.make( this );
+        //utils.Deferred.make( this );
+        utils.addReadyPromise( this );
 
         /**
          * @member {String} Picimo.core.Resource#url

@@ -40,20 +40,8 @@ module.exports = {
     Color: require( 'color-js' ),
 
 
-    /**
-     * @private
-     */
-    Deferred: require( './deferred' ),
     addReadyPromise: require( './add_ready_promise' ),
-
-    /**
-     * @private
-     */
     addGlxProperty: require( './add_glx_property' ),
-
-    /**
-     * @private
-     */
     addUid: require( './add_uid' ),
 
     /**

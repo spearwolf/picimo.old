@@ -71,7 +71,7 @@ function initTexture ( picture, texture ) {
     Promise.resolve(texture)
         .then(function ( tex ) {
             picture.texture = tex;
-            return texture.image.deferred.promise;
+            return texture.image.promise;
         })
         .then(() => picture.setReadyFunc(true));
 

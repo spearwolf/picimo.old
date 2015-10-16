@@ -324,7 +324,7 @@ function getUrlDir ( url ) {
 
 App.prototype.loadTextureAtlas = function ( url ) {
 
-    return new core.TextureAtlas( this ).load( url ).deferred.promise;
+    return new core.TextureAtlas( this ).load( url ).promise;
 
 };
 
@@ -338,11 +338,12 @@ App.prototype.loadTextureAtlas = function ( url ) {
 
 App.prototype.loadTexture = function ( url ) {
 
-    var texture = new core.Texture();
-    var img = new core.Po2Image(this).load(url);
-    texture.image = img;
+    var image = new core.Po2Image(this).load(url);
 
-    return img.deferred.promise.then(() => texture);
+    var texture = new core.Texture();
+    texture.image = image;
+
+    return image.promise.then(() => texture);
 
 };
 
