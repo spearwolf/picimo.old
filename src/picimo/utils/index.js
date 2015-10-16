@@ -44,6 +44,7 @@ module.exports = {
      * @private
      */
     Deferred: require( './deferred' ),
+    addReadyPromise: require( './add_ready_promise' ),
 
     /**
      * @private

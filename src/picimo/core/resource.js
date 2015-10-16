@@ -121,7 +121,9 @@
 
     Resource.prototype.getData = function ( resolve ) {
 
-        this.deferred.forward( 'data', resolve );
+        console.warn('Picimo.core.Resource#getData()', resolve);
+        throw new Error('undead code here!')
+        //this.deferred.forward( 'data', resolve );
 
     };
 
