@@ -1,14 +1,14 @@
-(function () {
-    "use strict";
+'use strict';
 
-    var object_utils = require( './object_utils' );
+import {definePropertyPublicRO} from './object_utils';
 
-    var UID = 0;
+var UID = 0;
 
-    module.exports = function addUid ( obj ) {
+export default function addUid ( obj ) {
 
-        object_utils.definePropertyPublicRO( obj, 'uid', ( ++UID ) );
+    definePropertyPublicRO(obj, 'uid', (++UID));
 
-    };
+    return obj;
 
-})();
+}
+
