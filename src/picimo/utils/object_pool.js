@@ -1,38 +1,46 @@
-(function(){
-    "use strict";
+'use strict';
 
-    function ObjectPool(createObject) {
+export class ObjectPool {
 
-        this._createObject = createObject ? createObject : function() { return {}; };
-        
-        this.objects    = [];
-        this.inUseCount = 0;
+    objects = [];
+    inUseCount = 0;
+
+    constructor (factoryFunc) {
+        this.setFactory(factoryFunc);
     }
 
-    module.exports = ObjectPool;
+    setFactory (func) {
+        this.factory = func ? func : function () { return {} };
+    }
 
+    create () {
 
-    ObjectPool.prototype.create = function() {
-
-        var obj;
+        let obj;
 
         if (this.inUseCount < this.objects.length) {
-        
-            obj = this.objects[this.inUseCount]; 
+
+            obj = this.objects[this.inUseCount];
 
         } else {
 
-            obj = this._createObject();
+            obj = this.factory();
             this.objects.push(obj);
         }
 
         ++this.inUseCount;
 
         return obj;
-    };
 
-    ObjectPool.prototype.releaseAll = function() {
+    }
+
+    releaseAll () {
         this.inUseCount = 0;
-    };
+    }
 
-})();
+    destroyAll () {
+        this.inUseCount = 0;
+        this.objects.length = 0;
+    }
+
+}
+

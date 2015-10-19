@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="author" content="Wolfger Schramm <wolfger@spearwolf.de>">
-    <title>picimo ➤ kastani demo</title>
+    <title>pictures in motion</title>
     <style>
         * {
             padding: 0;
@@ -17,7 +17,12 @@
             height: 100%;
         }
         body {
-            background: linear-gradient(to bottom, #61a5dd 0%,#aeecfe 100%);
+            background:
+                url('noise.png'),
+                linear-gradient(to bottom, #31a5f0 0%, #406080 100%),
+                radial-gradient(at top left, rgba(255, 255, 128, 0.75) 0%, transparent 66%)
+                ;
+            background-blend-mode: multiply, multiply, multiply;
         }
         .picimo {
             position: fixed;

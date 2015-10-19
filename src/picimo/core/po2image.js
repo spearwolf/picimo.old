@@ -29,6 +29,10 @@ export default function Po2Image ( app, image ) {
     /**
      * @member {boolean} Picimo.core.Po2Image#ready
      */
+
+    /**
+     * @member {Promise} Picimo.core.Po2Image#promise
+     */
     utils.addReadyPromise( this );
 
     /**

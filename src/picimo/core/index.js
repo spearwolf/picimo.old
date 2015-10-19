@@ -1,28 +1,25 @@
-(function(){
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo.core
-     */
+/**
+ * @namespace Picimo.core
+ */
 
-    module.exports = {
+module.exports = {
 
-        Resource               : require( './resource' ),
+    AABB2                  : require( './aabb2' ),
+    Viewport               : require( './viewport' ),
 
-        AABB2                  : require( './aabb2' ),
-        Viewport               : require( './viewport' ),
+    Po2Image               : require( './po2image' ),
+    Resource               : require( './resource' ),
+    Texture                : require( './texture' ),
+    TextureAtlas           : require( './texture_atlas' ),
 
-        Po2Image               : require( './po2image' ),
-        Texture                : require( './texture' ),
-        TextureAtlas           : require( './texture_atlas' ),
+    VertexArray            : require( './vertex_array' ),
+    VertexIndexArray       : require( './vertex_index_array' ),
 
-        VertexArray            : require( './vertex_array' ),
-        VertexIndexArray       : require( './vertex_index_array' ),
+    VertexObject           : require( './vertex_object' ),
+    VertexObjectDescriptor : require( './vertex_object_descriptor' ),
+    VertexObjectPool       : require( './vertex_object_pool' )
 
-        VertexObject           : require( './vertex_object' ),
-        VertexObjectDescriptor : require( './vertex_object_descriptor' ),
-        VertexObjectPool       : require( './vertex_object_pool' )
+};
 
-    };
-
-})();

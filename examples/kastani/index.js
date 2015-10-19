@@ -19,5 +19,3 @@ console.log( '%c%s%c\n\n Welcome to the %ckastani%c demo -- a %c picimo %c demo!
 var app = new Picimo.App({ alpha: true });
 app.scene.setSize( 1000, 750, "contain" );
 
-
-

@@ -1,107 +1,102 @@
-(function(){
-    "use strict";
+'use strict';
 
-    var AABB2 = require( "./aabb2" );
+import AABB2 from './aabb2';
+
+/**
+ * @class Picimo.core.Viewport
+ * @extends Picimo.core.AABB2
+ * @param {number} x - x
+ * @param {number} y - y
+ * @param {number} width - width
+ * @param {number} height - height
+ */
+
+export default function Viewport ( x, y, width, height ) {
+
+    var min_x = parseInt( x, 10 );
+    var min_y = parseInt( y, 10 );
+
+    AABB2.call( this,
+            min_x, ( min_x + parseInt( width, 10 ) - 1 ),
+            min_y, ( min_y + parseInt( height, 10 ) - 1 ) );
+
+}
+
+Viewport.prototype = Object.create( AABB2.prototype );
+Viewport.prototype.constructor = Viewport;
+
+
+Object.defineProperties( Viewport.prototype, {
 
     /**
-     * @class Picimo.core.Viewport
-     * @extends Picimo.core.AABB2
-     * @param {number} x - x
-     * @param {number} y - y
-     * @param {number} width - width
-     * @param {number} height - height
+     * @member {Picimo.core.Viewport} Picimo.core.Viewport#x
      */
 
-    function Viewport ( x, y, width, height ) {
+    x: {
+        get: function () {
 
-        var min_x = parseInt( x, 10 );
-        var min_y = parseInt( y, 10 );
+            return this.min_x;
 
-        AABB2.call( this,
-                min_x, ( min_x + parseInt( width, 10 ) - 1 ),
-                min_y, ( min_y + parseInt( height, 10 ) - 1 ) );
-
-    }
-
-    Viewport.prototype = Object.create( AABB2.prototype );
-    Viewport.prototype.constructor = Viewport;
-
-
-    Object.defineProperties( Viewport.prototype, {
-
-        /**
-         * @member {Picimo.core.Viewport} Picimo.core.Viewport#x
-         */
-
-        x: {
-            get: function () {
-
-                return this.min_x;
-
-            },
-            set: function ( x ) {
-
-                var w = this.width;
-
-                this.min_x = x;
-                this.max_x = x + w - 1;
-
-            },
-            enumerable: true
         },
+        set: function ( x ) {
 
-        /**
-         * @member {Picimo.core.Viewport} Picimo.core.Viewport#y
-         */
+            var w = this.width;
 
-        y: {
-            get: function () {
+            this.min_x = x;
+            this.max_x = x + w - 1;
 
-                return this.min_y;
-
-            },
-            set: function ( y ) {
-
-                var h = this.height;
-
-                this.min_y = y;
-                this.max_y = y + h - 1;
-
-            },
-            enumerable: true
         },
+        enumerable: true
+    },
 
-        /**
-         * @member {Picimo.core.Viewport} Picimo.core.Viewport#width
-         */
+    /**
+     * @member {Picimo.core.Viewport} Picimo.core.Viewport#y
+     */
 
-        'width': {
-            get: function () { return this.max_x - this.min_x + 1; },
-            set: function ( w ) {
+    y: {
+        get: function () {
 
-                this.max_x = this.min_x + w - 1;
+            return this.min_y;
 
-            },
-            enumerable: true
         },
+        set: function ( y ) {
 
-        /**
-         * @member {Picimo.core.Viewport} Picimo.core.Viewport#height
-         */
+            var h = this.height;
 
-        'height': {
-            get: function () { return this.max_y - this.min_y + 1; },
-            set: function ( h ) {
+            this.min_y = y;
+            this.max_y = y + h - 1;
 
-                this.max_y = this.min_y + h - 1;
-
-            },
-            enumerable: true
         },
+        enumerable: true
+    },
 
-    });
+    /**
+     * @member {Picimo.core.Viewport} Picimo.core.Viewport#width
+     */
 
+    'width': {
+        get: function () { return this.max_x - this.min_x + 1; },
+        set: function ( w ) {
 
-    module.exports = Viewport;
+            this.max_x = this.min_x + w - 1;
 
-})();
+        },
+        enumerable: true
+    },
+
+    /**
+     * @member {Picimo.core.Viewport} Picimo.core.Viewport#height
+     */
+
+    'height': {
+        get: function () { return this.max_y - this.min_y + 1; },
+        set: function ( h ) {
+
+            this.max_y = this.min_y + h - 1;
+
+        },
+        enumerable: true
+    },
+
+});
+

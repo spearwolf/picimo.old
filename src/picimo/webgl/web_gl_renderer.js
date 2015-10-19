@@ -1,8 +1,8 @@
 'use strict';
 
-var utils         = require( '../utils' );
-var BlendMode     = require( './cmd' ).BlendMode;
-var renderCommand = require( './web_gl_renderer/render_command' );
+import utils from '../utils';
+import {BlendMode} from './cmd';
+import renderCommand from './web_gl_renderer/render_command';
 
 /**
  * @class Picimo.webgl.WebGlRenderer
@@ -14,16 +14,17 @@ export default function WebGlRenderer ( app ) {
      * @member {Picimo.App} Picimo.webgl.WebGlRenderer#app
      * @readonly
      */
-    utils.object.definePropertyPublicRO( this, 'app', app );
+    utils.object.definePropertyPublicRO(this, 'app', app);
 
-    initialize( this );
-    initializePipelines( this );
+    initialize(this);
+    initializePipelines(this);
 
 }
 
 function initialize ( renderer ) {  // {{{
 
     renderer.cmdQueue = new utils.Queue;
+    renderer._renderCmd = null;
 
     renderer.uniforms = new Map;
     renderer.attributes = new Map;
@@ -228,14 +229,13 @@ function renderAll ( renderer ) {  // {{{
 // }}}
 function renderCommandQueue ( renderer ) {  // {{{
 
-    var len = renderer.cmdQueue.length;
-    var i;
+    var renderCmd = renderer._renderCmd;
 
-    for ( i = 0; i < len; i++ ) {
-
-         renderCommand( renderer, renderer.cmdQueue.entries[ i ].data );
-
+    if (!renderCmd) {
+        renderCmd = renderer._renderCmd = renderCommand.bind(renderer, renderer);
     }
+
+    renderer.cmdQueue.forEach(renderCmd);
 
 }
 // }}}
@@ -272,9 +272,7 @@ function callPipelines ( renderer, funcName ) {  // {{{
 // }}}
 
 
-function _warn () {
-
-    console.warn.apply( console, [ '[Picimo.webgl.WebGlRenderer]'].concat( Array.prototype.slice.apply( arguments ) ) );
-
-}
+//function _warn () {
+    //console.warn.apply( console, [ '[Picimo.webgl.WebGlRenderer]'].concat( Array.prototype.slice.apply( arguments ) ) );
+//}
 

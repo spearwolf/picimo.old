@@ -1,15 +1,13 @@
-(function () {
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo.webgl.pipeline
-     */
+/**
+ * @namespace Picimo.webgl.pipeline
+ */
 
-    module.exports = {
+module.exports = {
 
-        PicturePipeline     : require( './picture_pipeline' ),
-        SpriteGroupPipeline : require( './sprite_group_pipeline' )
+    PicturePipeline     : require( './picture_pipeline' ),
+    SpriteGroupPipeline : require( './sprite_group_pipeline' )
 
-    };
+};
 
-})();
