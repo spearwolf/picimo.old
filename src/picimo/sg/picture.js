@@ -11,7 +11,7 @@ import Node from './node';
  *
  * @param {Picimo.App} app - The app instance
  * @param {object} [options] - The options
- * @param {Picimo.core.Texture|Promise} [options.texture]
+ * @param {Picimo.core.Texture|Promise} [options.texture] -
  * @param {string} [options.program="picture"] - The webgl program name
  *
  * @summary

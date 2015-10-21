@@ -1,15 +1,13 @@
-(function(){
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo.sprites
-     */
+/**
+ * @namespace Picimo.sprites
+ */
 
-    module.exports = {
+module.exports = {
 
-        Sprite           : require( './sprite' ),
-        SpriteDescriptor : require( './sprite_descriptor' )
+    Sprite           : require( './sprite' ),
+    SpriteDescriptor : require( './sprite_descriptor' )
 
-    };
+};
 
-})();
