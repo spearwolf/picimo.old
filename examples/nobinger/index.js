@@ -21,7 +21,7 @@ app.scene.setSize( 800, 600, "contain" );
 var atlas = app.loadTextureAtlas( './nobinger.json' );
 
 
-var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 10 }, {
+var spriteGroup = app.scene.appendSpriteGroup( atlas, { capacity: 10, sprites: 'simple' }, {
 
     init: function () {
 

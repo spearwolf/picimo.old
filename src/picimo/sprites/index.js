@@ -6,8 +6,7 @@
 
 module.exports = {
 
-    Sprite           : require( './sprite' ),
-    SpriteDescriptor : require( './sprite_descriptor' )
+    SpriteFactory : require( './sprite_factory' ),
 
 };
 

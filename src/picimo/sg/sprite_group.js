@@ -2,7 +2,6 @@
 
 import Node from './node';
 import core from '../core';
-import sprites from '../sprites';
 import {SpriteGroupPipeline} from '../webgl/pipeline';
 
 /**
@@ -14,7 +13,7 @@ import {SpriteGroupPipeline} from '../webgl/pipeline';
  * @param {Picimo.core.TextureAtlas|Promise} [options.textureAtlas]
  * @param {string} [options.program="sprite"] - The webgl program name
  * @param {number} [options.capacity=1000] - Max sprite capacity
- * @param {Picimo.core.VertexObjectDescriptor} [options.spriteDescriptor=Picimo.sprites.SpriteDescriptor]
+ * @param {string|Picimo.core.VertexObjectDescriptor} [options.sprites='default']
  *
  * @summary
  * Represents a group of sprites.
@@ -24,7 +23,7 @@ import {SpriteGroupPipeline} from '../webgl/pipeline';
  * All vertex data will be will be uploaded to the GPU *every frame*.
  * So choose the capacity carefully.
  *
- * A SpriteGroup expects that a sprite instance (which is described by the *spriteDescriptor* option) has the following properties and methods:
+ * A SpriteGroup expects that a sprite instance (which is described by the *sprites* option) has the following properties and methods:
  *
  * | Type | Definition | Required | Comment |
  * |------|------------|----------|---------|
@@ -44,8 +43,8 @@ export default function SpriteGroup ( app, options ) {
 
     initTextureAtlas( this, options.textureAtlas );
 
-    this.program             = options.program || "sprite";
-    this.spriteDescriptor    = options.spriteDescriptor || sprites.SpriteDescriptor;
+    this.program             = options.program || 'sprite';
+    this.spriteDescriptor    = app.sprites.getDescriptor(options.sprites || 'default');
     this.pipeline            = null;
     this.defaultSpriteWidth  = options.defaultWidth || 0;
     this.defaultSpriteHeight = options.defaultHeight || options.defaultWidth;

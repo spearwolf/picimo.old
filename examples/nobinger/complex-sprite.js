@@ -32,7 +32,6 @@ var myCustomSpriteDescriptor = new Picimo.core.VertexObjectDescriptor(
 
     function () {
 
-        //this.setXwyh( -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5 );  // anchor
         this.setAnchor( 0, 0 );  // anchor
         this.setRgb( 1, 1, 1 );
 

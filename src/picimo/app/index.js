@@ -5,6 +5,8 @@ import events from '../events';
 import sg from '../sg';
 import webgl from '../webgl';
 import core from '../core';
+import sprites from '../sprites';
+import initSprites from '../sprites/init';
 
 /**
  * @class Picimo.App
@@ -134,6 +136,12 @@ export default function App ( canvas, options ) {
      */
 
     this.renderer = new webgl.WebGlRenderer( this );
+
+    /**
+     * @member {Picimo.sprites.SpriteFactory} Picimo.App#sprites
+     */
+
+    this.sprites = initSprites( sprites.SpriteFactory );
 
     /**
      * @member {Picimo.App} Picimo.App#assetBaseUrl - The base url for all assets. May be *undefined*.
