@@ -1,6 +1,6 @@
 'use strict';
 
-export class ObjectPool {
+export default class ObjectPool {
 
     objects = [];
     inUseCount = 0;

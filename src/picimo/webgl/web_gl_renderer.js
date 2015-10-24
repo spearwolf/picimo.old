@@ -1,5 +1,6 @@
 'use strict';
 
+import _ from 'lodash';
 import utils from '../utils';
 import {BlendMode} from './cmd';
 import renderCommand from './web_gl_renderer/render_command';
@@ -55,6 +56,9 @@ function initializePipelines ( renderer ) {  // {{{
 }
 // }}}
 
+WebGlRenderer.prototype.filterPipelineByInstanceof = function ( type ) {
+    return _.filter(this.pipelines, (pipe) => pipe instanceof type);
+};
 
 WebGlRenderer.prototype.onInitGl = function () {
     // nothing to do here

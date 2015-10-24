@@ -6,21 +6,25 @@ import WebGlBuffer from '../web_gl_buffer';
 
 export default class PicturePipeline {
 
+    static DEFAULT_CAPACITY = 100;
+
     indexArray       = null;
     webGlBuffer      = null;
     webGlIndexBuffer = null;
     renderCmd        = null;
 
-    constructor (app, program, pool, texture) {
+    constructor (app, pool, texture, program) {
 
         utils.object.definePropertiesPrivateRO( this, {
-
             app     : app,
-            program : program,
             pool    : pool,
             texture : texture,
-
+            program : program,
         });
+
+        // TODO init pool.NEW ?
+
+        this.reset();
 
         Object.seal( this );
 
@@ -31,12 +35,44 @@ export default class PicturePipeline {
         initRenderCmds(this);
     }
 
-    render () {
-        this.app.renderer.addRenderCommand(this.renderCmd, this);
+    reset () {
+        this.currentSpriteCount = 0;
+        this.currentSpriteOffset = 0;
+        this.totalSpritesCount = 0;
+        if (this.renderCmd) this.renderCmd.releaseAll();
+    }
+
+    flush () {
+        if (this.currentSpriteCount) {
+
+            let cmd = this.renderCmd.create();
+
+            cmd.drawElements.count = this.currentSpriteCount;
+            cmd.drawElements.offset = this.currentSpriteOffset;
+
+            this.app.renderer.addRenderCommand(cmd);
+
+            this.currentSpriteOffset += this.currentSpriteCount;
+            this.currentSpriteCount = 0;
+        }
+    }
+
+    render (sprite) {
+
+        this.app.renderer.activatePipeline(this);
+
+        this.pool.vertexArray.copy(sprite, this.totalSpritesCount);
+
+        this.currentSpriteCount++;
+        this.totalSpritesCount++;
+
     }
 
     finish () {
-        this.webGlBuffer.bufferSubData();  // TODO always upload the complete vertex buffer - is this a good idea?
+        if (this.totalSpritesCount) {
+            this.flush();
+            this.webGlBuffer.bufferSubData(null, this.totalSpritesCount * this.pool.descriptor.vertexAttrCount * this.pool.descriptor.vertexCount);
+        }
     }
 
 }
@@ -63,9 +99,11 @@ function initBuffers ( self ) {
 
 function initRenderCmds ( self ) {
 
-    if ( ! self.renderCmd ) {
+    if ( self.renderCmd ) return;
 
-        self.renderCmd = {
+    self.renderCmd = new utils.ObjectPool(() => {
+
+        var obj = {
 
             program: self.program,
             uniforms: {
@@ -74,7 +112,9 @@ function initRenderCmds ( self ) {
             attributes: {},
             drawElements: {
                 buffer: self.webGlIndexBuffer,
-                elementType: self.app.gl.TRIANGLES
+                elementType: self.app.gl.TRIANGLES,
+                count: 0,
+                offset: 0
             }
 
         };
@@ -85,7 +125,7 @@ function initRenderCmds ( self ) {
 
             if ( attr.hasOwnProperty( name ) ) {
 
-                self.renderCmd.attributes[ name ] = {
+                obj.attributes[ name ] = {
                     offset : attr[ name ].offset,
                     size   : attr[ name ].size,
                     stride : self.pool.descriptor.vertexAttrCount,
@@ -96,22 +136,11 @@ function initRenderCmds ( self ) {
 
         }
 
-        Object.seal( self.renderCmd );
+        Object.seal( obj );
 
-    }
+        return obj;
+
+    });
 
 }
-
-
-//function reset ( pipeline ) {
-
-    //pipeline.currentSpriteCount  = 0;
-    //pipeline.currentSpriteOffset = 0;
-    //pipeline.totalSpritesCount   = 0;
-    //pipeline.texture             = null;
-    //pipeline.currentProgram      = null;
-
-    //if ( pipeline.renderCmdObj ) pipeline.renderCmdObj.releaseAll();
-
-//}
 

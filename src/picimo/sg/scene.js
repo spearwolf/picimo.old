@@ -6,6 +6,7 @@
     var math         = require( '../math' );
     var UniformValue = require( '../webgl/cmd' ).UniformValue;
     var SpriteGroup  = require( './sprite_group' );
+    var Picture      = require( './picture' );
 
     /**
      * @class Picimo.sg.Scene
@@ -201,7 +202,7 @@
                 this.parentResolution.height = this.parentResolution.height;
                 this.parentResolution.pixelRatio = this.parentResolution.pixelRatio;
                 this.parentResolution.devicePixelRatio = this.parentResolution.devicePixelRatio;
-                
+
                 scene.projectionNeedsUpdate = true;
             }
 
@@ -588,6 +589,20 @@
 
     };
 
+
+    Scene.prototype.appendPicture = function (url, options, extension) {
+
+        if (!options) options = {};
+
+        options.texture = this.app.loadTexture(url);
+
+        var node = this.addChild(new Picture(this.app, options));
+
+        if (extension) node.bind(extension);
+
+        return node;
+
+    };
 
 
     module.exports = Scene;

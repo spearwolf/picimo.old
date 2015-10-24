@@ -17,5 +17,31 @@ console.log( '%c%s%c\n\n Welcome to the %ckastani%c demo -- a %c picimo %c demo!
 // =========================== //
 
 var app = new Picimo.App({ alpha: true });
-app.scene.setSize( 1000, 750, "contain" );
+app.scene.setSize( 1000, 750, 'contain' );
+
+app.shader.loadVertexShader('complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.vert');
+app.shader.loadFragmentShader('complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.frag');
+app.shader.addProgram('picture', 'complex-sprite', 'complex-sprite');
+
+var spwMiniLogo = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {}, {
+
+    init (picture) {
+
+        picture.sprite.setSize(1000, 125);
+        picture.sprite.setPos(0, 250);
+
+    }
+
+});
+
+var skullBlue = app.scene.appendPicture('/assets/images/kastani/skull-blue-2000px.png', {}, {
+
+    init (picture) {
+
+        picture.sprite.setSize(4000, 1000);
+        picture.sprite.setPos(0, -550);
+
+    }
+
+});
 
