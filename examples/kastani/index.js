@@ -23,18 +23,23 @@ app.shader.loadVertexShader('complex-sprite', '/assets/shaders/complex-sprite/co
 app.shader.loadFragmentShader('complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.frag');
 app.shader.addProgram('picture', 'complex-sprite', 'complex-sprite');
 
-var spwMiniLogo = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {}, {
+window.spwMiniLogo = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {
 
-    init (picture) {
+    displaySize: 'contain'
 
-        picture.sprite.setSize(1000, 125);
-        picture.sprite.setPos(0, 250);
+}, {
 
-    }
+    //init (picture) {
+
+        //picture.sprite.setSize(1000, 125);
+        //picture.sprite.setPos(0, 250);
+
+    //}
 
 });
 
-var skullBlue = app.scene.appendPicture('/assets/images/kastani/skull-blue-2000px.png', {}, {
+/*
+window.skullBlue = app.scene.appendPicture('/assets/images/kastani/skull-blue-2000px.png', {}, {
 
     init (picture) {
 
@@ -44,4 +49,5 @@ var skullBlue = app.scene.appendPicture('/assets/images/kastani/skull-blue-2000p
     }
 
 });
+*/
 

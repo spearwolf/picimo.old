@@ -151,9 +151,9 @@
             }
         };
 
-        this.on( "frame", onFrame.bind( this, this ) );
-
         if ( this.isRoot ) initRootScene( this );
+
+        this.on( "frame", onFrame.bind( this, this ) );
 
         this.on( options, {
 
@@ -450,7 +450,7 @@
 
     function updateProjection ( scene ) {
 
-        if ( ! scene.hasOwnProjection || ! scene.projectionNeedsUpdate ) return;  // TODO updateProjection -> projectionNeedsUpdate
+        if ( ! scene.hasOwnProjection || ! scene.projectionNeedsUpdate ) return;
 
         var factor;
 
@@ -575,6 +575,7 @@
 
         if ( ! options ) options = {};
 
+        options.parent = this;
         options.textureAtlas = textureAtlas;
 
         var node = this.addChild( new SpriteGroup( this.app, options ) );
@@ -594,6 +595,7 @@
 
         if (!options) options = {};
 
+        options.parent = this;
         options.texture = this.app.loadTexture(url);
 
         var node = this.addChild(new Picture(this.app, options));

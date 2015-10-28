@@ -52,7 +52,7 @@ export default function SpriteGroup ( app, options ) {
     initSpritePool( this, this.spriteDescriptor, options.capacity || 1000 );
 
     this.on( "initGl", onInitGl.bind( this, this ) );
-    this.on( "renderFrame", -1000, onRenderFrame.bind( this, this ) );
+    this.on( "renderFrame", onRenderFrame.bind( this, this ) );
 
 }
 

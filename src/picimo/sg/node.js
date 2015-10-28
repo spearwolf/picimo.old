@@ -17,6 +17,7 @@ import NodeState from './node_state';
  *
  * @param {Picimo.App} app - The app instance
  * @param {object} [options] - The options
+ * @param {Picimo.sg.Node|Picimo.App} options.scene
  * @param {boolean} [options.display=true]
  * @param {boolean} [options.ready=true]
  * @param {string} [options.name]
@@ -63,10 +64,6 @@ export default function Node ( app, options ) {
      */
     this.display = ( ! options ) || ( options.display !== false );
 
-    /**
-     * @member {Picimo.App} Picimo.sg.Node#parent - The parent node.
-     */
-
     this._ready = ( ! options ) || options.ready !== false;
 
     /**
@@ -76,12 +73,21 @@ export default function Node ( app, options ) {
     this.name = options ? options.name : undefined;
 
     /**
+     * @member {Picimo.App} Picimo.sg.Node#parent - The parent node.
+     */
+
+    if (options.parent) Object.defineProperty(this, 'parent', { configurable: true, value: options.parent });
+
+    /**
      * @member {Picimo.sg.Node} Picimo.sg.Node#children - The child nodes array.
      */
+
     this.children = [];
 
 
     events.eventize( this );
+
+    this.on('childrenUpdated', Number.MAX_VALUE, sortChildrenByRenderPrio.bind(this, this));
 
     if ( options !== undefined ) {
 
@@ -126,6 +132,9 @@ Node.prototype.setReadyFunc = function ( readyFunc ) {
 
 };
 
+function sortChildrenByRenderPrio (node) {
+    node.children = node.children.sort( sortByRenderPrio );
+}
 
 /**
  * @method Picimo.sg.Node#addChild
@@ -136,10 +145,7 @@ Node.prototype.addChild = function ( node ) {
 
     this.children.push( node );
 
-    node.parent = this;
-
-    // resort child nodes
-    node.children = node.children.sort( sortByRenderPrio );
+    Object.defineProperty(node, 'parent', { configurable: true, value: this });
 
     /**
      * Announce a children update.
