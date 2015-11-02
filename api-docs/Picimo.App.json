@@ -1,0 +1,87 @@
+{
+    "name": "Picimo.App",
+    "interfaces": [{
+        "name": "Picimo.App",
+        "attributes": [{
+            "name": "canvas",
+            "type": "HTMLCanvasElement",
+            "readonly": true
+        }, {
+            "name": "scene",
+            "type": "Picimo.sg.Scene",
+            "readonly": true
+        }, {
+            "name": "sprites",
+            "type": "Picimo.sprites.SpriteFactory",
+            "readonly": true
+        }, {
+            "name": "texture",
+            "type": "Picimo.webgl.TextureManager",
+            "readonly": true
+        }, {
+            "name": "shader",
+            "type": "Picimo.webgl.ShaderManager",
+            "readonly": true
+        }],
+        "functions": [{
+            "name": "loadTextureAtlas",
+            "args": [{
+                "name": "url",
+                "type": "string"
+            }],
+            "returns": "Promise<Picimo.core.TextureAtlas>"
+        }, {
+            "name": "loadTexture",
+            "args": [{
+                "name": "url",
+                "type": "string"
+            }],
+            "returns": "Promise<Picimo.core.Texture>"
+        }],
+        "constructor": {
+            "args": [{
+                "name": "url",
+                "type": "HTMLCanvasElement",
+                "nullable": true,
+                "optional": true
+            }, {
+                "name": "options",
+                "type": "PicimoAppOptions",
+                "nullable": true,
+                "optional": true
+            }]
+        }
+    }],
+    "dictionaries": [{
+        "name": "PicimoAppOptions",
+        "attributes": [{
+            "name": "alpha",
+            "type": "boolean",
+            "default": "false"
+        }, {
+            "name": "antialias",
+            "type": "boolean",
+            "default": "false"
+        }, {
+            "name": "stats",
+            "type": "boolean",
+            "default": "false"
+        }, {
+            "name": "canvas",
+            "type": "HTMLCanvasElement",
+            "default": "null"
+        }, {
+            "name": "appendTo",
+            "type": "HTMLElement",
+            "default": "null"
+        }, {
+            "name": "bgColor",
+            "type": ["string", "Picimo.utils.Color"],
+            "default": "'#000000'"
+        }, {
+            "name": "assetBaseUrl",
+            "type": "string",
+            "default": "null"
+        }]
+    }]
+}

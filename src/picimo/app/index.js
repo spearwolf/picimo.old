@@ -123,25 +123,25 @@ export default function App ( canvas, options ) {
      * @member {Picimo.webgl.ShaderManager} Picimo.App#shader
      */
 
-    this.shader = new webgl.ShaderManager( this );
+    utils.object.definePropertyPublicRO( this, 'shader', new webgl.ShaderManager(this) );
 
     /**
      * @member {Picimo.webgl.TextureManager} Picimo.App#texture
      */
 
-    this.texture = new webgl.TextureManager( this );
+    utils.object.definePropertyPublicRO( this, 'texture', new webgl.TextureManager(this) );
 
     /**
      * @member {Picimo.webgl.WebGlRenderer} Picimo.App#renderer
      */
 
-    this.renderer = new webgl.WebGlRenderer( this );
+    utils.object.definePropertyPublicRO( this, 'renderer', new webgl.WebGlRenderer(this) );
 
     /**
      * @member {Picimo.sprites.SpriteFactory} Picimo.App#sprites
      */
 
-    this.sprites = initSprites( sprites.SpriteFactory );
+    utils.object.definePropertyPublicRO( this, 'sprites', initSprites(sprites.SpriteFactory) );
 
     /**
      * @member {Picimo.App} Picimo.App#assetBaseUrl - The base url for all assets. May be *undefined*.

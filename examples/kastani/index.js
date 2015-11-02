@@ -23,31 +23,59 @@ app.shader.loadVertexShader('complex-sprite', '/assets/shaders/complex-sprite/co
 app.shader.loadFragmentShader('complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.frag');
 app.shader.addProgram('picture', 'complex-sprite', 'complex-sprite');
 
-window.spwMiniLogo = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {
+window.spearwolf = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {
 
-    displaySize: 'contain'
+    displaySize: 'contain',
 
 }, {
 
-    //init (picture) {
-
-        //picture.sprite.setSize(1000, 125);
-        //picture.sprite.setPos(0, 250);
-
-    //}
-
-});
-
-/*
-window.skullBlue = app.scene.appendPicture('/assets/images/kastani/skull-blue-2000px.png', {}, {
-
     init (picture) {
 
-        picture.sprite.setSize(4000, 1000);
-        picture.sprite.setPos(0, -550);
+        picture.opacity = 0.95;
+        picture
+            .setPos(-400, 200)
+            .setZoom(0.5);
 
     }
 
 });
-*/
+
+window.skull0 = app.scene.appendPicture('/assets/images/kastani/skull-blue-2000px.png', {
+
+    renderPrio: 100,
+
+    displayPosition: {
+        width: 4000,
+        height: 1000,
+        top: 100,
+        left: -1000,
+    }
+
+});
+
+window.skull1 = app.scene.appendPicture('/assets/images/kastani/skull-big-turquoise-2000px.png', {
+
+    renderPrio: 90,
+
+    displayPosition: {
+        width: 4000,
+        height: 1000,
+        top: 225,
+        left: -500,
+    }
+
+});
+
+window.skull2 = app.scene.appendPicture('/assets/images/kastani/seamless-small-blue-red-yellow-1000px.png', {
+
+    renderPrio: 80,
+
+    displayPosition: {
+        width: 3000,
+        height: 258*3,
+        top: 475,
+        left: 0,
+    }
+
+});
 
