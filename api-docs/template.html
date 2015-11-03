@@ -1,5 +1,46 @@
-<section class="programming-interface-description">
-    <header>
+<section class="pid">
+    <header class="pid__header">
         <h1>{{name}}</h1>
     </header>
+    {{#interfaces}}
+    <article class="pid__interface" style="font-family:monospace">
+        <p>
+            <em>interface</em> <strong>{{name}}</strong> {<br>
+            <ul style="list-style-type:none">
+                <li class="pid-interface__attributes">
+                    <table style="border:0">
+                    {{#attributes}}
+                        <tr>
+                            {{#if readonly}}
+                            <td>readonly</td>
+                            {{else}}
+                            <td></td>
+                            {{/if}}
+                            <td>attribute</td>
+                            <td><em>{{type}}</em></td>
+                            <td><strong>{{name}}</strong>;</td>
+                        </tr>
+                    {{/attributes}}
+                    </table>
+                </li>
+                <li class="pid-interface__functions">
+                    <table style="border:0">
+                    {{#functions}}
+                        <tr>
+                            <td><em>{{returns}}</em></td>
+                            <td><strong>{{name}}</strong></td>
+                            {{#if args}}
+                            <td>({{#each args}}{{type}} {{name}}{{#unless @last}}, {{/unless}}{{/each}});</td>
+                            {{else}}
+                            <td>();</td>
+                            {{/if}}
+                        </tr>
+                    {{/functions}}
+                    </table>
+                </li>
+            </ul>
+            }<br>
+        </p>
+    </article>
+    {{/interfaces}}
 </section>
