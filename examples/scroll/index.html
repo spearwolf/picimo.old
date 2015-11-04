@@ -26,7 +26,6 @@
         article {
             color: #000;
             margin-bottom: 30em;
-            transform: translateZ(0.0);
         }
         article > strong {
             font-weight: 700;
@@ -54,10 +53,13 @@
             top: 0;
             left: 0;
         }
+        .hw-accel {
+            transform: translateZ(0.0);
+        }
     </style>
   </head>
   <body>
-    <div class="back-layer">
+    <div class="back-layer hw-accel">
         <article>
             please, scroll down ..
         </article>
@@ -65,8 +67,8 @@
             thank you very much for your attention ;-)
         </article>
     </div>
-    <canvas id="picimo"></canvas>
-    <div class="front-layer">
+    <canvas id="picimo" class="hw-accel"></canvas>
+    <div class="front-layer hw-accel">
         <article class="text-center" style="padding-top: 40em">
             <strong>have fun !!</strong>
         </article>

@@ -20,7 +20,7 @@ window.spearwolf = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {
 
     init (picture) {
 
-        picture.setZoom(0.75);
+        picture.setZoom(1.5);
 
     },
 
@@ -31,6 +31,8 @@ window.spearwolf = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {
         var scrollTop = Math.abs(document.body.getBoundingClientRect().top);  // document.body.scrollTop;
 
         picture.rotateDegree = this.rotateBase + (scrollTop * 0.25);
+
+        picture.setZoom(1.5 + (Math.sin(picture.app.now * 1.5) * 0.5));
 
     }
 
