@@ -1,0 +1,72 @@
+
+.pid {
+
+    padding: .5em 1em;
+    background-color: #DEF;
+    border-left: 0.5em solid #8CCBF2;
+
+}
+
+.pid-idl {
+
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 20px;
+
+    ul {
+        list-style-type: none;
+
+        margin: 0;
+        padding: 0;
+
+        &.pid-idl__group {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        & > li {
+            margin: 0;
+            padding: 0 0 0 3em;
+        }
+    }
+
+    &__block {
+    }
+
+    &__group {
+        display: table;
+    }
+
+    &__attr,
+    &__func {
+        display: table-row;
+    }
+
+    &__readonly,
+    &__keyword,
+    &__type,
+    &__name,
+    &__args {
+        display: table-cell;
+        padding-right: 0.75em;
+    }
+
+    &__readonly {
+    }
+
+    &__keyword {
+    }
+
+    &__type {
+        font-style: italic;
+    }
+
+    &__name {
+        font-weight: 700;
+    }
+
+    &__args {
+    }
+
+}
+

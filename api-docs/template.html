@@ -1,46 +1,49 @@
-<section class="pid">
-    <header class="pid__header">
-        <h1>{{name}}</h1>
-    </header>
-    {{#interfaces}}
-    <article class="pid__interface" style="font-family:monospace">
-        <p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{name}}</title>
+    <link rel="stylesheet" href="api-docs.css">
+</head>
+<body>
+
+    <h1>{{name}}</h1>
+
+    <section class="pid">
+        {{#interfaces}}
+        <article class="pid__interface pid-idl">
             <em>interface</em> <strong>{{name}}</strong> {<br>
-            <ul style="list-style-type:none">
+            <ul class="pid-idl__block">
                 <li class="pid-interface__attributes">
-                    <table style="border:0">
+                    <ul class="pid-idl__group">
                     {{#attributes}}
-                        <tr>
-                            {{#if readonly}}
-                            <td>readonly</td>
-                            {{else}}
-                            <td></td>
-                            {{/if}}
-                            <td>attribute</td>
-                            <td><em>{{type}}</em></td>
-                            <td><strong>{{name}}</strong>;</td>
-                        </tr>
+                        <li class="pid-idl__attr">
+                            <span class="pid-idl__readonly">{{#if readonly}}readonly{{/if}}</span>
+                            <span class="pid-idl__keyword">attribute</span>
+                            <span class="pid-idl__type">{{type}}</span>
+                            <span class="pid-idl__name">{{name}};</span>
+                        </li>
                     {{/attributes}}
-                    </table>
+                    </ul>
                 </li>
                 <li class="pid-interface__functions">
-                    <table style="border:0">
+                    <ul class="pid-idl__group">
                     {{#functions}}
-                        <tr>
-                            <td><em>{{returns}}</em></td>
-                            <td><strong>{{name}}</strong></td>
-                            {{#if args}}
-                            <td>({{#each args}}{{type}} {{name}}{{#unless @last}}, {{/unless}}{{/each}});</td>
-                            {{else}}
-                            <td>();</td>
-                            {{/if}}
-                        </tr>
+                        <li class="pid-idl__func">
+                            <span class="pid-idl__type">{{returns}}</span>
+                            <span class="pid-idl__name">{{name}}</span>
+                            <span class="pid-idl__args">
+                                ({{#each args}}{{type}} {{name}}{{#unless @last}}, {{/unless}}{{/each}});
+                            </span>
+                        </li>
                     {{/functions}}
-                    </table>
+                    </ul>
                 </li>
             </ul>
             }<br>
-        </p>
-    </article>
-    {{/interfaces}}
-</section>
+        </article>
+        {{/interfaces}}
+    </section>
+
+</body>
+</html>

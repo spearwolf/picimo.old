@@ -237,6 +237,8 @@ App.prototype.renderFrame = function () {
 
     this.now = window.performance.now() / 1000.0;
     ++this.frameNo;
+    this.frameTime = this.frameLastTime == null ? 0.0 : this.frameLastTime - this.now;
+    this.frameLastTime = this.now;
 
     this.renderer.onStartFrame();
 

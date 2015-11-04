@@ -1,4 +1,5 @@
 import gulp from 'gulp';
+import sass from 'gulp-sass';
 import { apiDocsJson } from './compile-api-docs';
 
 
@@ -6,6 +7,11 @@ gulp.task('build:api-docs', () => {
 
     gulp.src('./api-docs/**/*.json')
         .pipe(apiDocsJson({ template: './api-docs/template.html' }))
+        .pipe(gulp.dest('./build/api-docs'));
+
+
+    gulp.src('./api-docs/*.scss')
+        .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./build/api-docs'));
 
 });
