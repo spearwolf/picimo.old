@@ -1,0 +1,115 @@
+{
+    "name": "Picimo.sg.Scene",
+    "type": "programming-interface",
+    "interfaces": [{
+        "name": "Picimo.sg.Scene",
+        "attributes": [{
+            "name": "app",
+            "type": "Picimo.App",
+            "readonly": true
+        }, {
+            "name": "projection",
+            "type": "Picimo.math.Matrix4",
+            "readonly": true
+        }, {
+            "name": "hasOwnProjection",
+            "type": "boolean",
+            "readonly": true
+        }, {
+            "name": "projectionNeedsUpdate",
+            "type": "boolean",
+            "readonly": false
+        }, {
+            "name": "blendMode",
+            "type": "Picimo.webgl.cmd.BlendMode",
+            "readonly": false
+        }, {
+            "name": "width",
+            "type": "number",
+            "readonly": true
+        }, {
+            "name": "height",
+            "type": "number",
+            "readonly": true
+        }, {
+            "name": "pixelRatio",
+            "type": "number",
+            "readonly": true
+        }, {
+            "name": "devicePixelRatio",
+            "type": "number",
+            "readonly": true
+        }],
+        "functions": [{
+            "name": "appendPicture",
+            "args": [{
+                "name": "url",
+                "type": "string"
+            }, {
+                "name": "options",
+                "type": "Picimo.sg.Picture.Options"
+            }],
+            "returns": "Picimo.sg.Picture"
+        }, {
+            "name": "appendSpriteGroup",
+            "args": [{
+                "name": "textureAtlas",
+                "type": ["Picimo.core.TextureAtlas", "Promise"]
+            }, {
+                "name": "options",
+                "type": "Picimo.sg.SpriteGroup.Options"
+            }],
+            "returns": "Picimo.sg.SpriteGroup"
+        }],
+        "constructor": {
+            "args": [{
+                "name": "app",
+                "type": "Picimo.App",
+                "nullable": false,
+                "optional": false
+            }, {
+                "name": "options",
+                "type": "Picimo.sg.Scene.Options",
+                "nullable": true,
+                "optional": true
+            }]
+        }
+    }],
+    "dictionaries": [{
+        "name": "Picimo.sg.Scene.Options",
+        "attributes": [{
+            "name": "width",
+            "type": "number",
+            "required": false
+        }, {
+            "name": "height",
+            "type": "number",
+            "required": false
+        }, {
+            "name": "pixelRatio",
+            "type": "number",
+            "required": false
+        }, {
+            "name": "sizeVariety",
+            "type": "string",
+            "required": false
+        }, {
+            "name": "projection",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+        }, {
+            "name": "blendMode",
+            "type": "Picimo.webgl.cmd.BlendMode",
+            "required": false
+        }, {
+            "name": "onResize",
+            "type": "function",
+            "required": false
+        }, {
+            "name": "onProjectionUpdated",
+            "type": "function",
+            "required": false
+        }]
+    }]
+}

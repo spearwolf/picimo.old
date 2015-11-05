@@ -1,0 +1,136 @@
+@import "includes/_colors.scss";
+@import "includes/_typography.scss";
+
+.pid-idl {
+
+    padding: 1em 1em;
+    background-color: $col-prim1-light;
+    border-left: 0.5em solid $col-prim1;
+    overflow: auto;
+
+    @include typo('monospace');
+
+    em {
+        @include typo('monospace', $style: 'italic');
+    }
+
+    strong {
+        @include typo('monospace', $weight: 'bold');
+    }
+
+    ul {
+        list-style-type: none;
+
+        margin: 0;
+        padding: 0;
+
+        &.pid-idl__group {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        & > li {
+            margin: 0;
+            padding: 0 0 0 3em;
+        }
+
+        &.pid-idl__func-args {
+
+            & > li {
+                padding-left: 1.5em;
+            }
+
+            &.args-1 {
+                display: inline;
+                & > li {
+                    display: inline;
+                    padding-left: 0;
+                }
+            }
+
+        }
+    }
+
+    &__pre-block {
+        margin-bottom: 0.5em;
+    }
+
+    &__block {
+    }
+
+    &__group {
+        display: table;
+    }
+
+    &__attr,
+    &__func {
+        display: table-row;
+    }
+
+    &__readonly,
+    &__keyword,
+    &__type,
+    &__name,
+    &__args,
+    &__default {
+        display: table-cell;
+        padding-right: 0.75em;
+        white-space: nowrap;
+    }
+
+    &__func-arg {
+        white-space: nowrap;
+    }
+
+    &__readonly {
+    }
+
+    &__keyword {
+    }
+
+    &__optional {
+        @include typo('monospace', $style: 'italic');
+        display: inline-block;
+        margin-left: -0.33em;
+    }
+
+    &__type-type,
+    &__type-link {
+        @include typo('monospace', $style: 'italic');
+    }
+
+    &__type-link {
+        color: $col-black;
+        border-bottom: 1px dashed $col-gray;
+        background-color: rgba(0,0,0, 0.05);
+    }
+
+    &__name {
+        @include typo('monospace', $weight: 'bold');
+    }
+
+    &__args {
+    }
+
+    &__args-name {
+        color: $col-black;
+        position: relative;
+
+        &:after {
+            content: ' ';
+            display: block;
+            position: absolute;
+            bottom: -4px;
+            left: -4px;
+            right: -4px;
+            height: 6px;
+            background-color: $col-prim51;
+            opacity: 0.55;
+        }
+    }
+
+    &__default-value {
+    }
+
+}
+

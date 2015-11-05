@@ -1,10 +1,11 @@
+@import "_colors.scss";
 
 // === typography styles ======== -------  --  -
 
 $typoFontFamily: (
-    text      : "Gentium Basic" sans-serif,
-    monospace : "Inconsolata" Menlo Consolas "DejaVu Sans Mono" monospace,
-    headline  : "Lobster" cursive
+    text      : (Gentium Basic, sans-serif),
+    monospace : (Inconsolata, Menlo Consolas, DejaVu Sans Mono, monospace),
+    headline  : (Lobster, cursive),
 );
 
 $typoFontWeight: (
@@ -64,13 +65,35 @@ $fontSizeTiny     : 12px;
 
 body {
     @include typo('text');
+    color: $col-dark;
 }
 
 h1 {
-    @include typo('headline', $size: $fontSizeHeadline);
+    /*@include typo('headline', $size: $fontSizeHeadline);*/
+    @include typo('text', $weight:'bold', $size: $fontSizeHeadline);
+    color: $col-prim1-dark;
 }
-h2, h3, h4, h5, h6 {
-    @include typo('headline', $size: $fontSizeBig);
+h2 {
+    @include typo('headline', $size: $fontSizeHeadline);
+    border-bottom: 1px dashed $col-gray;
+}
+h3 {
+    @include typo('text', $size:$fontSizeBig, $weight:'bold');
+    color: $col-prim1-dark;
+    em {
+        @include typo('monospace', $size:$fontSizeBig, $weight:'bold');
+        color: $col-prim2;
+    }
+}
+h4 {
+    @include typo('text', $weight:'bold');
+    color: $col-prim3;
+}
+h5 {
+    @include typo('text', $weight:'bold', $size: $fontSizeTiny);
+}
+h6 {
+    @include typo('text', $weight:'bold', $size: $fontSizeTiny);
 }
 
 pre, code {

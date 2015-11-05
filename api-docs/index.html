@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Picimo</title>
+    <link href="http://fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="api-docs.css">
+</head>
+<body>
+
+    <section class="toc">
+
+        <h2>Table of Contents</h2>
+        <ol class="toc-top">
+            <li>
+                <a href="#Programming-Interface">Programming Interface</a>
+                <ol class="toc-sub">
+                    {{#each programming-interface}}
+                    {{#ref .}}
+                    {{#each interfaces}}
+                    <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> interface</li>
+                    {{/each}}
+                    {{#each dictionaries}}
+                    <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> dictionary</li>
+                    {{/each}}
+                    {{/ref}}
+                    {{/each}}
+                </ol>
+            </li>
+        </ol>
+
+    </section>
+
+    <section id="#Programming-Interface" class="programming-interface">
+
+        <h2>Programming Interface</h2>
+
+        {{#each programming-interface}}
+            {{#ref .}}
+                {{> programming-interface}}
+            {{/ref}}
+        {{/each}}
+
+    </section>
+
+</body>
+</html>

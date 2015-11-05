@@ -47,14 +47,14 @@
                 "optional": true
             }, {
                 "name": "options",
-                "type": "PicimoAppOptions",
+                "type": "Picimo.App.Options",
                 "nullable": true,
                 "optional": true
             }]
         }
     }],
     "dictionaries": [{
-        "name": "PicimoAppOptions",
+        "name": "Picimo.App.Options",
         "attributes": [{
             "name": "alpha",
             "type": "boolean",

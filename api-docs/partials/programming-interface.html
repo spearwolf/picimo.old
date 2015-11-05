@@ -1,0 +1,73 @@
+<section id="{{refId name}}" class="pid">
+
+    {{#interfaces}}
+
+    <h3>The <em>{{name}}</em> interface</h3>
+
+    <article id="{{refId name}}" class="pid__interface pid-idl">
+
+        {{#with constructor}}
+        <div class="pid__constructor pid-idl__pre-block">
+            [Constructor{{#if args}}
+            (<ul class="pid-idl__func-args">{{#each args}}<li class="pid-idl__func-arg">{{#if optional}}optional {{/if}}{{> type-type type}}{{#if nullable}}<span class="pid-idl__optional">?</span>{{/if}} <span class="pid-idl__args-name">{{name}}</span>{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>){{/if}}]
+        </div>
+        {{/with}}
+
+        <em>interface</em> <strong>{{name}}</strong> {<br>
+
+        <ul class="pid-idl__block">
+            <li class="pid-interface__attributes">
+                <ul class="pid-idl__group">
+                {{#attributes}}
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__readonly">{{#if readonly}}readonly{{/if}}</span>
+                        <span class="pid-idl__keyword">attribute</span>
+                        <span class="pid-idl__type">{{> type-type type}}</span>
+                        <span class="pid-idl__name">{{name}};</span>
+                    </li>
+                {{/attributes}}
+                </ul>
+            </li>
+            <li class="pid-interface__functions">
+                <ul class="pid-idl__group">
+                {{#functions}}
+                    <li class="pid-idl__func">
+                        <span class="pid-idl__type">{{> type-type returns}}</span>
+                        <span class="pid-idl__name">{{name}}</span>
+                        <span class="pid-idl__args">
+                            ({{#if args}}<ul class="pid-idl__func-args args-{{args.length}}">{{#each args}}<li class="pid-idl__func-arg">{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}}| {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}} <span class="pid-idl__args-name">{{name}}</span>{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>{{/if}});
+                        </span>
+                    </li>
+                {{/functions}}
+                </ul>
+            </li>
+        </ul>
+        }<br>
+    </article>
+    {{/interfaces}}
+
+    {{#dictionaries}}
+
+    <h3>The <em>{{name}}</em> dictionary</h3>
+
+    <article id="{{refId name}}" class="pid__dictionary pid-idl">
+        <em>dictionary</em> <strong>{{name}}</strong> {<br>
+        <ul class="pid-idl__block">
+            <li class="pid-dictionary__attributes">
+                <ul class="pid-idl__group">
+                {{#attributes}}
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}} or {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}}{{#unless required}}<span class="pid-idl__optional">?</span>{{/unless}}</span>
+                        <span class="pid-idl__name">{{name}}{{#unless default}};{{/unless}}</span>
+                        <span class="pid-idl__default">{{#if default}}= <span class="pid-idl__default-value">{{default}}</span>;{{/if}}</span>
+                    </li>
+                {{/attributes}}
+                </ul>
+            </li>
+        </ul>
+        }<br>
+    </article>
+    {{/dictionaries}}
+
+</section>
+

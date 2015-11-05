@@ -1,5 +1,6 @@
 import gulp from 'gulp';
 import sass from 'gulp-sass';
+import minifyHtml from 'gulp-minify-html';
 import { apiDocsJson } from './api-docs-json';
 
 
@@ -7,12 +8,17 @@ gulp.task('api-docs', () => {
 
     gulp.src('./api-docs/**/*.json')
         .pipe(apiDocsJson({
-            template: './api-docs/template.html',
-            layout: './api-docs/layout.html',
+            template: './api-docs/index.html',
+            partials: './api-docs/partials',
             contentJson: 'contents.json',
         }))
+        .pipe(minifyHtml({
+            conditionals: true,
+            spare: true,
+            quotes: true,
+            loose: true
+        }))
         .pipe(gulp.dest('./build/api-docs'));
-
 
     gulp.src('./api-docs/*.scss')
         .pipe(sass().on('error', sass.logError))

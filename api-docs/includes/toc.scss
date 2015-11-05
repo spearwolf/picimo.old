@@ -1,0 +1,36 @@
+@import "includes/_colors.scss";
+@import "includes/_typography.scss";
+
+.toc {
+
+    a {
+        color: $col-black;
+
+        &:hover {
+            border-bottom: 1px dashed $col-gray;
+            background-color: rgba(0,0,0, 0.05);
+        }
+    }
+
+    .toc-top {
+        list-style-type: circle; //upper-roman;
+
+        a {
+            @include typo('text', $size:$fontSizeNormal, $weight:'bold', $decoration:none);
+        }
+    }
+
+    .toc-sub {
+        list-style-type: square; //upper-latin;
+
+        a {
+            @include typo('text', $size:$fontSizeNormal, $decoration:none);
+
+            &.toc__pid-link {
+                @include typo('monospace', $size:$fontSizeNormal, $weight:'bold', $decoration:none);
+                color: $col-prim2;
+            }
+        }
+    }
+}
+
