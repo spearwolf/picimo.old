@@ -1,5 +1,6 @@
 {
     "name": "Picimo.App",
+    "type": "programming-interface",
     "interfaces": [{
         "name": "Picimo.App",
         "attributes": [{
@@ -57,7 +58,8 @@
         "attributes": [{
             "name": "alpha",
             "type": "boolean",
-            "default": "false"
+            "default": "false",
+            "required": false
         }, {
             "name": "antialias",
             "type": "boolean",

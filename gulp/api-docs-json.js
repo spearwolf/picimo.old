@@ -11,13 +11,13 @@ let File = gutil.File;
 
 // https://github.com/contra/gulp-concat/blob/master/index.js
 // https://www.npmjs.com/package/gulp-pipe
-//
 
+registerHandlebarsHelpers();
 
 export function apiDocsJson (opt = {}) {
 
     opt.templateEnc = opt.templateEnc || 'utf-8';
-    opt.apiDocContentJson = opt.apiDocContentJson || 'contents.json';
+    opt.contentJson = opt.contentJson || 'contents.json';
 
     let templateLoaded = loadTemplate(opt.template, opt.templateEnc);
     let apiDocContent = {};
@@ -43,22 +43,18 @@ export function apiDocsJson (opt = {}) {
         apiDocContent[context.name] = context;
 
         templateLoaded.then((template) => {
-
             try {
 
-                let html = template(context);
+                let htmlPath = path.basename(file.relative, path.extname(file.relative)) + '.html';
+                let htmlFile = makeFile(htmlPath, template(context), opt.templateEnc);
 
-                let outFile = new File();
-                outFile.path = path.basename(file.relative, path.extname(file.relative)) + '.html';
-                outFile.contents = new Buffer(html, opt.templateEnc);
-                this.push(outFile);
+                this.push(htmlFile);
 
                 cb();
 
             } catch (ex) {
                 console.error(ex);
             }
-
         });
 
     }
@@ -67,10 +63,8 @@ export function apiDocsJson (opt = {}) {
 
         //console.log('-- endStream');
 
-        if (opt.apiDocContentJson) {
-            let outFile = new File();
-            outFile.path = path.basename(opt.apiDocContentJson);
-            outFile.contents = new Buffer(JSON.stringify(apiDocContent, null, 4), 'utf-8');
+        if (opt.contentJson) {
+            let outFile = makeFile(path.basename(opt.contentJson), JSON.stringify(apiDocContent, null, 2));
             this.push(outFile);
         }
 
@@ -80,6 +74,13 @@ export function apiDocsJson (opt = {}) {
 
     return through.obj(bufferContents, endStream);
 
+}
+
+function makeFile (path_, content, enc = 'utf-8') {
+    let file = new File();
+    file.path = path_;
+    file.contents = new Buffer(content, enc);
+    return file;
 }
 
 function loadTemplate (path_, enc = 'utf-8') {
@@ -96,6 +97,19 @@ function loadTemplate (path_, enc = 'utf-8') {
             resolve(Handlebars.compile(data));
         });
     });
+}
+
+
+function registerHandlebarsHelpers () {
+
+    Handlebars.registerHelper('ifArray', function (array, options) {
+        if (array && Array.isArray(array) && array.length) {
+            return options.fn(this);
+        } else if (options.inverse) {
+            return options.inverse(this);
+        }
+    });
+
 }
 
 

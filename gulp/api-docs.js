@@ -1,12 +1,16 @@
 import gulp from 'gulp';
 import sass from 'gulp-sass';
-import { apiDocsJson } from './compile-api-docs';
+import { apiDocsJson } from './api-docs-json';
 
 
-gulp.task('build:api-docs', () => {
+gulp.task('api-docs', () => {
 
     gulp.src('./api-docs/**/*.json')
-        .pipe(apiDocsJson({ template: './api-docs/template.html' }))
+        .pipe(apiDocsJson({
+            template: './api-docs/template.html',
+            layout: './api-docs/layout.html',
+            contentJson: 'contents.json',
+        }))
         .pipe(gulp.dest('./build/api-docs'));
 
 
@@ -16,6 +20,11 @@ gulp.task('build:api-docs', () => {
 
 });
 
+gulp.task('api-docs:watch', () => {
+
+    gulp.watch('./api-docs/**/*', ['api-docs']);
+
+});
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //

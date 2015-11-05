@@ -1,0 +1,11 @@
+
+$col-white : #fff;
+$col-light : #f8f8f8;
+$col-gray  : #949DA4;
+$col-dark  : #404040;
+$col-black : #000;
+
+$col-prim1       : #8CCBF2;                         // w3c blue
+$col-prim1-dark  : #1796DA;                         // google blue
+$col-prim1-light : lighten($col-prim1-dark, 45%);
+
