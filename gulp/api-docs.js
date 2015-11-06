@@ -6,7 +6,7 @@ import { apiDocsJson } from './api-docs-json';
 
 gulp.task('api-docs', () => {
 
-    gulp.src('./api-docs/**/*.json')
+    gulp.src(['./api-docs/**/*.json', './api-docs/**/*.md'])
         .pipe(apiDocsJson({
             template: './api-docs/index.html',
             partials: './api-docs/partials',

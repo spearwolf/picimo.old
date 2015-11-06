@@ -1,6 +1,6 @@
 <section id="{{refId name}}" class="pid">
 
-    {{#interfaces}}
+  {{#interfaces}}
 
     <h3>The <em>{{name}}</em> interface</h3>
 
@@ -44,9 +44,23 @@
         </ul>
         }<br>
     </article>
-    {{/interfaces}}
 
-    {{#dictionaries}}
+    <article class="pid__attributes">
+
+        <dl class="pid-attrs">
+          {{#attributes}}
+            {{#if description}}
+            <dt class="pid-attrs__name">{{name}}</dt>
+            <dd class="pid-attrs__description">{{{md description}}}</dd>
+            {{/if}}
+          {{/attributes}}
+        </dl>
+
+    </article>
+
+  {{/interfaces}}
+
+  {{#dictionaries}}
 
     <h3>The <em>{{name}}</em> dictionary</h3>
 
@@ -67,7 +81,7 @@
         </ul>
         }<br>
     </article>
-    {{/dictionaries}}
+
+  {{/dictionaries}}
 
 </section>
-

@@ -6,7 +6,8 @@
         "attributes": [{
             "name": "canvas",
             "type": "HTMLCanvasElement",
-            "readonly": true
+            "readonly": true,
+            "description": "The html _webgl canvas_ dom element."
         }, {
             "name": "scene",
             "type": "Picimo.sg.Scene",

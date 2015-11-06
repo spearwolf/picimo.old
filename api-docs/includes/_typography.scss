@@ -47,6 +47,7 @@ $typoLineHeightRatio: (
 // === font sizes ======== -------  --  -
 
 $fontSizeHeadline : 32px;
+$fontSizeBigger   : 26px;
 $fontSizeBig      : 21px;
 $fontSizeNormal   : 16px;
 $fontSizeSmall    : 14px;
@@ -78,10 +79,10 @@ h2 {
     border-bottom: 1px dashed $col-gray;
 }
 h3 {
-    @include typo('text', $size:$fontSizeBig, $weight:'bold');
+    @include typo('text', $size:$fontSizeBigger, $weight:'bold');
     color: $col-prim1-dark;
     em {
-        @include typo('monospace', $size:$fontSizeBig, $weight:'bold');
+        @include typo('monospace', $size:$fontSizeBigger, $weight:'bold');
         color: $col-prim2;
     }
 }

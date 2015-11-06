@@ -32,11 +32,14 @@
     "gulp-uglify": "^1.4.2",
     "gulp-util": "^3.0.6",
     "handlebars": "^4.0.4",
+    "highlight.js": "^8.9.1",
     "jaguarjs-jsdoc": "./vendor/jaguarjs-jsdoc/",
+    "marked": "^0.3.5",
     "through2": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.4.0"
+    "watchify": "^3.4.0",
+    "yaml-front-matter": "^3.2.3"
   },
   "dependencies": {
     "color-js": "^1.0.3",

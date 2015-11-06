@@ -1,11 +1,15 @@
 'use strict';
 
+import _ from 'lodash';
 import fs from 'fs';
 import through from 'through2';
 import path from 'path';
 import gutil from 'gulp-util';
 import Handlebars from 'handlebars';
 import glob from 'glob';
+import yamlFront from 'yaml-front-matter';
+import marked from 'marked';
+//import highlightJs from 'highlight.js';
 
 let PluginError = gutil.PluginError;
 let File = gutil.File;
@@ -49,15 +53,36 @@ export function apiDocsJson (opt = {}) {
             return;
         }
 
-        let contents = file.contents.toString(enc);
-        let context = JSON.parse(contents);
+        if (path.extname(file.relative) === '.md') {
 
-        apiDocContent.ref[context.name] = context;
+            // ============ markdown *.md ============= //
 
-        if (context.type) {
-            if (!apiDocContent[context.type]) apiDocContent[context.type] = [];
-            apiDocContent[context.type].push(context.name);
-            apiDocContent[context.type].sort();
+            let context = yamlFront.loadFront(file.contents);
+
+            context.fileBaseName = path.basename(file.relative, path.extname(file.relative));
+            if (!context.name) context.name = _.kebabCase(context.fileBaseName);
+            if (!context.type) context.type = 'topic';
+
+            context.html = marked(context.__content);  // TODO highlight.js?
+            delete context.__content;
+
+            addTo(apiDocContent, context);
+
+        } else {
+
+            // ============ json *.json ============= //
+
+            let contents = file.contents.toString(enc);
+            let context = JSON.parse(contents);
+
+            apiDocContent.ref[context.name] = context;
+
+            if (context.type) {
+                if (!apiDocContent[context.type]) apiDocContent[context.type] = [];
+                apiDocContent[context.type].push(context.name);
+                apiDocContent[context.type].sort();
+            }
+
         }
 
         cb();
@@ -92,6 +117,16 @@ export function apiDocsJson (opt = {}) {
 
     return through.obj(bufferContents, endStream);
 
+}
+
+function addTo (apiDocContent, context) {
+    apiDocContent.ref[context.name] = context;
+
+    if (context.type) {
+        if (!apiDocContent[context.type]) apiDocContent[context.type] = [];
+        apiDocContent[context.type].push(context.name);
+        apiDocContent[context.type].sort();
+    }
 }
 
 function makeFile (path_, content, enc = 'utf-8') {
