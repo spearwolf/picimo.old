@@ -45,18 +45,20 @@
         }<br>
     </article>
 
-    <article class="pid__attributes">
+  {{#if attributes}}
+    <article class="pid__attributes page-break-after">
+
+        <h4>Attributes</h4>
 
         <dl class="pid-attrs">
           {{#attributes}}
-            {{#if description}}
-            <dt class="pid-attrs__name">{{name}}</dt>
-            <dd class="pid-attrs__description">{{{md description}}}</dd>
-            {{/if}}
+            <dt class="pid-attrs__name{{#if readonly}} pid-attrs__name--readonly{{/if}}">{{name}}</dt>
+            <dd class="pid-attrs__description md-inline">{{{md description}}}</dd>
           {{/attributes}}
         </dl>
 
     </article>
+  {{/if}}
 
   {{/interfaces}}
 

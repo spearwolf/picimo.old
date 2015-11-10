@@ -1,8 +1,16 @@
-@import "includes/normalize.css";
+@import "includes/normalize";
 @import "includes/_colors";
 @import "includes/_typography";
 @import "includes/layout";
 @import "includes/toc";
 @import "includes/pid-idl";
+@import "includes/pid-attributes";
 @import "includes/md";
+
+.TODO {
+    display: inline-block;
+    background-color: $col-prim51;
+    @include typo('text', $style:'italic');
+    padding: 0 0.33em;
+}
 

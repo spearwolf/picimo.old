@@ -87,7 +87,7 @@ h3 {
     }
 }
 h4 {
-    @include typo('text', $weight:'bold');
+    @include typo('text', $size:$fontSizeBig, $weight:'bold');
     color: $col-prim3;
 }
 h5 {

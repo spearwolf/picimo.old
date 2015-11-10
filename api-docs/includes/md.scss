@@ -1,3 +1,5 @@
+@import "includes/_colors.scss";
+@import "includes/_typography.scss";
 
 .md {
 
@@ -7,6 +9,12 @@
 
 }
 
-/*.md-inline {*/
-/*}*/
+.md-inline {
+
+    code {
+        @include typo('monospace');
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+}
 

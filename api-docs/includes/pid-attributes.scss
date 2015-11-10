@@ -1,0 +1,33 @@
+@import "includes/_colors.scss";
+@import "includes/_typography.scss";
+
+.pid-attrs {
+
+    margin-left: 2rem;
+
+    &__name {
+        display: inline-block;
+        @include typo('monospace', $weight: 'bold');
+        color: $col-prim2;
+        /*background-color: $col-prim1-light;*/
+
+        &--readonly:after {
+            content: "\f023";
+            color: $col-gray-light;
+            margin-left: 0.33em;
+            font-family: FontAwesome;
+        }
+    }
+
+    &__description {
+
+        margin-bottom: 1em;
+
+        & > p {
+            margin: 0;
+        }
+
+    }
+
+}
+

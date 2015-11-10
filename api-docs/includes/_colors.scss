@@ -1,16 +1,20 @@
 
-$col-white : #fff;
-$col-light : #f8f8f8;
-$col-gray  : #949DA4;
-$col-dark  : #404040;
-$col-black : #000;
+$col-white      : #fff;
+$col-light      : #f8f8f8;
+$col-gray-light : #cccccc;
+$col-gray       : #949DA4;
+$col-dark       : #404040;
+$col-black      : #000;
 
 $col-prim1       : #8CCBF2;                         // w3c blue
 $col-prim1-dark  : #1796DA;                         // google blue
 $col-prim1-light : lighten($col-prim1-dark, 45%);
 
 $col-prim2       : #da1156;                         // pink!
+
 $col-prim3       : #009744;                         // green
+$col-prim3-light : lighten($col-prim3, 45%);
+
 $col-prim5       : #f0a030;                         // orange/yellow
 $col-prim51      : #ffff44;                         // marker yellow
 

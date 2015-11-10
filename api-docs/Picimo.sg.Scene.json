@@ -8,6 +8,11 @@
             "type": "Picimo.App",
             "readonly": true
         }, {
+            "name": "scene",
+            "type": "Picimo.sg.Scene",
+            "readonly": true,
+            "description": "The parent scene. Every scene has a parent scene &mdash; unless the root scene &mdash; for the root scene this value is `undefined`."
+        }, {
             "name": "projection",
             "type": "Picimo.math.Matrix4",
             "readonly": true
@@ -22,6 +27,10 @@
         }, {
             "name": "blendMode",
             "type": "Picimo.webgl.cmd.BlendMode",
+            "readonly": false
+        }, {
+            "name": "sizeVariety",
+            "type": "string",
             "readonly": false
         }, {
             "name": "width",
@@ -41,6 +50,20 @@
             "readonly": true
         }],
         "functions": [{
+            "name": "setSize",
+            "args": [{
+                "name": "width",
+                "type": "number"
+            }, {
+                "name": "height",
+                "type": "number"
+            }, {
+                "name": "sizeVariety",
+                "type": "string",
+                "default": "contain"
+            }],
+            "returns": "Picimo.sg.Scene"
+        }, {
             "name": "appendPicture",
             "args": [{
                 "name": "url",
