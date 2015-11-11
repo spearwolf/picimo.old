@@ -54,9 +54,11 @@ export default class Picture extends Node {
         this.program = options.program || "picture";
 
         this.sprite = app.sprites.createSprite();
-        this.sprite.sx = 1;
-        this.sprite.sy = 1;
-        this.sprite.opacity = 1;
+
+        let zoom = typeof options.zoom === 'number' ? options.zoom : 1;
+        this.sprite.sx = zoom;
+        this.sprite.sy = zoom;
+        this.sprite.opacity = typeof options.opacity === 'number' ? options.opacity : 1;
 
         this.pipeline = null;
         this.pipelineSprite = null;
@@ -95,7 +97,7 @@ export default class Picture extends Node {
         return this;
     }
 
-    setTranslate (tx, ty) {
+    translate (tx, ty) {
         let sprite = this.sprite;
         sprite.setPos(sprite.x + tx, sprite.y + ty);
         return this;
@@ -367,11 +369,6 @@ function updateVertices (picture) {
             -halfWidth,  halfHeight );
 
     }
-
-    // texture coordinates
-    // ========================================
-
-    // TODO ?
 
 }
 
