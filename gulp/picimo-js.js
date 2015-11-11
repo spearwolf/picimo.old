@@ -33,12 +33,12 @@ function build () {
     b.transform(babelify.configure({
         sourceMapRelative: '.',
         //stage: 0,
-        optional: [
-            "es7.asyncFunctions",
-            "es7.classProperties",
-            "es7.decorators",
-            "runtime"
-        ]
+        //optional: [
+        //    "es7.asyncFunctions",
+        //    "es7.classProperties",
+        //    "es7.decorators",
+        //    "runtime"
+        //]
     }));
 
     b.on('log', gutil.log.bind(gutil, '[' + gutil.colors.cyan(LOG_NAMESPACE) + ']'));
