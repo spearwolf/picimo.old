@@ -60,6 +60,9 @@ export default class Picture extends Node {
         this.sprite.sy = zoom;
         this.sprite.opacity = typeof options.opacity === 'number' ? options.opacity : 1;
 
+        if (typeof options.posX === 'number') this.posX = options.posX;
+        if (typeof options.posY === 'number') this.posY = options.posY;
+
         this.pipeline = null;
         this.pipelineSprite = null;
 

@@ -8,12 +8,15 @@
     &__name {
         display: inline-block;
         @include typo('monospace', $weight: 'bold');
-        color: $col-prim2;
-        /*background-color: $col-prim1-light;*/
+        /*color: $col-prim2;*/
+        color: $col-black;
+        background-color: $col-prim1-light;
+        padding: 0 0.25em;
 
         &--readonly:after {
             content: "\f023";
-            color: $col-gray-light;
+            /*color: $col-gray-light;*/
+            color: $col-prim1-dark;
             margin-left: 0.33em;
             font-family: FontAwesome;
         }

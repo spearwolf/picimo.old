@@ -30,6 +30,9 @@
                     {{#each dictionaries}}
                     <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> dictionary</li>
                     {{/each}}
+                    {{#each enums}}
+                    <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> enumeration</li>
+                    {{/each}}
                     {{/ref}}
                     {{/each}}
                 </ol>

@@ -86,4 +86,16 @@
 
   {{/dictionaries}}
 
+  {{#enums}}
+
+    <h3>The <em>{{name}}</em> enumeration</h3>
+
+    <article id="{{refId name}}" class="pid__enum pid-idl">
+        <div class="pid-idl__pre-block">
+            <em>enum</em> <strong>{{name}}</strong> {<ul class="pid-idl__func-args">{{#each values}}<li class="pid-idl__func-arg">"<span class="pid-idl__args-name">{{name}}</span>"{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>}
+        </div>
+    </article>
+
+  {{/enums}}
+
 </section>

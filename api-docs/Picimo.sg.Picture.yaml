@@ -1,0 +1,74 @@
+name: Picimo.sg.Picture
+type: programming-interface
+
+interfaces:
+    -
+        name: Picimo.sg.Picture
+        attributes:
+            -
+                name: program
+                type: string
+                default: picture
+            -
+                name: sprite
+                type: any
+            -
+                name: displayPosition
+                type: Picimo.sg.Picture.DisplayPosition
+            -
+                name: displaySize
+                type: Picimo.sg.Picture.DisplaySize
+
+dictionaries:
+    -
+        name: Picimo.sg.Picture.DisplayPosition
+        attributes:
+            -
+                name: top
+                type:
+                    - number
+                    - string
+            -
+                name: left
+                type:
+                    - number
+                    - string
+            -
+                name: bottom
+                type:
+                    - number
+                    - string
+            -
+                name: right
+                type:
+                    - number
+                    - string
+            -
+                name: width
+                type:
+                    - number
+                    - string
+            -
+                name: height
+                type:
+                    - number
+                    - string
+            -
+                name: zoom
+                type: number
+            -
+                name: anchorX
+                type: number
+            -
+                name: anchorY
+                type: number
+
+enums:
+    -
+        name: Picimo.sg.Picture.DisplaySize
+        values:
+            -
+                name: contain
+            -
+                name: cover
+

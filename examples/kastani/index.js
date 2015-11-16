@@ -28,17 +28,8 @@ window.spearwolf = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {
     displaySize: 'contain',
     zoom: 0.5,
     opacity: 0.9,
-
-}, {
-
-    init (picture) {
-
-        //picture.opacity = 0.95;
-        picture
-            .setPos(-400, 200);
-            //.setZoom(0.5);
-
-    }
+    posX: -400,
+    posY: 200
 
 });
 

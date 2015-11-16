@@ -10,6 +10,7 @@ import glob from 'glob';
 import yamlFront from 'yaml-front-matter';
 import marked from 'marked';
 //import highlightJs from 'highlight.js';
+import yaml from 'js-yaml';
 
 let PluginError = gutil.PluginError;
 let File = gutil.File;
@@ -53,7 +54,9 @@ export function apiDocsJson (opt = {}) {
             return;
         }
 
-        if (path.extname(file.relative) === '.md') {
+        let fileExt = path.extname(file.relative);
+
+        if (fileExt === '.md') {
 
             // ============ markdown *.md ============= //
 
@@ -68,25 +71,47 @@ export function apiDocsJson (opt = {}) {
 
             addTo(apiDocContent, context);
 
+            cb();
+
         } else {
 
             // ============ json *.json ============= //
 
-            let contents = file.contents.toString(enc);
-            let context = JSON.parse(contents);
+            parseApiDocFile(file, enc).then(function (context) {
 
-            apiDocContent.ref[context.name] = context;
+                apiDocContent.ref[context.name] = context;
 
-            if (context.type) {
-                if (!apiDocContent[context.type]) apiDocContent[context.type] = [];
-                apiDocContent[context.type].push(context.name);
-                apiDocContent[context.type].sort();
-            }
+                if (context.type) {
+                    if (!apiDocContent[context.type]) apiDocContent[context.type] = [];
+                    apiDocContent[context.type].push(context.name);
+                    apiDocContent[context.type].sort();
+                }
+
+                cb();
+
+            });
 
         }
 
-        cb();
+    }
 
+    function parseApiDocFile (file, enc) {
+        return new Promise((resolve, reject) => {
+
+            let contents = file.contents.toString(enc);
+            let fileExt = path.extname(file.relative);
+
+            if (fileExt === '.json') {
+                resolve(JSON.parse(contents));
+            } else if (fileExt === '.yaml') {
+                yaml.safeLoadAll(contents, function (doc) {
+                    console.log('YAML', JSON.stringify(doc, null, 2));
+                    resolve(doc);
+                });
+            } else {
+                reject('File extension ' + fileExt + ' is not supported!');
+            }
+        });
     }
 
     function endStream (cb) {
