@@ -105,7 +105,7 @@ export function apiDocsJson (opt = {}) {
                 resolve(JSON.parse(contents));
             } else if (fileExt === '.yaml') {
                 yaml.safeLoadAll(contents, function (doc) {
-                    console.log('YAML', JSON.stringify(doc, null, 2));
+                    //console.log('YAML', JSON.stringify(doc, null, 2));
                     resolve(doc);
                 });
             } else {

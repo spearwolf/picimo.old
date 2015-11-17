@@ -52,8 +52,10 @@
 
         <dl class="pid-attrs">
           {{#attributes}}
+            {{#if description}}
             <dt class="pid-attrs__name{{#if readonly}} pid-attrs__name--readonly{{/if}}">{{name}}</dt>
             <dd class="pid-attrs__description md-inline">{{{md description}}}</dd>
+            {{/if}}
           {{/attributes}}
         </dl>
 
@@ -65,6 +67,12 @@
   {{#dictionaries}}
 
     <h3>The <em>{{name}}</em> dictionary</h3>
+
+    {{#if description}}
+    <article class="pid-idl__description md">
+        {{{md description}}}
+    </article>
+    {{/if}}
 
     <article id="{{refId name}}" class="pid__dictionary pid-idl">
         <em>dictionary</em> <strong>{{name}}</strong> {<br>
@@ -84,17 +92,53 @@
         }<br>
     </article>
 
+  {{#if attributes}}
+    <article class="pid__attributes page-break-after">
+
+        <dl class="pid-attrs">
+          {{#attributes}}
+            {{#if description}}
+            <dt class="pid-attrs__name{{#if readonly}} pid-attrs__name--readonly{{/if}}">{{name}}</dt>
+            <dd class="pid-attrs__description md-inline">{{{md description}}}</dd>
+            {{/if}}
+          {{/attributes}}
+        </dl>
+
+    </article>
+  {{/if}}
+
   {{/dictionaries}}
 
   {{#enums}}
 
     <h3>The <em>{{name}}</em> enumeration</h3>
 
+    {{#if description}}
+    <article class="pid-idl__description md">
+        {{{md description}}}
+    </article>
+    {{/if}}
+
     <article id="{{refId name}}" class="pid__enum pid-idl">
         <div class="pid-idl__pre-block">
             <em>enum</em> <strong>{{name}}</strong> {<ul class="pid-idl__func-args">{{#each values}}<li class="pid-idl__func-arg">"<span class="pid-idl__args-name">{{name}}</span>"{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>}
         </div>
     </article>
+
+  {{#if values}}
+    <article class="pid__attributes page-break-after">
+
+        <dl class="pid-attrs">
+          {{#values}}
+            {{#if description}}
+            <dt class="pid-attrs__name">{{name}}</dt>
+            <dd class="pid-attrs__description md-inline">{{{md description}}}</dd>
+            {{/if}}
+          {{/values}}
+        </dl>
+
+    </article>
+  {{/if}}
 
   {{/enums}}
 

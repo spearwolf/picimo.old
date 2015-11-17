@@ -4,24 +4,212 @@ type: programming-interface
 interfaces:
     -
         name: Picimo.sg.Picture
+        constructor:
+            args:
+                -
+                    name: app
+                    type: Picimo.App
+                    nullable: false
+                    optional: false
+                -
+                    name: options
+                    type: Picimo.sg.Picture.Options
+                    nullable: true
+                    optional: true
+
         attributes:
-            -
-                name: program
-                type: string
-                default: picture
-            -
-                name: sprite
-                type: any
             -
                 name: displayPosition
                 type: Picimo.sg.Picture.DisplayPosition
             -
                 name: displaySize
                 type: Picimo.sg.Picture.DisplaySize
+            -
+                name: scaleX
+                type: number
+                description: horizontal scale *(default is 1.0)*
+            -
+                name: scaleY
+                type: number
+                description: vertical scale *(default is 1.0)*
+            -
+                name: opacity
+                type: number
+                description: opacity as value *[0..1]*
+            -
+                name: posX
+                type: number
+                description: horizontal position
+            -
+                name: posY
+                type: number
+                description: vertical position
+            -
+                name: rotate
+                type: number
+                description: rotation in radian
+            -
+                name: rotateDegree
+                type: number
+                description: rotation in degree
+            -
+                name: sprite
+                type: any
+                description: The internal sprite used to render the picture.
+            -
+                name: program
+                type: string
+                default: picture
+                description: The shader program name.
+            -
+                name: texture
+                type: Picimo.core.Texture
+                description: The texture used to render the sprite.
+
+        functions:
+            -
+                name: setPos
+                returns: Picimo.sg.Picture
+                args:
+                    -
+                        name: x
+                        type: number
+                    -
+                        name: y
+                        type: number
+            -
+                name: translate
+                returns: Picimo.sg.Picture
+                args:
+                    -
+                        name: tx
+                        type: number
+                    -
+                        name: ty
+                        type: number
+            -
+                name: setScale
+                returns: Picimo.sg.Picture
+                args:
+                    -
+                        name: sx
+                        type: number
+                    -
+                        name: sy
+                        type: number
+            -
+                name: setZoom
+                returns: Picimo.sg.Picture
+                args:
+                    -
+                        name: zoom
+                        type: number
+            -
+                name: setRgb
+                returns: Picimo.sg.Picture
+                args:
+                    -
+                        name: red
+                        type: number
+                    -
+                        name: green
+                        type: number
+                    -
+                        name: blue
+                        type: number
+            -
+                name: setRgba
+                returns: Picimo.sg.Picture
+                args:
+                    -
+                        name: red
+                        type: number
+                    -
+                        name: green
+                        type: number
+                    -
+                        name: blue
+                        type: number
+                    -
+                        name: alpha
+                        type: number
+            -
+                name: setVertexPositions
+                returns: void
+                args:
+                    -
+                        name: x0
+                        type: number
+                    -
+                        name: y0
+                        type: number
+                    -
+                        name: x1
+                        type: number
+                    -
+                        name: y1
+                        type: number
+                    -
+                        name: x2
+                        type: number
+                    -
+                        name: y2
+                        type: number
+                    -
+                        name: x3
+                        type: number
+                    -
+                        name: y3
+                        type: number
 
 dictionaries:
     -
+        name: Picimo.sg.Picture.Options
+        attributes:
+            -
+                name: texture
+                type:
+                    - Picimo.core.Texture
+                    - Promise<Picimo.core.Texture>
+                required: true
+                description: The texture is mandatory. If you don't specify a texture you will see nothing.
+            -
+                name: displaySize
+                type: Picimo.sg.Picture.DisplaySize
+                default: "'contain'"
+                description: |
+                    You should specify either of *displaySize* or *displayPosition*.
+                    If both properties are *not* specified the *displaySize* will be set to `'contain'`.
+                    See [Picimo.sg.Picture.DisplaySize](#) for more information.
+            -
+                name: displayPosition
+                type: Picimo.sg.Picture.DisplayPosition
+                description: The *displayPosition* property has precedence over the *displaySize* property. If specified *displaySize* will be ignored.
+            -
+                name: zoom
+                type: number
+                default: "1"
+            -
+                name: posX
+                type: number
+                default: "0"
+            -
+                name: posY
+                type: number
+                default: "0"
+            -
+                name: opacity
+                type: number
+                default: "1"
+
+    -
         name: Picimo.sg.Picture.DisplayPosition
+        description: |
+            The display position specifies how the picture is positioned *in relationship to the scene dimension*.
+
+            ![The Display Position](/assets/images/doc/displayPosition.png)
+            ![The Display Position Zoom](/assets/images/doc/displayPosition zoom.png)
+
         attributes:
             -
                 name: top
@@ -66,6 +254,16 @@ dictionaries:
 enums:
     -
         name: Picimo.sg.Picture.DisplaySize
+        description: |
+            The display size specifies the size of the picture.
+
+            - **contain** will always show the whole image but may not fill up the whole screen area.
+            - **cover** will always fill the whole screen area, but the image may be cropped.
+
+            Both strategies will preserve the image size ratio.
+
+            ![The Display Size Property](/assets/images/doc/displaySize.png)
+
         values:
             -
                 name: contain
