@@ -15,17 +15,6 @@ import yaml from 'js-yaml';
 let PluginError = gutil.PluginError;
 let File = gutil.File;
 
-// pre-load all handlebars helpers
-(function () {
-    let helpersPath = path.join(__dirname, path.basename(__filename, path.extname(__filename, '.js')), 'helpers');
-    glob(helpersPath + '/*.js', function (err, files) {
-        files.forEach(function (helperFile) {
-            require(helperFile);
-        });
-    });
-})();
-
-
 // https://github.com/contra/gulp-concat/blob/master/index.js
 // https://www.npmjs.com/package/gulp-pipe
 
@@ -38,6 +27,19 @@ export function apiDocsJson (opt = {}) {
 
     let templateLoaded = loadTemplate(opt.template, opt.templateEnc);
     let apiDocContent = { ref: {} };
+
+
+    // pre-load all handlebars helpers
+    (function () {
+        let helpersPath = path.join(__dirname, path.basename(__filename, path.extname(__filename, '.js')), 'helpers');
+        glob(helpersPath + '/*.js', function (err, files) {
+            files.forEach(function (helperFile) {
+                let mod = require(helperFile);
+                if (typeof mod.configure === 'function') mod.configure(apiDocContent);
+            });
+        });
+    })();
+
 
     function bufferContents (file, enc, cb) {
 

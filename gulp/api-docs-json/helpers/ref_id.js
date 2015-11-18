@@ -1,11 +1,10 @@
 'use strict';
 
-import _ from 'lodash';
 import Handlebars from 'handlebars';
+import { refId } from '../utils';
 
 Handlebars.registerHelper('refId', function (name) {
-    //var id = _.capitalize(_.camelCase(name));
-    var id = _.kebabCase(name);
+    var id = refId(name);
     //console.log('REF-ID', name, id);
     return id;
 });

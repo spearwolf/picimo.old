@@ -1,0 +1,41 @@
+@import '_colors';
+@import '_typography';
+
+body {
+    @include typo('text');
+    color: $col-dark;
+}
+
+h1 {
+    /*@include typo('headline', $size: $fontSizeHeadline);*/
+    @include typo('text', $weight:'bold', $size: $fontSizeHeadline);
+    color: $col-prim1-dark;
+}
+h2 {
+    @include typo('headline', $size: $fontSizeHeadline);
+    border-bottom: 1px dashed $col-gray;
+}
+h3 {
+    @include typo('text', $size:$fontSizeBigger, $weight:'bold');
+    color: $col-prim1-dark;
+    em {
+        @include typo('monospace', $size:$fontSizeBigger, $weight:'bold');
+        color: $col-prim2;
+    }
+}
+h4 {
+    @include typo('text', $size:$fontSizeBig, $weight:'bold');
+    color: $col-prim3;
+}
+h5 {
+    @include typo('text', $weight:'bold', $size: $fontSizeTiny);
+}
+h6 {
+    @include typo('text', $weight:'bold', $size: $fontSizeTiny);
+}
+
+pre, code {
+    @include typo('monospace', $size: $fontSizeSmall);
+}
+
+

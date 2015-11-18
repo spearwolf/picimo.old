@@ -1,7 +1,7 @@
 'use strict';
 
-import _ from 'lodash';
 import Handlebars from 'handlebars';
+import { hasRef } from '../utils';
 
 Handlebars.registerHelper('hasRef', function (name, options) {
     if (name && hasRef(options.data.root, name)) {
@@ -10,20 +10,4 @@ Handlebars.registerHelper('hasRef', function (name, options) {
         return options.inverse(this).trim();
     }
 });
-
-function hasRef (root, name) {
-
-    let ref = root.ref[name];
-    if (ref) return true;
-
-    let otherRefIds = _.flatten(_.map(Object.keys(root.ref), (refKey) => {
-        let interfaces = _.map(root.ref[refKey].interfaces, "name");
-        let dictionaries = _.map(root.ref[refKey].dictionaries, "name");
-        let enums = _.map(root.ref[refKey].enums, "name");
-        return interfaces.concat(dictionaries).concat(enums);
-    }));
-
-    return otherRefIds.indexOf(name) !== -1;
-
-}
 

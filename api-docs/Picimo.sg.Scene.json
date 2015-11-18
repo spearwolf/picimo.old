@@ -3,6 +3,7 @@
     "type": "programming-interface",
     "interfaces": [{
         "name": "Picimo.sg.Scene",
+        "description": "![Scene Coordinate System](/assets/images/doc/coordinates.png)",
         "attributes": [{
             "name": "app",
             "type": "Picimo.App",
