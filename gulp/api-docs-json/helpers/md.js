@@ -1,5 +1,6 @@
 'use strict';
 
+import _ from 'lodash';
 import marked from 'marked';
 import Handlebars from 'handlebars';
 import { hasRef, refId } from '../utils';
@@ -23,6 +24,6 @@ renderer.link = function (href, title, text) {
 };
 
 Handlebars.registerHelper('md', function (text) {
-    return text ? marked(text, { renderer: renderer }) : '<span class="TODO">TODO</span>';
+    return _.trim(text ? marked(text, { renderer: renderer }) : '<span class="TODO">TODO</span>');
 });
 

@@ -4,6 +4,10 @@ type: programming-interface
 interfaces:
     -
         name: Picimo.sg.Picture
+
+        extends:
+            - Picimo.events.CustomEvent
+
         constructor:
             args:
                 -
@@ -216,34 +220,69 @@ dictionaries:
                 type:
                     - number
                     - string
+                description: |
+                    Set the top edge of the image under the top edge of the parent scene.
+
+                    The unit is either of **px** (if value is a *number*) or of **percantage _of scene height_** (if value is a *string* &mdash; eg. `'50%'`)
+
             -
                 name: left
                 type:
                     - number
                     - string
+                description: |
+                    Set the left edge of the image right to the left edge of the parent scene.
+
+                    The unit is either of **px** (if value is a *number*) or of **percantage _of scene width_** (if value is a *string* &mdash; eg. `'50%'`)
+
             -
                 name: bottom
                 type:
                     - number
                     - string
+                description: |
+                    Set the bottom edge of the image above the bottom edge of the parent scene.
+
+                    The unit is either of **px** (if value is a *number*) or of **percantage _of scene height_** (if value is a *string* &mdash; eg. `'50%'`)
+
             -
                 name: right
                 type:
                     - number
                     - string
+                description: |
+                    Set the right edge of the image left to the right edge of the parent scene.
+
+                    The unit is either of **px** (if value is a *number*) or of **percantage _of scene width_** (if value is a *string* &mdash; eg. `'50%'`)
+
             -
                 name: width
                 type:
                     - number
                     - string
+                description: |
+                    Set the width of the image.
+
+                    The unit is either of **px** (if value is a *number*) or of **percantage _of image width_** (if value is a *string* &mdash; eg. `'50%'`)
+
             -
                 name: height
                 type:
                     - number
                     - string
+                description: |
+                    Set the height of the image.
+
+                    The unit is either of **px** (if value is a *number*) or of **percantage _of image height_** (if value is a *string* &mdash; eg. `'50%'`)
+
             -
                 name: zoom
                 type: number
+                description: |
+                    Set the zoom factor.
+
+                    Default is `1.0` (no zoom). If set to `2.0` the size of the image will be _doubled_.
+
             -
                 name: anchorX
                 type: number

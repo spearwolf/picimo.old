@@ -5,9 +5,20 @@
 
     margin-left: 2rem;
     padding: 1em 1em;
-    background-color: $col-prim1-light;
-    border-left: 0.5em solid $col-prim1;
     overflow: auto;
+
+    &.pid__interface {
+        background-color: $col-prim0-light;
+        border-left: 0.5em solid $col-prim0;
+    }
+    &.pid__dictionary {
+        background-color: $col-prim3-light;
+        border-left: 0.5em solid $col-prim3;
+    }
+    &.pid__enum {
+        background-color: $col-prim1-light;
+        border-left: 0.5em solid $col-prim1;
+    }
 
     @include typo('monospace');
 
@@ -92,7 +103,7 @@
     &__optional {
         @include typo('monospace', $style: 'italic');
         display: inline-block;
-        margin-left: -0.33em;
+        margin-left: 0.33em;
     }
 
     &__type-type,

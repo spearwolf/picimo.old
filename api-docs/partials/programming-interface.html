@@ -5,21 +5,32 @@
     <h3 id="{{refId name}}">The <em>{{name}}</em> interface</h3>
 
     {{#if description}}
-    <article class="pid-idl__description md">
+    <article class="pid__interface pid-idl__description md">
         {{{md description}}}
     </article>
     {{/if}}
 
     <article class="pid__interface pid-idl">
 
+        {{#if factory}}
+        {{#with factory}}
+        <div class="pid__constructor pid-idl__pre-block">
+            [Factory = <strong>{{name}}</strong>{{#if args}}
+            (<ul class="pid-idl__func-args">{{#each args}}<li class="pid-idl__func-arg">{{#if optional}}optional {{/if}}{{> type-type type}}{{#if nullable}}<span class="pid-idl__optional">?</span>{{/if}} <span class="pid-idl__args-name">{{name}}</span>{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>){{/if}}]
+        </div>
+        {{/with}}
+        {{/if}}
+
+        {{#if constructor}}
         {{#with constructor}}
         <div class="pid__constructor pid-idl__pre-block">
             [Constructor{{#if args}}
             (<ul class="pid-idl__func-args">{{#each args}}<li class="pid-idl__func-arg">{{#if optional}}optional {{/if}}{{> type-type type}}{{#if nullable}}<span class="pid-idl__optional">?</span>{{/if}} <span class="pid-idl__args-name">{{name}}</span>{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>){{/if}}]
         </div>
         {{/with}}
+        {{/if}}
 
-        <em>interface</em> <strong>{{name}}</strong> {<br>
+        <em>interface</em> <strong>{{name}}</strong>{{#if extends}} : {{#ifArray extends}}{{#each extends}}{{> type-type .}}{{#unless @last}}, {{/unless}}{{/each}}{{else}}{{> type-type extends}}{{/ifArray}}{{/if}} {<br>
 
         <ul class="pid-idl__block">
             <li class="pid-interface__attributes">
@@ -41,7 +52,7 @@
                         <span class="pid-idl__type">{{> type-type returns}}</span>
                         <span class="pid-idl__name">{{name}}</span>
                         <span class="pid-idl__args">
-                            ({{#if args}}<ul class="pid-idl__func-args args-{{args.length}}">{{#each args}}<li class="pid-idl__func-arg">{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}}| {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}} <span class="pid-idl__args-name">{{name}}</span>{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>{{/if}});
+                            ({{#if args}}<ul class="pid-idl__func-args args-{{args.length}}">{{#each args}}<li class="pid-idl__func-arg">{{#if optional}}optional {{/if}}{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}} | {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}} <span class="pid-idl__args-name">{{name}}</span>{{#if default}}= <span class="pid-idl__default-value">{{default}}</span>{{/if}}{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>{{/if}});
                         </span>
                     </li>
                 {{/functions}}
@@ -52,7 +63,7 @@
     </article>
 
   {{#if attributes}}
-    <article class="pid__attributes page-break-after">
+    <article class="pid__interface pid__attributes page-break-after">
 
         <h4>Attributes</h4>
 
@@ -75,7 +86,7 @@
     <h3 id="{{refId name}}">The <em>{{name}}</em> dictionary</h3>
 
     {{#if description}}
-    <article class="pid-idl__description md">
+    <article class="pid__dictionary pid-idl__description md">
         {{{md description}}}
     </article>
     {{/if}}
@@ -87,7 +98,7 @@
                 <ul class="pid-idl__group">
                 {{#attributes}}
                     <li class="pid-idl__attr">
-                        <span class="pid-idl__type">{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}} or {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}}{{#unless required}}<span class="pid-idl__optional">?</span>{{/unless}}</span>
+                        <span class="pid-idl__type">{{#ifArray type}}({{#each type}}{{> type-type .}}{{#unless @last}} or {{/unless}}{{/each}}){{else}}{{> type-type type}}{{/ifArray}}{{#unless required}}<span class="pid-idl__optional">?</span>{{/unless}}</span>
                         <span class="pid-idl__name">{{name}}{{#unless default}};{{/unless}}</span>
                         <span class="pid-idl__default">{{#if default}}= <span class="pid-idl__default-value">{{default}}</span>;{{/if}}</span>
                     </li>
@@ -99,7 +110,7 @@
     </article>
 
   {{#if attributes}}
-    <article class="pid__attributes page-break-after">
+    <article class="pid__dictionary pid__attributes page-break-after">
 
         <dl class="pid-attrs">
           {{#attributes}}
@@ -120,7 +131,7 @@
     <h3 id="{{refId name}}">The <em>{{name}}</em> enumeration</h3>
 
     {{#if description}}
-    <article class="pid-idl__description md">
+    <article class="pid__enum pid-idl__description md">
         {{{md description}}}
     </article>
     {{/if}}
@@ -132,7 +143,7 @@
     </article>
 
   {{#if values}}
-    <article class="pid__attributes page-break-after">
+    <article class="pid__enum pid__attributes page-break-after">
 
         <dl class="pid-attrs">
           {{#values}}

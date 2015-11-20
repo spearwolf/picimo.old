@@ -188,7 +188,7 @@ function registerHbsPartialsFromDirectory (dirPath, enc = 'utf-8') {
             resolve(Promise.all(files.map((file) => {
                 return loadFile(file, enc).then((partialBody) => {
                     let name = path.basename(file, path.extname(file));
-                    Handlebars.registerPartial(name, partialBody);
+                    Handlebars.registerPartial(name, _.trim(partialBody));
                 });
             })));
         });
