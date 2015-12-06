@@ -4,7 +4,7 @@ interfaces:
     -
         name: Picimo.events.CustomEvent
         description: |
-            Publish/subscribe events for custom javascript objects.
+            Publish/subscribe events api for custom javascript objects.
 
         constructor: false
         factory:

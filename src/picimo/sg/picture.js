@@ -188,7 +188,7 @@ export default class Picture extends Node {
 function updateVertices (picture) {
 
     if (!picture.verticesNeedsUpdate) return;
-    picture.verticesNeedsUpdate = false;
+    else picture.verticesNeedsUpdate = false;
 
     // vertex positions
     // ========================================
