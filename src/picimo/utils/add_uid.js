@@ -1,6 +1,6 @@
 'use strict';
 
-import {definePropertyPublicRO} from './object_utils';
+import { definePropertyPublicRO } from './object_utils';
 
 var UID = 0;
 

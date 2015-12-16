@@ -1,6 +1,6 @@
 'use strict';
 
-import utils from '../utils';
+import * as utils from '../utils';
 import ShaderSource from './shader_source';
 import Program from './program';
 

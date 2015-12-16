@@ -1,27 +1,17 @@
-(function(){
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo.webgl
-     * @description
-     * <img src="images/picimo-rendering-pipeline.png" srcset="images/picimo-rendering-pipeline.png 1x" alt="Picimo rendering pipeline">
-     */
+import * as cmd from './cmd';
+export { cmd };
 
-    module.exports = {
+export Program from './program';
 
-        cmd : require( './cmd' ),
-        Program : require( './program' ),
+export ShaderSource from './shader_source';
+export ShaderManager from './shader_manager';
+export TextureManager from './texture_manager';
 
-        ShaderSource   : require( './shader_source' ),
-        ShaderManager  : require( './shader_manager' ),
-        TextureManager : require( './texture_manager' ),
+export WebGlContext from './web_gl_context';
+export WebGlRenderer from './web_gl_renderer';
+export WebGlProgram from './web_gl_program';
+export WebGlTexture from './web_gl_texture';
+export WebGlBuffer from './web_gl_buffer';
 
-        WebGlContext  : require( './web_gl_context' ),
-        WebGlRenderer : require( './web_gl_renderer' ),
-        WebGlProgram  : require( './web_gl_program' ),
-        WebGlTexture  : require( './web_gl_texture' ),
-        WebGlBuffer   : require( './web_gl_buffer' ),
-
-    };
-
-})();

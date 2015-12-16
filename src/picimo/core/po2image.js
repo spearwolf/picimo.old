@@ -2,8 +2,8 @@
 /* global HTMLImageElement */
 'use strict';
 
-import utils from '../utils';
-import math from '../math';
+import * as utils from '../utils';
+import * as math from '../math';
 
 /**
  * @class Picimo.core.Po2Image

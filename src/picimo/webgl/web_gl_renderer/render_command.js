@@ -1,129 +1,127 @@
-(function () {
-    'use strict';
+'use strict';
 
-    var drawElements      = require("./draw_elements");
-    var UniformValueStack = require("./uniform_value_stack");
+import drawElements from './draw_elements';
+import UniformValueStack from './uniform_value_stack';
 
-    module.exports = function renderCommand ( re/*nderer*/, cmd ) {
+export default function renderCommand ( re/*nderer*/, cmd ) {
 
-        // blend-mode
-        //====================================
+    // blend-mode
+    //====================================
 
-        var blendMode;
+    var blendMode;
 
-        if ( cmd.blendMode !== undefined ) {
+    if ( cmd.blendMode !== undefined ) {
 
-            if ( cmd.blendMode === false ) {
+        if ( cmd.blendMode === false ) {
 
-                blendMode = re.defaultBlendMode;
+            blendMode = re.defaultBlendMode;
 
-            } else if ( cmd.blendMode ) {
+        } else if ( cmd.blendMode ) {
 
-                blendMode = cmd.blendMode;
-
-            }
-
-            re.activateBlendMode( blendMode );
+            blendMode = cmd.blendMode;
 
         }
 
-        // render-to-texture
-        //==========================================
-
-        if ( cmd.renderToTexture !== undefined ) {
-
-            // TODO
-
-            if ( cmd.renderToTexture !== false ) {
-
-                re.renderToTexture = cmd.renderToTexture;
-                re.renderToTexture.activate();
-
-            } else {
-
-                re.renderToTexture.deactivate();
-                re.renderToTexture = null;
-
-            }
-
-        }
-
-        // uniforms
-        //=================================================
-
-        var key, uniformStack;
-
-        if ( cmd.uniforms ) {
-
-            for ( key in cmd.uniforms ) {
-                if ( cmd.uniforms.hasOwnProperty( key ) ) {
-
-                    uniformStack = re.uniforms.get( key );
-
-                    if ( ! uniformStack ) {
-
-                        uniformStack = new UniformValueStack();
-                        re.uniforms.set( key, uniformStack );
-
-                    }
-
-                    uniformStack.exec( cmd.uniforms[ key ] );
-
-                }
-            }
-
-        }
-
-        // attributes
-        //=================================================
-
-        if ( cmd.attributes ) {
-
-            for ( key in cmd.attributes ) {
-                if ( cmd.attributes.hasOwnProperty( key ) ) {
-
-                    re.attributes.set( key, cmd.attributes[ key ] );
-
-                }
-            }
-
-        }
-
-        // program
-        //=================================================
-
-        var program;
-
-        if ( cmd.program ) {
-
-            if ( typeof cmd.program === 'string' ) {  // Convert program to WebGlProgram
-
-                program = re.app.shader.getProgram( cmd.program );
-
-                if ( ! program ) {
-
-                    _warn( 'unknown program:', cmd.program );
-                    return;
-
-                }
-
-                re.program = cmd.program = re.app.glx.glProgram( program );
-
-            }
-
-        }
-
-        // drawElements
-        //=================================================
-
-        if ( cmd.drawElements ) drawElements( re, cmd.drawElements );
-
-    };
-
-    function _warn () {
-
-        console.warn.apply( console, [ '[Picimo.webgl.WebGlRenderer#renderCommand]'].concat( Array.prototype.slice.apply( arguments ) ) );
+        re.activateBlendMode( blendMode );
 
     }
 
-})();
+    // render-to-texture
+    //==========================================
+
+    if ( cmd.renderToTexture !== undefined ) {
+
+        // TODO
+
+        if ( cmd.renderToTexture !== false ) {
+
+            re.renderToTexture = cmd.renderToTexture;
+            re.renderToTexture.activate();
+
+        } else {
+
+            re.renderToTexture.deactivate();
+            re.renderToTexture = null;
+
+        }
+
+    }
+
+    // uniforms
+    //=================================================
+
+    var key, uniformStack;
+
+    if ( cmd.uniforms ) {
+
+        for ( key in cmd.uniforms ) {
+            if ( cmd.uniforms.hasOwnProperty( key ) ) {
+
+                uniformStack = re.uniforms.get( key );
+
+                if ( ! uniformStack ) {
+
+                    uniformStack = new UniformValueStack();
+                    re.uniforms.set( key, uniformStack );
+
+                }
+
+                uniformStack.exec( cmd.uniforms[ key ] );
+
+            }
+        }
+
+    }
+
+    // attributes
+    //=================================================
+
+    if ( cmd.attributes ) {
+
+        for ( key in cmd.attributes ) {
+            if ( cmd.attributes.hasOwnProperty( key ) ) {
+
+                re.attributes.set( key, cmd.attributes[ key ] );
+
+            }
+        }
+
+    }
+
+    // program
+    //=================================================
+
+    var program;
+
+    if ( cmd.program ) {
+
+        if ( typeof cmd.program === 'string' ) {  // Convert program to WebGlProgram
+
+            program = re.app.shader.getProgram( cmd.program );
+
+            if ( ! program ) {
+
+                _warn( 'unknown program:', cmd.program );
+                return;
+
+            }
+
+            re.program = cmd.program = re.app.glx.glProgram( program );
+
+        }
+
+    }
+
+    // drawElements
+    //=================================================
+
+    if ( cmd.drawElements ) drawElements( re, cmd.drawElements );
+
+}
+
+function _warn () {
+
+    console.warn.apply( console, [ '[Picimo.webgl.WebGlRenderer#renderCommand]'].concat( Array.prototype.slice.apply( arguments ) ) );
+
+}
+

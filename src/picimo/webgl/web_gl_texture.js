@@ -1,280 +1,275 @@
-(function () {
-    'use strict';
+'use strict';
+
+/**
+ * @class Picimo.webgl.WebGlTexture
+ *
+ * @param {Picimo.webgl.WebGlContext} glx
+ * @param {boolean} [flipY=false]
+ * @param {boolean} [repeatable=false]
+ *
+ */
+
+export default function WebGlTexture ( glx, flipY, repeatable ) {
+
+    this.glx = glx;
+
+    this.width = 0;
+    this.height = 0;
+    this.isFlipY = flipY === true;
+    this.isRepeatable = repeatable === true;
+    this.image = null;
+
+    reset( this );
+
+    Object.seal( this );
+
+}
+
+function reset ( texture ) {
+
+    texture.glId = 0;
+
+    texture.needsInit   = true;
+    texture.needsConf   = true;
 
     /**
-     * @class Picimo.webgl.WebGlTexture
-     *
-     * @param {Picimo.webgl.WebGlContext} glx
-     * @param {boolean} [flipY=false]
-     * @param {boolean} [repeatable=false]
-     *
+     * @member {boolean} Picimo.webgl.WebGlTexture#needsUpload
      */
 
-    function WebGlTexture ( glx, flipY, repeatable ) {
+    texture.needsUpload = true;
 
-        this.glx = glx;
+    /**
+     * @member {number} Picimo.webgl.WebGlTexture#texUnit
+     */
 
-        this.width = 0;
-        this.height = 0;
-        this.isFlipY = flipY === true;
-        this.isRepeatable = repeatable === true;
-        this.image = null;
+    texture.texUnit = -1;
 
-        reset( this );
+}
 
-        Object.seal( this );
+Object.defineProperties( WebGlTexture.prototype, {
 
-    }
+    /**
+     * @member {boolean} Picimo.webgl.WebGlTexture#isRepeatable
+     */
 
-    function reset ( texture ) {
+    isRepeatable: {
 
-        texture.glId = 0;
+        get: function () {
 
-        texture.needsInit   = true;
-        texture.needsConf   = true;
-
-        /**
-         * @member {boolean} Picimo.webgl.WebGlTexture#needsUpload
-         */
-
-        texture.needsUpload = true;
-
-        /**
-         * @member {number} Picimo.webgl.WebGlTexture#texUnit
-         */
-
-        texture.texUnit = -1;
-
-    }
-
-    Object.defineProperties( WebGlTexture.prototype, {
-
-        /**
-         * @member {boolean} Picimo.webgl.WebGlTexture#isRepeatable
-         */
-
-        isRepeatable: {
-
-            get: function () {
-
-                return this._isRepeatable;
-
-            },
-
-            set: function ( repeatable ) {
-
-                var isRepeatable = !! repeatable;
-
-                if ( this._isRepeatable !== isRepeatable ) {
-
-                    this._isRepeatable = isRepeatable;
-                    this.needsConf = true;
-
-                }
-
-            }
+            return this._isRepeatable;
 
         },
 
-        /**
-         * @member {number} Picimo.webgl.WebGlTexture#width
-         */
-        width: {
+        set: function ( repeatable ) {
 
-            get: function () {
+            var isRepeatable = !! repeatable;
 
-                return this._width;
+            if ( this._isRepeatable !== isRepeatable ) {
 
-            },
-
-            set: function ( width ) {
-
-                if ( this._width !== width ) {
-
-                    this._width = width;
-                    this.needsConf = true;
-
-                }
-
-            }
-
-        },
-
-        /**
-         * @member {number} Picimo.webgl.WebGlTexture#height
-         */
-        height: {
-
-            get: function () {
-
-                return this._height;
-
-            },
-
-            set: function ( height ) {
-
-                if ( this._height !== height ) {
-
-                    this._height = height;
-                    this.needsConf = true;
-
-                }
-
-            }
-
-        },
-
-        /**
-         * @member {Image} Picimo.webgl.WebGlTexture#image
-         */
-        image: {
-
-            get: function () {
-
-                return this._image;
-
-            },
-
-            set: function ( image ) {
-
-                if ( this._image !== image ) {
-
-                    this._image = image;
-                    this.needsUpload = true;
-
-                    if ( image ) {
-
-                        this.width = image.width;
-                        this.height = image.height;
-
-                    } else {
-
-                        this.width = 0;
-                        this.height = 0;
-
-                    }
-
-                }
-
-            }
-
-        },
-
-        canConf: {
-
-            get: function () {
-
-                return this.width > 0 && this.height > 0;
-
-            }
-
-        },
-
-        canUpload: {
-
-            get: function () {
-
-                return this.image && this.width > 0 && this.height > 0;
+                this._isRepeatable = isRepeatable;
+                this.needsConf = true;
 
             }
 
         }
 
-    });
-
+    },
 
     /**
-     * @method Picimo.webgl.WebGlTexture#bind
-     * @return {number} texture unit
+     * @member {number} Picimo.webgl.WebGlTexture#width
      */
+    width: {
 
-    WebGlTexture.prototype.bind = function () {
+        get: function () {
 
-        if ( ! this.glId ) initialize( this );
+            return this._width;
 
-        return this.glx.app.texture.bindWebGlTexture( this );
+        },
 
-    };
+        set: function ( width ) {
 
-    function initialize ( texture ) {
+            if ( this._width !== width ) {
 
-        if ( texture.needsInit ) {
+                this._width = width;
+                this.needsConf = true;
 
-            texture.glId = texture.glx.gl.createTexture();
-            texture.needsInit = false;
+            }
+
+        }
+
+    },
+
+    /**
+     * @member {number} Picimo.webgl.WebGlTexture#height
+     */
+    height: {
+
+        get: function () {
+
+            return this._height;
+
+        },
+
+        set: function ( height ) {
+
+            if ( this._height !== height ) {
+
+                this._height = height;
+                this.needsConf = true;
+
+            }
+
+        }
+
+    },
+
+    /**
+     * @member {Image} Picimo.webgl.WebGlTexture#image
+     */
+    image: {
+
+        get: function () {
+
+            return this._image;
+
+        },
+
+        set: function ( image ) {
+
+            if ( this._image !== image ) {
+
+                this._image = image;
+                this.needsUpload = true;
+
+                if ( image ) {
+
+                    this.width = image.width;
+                    this.height = image.height;
+
+                } else {
+
+                    this.width = 0;
+                    this.height = 0;
+
+                }
+
+            }
+
+        }
+
+    },
+
+    canConf: {
+
+        get: function () {
+
+            return this.width > 0 && this.height > 0;
+
+        }
+
+    },
+
+    canUpload: {
+
+        get: function () {
+
+            return this.image && this.width > 0 && this.height > 0;
 
         }
 
     }
 
-    function configure ( texture ) {
+});
 
-        if ( ! texture.glId ) initialize( texture );
 
-        if ( texture.needsConf && texture.canConf ) {
+/**
+ * @method Picimo.webgl.WebGlTexture#bind
+ * @return {number} texture unit
+ */
 
-            texture.bind();
+WebGlTexture.prototype.bind = function () {
 
-            var gl = texture.glx.gl;
+    if ( ! this.glId ) initialize( this );
 
-            gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, texture.isFlipY );
-            gl.pixelStorei( gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false );
+    return this.glx.app.texture.bindWebGlTexture( this );
 
-            var wrap = texture.isRepeatable ? gl.REPEAT : gl.CLAMP_TO_EDGE;
+};
 
-            gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap );
-            gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap );
+function initialize ( texture ) {
 
-            gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
-            gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+    if ( texture.needsInit ) {
 
-            gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, texture.width, texture.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null );
-
-            texture.needsConf = false;
-
-        }
+        texture.glId = texture.glx.gl.createTexture();
+        texture.needsInit = false;
 
     }
 
+}
 
-    /**
-     * @method Picimo.webgl.WebGlTexture#upload
-     * @see Picimo.webgl.WebGlTexture#needsUpload
-     * @return self
-     */
+function configure ( texture ) {
 
-    WebGlTexture.prototype.upload = function () {
+    if ( ! texture.glId ) initialize( texture );
 
-        configure( this );
+    if ( texture.needsConf && texture.canConf ) {
 
-        if ( this.needsUpload && this.canUpload ) {
+        texture.bind();
 
-            this.bind();
+        var gl = texture.glx.gl;
 
-            var gl = this.glx.gl;
+        gl.pixelStorei( gl.UNPACK_FLIP_Y_WEBGL, texture.isFlipY );
+        gl.pixelStorei( gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false );
 
-            gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image );
+        var wrap = texture.isRepeatable ? gl.REPEAT : gl.CLAMP_TO_EDGE;
 
-            this.needsUpload = false;
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap );
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap );
 
-        }
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
 
-        return this;
+        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, texture.width, texture.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null );
 
-    };
+        texture.needsConf = false;
 
+    }
 
-    /**
-     * @method Picimo.webgl.WebGlTexture#destroy
-     */
-
-    WebGlTexture.prototype.destroy = function () {
-
-        reset( this );
-
-    };
+}
 
 
-    module.exports = WebGlTexture;
+/**
+ * @method Picimo.webgl.WebGlTexture#upload
+ * @see Picimo.webgl.WebGlTexture#needsUpload
+ * @return self
+ */
 
-})();
+WebGlTexture.prototype.upload = function () {
+
+    configure( this );
+
+    if ( this.needsUpload && this.canUpload ) {
+
+        this.bind();
+
+        var gl = this.glx.gl;
+
+        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image );
+
+        this.needsUpload = false;
+
+    }
+
+    return this;
+
+};
+
+
+/**
+ * @method Picimo.webgl.WebGlTexture#destroy
+ */
+
+WebGlTexture.prototype.destroy = function () {
+
+    reset( this );
+
+};
+

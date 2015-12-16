@@ -1,13 +1,5 @@
 'use strict';
 
-/**
- * @namespace Picimo.webgl.pipeline
- */
-
-module.exports = {
-
-    PicturePipeline     : require( './picture_pipeline' ),
-    SpriteGroupPipeline : require( './sprite_group_pipeline' )
-
-};
+export PicturePipeline from './picture_pipeline';
+export SpriteGroupPipeline from './sprite_group_pipeline';
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import utils from '../utils';
+import * as utils from '../utils';
 import WebGlTexture from './web_gl_texture';
 
 // for some background informations see:

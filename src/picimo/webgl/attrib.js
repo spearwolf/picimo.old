@@ -1,39 +1,35 @@
-(function () {
-    "use strict";
+'use strict';
 
-    var utils = require( '../utils' );
-    var addShaderValue = require( './add_shader_value' );
+import * as utils from '../utils';
+import addShaderValue from './add_shader_value';
 
-    function Attrib ( program, info ) {
-        
-        utils.object.definePropertiesPublicRO( this, {
-        
-            program  : program,
-            info     : info,
-            location : program.glx.gl.getAttribLocation( program.glProgram, info.name )
-        
-        });
+export default function Attrib ( program, info ) {
 
-        program.glx.gl.enableVertexAttribArray( this.location );  // TODO understand why this is important and validate that this is the best location to call it
+    utils.object.definePropertiesPublicRO( this, {
 
-        addShaderValue( this );
+        program  : program,
+        info     : info,
+        location : program.glx.gl.getAttribLocation( program.glProgram, info.name )
 
-        Object.seal( this );
+    });
 
-    }
+    program.glx.gl.enableVertexAttribArray( this.location );  // TODO understand why this is important and validate that this is the best location to call it
 
-    Attrib.prototype.upload = function () {  //} gl ) {
+    addShaderValue( this );
 
-        var val = this.value;
-        val.buffer.bindBuffer();
+    Object.seal( this );
 
-        if ( ! this.valueChanged ) return;
+}
 
-        val.buffer.vertexAttribPointer( this.location, val.size, val.stride, val.offset );
-        this.valueChanged = false;
+Attrib.prototype.upload = function () {  //} gl ) {
 
-    };
+    var val = this.value;
+    val.buffer.bindBuffer();
 
-    module.exports = Attrib;
+    if ( ! this.valueChanged ) return;
 
-})();
+    val.buffer.vertexAttribPointer( this.location, val.size, val.stride, val.offset );
+    this.valueChanged = false;
+
+};
+

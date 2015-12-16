@@ -1,11 +1,11 @@
 'use strict';
 
-import utils from '../utils';
-import events from '../events';
-import sg from '../sg';
-import webgl from '../webgl';
-import core from '../core';
-import sprites from '../sprites';
+import * as utils from '../utils';
+import * as events from '../events';
+import * as sg from '../sg';
+import * as webgl from '../webgl';
+import * as core from '../core';
+import * as sprites from '../sprites';
 import initSprites from '../sprites/init';
 
 /**
@@ -382,7 +382,4 @@ function createWebGlContext ( app ) {
     return new webgl.WebGlContext( gl );
 
 }
-
-
-module.exports = App;
 

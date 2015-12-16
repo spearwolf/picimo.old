@@ -1,8 +1,8 @@
 'use strict';
 
 import _ from 'lodash';
-import utils from '../utils';
-import {BlendMode} from './cmd';
+import * as utils from '../utils';
+import { BlendMode } from './cmd';
 import renderCommand from './web_gl_renderer/render_command';
 
 /**

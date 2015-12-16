@@ -1,6 +1,7 @@
 'use strict';
 
-import {publicRO} from './object_decorator';
+import { definePropertyPublicRO } from './object_utils';
+//import { publicRO } from './object_decorator';
 
 /**
  * A fast and simple queue.
@@ -14,12 +15,16 @@ import {publicRO} from './object_decorator';
 
 export default class Queue {
 
+    constructor () {
+        definePropertyPublicRO(this, 'entries', []);
+    }
+
     /**
      * @member {Array} Picimo.utils.Queue#entries
      * @readonly
      */
-    @publicRO
-    entries = [];
+    //@publicRO
+    //entries = [];
 
     /**
      * @member {number} Picimo.utils.Queue#length

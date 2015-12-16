@@ -1,21 +1,9 @@
-(function () {
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo.sg
-     * @summary
-     * Scene-graph related objects and classes.
-     */
+export Node        from './node';
+export NodeState   from './node_state';
 
-    module.exports = {
+export Scene       from './scene';
+export Picture     from './picture';
+export SpriteGroup from './sprite_group';
 
-        Scene       : require( './scene' ),
-        Picture     : require( './picture' ),
-        SpriteGroup : require( './sprite_group' ),
-
-        Node        : require( './node' ),
-        NodeState   : require( './node_state' ),
-
-    };
-
-})();

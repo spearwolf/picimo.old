@@ -1,12 +1,4 @@
-(function(){
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo.events
-     * @summary
-     * A simple event library.
-     */
+export eventize from './custom_event';
 
-    module.exports = require( './custom_event' );
-
-})();

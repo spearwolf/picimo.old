@@ -1,25 +1,14 @@
 'use strict';
 
-/**
- * @namespace Picimo.core
- */
-
-module.exports = {
-
-    AABB2                  : require( './aabb2' ),
-    Viewport               : require( './viewport' ),
-
-    Po2Image               : require( './po2image' ),
-    Resource               : require( './resource' ),
-    Texture                : require( './texture' ),
-    TextureAtlas           : require( './texture_atlas' ),
-
-    VertexArray            : require( './vertex_array' ),
-    VertexIndexArray       : require( './vertex_index_array' ),
-
-    VertexObject           : require( './vertex_object' ),
-    VertexObjectDescriptor : require( './vertex_object_descriptor' ),
-    VertexObjectPool       : require( './vertex_object_pool' )
-
-};
+export AABB2 from './aabb2';
+export Viewport from './viewport';
+export Po2Image from './po2image';
+export Resource from './resource';
+export Texture from './texture';
+export TextureAtlas from './texture_atlas';
+export VertexArray from './vertex_array';
+export VertexIndexArray from './vertex_index_array';
+export VertexObject from './vertex_object';
+export VertexObjectDescriptor from './vertex_object_descriptor';
+export VertexObjectPool from './vertex_object_pool';
 

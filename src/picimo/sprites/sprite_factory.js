@@ -1,6 +1,6 @@
 'use strict';
 
-import {VertexObjectDescriptor} from '../core';
+import { VertexObjectDescriptor } from '../core';
 
 export default (function () {
 

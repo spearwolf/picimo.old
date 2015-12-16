@@ -1,7 +1,7 @@
 'use strict';
 
-import utils from '../utils';
-import events from '../events';
+import * as utils from '../utils';
+import { eventize } from '../events';
 import NodeState from './node_state';
 
 /**
@@ -84,8 +84,7 @@ export default function Node ( app, options ) {
 
     this.children = [];
 
-
-    events.eventize( this );
+    eventize( this );
 
     this.on('childrenUpdated', Number.MAX_VALUE, sortChildrenByRenderPrio.bind(this, this));
 

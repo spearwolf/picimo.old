@@ -1,6 +1,7 @@
 'use strict';
 
-module.exports.decorator = require('./object_decorator');
+import * as decorator from './object_decorator';
+export { decorator };
 
 /**
  * @function Picimo.utils.object.definePropertyPublicRO
@@ -12,7 +13,7 @@ module.exports.decorator = require('./object_decorator');
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @return obj
  */
-module.exports.definePropertyPublicRO = function ( obj, name, value ) {
+export function definePropertyPublicRO ( obj, name, value ) {
 
     Object.defineProperty( obj, name, {
         value     : value,
@@ -21,7 +22,7 @@ module.exports.definePropertyPublicRO = function ( obj, name, value ) {
 
     return obj;
 
-};
+}
 
 
 /**
@@ -34,7 +35,7 @@ module.exports.definePropertyPublicRO = function ( obj, name, value ) {
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @return obj
  */
-module.exports.definePropertyPrivate = function ( obj, name, value ) {
+export function definePropertyPrivate ( obj, name, value ) {
 
     Object.defineProperty( obj, name, {
         value    : value,
@@ -43,7 +44,7 @@ module.exports.definePropertyPrivate = function ( obj, name, value ) {
 
     return obj;
 
-};
+}
 
 
 /**
@@ -56,7 +57,7 @@ module.exports.definePropertyPrivate = function ( obj, name, value ) {
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @return obj
  */
-module.exports.definePropertyPrivateRO = function ( obj, name, value ) {
+export function definePropertyPrivateRO ( obj, name, value ) {
 
     Object.defineProperty( obj, name, {
         value : value
@@ -64,7 +65,7 @@ module.exports.definePropertyPrivateRO = function ( obj, name, value ) {
 
     return obj;
 
-};
+}
 
 
 /**
@@ -86,7 +87,7 @@ module.exports.definePropertyPrivateRO = function ( obj, name, value ) {
  *
  * @return obj
  */
-module.exports.definePropertiesPublicRO = function ( obj, map ) {
+export function definePropertiesPublicRO ( obj, map ) {
 
     for ( var key in map ) {
 
@@ -103,7 +104,7 @@ module.exports.definePropertiesPublicRO = function ( obj, map ) {
 
     return obj;
 
-};
+}
 
 
 /**
@@ -125,7 +126,7 @@ module.exports.definePropertiesPublicRO = function ( obj, map ) {
  *
  * @return obj
  */
-module.exports.definePropertiesPrivateRO = function ( obj, map ) {
+export function definePropertiesPrivateRO ( obj, map ) {
 
     for ( var key in map ) {
 
@@ -139,5 +140,5 @@ module.exports.definePropertiesPrivateRO = function ( obj, map ) {
 
     return obj;
 
-};
+}
 

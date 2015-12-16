@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import Node from './node';
 import { PicturePipeline } from '../webgl/pipeline';
-import core from '../core';
+import * as core from '../core';
 
 /**
  * @class Picimo.sg.Picture

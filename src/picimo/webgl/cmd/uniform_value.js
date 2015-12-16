@@ -1,79 +1,75 @@
-(function () {
-    "use strict";
+'use strict';
 
-    var utils = require( '../../utils' );
+import * as utils from '../../utils';
 
-    /**
-     * @class Picimo.webgl.cmd.UniformValue
-     *
-     */
+/**
+ * @class Picimo.webgl.cmd.UniformValue
+ *
+ */
 
-    function UniformValue ( isRestorable ) {
+export default function UniformValue ( isRestorable ) {
 
-        utils.addUid( this );
+    utils.addUid( this );
 
-        utils.object.definePropertiesPublicRO({
+    utils.object.definePropertiesPublicRO({
 
-            isRestorable      : !! isRestorable,
-            isUniformValueCmd : true,
+        isRestorable      : !! isRestorable,
+        isUniformValueCmd : true,
 
-            restoreCmd : Object.freeze({
+        restoreCmd : Object.freeze({
 
-                isUniformValueRestoreCmd : true,
-                uid                      : this.uid
+            isUniformValueRestoreCmd : true,
+            uid                      : this.uid
 
-            }),
+        }),
 
-        });
+    });
 
-        this.value = null;
-        this.prevValue = null;
+    this.value = null;
+    this.prevValue = null;
 
-    }
-
-
-    /**
-     * This method gets called from the renderer to set the new uniform value.
-     *
-     * @method Picimo.webgl.cmd.UniformValue#getValue
-     *
-     * @param currentValue - The current uniform value.
-     * @param uniforms - A map with all uniforms.
-     *
-     * @returns The new uniform value or if the value is null return the current value.
-     *
-     */
-
-    UniformValue.prototype.getValue = function ( currentValue, uniforms ) {
-
-        if ( ! this.value ) return currentValue;
-
-        if ( typeof this.value === 'function' ) return this.value( currentValue, uniforms );
-
-        return this.value;
-
-    };
+}
 
 
-    /**
-     * Set the uniform value.
-     *
-     * @method Picimo.webgl.cmd.UniformValue#setValue
-     *
-     * @param value - The uniform value or a function which returns the value.
-     *
-     * @returns self
-     *
-     */
+/**
+ * This method gets called from the renderer to set the new uniform value.
+ *
+ * @method Picimo.webgl.cmd.UniformValue#getValue
+ *
+ * @param currentValue - The current uniform value.
+ * @param uniforms - A map with all uniforms.
+ *
+ * @returns The new uniform value or if the value is null return the current value.
+ *
+ */
 
-    UniformValue.prototype.setValue = function ( value ) {
+UniformValue.prototype.getValue = function ( currentValue, uniforms ) {
 
-        this.value = value;
+    if ( ! this.value ) return currentValue;
 
-        return this;
+    if ( typeof this.value === 'function' ) return this.value( currentValue, uniforms );
 
-    };
+    return this.value;
 
-    module.exports = UniformValue;
+};
 
-})();
+
+/**
+ * Set the uniform value.
+ *
+ * @method Picimo.webgl.cmd.UniformValue#setValue
+ *
+ * @param value - The uniform value or a function which returns the value.
+ *
+ * @returns self
+ *
+ */
+
+UniformValue.prototype.setValue = function ( value ) {
+
+    this.value = value;
+
+    return this;
+
+};
+

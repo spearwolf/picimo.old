@@ -1,7 +1,7 @@
 'use strict';
 
-import utils from '../../utils';
-import {VertexIndexArray} from '../../core';
+import * as utils from '../../utils';
+import { VertexIndexArray } from '../../core';
 import WebGlBuffer from '../web_gl_buffer';
 
 // TODO - buffer update strategy ( all-at-once, blocks, ..? )

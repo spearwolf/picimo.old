@@ -1,8 +1,8 @@
 'use strict';
 
 import Node from './node';
-import core from '../core';
-import {SpriteGroupPipeline} from '../webgl/pipeline';
+import * as core from '../core';
+import { SpriteGroupPipeline } from '../webgl/pipeline';
 
 /**
  * @class Picimo.sg.SpriteGroup

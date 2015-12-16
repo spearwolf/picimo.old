@@ -1,15 +1,4 @@
-(function () {
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo.webgl.cmd
-     */
-
-    module.exports = {
-
-        BlendMode    : require( './blend_mode' ),
-        UniformValue : require( './uniform_value' ),
-
-    };
-
-})();
+export BlendMode from './blend_mode';
+export UniformValue from './uniform_value';

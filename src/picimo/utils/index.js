@@ -1,58 +1,17 @@
 'use strict';
 
-/**
- * @namespace Picimo.utils
- * @summary
- * Helper functions, utilities and 3rd-party libraries.
- */
+export const glMatrix = require('gl-matrix');
+export const Color = require('color-js');
 
-module.exports = {
+import * as object_utils from './object_utils';
+export { object_utils as object };
 
-    /**
-     * @namespace Picimo.utils.object
-     * @summary
-     *   Common object properties helper functions.
-     */
-    object: require( './object_utils' ),
+import addReadyPromise from './add_ready_promise';
+import addGlxProperty from './add_glx_property';
+import addUid from './add_uid';
+export { addReadyPromise, addGlxProperty, addUid };
 
-    /**
-     * @namespace Picimo.utils.glMatrix
-     *
-     * @summary
-     *   The fantastic <b>gl-matrix</b> library.
-     *
-     * @see
-     * https://github.com/toji/gl-matrix
-     *
-     */
-    glMatrix: require( 'gl-matrix' ),
-
-    /**
-     * @class Picimo.utils.Color
-     *
-     * @summary
-     *   The fantastic color management API <b>net.brehaut.Color</b>
-     *
-     * @see
-     * https://github.com/brehaut/color-js
-     *
-     */
-    Color: require( 'color-js' ),
-
-
-    addReadyPromise: require( './add_ready_promise' ),
-    addGlxProperty: require( './add_glx_property' ),
-    addUid: require( './add_uid' ),
-
-    /**
-     * @private
-     */
-    ObjectPool: require( './object_pool' ),
-
-    /**
-     * @private
-     */
-    Queue: require( './queue' )
-
-};
+import ObjectPool from './object_pool';
+import Queue from './queue';
+export { ObjectPool, Queue };
 

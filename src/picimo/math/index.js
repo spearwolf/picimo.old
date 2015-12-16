@@ -1,61 +1,50 @@
-(function(){
-    "use strict";
+'use strict';
 
-    /**
-     * @namespace Picimo.math
-     * @summary
-     * Math helper functions.
-     */
+export Matrix4 from './matrix4';
 
-    module.exports = {
 
-        Matrix4: require( './matrix4' ),
+/**
+ * @function Picimo.math.maxOf
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
+ */
 
-        /**
-         * @function Picimo.math.maxOf
-         * @param {number} a
-         * @param {number} b
-         * @return {number}
-         */
+export function maxOf ( a, b ) {
 
-        maxOf: function ( a, b ) {
-        
-            return a > b ? a : b;
-        
-        },
+    return a > b ? a : b;
 
-        /**
-         * @function Picimo.math.findNextPowerOfTwo
-         * @param {number} x
-         * @return {number}
-         */
+}
 
-        findNextPowerOfTwo: function ( x ) {
-        
-            var p = 1;
+/**
+ * @function Picimo.math.findNextPowerOfTwo
+ * @param {number} x
+ * @return {number}
+ */
 
-            while ( x > p ) {
-            
-                p <<= 1;
-            
-            }
-        
-            return p;
-        
-        },
+export function findNextPowerOfTwo ( x ) {
 
-        /**
-         * @function Picimo.math.isPowerOfTwo
-         * @param {number} n
-         * @return {boolean}
-         */
+    var p = 1;
 
-        isPowerOfTwo: function ( n ) {
-        
-            return n !== 0 && ( n & ( n - 1 ) ) === 0;
-        
-        }
+    while ( x > p ) {
 
-    };
+        p <<= 1;
 
-})();
+    }
+
+    return p;
+
+}
+
+/**
+ * @function Picimo.math.isPowerOfTwo
+ * @param {number} n
+ * @return {boolean}
+ */
+
+export function isPowerOfTwo ( n ) {
+
+    return n !== 0 && ( n & ( n - 1 ) ) === 0;
+
+}
+

@@ -1,6 +1,6 @@
 'use strict';
 
-var Resource = require( '../core' ).Resource;
+import { Resource } from '../core';
 
 /**
  * @class Picimo.webgl.ShaderSource

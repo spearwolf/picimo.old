@@ -1,166 +1,161 @@
-(function(){
-    "use strict";
+'use strict';
 
-    var utils = require( '../utils' );
+import * as utils from '../utils';
+
+/**
+ * @class Picimo.core.Resource
+ * @param {Picimo.App} app
+ * @param {string} dataPropAlias
+ */
+
+export default function Resource ( app, dataPropAlias ) {
 
     /**
-     * @class Picimo.core.Resource
-     * @param {Picimo.App} app
-     * @param {string} dataPropAlias
+     * @member {Picimo.App} Picimo.core.Resource#app
+     * @readonly
+     */
+    utils.object.definePropertyPublicRO( this, 'app', app );
+
+    /**
+     * @member {number} Picimo.core.Resource#uid
+     * @readonly
+     */
+    utils.addUid( this );
+
+    /**
+     * @member {boolean} Picimo.core.Resource#ready
      */
 
-    function Resource ( app, dataPropAlias ) {
+    //utils.Deferred.make( this );
+    utils.addReadyPromise( this );
 
-        /**
-         * @member {Picimo.App} Picimo.core.Resource#app
-         * @readonly
-         */
-        utils.object.definePropertyPublicRO( this, 'app', app );
+    /**
+     * @member {String} Picimo.core.Resource#url
+     */
+    this.url = null;
 
-        /**
-         * @member {number} Picimo.core.Resource#uid
-         * @readonly
-         */
-        utils.addUid( this );
+    /**
+     * @member {Object} Picimo.core.Resource#data
+     */
+    this._data = null;
 
-        /**
-         * @member {boolean} Picimo.core.Resource#ready
-         */
+    if ( dataPropAlias !== undefined ) {
 
-        //utils.Deferred.make( this );
-        utils.addReadyPromise( this );
+        Object.defineProperty( this, dataPropAlias, {
 
-        /**
-         * @member {String} Picimo.core.Resource#url
-         */
-        this.url = null;
+            get        : function () { return this.data; },
+            set        : function ( data ) { this.data = data; },
+            enumerable : true
 
-        /**
-         * @member {Object} Picimo.core.Resource#data
-         */
-        this._data = null;
-
-        if ( dataPropAlias !== undefined ) {
-
-            Object.defineProperty( this, dataPropAlias, {
-
-                get        : function () { return this.data; },
-                set        : function ( data ) { this.data = data; },
-                enumerable : true
-
-            });
-
-        }
+        });
 
     }
 
-
-    /**
-     * @method Picimo.core.Resource#convertData
-     * @param {Object} data
-     */
-
-    Resource.prototype.convertData = function ( data ) {
-
-        return data;
-
-    };
+}
 
 
-    /**
-     * @method Picimo.core.Resource#onData
-     * @param {Object} data
-     */
+/**
+ * @method Picimo.core.Resource#convertData
+ * @param {Object} data
+ */
 
-    Resource.prototype.onData = function ( /* data */ ) { /* override */ };
+Resource.prototype.convertData = function ( data ) {
 
+    return data;
 
-    /**
-     * @method Picimo.core.Resource#load
-     * @param {string} url
-     * @return self
-     */
-
-    Resource.prototype.load = function ( url ) {
-
-        var self = this;
-
-        this.url = this.app.getAssetUrl( url );
-
-        var req = new XMLHttpRequest();
-
-        req.open( "GET", this.url, true );
-
-        req.onreadystatechange = function () {
-
-            if ( req.readyState !== 4 /* DONE */ ) return;
-
-            if ( req.status >= 200 && req.status < 300 ) {
-
-                self.data = req.responseText;
-
-            }
-
-        };
-
-        req.send();
-
-        return this;
-
-    };
+};
 
 
-    /**
-     * @method Picimo.core.Resource#getData
-     * @param {function} resolve
-     */
+/**
+ * @method Picimo.core.Resource#onData
+ * @param {Object} data
+ */
 
-    Resource.prototype.getData = function ( resolve ) {
-
-        console.warn('Picimo.core.Resource#getData()', resolve);
-        throw new Error('undead code here!')
-        //this.deferred.forward( 'data', resolve );
-
-    };
+Resource.prototype.onData = function ( /* data */ ) { /* override */ };
 
 
+/**
+ * @method Picimo.core.Resource#load
+ * @param {string} url
+ * @return self
+ */
 
-    Object.defineProperties( Resource.prototype, {
+Resource.prototype.load = function ( url ) {
 
-        'data': {
+    var self = this;
 
-            get: function () { return this._data; },
+    this.url = this.app.getAssetUrl( url );
 
-            set: function ( data ) {
+    var req = new XMLHttpRequest();
 
-                if ( data ) {
+    req.open( "GET", this.url, true );
 
-                    var data_ = this.convertData( data );
+    req.onreadystatechange = function () {
 
-                    if ( data_ ) {
+        if ( req.readyState !== 4 /* DONE */ ) return;
 
-                        this._data = data_;
-                        this.onData( data_ );
+        if ( req.status >= 200 && req.status < 300 ) {
 
-                    }
-
-                } else {
-
-                    this._data = data;
-
-                }
-
-                this.ready = !! this._data;
-
-            },
-
-            enumerable: true
+            self.data = req.responseText;
 
         }
 
-    });
+    };
+
+    req.send();
+
+    return this;
+
+};
 
 
-    module.exports = Resource;
+/**
+ * @method Picimo.core.Resource#getData
+ * @param {function} resolve
+ */
 
-})();
+Resource.prototype.getData = function ( resolve ) {
+
+    console.warn('Picimo.core.Resource#getData()', resolve);
+    throw new Error('undead code here!')
+    //this.deferred.forward( 'data', resolve );
+
+};
+
+
+
+Object.defineProperties( Resource.prototype, {
+
+    'data': {
+
+        get: function () { return this._data; },
+
+        set: function ( data ) {
+
+            if ( data ) {
+
+                var data_ = this.convertData( data );
+
+                if ( data_ ) {
+
+                    this._data = data_;
+                    this.onData( data_ );
+
+                }
+
+            } else {
+
+                this._data = data;
+
+            }
+
+            this.ready = !! this._data;
+
+        },
+
+        enumerable: true
+
+    }
+
+});
+

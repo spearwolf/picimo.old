@@ -1,9 +1,9 @@
 'use strict';
 
-import utils from '../utils';
+import * as utils from '../utils';
 
-var {mat4} = utils.glMatrix;
-var {publicRO} = utils.object.decorator;
+const { mat4 } = utils.glMatrix;
+//const { publicRO } = utils.object.decorator;
 
 
 /**
@@ -19,10 +19,11 @@ export default class Matrix4 {
      * @readonly
      */
 
-    @publicRO
-    mat4 = mat4.create();
+    //@publicRO
+    //mat4 = mat4.create();
 
     constructor () {
+        utils.object.definePropertyPublicRO(this, 'mat4', mat4.create());
         Object.seal(this);
     }
 

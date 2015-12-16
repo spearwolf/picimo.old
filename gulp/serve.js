@@ -1,9 +1,14 @@
 'use strict';
 
-import gulp from 'gulp';
-import serve from 'gulp-serve';
+const gulp = require('gulp');
+const serve = require('gulp-serve');
 
-gulp.task('serve', serve({
-    port: 5000,
-    root: '.',
-}));
+module.exports = function (taskName, port, rootDir) {
+
+    gulp.task(taskName, serve({
+        port: port,
+        root: (rootDir || '.'),
+    }));
+
+}
+
