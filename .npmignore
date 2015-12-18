@@ -1,7 +1,10 @@
 .tmp
-Gruntfile.js
-assets/images/doc
-jsdoc.conf.json
-picimo-doc.graffle
+api-docs
+!build/api-docs
+gulp
 src
 vendor
+Gruntfile.js
+gulpfile.babel.js
+jsdoc.conf.json
+picimo-doc.graffle
