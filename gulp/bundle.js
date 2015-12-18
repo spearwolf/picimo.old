@@ -8,28 +8,38 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const gutil = require('gulp-util');
 const watchify = require('watchify');
-const exit = require('gulp-exit');
+const babelify = require('babelify');
+const plumber = require('gulp-plumber');
 
 module.exports = function (taskName, srcDir, bundleJs, buildDir, standalone, babelConfig, logNamespace) {
 
     if (!logNamespace) logNamespace = bundleJs;
 
-    gulp.task(taskName, () => bundle(build()).pipe(exit()));
+    gulp.task(taskName, function () {
+        return new Promise((done) => { bundle(build()).on('end', done) });
+    });
 
-    gulp.task(taskName + ':release', () => bundle(build({
-            browserify: {
-                debug: false
-            },
-        }), {
-            writeSourcemaps: false,
-            uglify: {
-                compress: {
-                    global_defs: {
-                        DEBUG: false
+    gulp.task(taskName + ':release', function () {
+        return new Promise(function (done) {
+            bundle(
+                build({
+                    browserify: {
+                        debug: false
+                    },
+                }), {
+                    writeSourcemaps: false,
+                    uglify: {
+                        compress: {
+                            global_defs: {
+                                DEBUG: false
+                            }
+                        }
                     }
                 }
-            }
-        }).pipe(exit()));
+            )
+            .on('end', done);
+        });
+    });
 
     gulp.task(taskName + ':watch', () => {
 
@@ -44,20 +54,28 @@ module.exports = function (taskName, srcDir, bundleJs, buildDir, standalone, bab
         if (options === undefined) options = {};
         let browserifyOptions = options.browserify || {};
 
-        var b = watchify(browserify(Object.assign({
-            entries: srcDir + '/' + bundleJs,
-            debug: true,
-            bundleExternal: true,
-            standalone: standalone,
-            cache: {},
-            packageCache: {},
-        }, browserifyOptions)));
+        return watchify(
+                    browserify(Object.assign({
+                            entries        : srcDir + '/' + bundleJs,
+                            debug          : true,
+                            bundleExternal : true,
+                            standalone     : standalone,
+                            cache          : {},
+                            packageCache   : {},
+                        },
+                        browserifyOptions)
+                    )
+                )
+                .transform('babelify', Object.assign({ sourceMapRelative: '.' }, babelConfig))
 
-        b.on('log', gutil.log.bind(gutil, '[' + gutil.colors.cyan(logNamespace) + ']'));
+                .on('transform', (tr) => { if (tr instanceof babelify) {
+                    tr.on('babelify', (res, filename) => { gutil.log('Reading ' + gutil.colors.magenta(filename)) })
+                }})
 
-        b.transform('babelify', Object.assign({ sourceMapRelative: '.' }, babelConfig));
+                .on('log', gutil.log.bind(gutil, '[' + gutil.colors.cyan(logNamespace) + ']'))
+                //.on('time', (time) => { gutil.log('[' + gutil.colors.cyan(logNamespace) + '] in', gutil.colors.blue(time), 'ms') })
 
-        return b;
+                ;
 
     }
 
@@ -78,8 +96,10 @@ module.exports = function (taskName, srcDir, bundleJs, buildDir, standalone, bab
 
         b = b.bundle()
                 .on('error', log_error('Browserify'))
+                .pipe(plumber())
                 .pipe(source(bundleJs))
-                .pipe(buffer());
+                .pipe(buffer())
+                ;
 
         if (options.writeSourcemaps) {
             b = b.pipe(sourcemaps.init({ loadMaps: true }));
@@ -91,8 +111,9 @@ module.exports = function (taskName, srcDir, bundleJs, buildDir, standalone, bab
             b = b.on('error', log_error('Sourcemaps')).pipe(sourcemaps.write('./'));
         }
 
-        return b.pipe(gulp.dest(buildDir));
-
+        return b.pipe(gulp.dest(buildDir)).on('end', function () {
+            gutil.log('[' + gutil.colors.cyan(logNamespace) + ']', gutil.colors.yellow('Ready.'));
+        });
     }
 
     function log_error ( prefix ) {

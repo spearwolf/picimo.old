@@ -4,9 +4,9 @@ import minifyHtml from 'gulp-minify-html';
 import { apiDocsJson } from './api-docs-json';
 
 
-gulp.task('api-docs', () => {
+gulp.task('api-docs:html', function () {
 
-    gulp.src(['./api-docs/**/*.json', './api-docs/**/*.yaml', './api-docs/**/*.md'])
+    return gulp.src(['./api-docs/**/*.json', './api-docs/**/*.yaml', './api-docs/**/*.md'])
         .pipe(apiDocsJson({
             template: './api-docs/index.html',
             partials: './api-docs/partials',
@@ -20,11 +20,17 @@ gulp.task('api-docs', () => {
         }))
         .pipe(gulp.dest('./build/api-docs'));
 
-    gulp.src('./api-docs/*.scss')
+});
+
+gulp.task('api-docs:css', function () {
+
+    return gulp.src('./api-docs/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./build/api-docs'));
 
 });
+
+gulp.task('api-docs', ['api-docs:html', 'api-docs:css']);
 
 gulp.task('api-docs:watch', () => {
 

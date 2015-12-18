@@ -1,32 +1,29 @@
 const gulp = require('gulp');
+const gutil = require('gulp-util');
 const bundleTasks = require('./gulp/bundle');
-//const htmlTask = require('./gulp/html');
 const serveTask = require('./gulp/serve');
 const packageJson = require('./package.json');
 const del = require('del');
+const runSequence = require('run-sequence');
 require('./gulp/api-docs');
 
 const srcDir = 'src';
 const bundleJs = 'picimo.js';
-//const indexHtml = 'index.html';
 const standalone = 'Picimo';
 const buildDir = 'build';
 const servePort = 1904;
 
-bundleTasks('bundle', srcDir, bundleJs, buildDir, standalone, packageJson.babel);
-//htmlTask('html', srcDir + '/' + indexHtml, buildDir, Object.assign({ bundleJs: bundleJs, bundleCss: bundleCss, standalone: standalone }, packageJson));
-serveTask('serve', servePort, buildDir);
-
 gulp.task('clean', () => del(['build/**/*']));
 
-gulp.task('favicon', () => {
-    gulp.src('src/favicon.ico', { base: 'src' }).pipe(gulp.dest('build'));
-});
+serveTask('serve', servePort, buildDir);
+bundleTasks('bundle', srcDir, bundleJs, buildDir, standalone, packageJson.babel);
 
-//gulp.task('build', ['html', 'favicon', 'bundle']);
-gulp.task('build', ['bundle']);
-//gulp.task('release', ['clean', 'html', 'favicon', 'bundle:release']);
-gulp.task('release', ['clean', 'bundle:release', 'api-docs']);
+function ready () {
+    console.log(gutil.colors.green.bold('Thank you and have a nice day.'));
+    process.exit();
+}
 
-//gulp.task('default', ['html', 'favicon', 'bundle:watch']);
+gulp.task('build', () => { runSequence('bundle', ready); });
+gulp.task('release', () => { runSequence('clean', ['bundle:release', 'api-docs'], ready) });
+
 gulp.task('default', ['bundle:watch']);
