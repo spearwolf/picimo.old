@@ -26,7 +26,7 @@ gulp.task('favicon', () => {
 //gulp.task('build', ['html', 'favicon', 'bundle']);
 gulp.task('build', ['bundle']);
 //gulp.task('release', ['clean', 'html', 'favicon', 'bundle:release']);
-gulp.task('release', ['clean', 'bundle:release']);
+gulp.task('release', ['clean', 'bundle:release', 'api-docs']);
 
 //gulp.task('default', ['html', 'favicon', 'bundle:watch']);
 gulp.task('default', ['bundle:watch']);

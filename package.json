@@ -11,7 +11,7 @@
     "url": "https://github.com/spearwolf/picimo.git"
   },
   "license": "MIT",
-  "main": "dist/picimo.min.js",
+  "main": "build/picimo.js",
   "homepage": "https://github.com/spearwolf/picimo/",
   "bugs": {
     "url": "https://github.com/spearwolf/picimo/issues"
