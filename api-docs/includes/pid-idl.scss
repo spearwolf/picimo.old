@@ -9,16 +9,25 @@ $pidIdlMonoFontSize: $fontSizeTiny;
     padding: 1em 1em;
     overflow: auto;
 
+    &.pid__interface,
+    &.pid__dictionary,
+    &.pid__enum {
+        border-radius: 2px;
+    }
+
     &.pid__interface {
-        background-color: $col-prim0-light;
+        /*background-color: $col-prim0-light;*/
+        background: linear-gradient(to bottom right, $col-prim0-light 0%, #ffffff 100%);
         /*border-left: 0.5em solid $col-prim0;*/
     }
     &.pid__dictionary {
-        background-color: $col-prim3-light;
+        /*background-color: $col-prim3-light;*/
+        background: linear-gradient(to bottom right, $col-prim3-light 0%, #ffffff 100%);
         /*border-left: 0.5em solid $col-prim3;*/
     }
     &.pid__enum {
-        background-color: $col-prim1-light;
+        /*background-color: $col-prim1-light;*/
+        background: linear-gradient(to bottom right, $col-prim1-light 0%, #ffffff 100%);
         /*border-left: 0.5em solid $col-prim1;*/
     }
 

@@ -1,0 +1,27 @@
+@import 'includes/_colors';
+@import 'includes/_typography';
+@import 'includes/_media_queries';
+
+.topbar__content {
+
+    position: relative;
+
+    .logo {
+        max-width: 100%;
+        height: 60px;
+        margin-left: 10px;
+        border: 0;
+    }
+
+    .menu-icon {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        height: 30px;
+        width: 30px;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+}
+

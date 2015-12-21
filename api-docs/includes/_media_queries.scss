@@ -1,0 +1,15 @@
+
+$compact-width: 920px;
+
+@mixin compact-view {
+    @media (max-width: $compact-width) {
+        @content;
+    }
+}
+
+@mixin wide-view {
+    @media (min-width: #{$compact-width + 1px}) {
+        @content;
+    }
+}
+

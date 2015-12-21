@@ -1,22 +1,40 @@
 @import 'includes/_colors';
 @import 'includes/_typography';
+@import 'includes/_media_queries';
 
 .sidebar__content {
+
+    .logo {
+        width: 100%;
+        max-width: 100%;
+        border: 0;
+        margin-top: 20px;
+    }
+
+    img.logo {
+        /*image-rendering: crisp-edges;*/
+        image-rendering: pixelated;
+    }
 
     h1 {
         margin-top: 0.5em;
         margin-bottom: 0;
+
         a {
             @include typo('text', $weight: 'normal', $size: 50px);
             color: $col-prim2;
             text-transform: uppercase;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 
     hr {
         border-top: 0;
         height: 0;
-        border-bottom: 1px dashed $col-gray;
+        border-bottom: 1px dashed $col-gray-light;
         margin-bottom: 1em;
     }
 
@@ -30,6 +48,10 @@
             color: $col-prim1-dark;
             text-decoration: none;
             text-transform: uppercase;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 
@@ -40,7 +62,10 @@
 
     .toc-sidebar ol > li > a {
         @include typo('text', $size: $fontSizeSmall);
-        color: $col-gray;
+        color: $col-dark;
+        &:hover {
+            text-decoration: underline;
+        }
         text-decoration: none;
     }
 
