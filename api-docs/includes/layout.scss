@@ -1,7 +1,50 @@
 
-body {
-    padding: 1rem 1rem;
+html, body {
+    height: 100%;
 }
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.page {
+    display: flex;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 300px;
+    position: relative;
+
+    &__content {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 220px;
+        padding: 0 40px;
+
+        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /*background-color: #eed;*/
+    }
+
+}
+
+.main {
+    flex: 1;
+    flex-direction: column;
+
+    padding: 1rem 1rem;
+
+    &__content {
+    }
+
+}
+
+
+// ==== helpers === ---- --- ---  -
 
 .page-break {
     margin-top: 3.5rem;

@@ -293,15 +293,16 @@ dictionaries:
 enums:
     -
         name: Picimo.sg.Picture.DisplaySize
-        description: |
+
+        description_post: |
+            ![The Display Size Property](/assets/images/doc/displaySize.png)
+
             The display size specifies the size of the picture.
 
             - **contain** will always show the whole image but may not fill up the whole screen area.
             - **cover** will always fill the whole screen area, but the image may be cropped.
 
             Both strategies will preserve the image size ratio.
-
-            ![The Display Size Property](/assets/images/doc/displaySize.png)
 
         values:
             -

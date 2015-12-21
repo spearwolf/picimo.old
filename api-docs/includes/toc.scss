@@ -27,7 +27,7 @@
             @include typo('text', $size:$fontSizeNormal, $decoration:none);
 
             &.toc__pid-link {
-                @include typo('monospace', $size:$fontSizeNormal, $weight:'bold', $decoration:none);
+                @include typo('monospace', $size:$fontSizeSmall, $weight:'bold', $decoration:none);
                 color: $col-prim2;
             }
         }

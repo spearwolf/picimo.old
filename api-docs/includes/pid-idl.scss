@@ -1,6 +1,8 @@
 @import 'includes/_colors';
 @import 'includes/_typography';
 
+$pidIdlMonoFontSize: $fontSizeTiny;
+
 .pid-idl {
 
     margin-left: 2rem;
@@ -9,25 +11,25 @@
 
     &.pid__interface {
         background-color: $col-prim0-light;
-        border-left: 0.5em solid $col-prim0;
+        /*border-left: 0.5em solid $col-prim0;*/
     }
     &.pid__dictionary {
         background-color: $col-prim3-light;
-        border-left: 0.5em solid $col-prim3;
+        /*border-left: 0.5em solid $col-prim3;*/
     }
     &.pid__enum {
         background-color: $col-prim1-light;
-        border-left: 0.5em solid $col-prim1;
+        /*border-left: 0.5em solid $col-prim1;*/
     }
 
-    @include typo('monospace');
+    @include typo('monospace', $size: $pidIdlMonoFontSize);
 
     em {
-        @include typo('monospace', $style: 'italic');
+        @include typo('monospace', $size: $pidIdlMonoFontSize, $style: 'italic');
     }
 
     strong {
-        @include typo('monospace', $weight: 'bold');
+        @include typo('monospace', $size: $pidIdlMonoFontSize, $weight: 'bold');
     }
 
     ul {
@@ -101,14 +103,14 @@
     }
 
     &__optional {
-        @include typo('monospace', $style: 'italic');
+        @include typo('monospace', $size: $pidIdlMonoFontSize, $style: 'italic');
         display: inline-block;
         margin-left: 0.33em;
     }
 
     &__type-type,
     &__type-link {
-        @include typo('monospace', $style: 'italic');
+        @include typo('monospace', $size: $pidIdlMonoFontSize, $style: 'italic');
     }
 
     &__type-link {
@@ -118,7 +120,7 @@
     }
 
     &__name {
-        @include typo('monospace', $weight: 'bold');
+        @include typo('monospace', $size: $pidIdlMonoFontSize, $weight: 'bold');
     }
 
     &__args {

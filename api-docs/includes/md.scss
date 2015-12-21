@@ -8,7 +8,7 @@
     }
 
     code {
-        @include typo('monospace');
+        @include typo('monospace', $size: $fontSizeTiny);
         background-color: rgba(0, 0, 0, 0.05);
     }
 
@@ -18,7 +18,7 @@
         /*background-color: rgba(0,0,0, 0.05);*/
 
         &--type {
-            @include typo('monospace', $weight:'bold');
+            @include typo('monospace', $size: $fontSizeTiny, $weight:'bold');
             color: $col-prim2;
         }
     }

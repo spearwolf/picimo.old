@@ -62,6 +62,12 @@
         }<br>
     </article>
 
+    {{#if description_post}}
+    <article class="pid__interface pid-idl__description md">
+        {{{md description_post}}}
+    </article>
+    {{/if}}
+
   {{#if attributes}}
     <article class="pid__interface pid__attributes page-break-after">
 
@@ -109,6 +115,12 @@
         }<br>
     </article>
 
+    {{#if description_post}}
+    <article class="pid__dictionary pid-idl__description md">
+        {{{md description_post}}}
+    </article>
+    {{/if}}
+
   {{#if attributes}}
     <article class="pid__dictionary pid__attributes page-break-after">
 
@@ -141,6 +153,12 @@
             <em>enum</em> <strong>{{name}}</strong> {<ul class="pid-idl__func-args">{{#each values}}<li class="pid-idl__func-arg">"<span class="pid-idl__args-name">{{name}}</span>"{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>}
         </div>
     </article>
+
+    {{#if description_post}}
+    <article class="pid__enum pid-idl__description md">
+        {{{md description_post}}}
+    </article>
+    {{/if}}
 
   {{#if values}}
     <article class="pid__enum pid__attributes page-break-after">

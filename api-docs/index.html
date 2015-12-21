@@ -4,76 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Picimo</title>
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lobster|Inconsolata:400,700|Gentium+Basic:400,700" type="text/css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lobster|Fira+Mono:400,700|Gentium+Basic:400,700" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="api-docs.css">
 </head>
 <body>
+    <main class="page">
 
-    <section class="toc">
+        <aside class="sidebar">
+            <div class="sidebar__content">
 
-        <h2>Table of Contents</h2>
-        <ol class="toc-top">
-            <li>
-                <a href="#Picimo-Concepts">Picimo Concepts</a>
-                <ol class="toc-sub">
-                </ol>
-            </li>
-            <li>
-                <a href="#Programming-Interface">Programming Interface</a>
-                <ol class="toc-sub">
+                <h1><a href="#start">Picimo</a></h1>
+
+                <hr>
+
+                <section class="toc-sidebar">
+
+                    <h2><a href="#Picimo-Concepts">Guide</a></h2>
+
+                    <h2><a href="#Programming-Interface">Programming Interface</a></h2>
+
+                    <ol class="toc-sidebar__pids">
+                        {{#each programming-interface}}
+                        {{#ref .}}
+                        {{#each interfaces}}
+                        <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
+                        {{/each}}
+                        {{#each dictionaries}}
+                        <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
+                        {{/each}}
+                        {{#each enums}}
+                        <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
+                        {{/each}}
+                        {{/ref}}
+                        {{/each}}
+                    </ol>
+
+                    <h2><a href="#Advanced-Topics">Advanced Topics</a></h2>
+
+                    <ol class="toc-sidebar__advanced">
+                        {{#each topic}}
+                        {{#ref .}}
+                        <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
+                        {{/ref}}
+                        {{/each}}
+                    </ol>
+
+                </section>
+
+            </div>
+        </aside>
+
+        <section id="start" class="main">
+            <div class="main__content">
+
+                <section class="toc">
+
+                    <h2>Table of Contents</h2>
+                    <ol class="toc-top">
+                        <li>
+                            <a href="#Picimo-Concepts">Guide</a>
+                            <ol class="toc-sub">
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#Programming-Interface">Programming Interface</a>
+                            <ol class="toc-sub">
+                                {{#each programming-interface}}
+                                {{#ref .}}
+                                {{#each interfaces}}
+                                <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> interface</li>
+                                {{/each}}
+                                {{#each dictionaries}}
+                                <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> dictionary</li>
+                                {{/each}}
+                                {{#each enums}}
+                                <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> enumeration</li>
+                                {{/each}}
+                                {{/ref}}
+                                {{/each}}
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#Advanced-Topics">Advanced Topics</a>
+                            <ol class="toc-sub">
+                                {{#each topic}}
+                                {{#ref .}}
+                                <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
+                                {{/ref}}
+                                {{/each}}
+                            </ol>
+                        </li>
+                    </ol>
+
+                </section>
+
+                <section id="#Programming-Interface" class="programming-interface page-break">
+
+                    <h2>Programming Interface</h2>
+
                     {{#each programming-interface}}
-                    {{#ref .}}
-                    {{#each interfaces}}
-                    <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> interface</li>
+                        {{#ref .}}
+                            {{> programming-interface}}
+                        {{/ref}}
                     {{/each}}
-                    {{#each dictionaries}}
-                    <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> dictionary</li>
-                    {{/each}}
-                    {{#each enums}}
-                    <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> enumeration</li>
-                    {{/each}}
-                    {{/ref}}
-                    {{/each}}
-                </ol>
-            </li>
-            <li>
-                <a href="#Advanced-Topics">Advanced Topics</a>
-                <ol class="toc-sub">
+
+                </section>
+
+                <section id="#Advanced-Topics" class="advanced-topics page-break">
+
+                    <h2>Advanced Topics</h2>
+
                     {{#each topic}}
-                    {{#ref .}}
-                    <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
-                    {{/ref}}
+                        {{#ref .}}
+                            {{> topic}}
+                        {{/ref}}
                     {{/each}}
-                </ol>
-            </li>
-        </ol>
 
-    </section>
+                </section>
 
-    <section id="#Programming-Interface" class="programming-interface page-break">
+            </div><!-- .main__content -->
+        </section><!-- .main -->
 
-        <h2>Programming Interface</h2>
-
-        {{#each programming-interface}}
-            {{#ref .}}
-                {{> programming-interface}}
-            {{/ref}}
-        {{/each}}
-
-    </section>
-
-    <section id="#Advanced-Topics" class="advanced-topics page-break">
-
-        <h2>Advanced Topics</h2>
-
-        {{#each topic}}
-            {{#ref .}}
-                {{> topic}}
-            {{/ref}}
-        {{/each}}
-
-    </section>
-
+    </main><!-- .page -->
 </body>
 </html>

@@ -1,0 +1,48 @@
+@import 'includes/_colors';
+@import 'includes/_typography';
+
+.sidebar__content {
+
+    h1 {
+        margin-top: 0.5em;
+        margin-bottom: 0;
+        a {
+            @include typo('text', $weight: 'normal', $size: 50px);
+            color: $col-prim2;
+            text-transform: uppercase;
+        }
+    }
+
+    hr {
+        border-top: 0;
+        height: 0;
+        border-bottom: 1px dashed $col-gray;
+        margin-bottom: 1em;
+    }
+
+    h2 {
+        margin-top: 0;
+        margin-bottom: 0;
+        border-bottom: 0;
+
+        a {
+            @include typo('text', $weight: 'bold', $size: $fontSizeSmall);
+            color: $col-prim1-dark;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+    }
+
+    .toc-sidebar ol {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .toc-sidebar ol > li > a {
+        @include typo('text', $size: $fontSizeSmall);
+        color: $col-gray;
+        text-decoration: none;
+    }
+
+}
+
