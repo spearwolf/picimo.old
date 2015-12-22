@@ -1,6 +1,7 @@
 @import 'includes/_colors';
 @import 'includes/_typography';
 @import 'includes/_media_queries';
+@import 'includes/_layout_vars';
 
 .topbar__content {
 
@@ -8,7 +9,7 @@
 
     .logo {
         max-width: 100%;
-        height: 60px;
+        height: $headerHeight;
         margin-left: 10px;
         border: 0;
     }

@@ -1,4 +1,6 @@
 @import 'includes/_media_queries';
+@import 'includes/_layout_vars';
+
 
 html, body {
     height: 100%;
@@ -18,7 +20,7 @@ body {
 
     position: fixed;
     width: 100vw;
-    height: 60px;
+    height: $headerHeight;
     z-index: 10;
 
     /*color: $col-white;*/
@@ -38,24 +40,71 @@ body {
 .sidebar {
 
     height: 100vh;
-    width: 300px;
-    position: relative;
+    width: $sidebarWidth+(2*$sidebarVertPad);
 
     @include compact-view {
         display: none;
     }
 
+    position: relative;
+
     &__content {
         position: fixed;
         top: 0;
         bottom: 0;
-        width: 220px;
-        padding: 0 40px;
+        width: $sidebarWidth;
+        padding: 0 $sidebarVertPad;
 
         overflow: auto;
         overflow-x: hidden;
         overflow-y: auto;
-        /*background-color: #eed;*/
+    }
+
+}
+
+.sidebar.overlay {
+
+    position: fixed;
+    width: 100vw;
+    z-index: 100;
+
+    @include compact-view {
+        display: block;
+    }
+
+    background-color: $col-white;
+
+    .logo {
+        width: 75vw;
+        max-width: 272px;
+    }
+
+
+    & > .sidebar__content {
+
+        width: 100vw;
+        padding: 0 0;
+
+        & > .sidebar__column {
+            width: 100vw;
+            padding: 0 20px;
+            hr {
+                margin-left: -20px;
+            }
+        }
+
+        @include compact-2col {
+
+            & > .sidebar__column--left,
+            & > .sidebar__column--right {
+                box-sizing: border-box;
+                width: 50vw;
+                padding: 0 20px 30px 20px;
+                float: left;
+            }
+
+        }
+
     }
 
 }
@@ -71,9 +120,13 @@ body {
 
     padding: 1rem 1rem;
 
-    &__content {
-    }
+    overflow-x: hidden;
 
+}
+
+body.overlay .main {
+    /*visibility: hidden;*/
+    display: none;
 }
 
 

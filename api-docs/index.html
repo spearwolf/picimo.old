@@ -20,46 +20,58 @@
 
         <aside class="sidebar">
             <div class="sidebar__content">
+                <div class="sidebar__column">
 
-                <img class="logo" src="/assets/images/doc/picimo-by-spearwolf-1.png" alt="Picimo by spearwolf">
-                <!--<h1><a href="#start">Picimo</a></h1>-->
+                    <img class="logo" src="/assets/images/doc/picimo-by-spearwolf-1.png" alt="Picimo by spearwolf">
+                    <!--<h1><a href="#start">Picimo</a></h1>-->
 
-                <hr>
+                    <hr>
 
-                <section class="toc-sidebar">
+                </div>
+                <div class="sidebar__column sidebar__column--left">
 
-                    <h2><a href="#Picimo-Concepts">Guide</a></h2>
+                    <section class="toc-sidebar">
 
-                    <h2><a href="#Programming-Interface">Programming Interface</a></h2>
+                        <h2><a href="#Picimo-Concepts">Guide</a></h2>
 
-                    <ol class="toc-sidebar__pids">
-                        {{#each programming-interface}}
-                        {{#ref .}}
-                        {{#each interfaces}}
-                        <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
-                        {{/each}}
-                        {{#each dictionaries}}
-                        <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
-                        {{/each}}
-                        {{#each enums}}
-                        <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
-                        {{/each}}
-                        {{/ref}}
-                        {{/each}}
-                    </ol>
+                        <h2><a href="#Advanced-Topics">Advanced Topics</a></h2>
 
-                    <h2><a href="#Advanced-Topics">Advanced Topics</a></h2>
+                        <ol class="toc-sidebar__advanced">
+                            {{#each topic}}
+                            {{#ref .}}
+                            <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
+                            {{/ref}}
+                            {{/each}}
+                        </ol>
 
-                    <ol class="toc-sidebar__advanced">
-                        {{#each topic}}
-                        {{#ref .}}
-                        <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
-                        {{/ref}}
-                        {{/each}}
-                    </ol>
+                    </section>
 
-                </section>
+                </div>
+                <div class="sidebar__column sidebar__column--right">
 
+                    <section class="toc-sidebar">
+
+                        <h2><a href="#Programming-Interface">Programming Interface</a></h2>
+
+                        <ol class="toc-sidebar__pids">
+                            {{#each programming-interface}}
+                            {{#ref .}}
+                            {{#each interfaces}}
+                            <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
+                            {{/each}}
+                            {{#each dictionaries}}
+                            <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
+                            {{/each}}
+                            {{#each enums}}
+                            <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
+                            {{/each}}
+                            {{/ref}}
+                            {{/each}}
+                        </ol>
+
+                    </section>
+
+                </div>
             </div>
         </aside>
 
@@ -107,7 +119,7 @@
 
                 </section>
 
-                <section id="#Programming-Interface" class="programming-interface page-break">
+                <section id="Programming-Interface" class="programming-interface page-break">
 
                     <h2>Programming Interface</h2>
 
@@ -119,7 +131,7 @@
 
                 </section>
 
-                <section id="#Advanced-Topics" class="advanced-topics page-break">
+                <section id="Advanced-Topics" class="advanced-topics page-break">
 
                     <h2>Advanced Topics</h2>
 
@@ -135,5 +147,7 @@
         </section><!-- .main -->
 
     </main><!-- .page -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="index.min.js"></script>
 </body>
 </html>

@@ -3,6 +3,15 @@ import sass from 'gulp-sass';
 import minifyHtml from 'gulp-minify-html';
 import { apiDocsJson } from './api-docs-json';
 
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const uglify = require('gulp-uglify');
+const babelify = require('babelify');
+const gutil = require('gulp-util');
+const chalk = require('chalk');
+const rename = require('gulp-rename');
+
 
 gulp.task('api-docs:html', function () {
 
@@ -30,13 +39,52 @@ gulp.task('api-docs:css', function () {
 
 });
 
-gulp.task('api-docs', ['api-docs:html', 'api-docs:css']);
+gulp.task('api-docs:js', function () {
+
+    let bundle = browserify('./api-docs/index.js').transform(babelify);
+
+    return bundle.bundle()
+        .on('error', map_error)
+        .pipe(source('index.js'))
+        .pipe(buffer())
+        .pipe(rename('index.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('./build/api-docs'));
+
+});
+
+gulp.task('api-docs', ['api-docs:html', 'api-docs:css', 'api-docs:js']);
 
 gulp.task('api-docs:watch', () => {
 
     gulp.watch('./api-docs/**/*', ['api-docs']);
 
 });
+
+function map_error (err) {
+    if (err.fileName) {
+        // regular error
+        gutil.log(chalk.red(err.name)
+            + ': '
+            + chalk.yellow(err.fileName.replace(__dirname + '/src/js/', ''))
+            + ': '
+            + 'Line '
+            + chalk.magenta(err.lineNumber)
+            + ' & '
+            + 'Column '
+            + chalk.magenta(err.columnNumber || err.column)
+            + ': '
+            + chalk.blue(err.description));
+    } else {
+        // browserify error..
+        gutil.log(chalk.red(err.name)
+            + ': '
+            + chalk.yellow(err.message));
+    }
+
+    this.end();
+}
+
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //
