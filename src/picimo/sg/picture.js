@@ -46,7 +46,6 @@ import * as core from '../core';
 export default class Picture extends Node {
 
     constructor (app, options = {}) {
-
         super(app, options);
 
         initTexture(this, options.texture);

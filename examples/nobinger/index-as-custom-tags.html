@@ -1,0 +1,34 @@
+
+    <picimo-app id="picimo" alpha="true">
+
+        <picimo-program name="sprite"
+            vertex-shader-src="/assets/shaders/sprite/shader.vert"
+            fragment-shader-src="/assets/shaders/sprite/shader.frag"
+            />
+
+        <picimo-texture-atlas name="nobingerAtlas" src="nobinger.json" />
+
+        <picimo-scene size="800 600" size-type="contain">
+
+            <picimo-sprite-group name="nobingerGroup"
+                texture-atlas="nobingerAtlas"
+                capacity="10"
+                sprite-type="simple"
+                program="sprite"
+                />
+
+        </picimo-scene>
+
+    </picimo-app>
+
+    <script>
+
+        var app = document.getElementById('picimo').picimoApp;
+
+        app.scene.find('nobingerGroup').on('init', function () {
+            // this === spriteGroup
+        });
+
+    </script>
+
+
