@@ -1,3 +1,5 @@
+require("babel-register");
+
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const bundleTasks = require('./gulp/bundle');
@@ -15,7 +17,7 @@ const servePort = 1904;
 
 gulp.task('clean', () => del(['build/**/*']));
 
-serveTask('serve', servePort, buildDir);
+serveTask('serve', servePort, '.'); //buildDir);
 bundleTasks('bundle', srcDir, bundleJs, buildDir, standalone, packageJson.babel);
 
 function ready () {
