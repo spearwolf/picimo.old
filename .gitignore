@@ -7,5 +7,4 @@ dist/picimo.js
 build/picimo.js
 build/picimo.js.map
 build/api-docs
-doc
 package-grunt.json
