@@ -1,10 +1,6 @@
-node_modules
 .tmp
-vendor/jaguarjs-jsdoc
+dist
+node_modules
 npm-debug.log
-dist/picimo.min.js
-dist/picimo.js
-build/picimo.js
-build/picimo.js.map
-build/api-docs
 package-grunt.json
+vendor/jaguarjs-jsdoc

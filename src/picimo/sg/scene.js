@@ -32,9 +32,7 @@ import Picture from './picture';
  *
  */
 
-export default function Scene ( app, options ) {
-
-    if ( options === undefined ) options = {};
+export default function Scene ( app, options = {} ) {
 
     Node.call( this, app, options );
 
