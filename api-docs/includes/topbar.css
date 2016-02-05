@@ -14,6 +14,14 @@
         border: 0;
     }
 
+    .package-version {
+        vertical-align: top;
+        margin-top: 36px;
+        display: inline-block;
+        @include typo('text', $weight: 'normal', $size: $fontSizeTiny);
+        color: $col-dark;
+    }
+
     .menu-icon {
         position: absolute;
         top: 15px;

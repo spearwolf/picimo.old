@@ -12,6 +12,8 @@ import marked from 'marked';
 //import highlightJs from 'highlight.js';
 import yaml from 'js-yaml';
 
+const packageJson = require('../package.json');
+
 let PluginError = gutil.PluginError;
 let File = gutil.File;
 
@@ -26,8 +28,10 @@ export function apiDocsJson (opt = {}) {
     // opt.partials
 
     let templateLoaded = loadTemplate(opt.template, opt.templateEnc);
-    let apiDocContent = { ref: {} };
-
+    let apiDocContent = {
+        ref: {},
+        package: _.pick(packageJson, ['name', 'version', 'author', 'repository', 'license', 'homepage', 'bugs'])
+    };
 
     // pre-load all handlebars helpers
     (function () {

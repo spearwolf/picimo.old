@@ -756,6 +756,16 @@ body.overlay .main {
   /*image-rendering: crisp-edges;*/
   image-rendering: pixelated; }
 
+.sidebar__content .package-version {
+  display: block;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 19.416px;
+  color: #404040; }
+
 .sidebar__content h1 {
   margin-top: 0.5em;
   margin-bottom: 0; }
@@ -818,6 +828,17 @@ body.overlay .main {
     height: 60px;
     margin-left: 10px;
     border: 0; }
+  .topbar__content .package-version {
+    vertical-align: top;
+    margin-top: 36px;
+    display: inline-block;
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 19.416px;
+    color: #404040; }
   .topbar__content .menu-icon {
     position: absolute;
     top: 15px;
