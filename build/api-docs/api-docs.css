@@ -718,30 +718,30 @@ body.overlay .main {
       margin: 0; }
 
 /*$col-prim6       : #a9274b;                         // topbar (compcat view) bg*/
-.md img {
-  max-width: 70%; }
-
-.md code {
-  font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
-  font-weight: 400;
-  font-style: normal;
-  text-decoration: none;
-  font-size: 12px;
-  line-height: 21.6px;
-  background-color: rgba(0, 0, 0, 0.05); }
-
-.md__link {
-  color: #000;
-  border-bottom: 1px dashed #949DA4;
-  /*background-color: rgba(0,0,0, 0.05);*/ }
-  .md__link--type {
+.md {
+  margin-bottom: 2.5em; }
+  .md img {
+    max-width: 70%; }
+  .md code {
     font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
-    font-weight: 700;
+    font-weight: 400;
     font-style: normal;
     text-decoration: none;
     font-size: 12px;
     line-height: 21.6px;
-    color: #ca2166; }
+    background-color: rgba(0, 0, 0, 0.05); }
+  .md__link {
+    color: #000;
+    border-bottom: 1px dashed #949DA4;
+    /*background-color: rgba(0,0,0, 0.05);*/ }
+    .md__link--type {
+      font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+      font-weight: 700;
+      font-style: normal;
+      text-decoration: none;
+      font-size: 12px;
+      line-height: 21.6px;
+      color: #ca2166; }
 
 /*.md-inline {*/
 /*}*/

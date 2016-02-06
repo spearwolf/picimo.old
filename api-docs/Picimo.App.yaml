@@ -17,9 +17,9 @@
 
         `let app = new Picimo.App(myCanvas/* , options */);`
 
-        Die wohl wichtigste Property einer App ist die *root* scene `app.scene`.
+        Die wohl wichtigste Property einer App ist die *root* scene `app.scene`
 
-        Die App bietet auch Zugriff auf das Sprite, Texture und Shader Management.
+        Die App bietet auch Zugriff auf das *Sprite, Texture* und *Shader* Management.
 
       extends: Picimo.events.CustomEvent
       attributes:
