@@ -4,6 +4,23 @@
   interfaces:
     -
       name: "Picimo.App"
+      description: |
+        Der Anfang von allem. Das ist der __Main Controller__ deiner App.
+        Der einfachste Weg eine App Instanz zu erzeugen ist mittels
+
+        `let app = new Picimo.App(/* options */);`
+
+        Das `<canvas>` Element wird automatisch erzeugt und unterhalb von *document.body* in das DOM eingefügt.
+        Alternativ ist die Angabe des Container Elements mittels **appendTo** möglich.
+        Will man stattdessen ein vorhandenes `<canvas>` nutzen, oder dieses selbst erzeugen, übergibt man dieses
+        mit der Option **canvas** oder als ersten Parameter bei der Erzeugung der App Instanz:
+
+        `let app = new Picimo.App(myCanvas/* , options */);`
+
+        Die wohl wichtigste Property einer App ist die *root* scene `app.scene`.
+
+        Die App bietet auch Zugriff auf das Sprite, Texture und Shader Management.
+
       extends: Picimo.events.CustomEvent
       attributes:
         -
