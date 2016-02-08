@@ -639,6 +639,8 @@ body.overlay .main {
     display: table-cell;
     padding-right: 0.75em;
     white-space: nowrap; }
+  .pid-idl__readonly--blank {
+    padding-right: 0; }
   .pid-idl__func-arg {
     white-space: nowrap; }
   .pid-idl__optional {
@@ -681,6 +683,14 @@ body.overlay .main {
       height: 6px;
       background-color: #ffff44;
       opacity: 0.55; }
+  .pid-idl__comment {
+    font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+    font-weight: 400;
+    font-style: italic;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 21.6px;
+    color: #1796DA; }
 
 /*$col-prim6       : #a9274b;                         // topbar (compcat view) bg*/
 .pid__interface .pid-attrs__name {

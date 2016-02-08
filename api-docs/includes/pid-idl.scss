@@ -101,6 +101,10 @@ $pidIdlMonoFontSize: $fontSizeTiny;
         white-space: nowrap;
     }
 
+    &__readonly--blank {
+        padding-right: 0;
+    }
+
     &__func-arg {
         white-space: nowrap;
     }
@@ -153,6 +157,11 @@ $pidIdlMonoFontSize: $fontSizeTiny;
     }
 
     &__default-value {
+    }
+
+    &__comment {
+        @include typo('monospace', $size: $pidIdlMonoFontSize, $style: 'italic');
+        color: $col-prim1-dark;
     }
 
 }

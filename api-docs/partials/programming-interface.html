@@ -36,18 +36,35 @@
             <li class="pid-interface__attributes">
                 <ul class="pid-idl__group">
                 {{#attributes}}
+                  {{#if separator}}
+                  </ul>
+                  {{#if title}}
+                    <p class="pid-idl__comment">// {{title}}</span>
+                  {{/if}}
+                  <ul class="pid-idl__group">
+                  {{/if}}
+                  {{#unless separator}}
                     <li class="pid-idl__attr">
-                        <span class="pid-idl__readonly">{{#if readonly}}readonly{{/if}}</span>
+                        <span class="pid-idl__readonly {{#unless readonly}}pid-idl__readonly--blank{{/unless}}">{{#if readonly}}readonly{{/if}}</span>
                         <span class="pid-idl__keyword">attribute</span>
                         <span class="pid-idl__type">{{> type-type type}}</span>
                         <span class="pid-idl__name">{{name}};</span>
                     </li>
+                  {{/unless}}
                 {{/attributes}}
                 </ul>
             </li>
             <li class="pid-interface__functions">
                 <ul class="pid-idl__group">
                 {{#functions}}
+                  {{#if separator}}
+                  </ul>
+                  {{#if title}}
+                    <p class="pid-idl__comment">// {{title}}</span>
+                  {{/if}}
+                  <ul class="pid-idl__group">
+                  {{/if}}
+                  {{#unless separator}}
                     <li class="pid-idl__func">
                         <span class="pid-idl__type">{{> type-type returns}}</span>
                         <span class="pid-idl__name">{{name}}</span>
@@ -55,6 +72,7 @@
                             ({{#if args}}<ul class="pid-idl__func-args args-{{args.length}}">{{#each args}}<li class="pid-idl__func-arg">{{#if optional}}optional {{/if}}{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}} | {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}} <span class="pid-idl__args-name">{{name}}</span>{{#if default}}= <span class="pid-idl__default-value">{{default}}</span>{{/if}}{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>{{/if}});
                         </span>
                     </li>
+                  {{/unless}}
                 {{/functions}}
                 </ul>
             </li>

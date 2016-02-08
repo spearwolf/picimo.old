@@ -12,10 +12,13 @@
 
         Das `<canvas>` Element wird automatisch erzeugt und unterhalb von *document.body* in das DOM eingefügt.
         Alternativ ist die Angabe des Container Elements mittels **appendTo** möglich.
-        Will man stattdessen ein vorhandenes `<canvas>` nutzen, oder dieses selbst erzeugen, übergibt man dieses
-        mit der Option **canvas** oder als ersten Parameter bei der Erzeugung der App Instanz:
+        Will man stattdessen ein vorhandenes `<canvas>` nutzen, oder einfach selbst erzeugen, übergibt man dieses
+        mit der Option **canvas**, alternativ auch als ersten Parameter bei der Erzeugung der App Instanz:
 
         `let app = new Picimo.App(myCanvas/* , options */);`
+
+        Egal, ob man das Canvas Element selbst erzeugt oder übergibt, es wird in jedem Falle die _CSS class_ __.picimo__
+        an das Element gehängt.
 
         Die wohl wichtigste Property einer App ist die *root* scene `app.scene`
 
@@ -27,11 +30,50 @@
           name: "canvas"
           type: "HTMLCanvasElement"
           readonly: true
-          description: "The html _webgl canvas_ dom element."
+          description: "The `<canvas>` dom element."
         -
           name: "scene"
           type: "Picimo.sg.Scene"
           readonly: true
+          description: "The *root* scene of the picimo scene graph."
+        -
+          separator: true
+        -
+          name: "width"
+          type: "number"
+          readonly: true
+          description: "The _device_ pixel width."
+        -
+          name: "height"
+          type: "number"
+          readonly: true
+          description: "The _device_ pixel height."
+        -
+          name: "now"
+          type: "number"
+          description: "The number of seconds from application start."
+          readonly: true
+        -
+          name: "frameNo"
+          type: "number"
+          description: "The current frame number."
+          readonly: true
+        -
+          separator: true
+        -
+          name: "backgroundColor"
+          type: "Picimo.utils.Color"
+          description: "The default background color is _black_ or if you set the __alpha__ option then _transparent_ is used."
+        -
+          name: "assetBaseUrl"
+          type: "string"
+          nullable: true
+          description: |
+            The base url for all assets. *Maybe* be undefined. The base url can be set via the __assetBaseUrl__
+            *option* or via the global var `PICIMO_ASSET_BASE_URL` (will override the option).
+            If unspecified the base url will be calculated from `locaation.href`
+        -
+          separator: true
         -
           name: "sprites"
           type: "Picimo.sprites.SpriteFactory"
@@ -44,8 +86,30 @@
           name: "shader"
           type: "Picimo.webgl.ShaderManager"
           readonly: true
+        -
+          separator: true
+          title: "Internal rendering context"
+        -
+          name: "gl"
+          type: "WebGlRenderingContext"
+          description: "The webgl rendering context."
+          readonly: true
+        -
+          name: "glx"
+          type: "Picimo.webgl.WebGlContext"
+          readonly: true
+          description: "A thin wrapper around the WebGlRenderingContext."
+        -
+          name: "renderer"
+          type: "Picimo.webgl.WebGlRenderer"
+          readonly: true
+          description: "The internal rendering context."
+
 
       functions:
+        -
+          separator: true
+          title: "Texture helpers"
         -
           name: "loadTextureAtlas"
           args:
@@ -60,11 +124,28 @@
               name: "url"
               type: "string"
           returns: "Promise<Picimo.core.Texture>"
+        -
+          separator: true
+          title: "URL helpers"
+        -
+          name: "getAssetUrl"
+          args:
+            -
+              name: "url"
+              type: "string"
+          returns: "string"
+        -
+          name: "joinAssetUrl"
+          args:
+            -
+              name: "url"
+              type: "string"
+          returns: "string"
 
       constructor:
         args:
           -
-            name: "url"
+            name: "canvas"
             type: "HTMLCanvasElement"
             nullable: true
             optional: true
