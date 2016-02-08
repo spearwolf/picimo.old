@@ -27,11 +27,6 @@
       extends: Picimo.events.CustomEvent
       attributes:
         -
-          name: "canvas"
-          type: "HTMLCanvasElement"
-          readonly: true
-          description: "The `<canvas>` dom element."
-        -
           name: "scene"
           type: "Picimo.sg.Scene"
           readonly: true
@@ -74,6 +69,7 @@
             If unspecified the base url will be calculated from `locaation.href`
         -
           separator: true
+          title: Sprite, Texture and Shader Management
         -
           name: "sprites"
           type: "Picimo.sprites.SpriteFactory"
@@ -88,7 +84,12 @@
           readonly: true
         -
           separator: true
-          title: "Internal rendering context"
+          title: The rendering context
+        -
+          name: "canvas"
+          type: "HTMLCanvasElement"
+          readonly: true
+          description: "The `<canvas>` dom element."
         -
           name: "gl"
           type: "WebGlRenderingContext"

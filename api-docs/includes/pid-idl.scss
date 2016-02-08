@@ -161,7 +161,7 @@ $pidIdlMonoFontSize: $fontSizeTiny;
 
     &__comment {
         @include typo('monospace', $size: $pidIdlMonoFontSize, $style: 'italic');
-        color: $col-prim1-dark;
+        color: $col-gray;
     }
 
 }
