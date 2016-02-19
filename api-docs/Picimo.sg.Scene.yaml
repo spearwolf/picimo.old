@@ -4,7 +4,12 @@
   interfaces:
     -
       name: "Picimo.sg.Scene"
+
+      extends:
+        - Picimo.sg.Node
+
       description: "![Scene Coordinate System](/assets/images/doc/coordinates.png)"
+
       attributes:
         -
           name: "app"
@@ -68,6 +73,9 @@
               default: "'contain'"
               optional: true
           returns: "Picimo.sg.Scene"
+        -
+          separator: true
+          title: "Scene graph node factories"
         -
           name: "appendPicture"
           args:

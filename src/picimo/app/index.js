@@ -1,7 +1,7 @@
 'use strict';
 
+import eventize from 'eventize-js';
 import * as utils from '../utils';
-import * as events from '../events';
 import * as sg from '../sg';
 import * as webgl from '../webgl';
 import * as core from '../core';
@@ -10,7 +10,6 @@ import initSprites from '../sprites/init';
 
 /**
  * @class Picimo.App
- * @extends Picimo.events.CustomEvent
  *
  * @classdesc
  *   Create a new picimo app. This is your main app controller.
@@ -53,7 +52,7 @@ import initSprites from '../sprites/init';
 
 export default function App ( canvas, options ) {
 
-    events.eventize( this );
+    eventize( this );
 
     /**
      * @member {number} Picimo.App#now - The number of seconds from application start.

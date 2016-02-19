@@ -6,7 +6,7 @@ interfaces:
         name: Picimo.sg.Picture
 
         extends:
-            - Picimo.events.CustomEvent
+            - Picimo.sg.Node
 
         constructor:
             args:

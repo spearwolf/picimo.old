@@ -1,7 +1,7 @@
 'use strict';
 
+import eventize from 'eventize-js';
 import * as utils from '../utils';
-import { eventize } from '../events';
 import NodeState from './node_state';
 
 /**
@@ -86,11 +86,11 @@ export default function Node ( app, options ) {
 
     eventize( this );
 
-    this.on('childrenUpdated', Number.MAX_VALUE, sortChildrenByRenderPrio.bind(this, this));
+    this.on('childrenUpdated', eventize.PRIO_MAX, sortChildrenByRenderPrio.bind(this, this));
 
     if ( options !== undefined ) {
 
-        this.on( options, {
+        this.connect( options, {
 
             'onInit'            : 'init',
             'onInitGl'          : 'initGl',
