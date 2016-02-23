@@ -81,7 +81,7 @@ export default class Picture extends Node {
 
         this.on("initGl", onInitGl.bind(this, this));
         this.on("renderFrame", onRenderFrame.bind(this, this));
-        this.parent.on('resize', () => { this.verticesNeedsUpdate = true });
+        this.parentNode.on('resize', () => { this.verticesNeedsUpdate = true });
 
     }
 
@@ -210,8 +210,8 @@ function updateVertices (picture) {
         // - width
         // - height
 
-        let sceneWidth = picture.parent.width;
-        let sceneHeight = picture.parent.height;
+        let sceneWidth = picture.parentNode.width;
+        let sceneHeight = picture.parentNode.height;
 
         let dpLeft   = typeof dp.left === 'string'   ? sceneWidth  * (parseFloat(dp.left) / 100.0)   : dp.left;
         let dpRight  = typeof dp.right === 'string'  ? sceneWidth  * (parseFloat(dp.right) / 100.0)  : dp.right;
@@ -336,8 +336,8 @@ function updateVertices (picture) {
         // displaySize 'contain' or 'cover'
         // ----------------------------------------
 
-        let viewWidth  = picture.parent.width;
-        let viewHeight = picture.parent.height;
+        let viewWidth  = picture.parentNode.width;
+        let viewHeight = picture.parentNode.height;
         let viewRatio  = viewHeight / viewWidth;
         let texRatio   = picture.texture.height / picture.texture.width;
 
@@ -418,7 +418,7 @@ function onRenderFrame ( picture ) {
 function initTexture ( picture, texture ) {
 
     picture.texture = null;
-    picture.setReadyFunc(false);
+    picture.readyFunc = false;
 
     Promise.resolve(texture.promise||texture)
         .then(function (tex) {
@@ -426,7 +426,7 @@ function initTexture ( picture, texture ) {
             picture.texture.setTexCoords(picture.sprite);
             return tex.image.promise;
         })
-        .then(() => picture.setReadyFunc(true));
+        .then(() => { picture.readyFunc = true });
 
 }
 

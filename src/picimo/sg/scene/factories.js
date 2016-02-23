@@ -15,10 +15,10 @@ export default function (Scene) {
 
     Scene.prototype.appendSpriteGroup = function (textureAtlas, options = {}, extension) {
 
-        options.parent = this;
+        options.parentNode = this;
         options.textureAtlas = textureAtlas;
 
-        var node = this.addChild(new SpriteGroup(this.app, options));
+        var node = this.appendChild(new SpriteGroup(this.app, options));
 
         if (extension) node.connect(extension);
 
@@ -29,10 +29,10 @@ export default function (Scene) {
 
     Scene.prototype.appendPicture = function (url, options = {}, extension) {
 
-        options.parent = this;
+        options.parentNode = this;
         options.texture = this.app.loadTexture(url);
 
-        var node = this.addChild(new Picture(this.app, options));
+        var node = this.appendChild(new Picture(this.app, options));
 
         if (extension) node.connect(extension);
 

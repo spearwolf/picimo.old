@@ -168,7 +168,7 @@ function updateDefaultSpriteSize ( spriteGroup ) {
 function initTextureAtlas ( spriteGroup, textureAtlas ) {
 
     spriteGroup.textureAtlas = null;
-    spriteGroup.setReadyFunc( false );
+    spriteGroup.readyFunc = false;
 
     Promise.resolve( textureAtlas )
 
@@ -179,7 +179,7 @@ function initTextureAtlas ( spriteGroup, textureAtlas ) {
 
             })
         .then ( function ( atlas ) { return atlas.texture.image.promise })
-        .then ( function () { spriteGroup.setReadyFunc( true ) });
+        .then ( function () { spriteGroup.readyFunc = true });
 
 }
 

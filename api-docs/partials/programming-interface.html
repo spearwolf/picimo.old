@@ -47,7 +47,7 @@
                     <li class="pid-idl__attr">
                         <span class="pid-idl__readonly {{#unless readonly}}pid-idl__readonly--blank{{/unless}}">{{#if readonly}}readonly{{/if}}</span>
                         <span class="pid-idl__keyword">attribute</span>
-                        <span class="pid-idl__type">{{> type-type type}}</span>
+                        <span class="pid-idl__type">{{#ifArray type}}({{#each type}}{{> type-type .}}{{#unless @last}} or {{/unless}}{{/each}}){{else}}{{> type-type type}}{{/ifArray}}</span>
                         <span class="pid-idl__name">{{name}};</span>
                     </li>
                   {{/unless}}

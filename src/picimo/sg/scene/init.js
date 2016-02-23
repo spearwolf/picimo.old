@@ -14,7 +14,7 @@ export function initTransform (scene) {  // --- {{{
     // TODO Every scene should have a transformation matrix
 
     if (scene.hasOwnProjection) {
-    
+
         scene.on("init", eventize.PRIO_A, function () {
 
             this.projectionNeedsUpdate = true;
@@ -134,7 +134,7 @@ export function initProjection (scene, options) {  // --- {{{
 
     scene.projectionNeedsUpdate = true;
 
-    scene._desiredPixelRatio = options.pixelRatio ? parseFloat( options.pixelRatio ) : ( scene.isRoot ? 1 : 0 );
+    scene._desiredPixelRatio = options.pixelRatio ? parseFloat( options.pixelRatio ) : ( scene.isRootNode ? 1 : 0 );
     scene._desiredWidth      = options.width ? parseFloat( options.width ) : 0;
     scene._desiredHeight     = options.height ? parseFloat( options.height ) : 0;
 

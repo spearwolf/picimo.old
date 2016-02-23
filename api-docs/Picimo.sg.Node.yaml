@@ -1,0 +1,177 @@
+---
+  name: "Picimo.sg.Node"
+  type: "programming-interface"
+  interfaces:
+    -
+      name: "Picimo.sg.Node"
+
+      description: |
+        The base class for all other picimo scene graph nodes.
+
+      description_post: |
+        #### Node States and Events
+        <img src="/assets/images/doc/node-events.png" srcset="/assets/images/doc/node-events.png 1x,/assets/images/doc/node-events@2x.png 2x" alt="Node Events and States">
+
+      attributes:
+        -
+          name: "name"
+          type: "string"
+          description: The node name is optional. You can search for a node by name with `findNode()`.
+
+        -
+          separator: true
+          title: "scene graph"
+        -
+          name: "app"
+          type: "Picimo.App"
+          readonly: true
+          description: The picimo app instance.
+        -
+          name: "parentNode"
+          type: "Picimo.sg.Node"
+          readonly: true
+          description: The parent node or `null`.
+        -
+          name: "isRootNode"
+          type: boolean
+          readonly: true
+          description: Returns `parent == null`
+        -
+          name: "renderPrio"
+          type: "number"
+          description: |
+            Die render priority bestimmt die Reihenfolge in der die Nodes
+            mittels `renderFrame()` aufgerufen werden.
+        -
+          name: "children"
+          type: "Picimo.sg.Node[]"
+          readonly: false
+          description: |
+            Every node can have children.
+
+        -
+          separator: true
+          title: "state"
+        -
+          name: "state"
+          type: "Picimo.sg.NodeState"
+        -
+          name: "ready"
+          type: boolean
+          description: |
+            When set to `false` this node will be ignored by *initialization* and *rendering* process.
+        -
+          name: "readyFunc"
+          type: function
+          description: |
+            Accepts a boolean value or a function. When the ready function returns a *truthy* value then this is node is *ready*.
+        -
+          name: "display"
+          type: "boolean"
+          description: |
+            When set to `false` the node will not be displayed. The *frame*, *renderFrame* and *frameEnd* events will not be called.
+            BUT `init` and `initGl` will be called. If you don't want to initialize the node set the *ready* attribute to `false`.
+
+
+      functions:
+        -
+          name: "appendChild"
+          args:
+            -
+              name: "node"
+              type: "Picimo.sg.Node"
+          returns: "Picimo.sg.Node"
+        -
+          name: "findNode"
+          args:
+            -
+              name: "name"
+              type: "string"
+          returns: "Picimo.sg.Node"
+        -
+          name: "renderFrame"
+          returns: void
+        -
+          name: "destroy"
+          returns: void
+
+      constructor:
+        args:
+          -
+            name: "app"
+            type: "Picimo.App"
+            nullable: false
+            optional: false
+          -
+            name: "options"
+            type: "Picimo.sg.Node.Options"
+            nullable: true
+            optional: true
+
+  dictionaries:
+    -
+      name: "Picimo.sg.Node.Options"
+      attributes:
+        -
+          name: "renderPrio"
+          type: "number"
+          required: false
+          default: "0"
+          description: The render priority of this node. Defaults to `0`.
+        -
+          name: "display"
+          type: "number"
+          required: false
+          default: true
+          description: The initial display state. Defaults to `true`.
+        -
+          name: "ready"
+          type:
+            - boolean
+            - function
+          required: false
+          default: true
+          description: The initial ready state. Defaults to `true`.
+        -
+          name: "name"
+          type: "string"
+          required: false
+          description: The name of the node.
+        -
+          name: "parent"
+          type: "Picimo.sg.Node"
+          required: false
+          description: When not set then this node will be acting as root node.
+        -
+          name: "onInit"
+          type: function
+          required: false
+        -
+          name: "onInitGl"
+          type: function
+          required: false
+        -
+          name: "onFrame"
+          type: function
+          required: false
+        -
+          name: "onRenderFrame"
+          type: function
+          required: false
+        -
+          name: "onFrameEnd"
+          type: function
+          required: false
+        -
+          name: "onDestroyGl"
+          type: function
+          required: false
+        -
+          name: "onDestroy"
+          type: function
+          required: false
+        -
+          name: "onChildrenUpdated"
+          type: function
+          required: false
+

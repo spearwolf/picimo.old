@@ -27,6 +27,10 @@ NodeState.prototype.is = function ( state ) {
 
 };
 
+NodeState.prototype.isNot = function ( state ) {
+    return ! this.is(state);
+};
+
 /**
  * @method Picimo.sg.NodeState#set
  * @param {number} state

@@ -78,7 +78,7 @@ export default function Scene (app, options = {}) {
         }
     };
 
-    if (this.isRoot) initRootScene(this);
+    if (this.isRootNode) initRootScene(this);
 
     this.on("frame", onFrame);
 
@@ -107,9 +107,9 @@ Object.defineProperties( Scene.prototype, {
 
         get: function () {
 
-            if ( this.isRoot ) return;
+            if ( this.isRootNode ) return;
 
-            var node = this.parent;
+            let node = this.parentNode;
 
             while ( node ) {
 
@@ -119,7 +119,7 @@ Object.defineProperties( Scene.prototype, {
 
                 }
 
-                node = node.parent;
+                node = node.parentNode;
 
             }
 
