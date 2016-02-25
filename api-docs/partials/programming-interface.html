@@ -80,11 +80,11 @@
         }<br>
     </article>
 
-    {{#if description_post}}
+  {{#if description_after_idl}}
     <article class="pid__interface pid-idl__description md">
-        {{{md description_post}}}
+        {{{md description_after_idl}}}
     </article>
-    {{/if}}
+  {{/if}}
 
   {{#if attributes}}
     <article class="pid__interface pid__attributes page-break-after">
@@ -100,6 +100,51 @@
           {{/attributes}}
         </dl>
 
+    </article>
+  {{/if}}
+
+  {{#if description_after_attributes}}
+    <article class="pid__interface pid-idl__description md">
+        {{{md description_after_attributes}}}
+    </article>
+  {{/if}}
+
+  {{#if events}}
+    <article class="pid__interface pid__events page-break-after">
+
+        <h4>Events</h4>
+
+        <table class="pid-events">
+            <thead>
+                <tr>
+                    <th class="pid-events__title">event name</th>
+                    <th class="pid-events__title">parameters</th>
+                    <th class="pid-events__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#events}}
+                <tr>
+                    <td class="pid-events__name"><span>{{name}}</span></td>
+                    <td class="pid-events__args pid-idl pid-idl__args">
+                      {{#if args}}
+                        (<ul class="pid-idl__func-args args-{{args.length}}">{{#each args}}<li class="pid-idl__func-arg">{{#if optional}}optional {{/if}}{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}} | {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}} <span class="pid-idl__args-name">{{name}}</span>{{#if default}}= <span class="pid-idl__default-value">{{default}}</span>{{/if}}{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>)
+                      {{else}}
+                        -
+                      {{/if}}
+                    </td>
+                    <td class="pid-events__description md md-inline">{{{md description}}}</td>
+                </tr>
+              {{/events}}
+            </tbody>
+        </table>
+
+    </article>
+  {{/if}}
+
+  {{#if description_after_events}}
+    <article class="pid__interface pid-idl__description md page-break-after">
+        {{{md description_after_events}}}
     </article>
   {{/if}}
 
@@ -133,9 +178,9 @@
         }<br>
     </article>
 
-    {{#if description_post}}
+    {{#if description_after_idl}}
     <article class="pid__dictionary pid-idl__description md">
-        {{{md description_post}}}
+        {{{md description_after_idl}}}
     </article>
     {{/if}}
 
@@ -172,9 +217,9 @@
         </div>
     </article>
 
-    {{#if description_post}}
+    {{#if description_after_idl}}
     <article class="pid__enum pid-idl__description md">
-        {{{md description_post}}}
+        {{{md description_after_idl}}}
     </article>
     {{/if}}
 

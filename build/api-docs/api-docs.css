@@ -727,6 +727,46 @@ body.overlay .main {
     .pid-attrs__description > p {
       margin: 0; }
 
+.pid-events {
+  /*width: 100%;*/
+  border-collapse: separate;
+  border-spacing: 2px; }
+  .pid-events th, .pid-events td {
+    text-align: left; }
+  .pid-events th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dae0e5;
+    padding: 0.5em 0.5em; }
+  .pid-events td {
+    border-bottom: 1px solid #dae0e5;
+    padding: 0 0.5em; }
+  .pid-events__title {
+    font-family: Roboto, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 19.416px;
+    text-transform: uppercase; }
+  .pid-events__name span {
+    font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 21.6px;
+    color: #000;
+    background-color: #dbf0fb;
+    padding-left: 0.5em;
+    padding-right: 0.5em; }
+  .pid-events__description {
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 22.652px; }
+
 /*$col-prim6       : #a9274b;                         // topbar (compcat view) bg*/
 .md {
   margin-bottom: 2.5em; }

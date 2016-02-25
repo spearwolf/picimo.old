@@ -8,7 +8,7 @@
       description: |
         The base class for all other picimo scene graph nodes.
 
-      description_post: |
+      description_after_events: |
         #### Node States and Events
         <img src="/assets/images/doc/node-events.png" srcset="/assets/images/doc/node-events.png 1x,/assets/images/doc/node-events@2x.png 2x" alt="Node Events and States">
 
@@ -17,7 +17,6 @@
           name: "name"
           type: "string"
           description: The node name is optional. You can search for a node by name with `findNode()`.
-
         -
           separator: true
           title: "scene graph"
@@ -48,7 +47,6 @@
           readonly: false
           description: |
             Every node can have children.
-
         -
           separator: true
           title: "state"
@@ -72,10 +70,16 @@
             When set to `false` the node will not be displayed. The *frame*, *renderFrame* and *frameEnd* events will not be called.
             BUT `init` and `initGl` will be called. If you don't want to initialize the node set the *ready* attribute to `false`.
 
-
       functions:
         -
           name: "appendChild"
+          args:
+            -
+              name: "node"
+              type: "Picimo.sg.Node"
+          returns: "Picimo.sg.Node"
+        -
+          name: "removeChild"
           args:
             -
               name: "node"
@@ -107,6 +111,46 @@
             type: "Picimo.sg.Node.Options"
             nullable: true
             optional: true
+
+      events:
+        -
+          name: init
+          args:
+            -
+              name: done
+              type: function
+          description: |
+            Initialize your node!
+            When your *init is __async__* call `done()` with your `Promise` as first argument.
+
+        -
+          name: initGl
+          args:
+            -
+              name: done
+              type: function
+          description: |
+            Initialize webgl resources here if needed!
+            When your *init is __async__* call `done()` with your `Promise` as first argument.
+
+        -
+          name: childrenUpdated
+          description: A child node was added or removed.
+        -
+          name: frame
+          description: A new frame begins!
+        -
+          name: renderFrame
+          description: Time to create your render commands here!
+        -
+          name: frameEnd
+          description: The frame ends. All your children completed the frame.
+        -
+          name: destroyGl
+          description: Free all your webgl resources!
+        -
+          name: destroy
+          description: Destroy or release all additional resources allocated by this node.
 
   dictionaries:
     -
@@ -175,3 +219,4 @@
           type: function
           required: false
 
+# vim:ts=2:sw=2:sts=2:

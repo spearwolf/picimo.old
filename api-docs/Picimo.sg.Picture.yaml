@@ -294,7 +294,7 @@ enums:
     -
         name: Picimo.sg.Picture.DisplaySize
 
-        description_post: |
+        description_after_idl: |
             ![The Display Size Property](/assets/images/doc/displaySize.png)
 
             The display size specifies the size of the picture.
