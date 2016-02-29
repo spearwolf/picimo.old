@@ -6,6 +6,7 @@ import * as graph from '../graph';
 import * as webgl from '../webgl';
 import * as core from '../core';
 import * as sprites from '../sprites';
+import * as ui from '../ui';
 import initSprites from '../sprites/init';
 
 /**
@@ -91,6 +92,7 @@ export default function App ( canvas, options ) {
 
     canvas.classList.add( 'picimo' );
 
+    this.mouseController = new ui.MouseController(this);
 
     /**
      * @member {WebGlRenderingContext} Picimo.App#gl
