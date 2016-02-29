@@ -6,11 +6,11 @@ import Picture from '../picture';
 export default function (Scene) {
 
     /**
-     * @method Picimo.sg.Scene#appendSpriteGroup
+     * @method Picimo.graph.Scene#appendSpriteGroup
      * @param {Picimo.core.TextureAtlas|Promise} textureAtlas
      * @param {options} [options]
      * @param {object} [extension]
-     * @return Picimo.sg.SpriteGroup
+     * @return Picimo.graph.SpriteGroup
      */
 
     Scene.prototype.appendSpriteGroup = function (textureAtlas, options = {}, extension) {

@@ -28,7 +28,7 @@
       attributes:
         -
           name: "scene"
-          type: "Picimo.sg.Scene"
+          type: "Picimo.graph.Scene"
           readonly: true
           description: "The *root* scene of the picimo scene graph."
         -

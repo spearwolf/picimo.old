@@ -2,12 +2,12 @@
 
 import App from './app';
 
-import * as sg      from './sg';
+import * as graph   from './graph';
 import * as webgl   from './webgl';
 import * as utils   from './utils';
 import * as math    from './math';
 import * as core    from './core';
 import * as sprites from './sprites';
 
-export { App, sg, webgl, utils, math, core, sprites };
+export { App, graph, webgl, utils, math, core, sprites };
 

@@ -1,19 +1,19 @@
 ---
-  name: "Picimo.sg.Scene"
+  name: "Picimo.graph.Scene"
   type: "programming-interface"
   interfaces:
     -
-      name: "Picimo.sg.Scene"
+      name: "Picimo.graph.Scene"
 
       extends:
-        - Picimo.sg.Node
+        - Picimo.graph.Node
 
       description: "![Scene Coordinate System](/assets/images/doc/coordinates.png)"
 
       attributes:
         -
           name: "scene"
-          type: "Picimo.sg.Scene"
+          type: "Picimo.graph.Scene"
           readonly: true
           description: "The parent scene. Every scene has a parent scene &mdash; unless the root scene &mdash; for the root scene this value is `undefined`."
         -
@@ -68,7 +68,7 @@
               type: "string"
               default: "'contain'"
               optional: true
-          returns: "Picimo.sg.Scene"
+          returns: "Picimo.graph.Scene"
         -
           separator: true
           title: "Scene graph node factories"
@@ -80,8 +80,8 @@
               type: "string"
             -
               name: "options"
-              type: "Picimo.sg.Picture.Options"
-          returns: "Picimo.sg.Picture"
+              type: "Picimo.graph.Picture.Options"
+          returns: "Picimo.graph.Picture"
         -
           name: "appendSpriteGroup"
           args:
@@ -92,8 +92,8 @@
                 - "Promise"
             -
               name: "options"
-              type: "Picimo.sg.SpriteGroup.Options"
-          returns: "Picimo.sg.SpriteGroup"
+              type: "Picimo.graph.SpriteGroup.Options"
+          returns: "Picimo.graph.SpriteGroup"
 
       constructor:
         args:
@@ -104,13 +104,13 @@
             optional: false
           -
             name: "options"
-            type: "Picimo.sg.Scene.Options"
+            type: "Picimo.graph.Scene.Options"
             nullable: true
             optional: true
 
   dictionaries:
     -
-      name: "Picimo.sg.Scene.Options"
+      name: "Picimo.graph.Scene.Options"
       attributes:
         -
           name: "width"

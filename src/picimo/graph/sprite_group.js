@@ -5,8 +5,8 @@ import * as core from '../core';
 import { SpriteGroupPipeline } from '../webgl/pipeline';
 
 /**
- * @class Picimo.sg.SpriteGroup
- * @extends Picimo.sg.Node
+ * @class Picimo.graph.SpriteGroup
+ * @extends Picimo.graph.Node
  *
  * @param {Picimo.App} app - The app instance
  * @param {object} [options] - The options
@@ -61,7 +61,7 @@ SpriteGroup.prototype.constructor = SpriteGroup;
 
 
 /**
- * @method Picimo.sg.SpriteGroup#createSprite
+ * @method Picimo.graph.SpriteGroup#createSprite
  *
  * @param {string|Picimo.core.Texture} [texture]
  * @param {number} [width]
@@ -117,14 +117,14 @@ SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
 };
 
 /**
- * @method Picimo.sg.SpriteGroup#setDefaultSpriteSize
+ * @method Picimo.graph.SpriteGroup#setDefaultSpriteSize
  *
  * @param {number} width
  * @param {number} height
  *
- * @returns {Picimo.sg.SpriteGroup} *self*
+ * @returns {Picimo.graph.SpriteGroup} *self*
  *
- * @see Picimo.sg.SpriteGroup#createSprite
+ * @see Picimo.graph.SpriteGroup#createSprite
  *
  * @description
  * Set the width and height for all new sprites. Note that this won't affect any previously created sprites.

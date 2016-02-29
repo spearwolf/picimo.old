@@ -16,8 +16,8 @@ import createFactories from './factories';
 
 
 /**
- * @class Picimo.sg.Scene
- * @extends Picimo.sg.Node
+ * @class Picimo.graph.Scene
+ * @extends Picimo.graph.Node
  *
  * @classdesc
  * Allows you to determinate a **blend mode**.
@@ -45,12 +45,12 @@ export default function Scene (app, options = {}) {
     Node.call(this, app, options);
 
     /**
-     * @member {Picimo.webgl.cmd.BlendMode} Picimo.sg.Scene#blendMode
+     * @member {Picimo.webgl.cmd.BlendMode} Picimo.graph.Scene#blendMode
      */
     this.blendMode = options.blendMode;
 
     /**
-     * @member {string} Picimo.sg.Scene#sizeVariety - *cover* or *contain*
+     * @member {string} Picimo.graph.Scene#sizeVariety - *cover* or *contain*
      */
     this._sizeVariety = options.sizeVariety === 'cover' ? 'cover' : 'contain';
 
@@ -100,7 +100,7 @@ createFactories(Scene);
 Object.defineProperties( Scene.prototype, {
 
     /**
-     * @member {Picimo.sg.Scene} Picimo.sg.Scene#scene - The parent scene.
+     * @member {Picimo.graph.Scene} Picimo.graph.Scene#scene - The parent scene.
      */
 
     'scene': {
@@ -133,7 +133,7 @@ Object.defineProperties( Scene.prototype, {
 
 
 /**
- * @method Picimo.sg.Scene#setSize
+ * @method Picimo.graph.Scene#setSize
  * @param {number} width - Wanted scene width
  * @param {number} height - Wanted scene height
  * @param {string} [sizeVariety="contain"] - *cover* or *contain*

@@ -3,7 +3,7 @@
 import * as utils from '../utils';
 
 /**
- * @class Picimo.sg.NodeState
+ * @class Picimo.graph.NodeState
  * @param {number} [initialValue=0] - The initial state
  */
 export default function NodeState ( initialValue ) {
@@ -15,7 +15,7 @@ export default function NodeState ( initialValue ) {
 }
 
 /**
- * @method Picimo.sg.NodeState#is
+ * @method Picimo.graph.NodeState#is
  * @param {number} state
  * @return {boolean}
  * @example
@@ -32,7 +32,7 @@ NodeState.prototype.isNot = function ( state ) {
 };
 
 /**
- * @method Picimo.sg.NodeState#set
+ * @method Picimo.graph.NodeState#set
  * @param {number} state
  * @example
  * state.set( NodeState.READY )
@@ -63,35 +63,35 @@ NodeState.prototype.toString = function () {
 utils.object.definePropertiesPublicRO( NodeState, {
 
     /**
-     * @memberof Picimo.sg.NodeState
+     * @memberof Picimo.graph.NodeState
      * @constant
      * @static
      */
     CREATE : 1,
 
     /**
-     * @memberof Picimo.sg.NodeState
+     * @memberof Picimo.graph.NodeState
      * @constant
      * @static
      */
     INIT : 2,
 
     /**
-     * @memberof Picimo.sg.NodeState
+     * @memberof Picimo.graph.NodeState
      * @constant
      * @static
      */
     READY : 4,
 
     /**
-     * @memberof Picimo.sg.NodeState
+     * @memberof Picimo.graph.NodeState
      * @constant
      * @static
      */
     ERROR : 8,
 
     /**
-     * @memberof Picimo.sg.NodeState
+     * @memberof Picimo.graph.NodeState
      * @constant
      * @static
      */

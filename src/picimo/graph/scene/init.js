@@ -33,13 +33,13 @@ export function initWithoutProjection (scene) {  // --- {{{
     utils.object.definePropertiesPublicRO(scene, {
 
         /**
-         * @member {Picimo.math.Matrix4} Picimo.sg.Scene#projection
+         * @member {Picimo.math.Matrix4} Picimo.graph.Scene#projection
          * @readonly
          */
         projection: null,
 
         /**
-         * @member {boolean} Picimo.sg.Scene#hasOwnProjection
+         * @member {boolean} Picimo.graph.Scene#hasOwnProjection
          * @readonly
          */
         hasOwnProjection: false,
@@ -51,7 +51,7 @@ export function initWithoutProjection (scene) {  // --- {{{
     Object.defineProperties(scene, {
 
         /**
-         * @member {number} Picimo.sg.Scene#width
+         * @member {number} Picimo.graph.Scene#width
          */
 
         'width' : { get: function () {
@@ -62,7 +62,7 @@ export function initWithoutProjection (scene) {  // --- {{{
         }, enumerable: true },
 
         /**
-         * @member {number} Picimo.sg.Scene#height
+         * @member {number} Picimo.graph.Scene#height
          */
 
         'height' : { get: function () {
@@ -73,7 +73,7 @@ export function initWithoutProjection (scene) {  // --- {{{
         }, enumerable: true },
 
         /**
-         * @member {number} Picimo.sg.Scene#pixelRatio
+         * @member {number} Picimo.graph.Scene#pixelRatio
          */
 
         'pixelRatio' : { get: function () {
@@ -84,7 +84,7 @@ export function initWithoutProjection (scene) {  // --- {{{
         }, enumerable: true },
 
         /**
-         * @member {number} Picimo.sg.Scene#devicePixelRatio
+         * @member {number} Picimo.graph.Scene#devicePixelRatio
          * @readonly
          */
 
@@ -352,8 +352,8 @@ export function updateProjection (scene) {  // --- {{{
 
     /**
      * Announce a projection matrix change.
-     * @event Picimo.sg.Scene#projectionUpdated
-     * @memberof Picimo.sg.Scene
+     * @event Picimo.graph.Scene#projectionUpdated
+     * @memberof Picimo.graph.Scene
      * @param {Picimo.math.Matrix4} projection - The changed projection matrix.
      */
 

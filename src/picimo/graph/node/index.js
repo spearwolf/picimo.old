@@ -13,7 +13,7 @@ import destroy from './destroy';
 export default function Node (app, options = {}) {
 
     if ( ! app ) {
-        throw new Error('[Picimo.sg.Node] app should not be undefined!');
+        throw new Error('[Picimo.graph.Node] app should not be undefined!');
     }
 
     utils.object.definePropertyPublicRO(this, 'app', app);

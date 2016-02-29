@@ -25,15 +25,15 @@ export default function renderFrame () {
 
                 /**
                  * Is called only if node is *ready* and *display*-able.
-                 * @event Picimo.sg.Node#frame
-                 * @memberof Picimo.sg.Node
+                 * @event Picimo.graph.Node#frame
+                 * @memberof Picimo.graph.Node
                  */
                 this.emit( 'frame' );
 
                 /**
                  * Is called just after the *frame* event and before the *frameEnd* event. The *render commands* should be generated here.
-                 * @event Picimo.sg.Node#renderFrame
-                 * @memberof Picimo.sg.Node
+                 * @event Picimo.graph.Node#renderFrame
+                 * @memberof Picimo.graph.Node
                  */
                 this.emit( 'renderFrame' );
 
@@ -55,8 +55,8 @@ export default function renderFrame () {
 
                 /**
                  * Is called after the on *frame* and *renderFrame* events.
-                 * @event Picimo.sg.Node#frameEnd
-                 * @memberof Picimo.sg.Node
+                 * @event Picimo.graph.Node#frameEnd
+                 * @memberof Picimo.graph.Node
                  */
                 this.emit( 'frameEnd' );
 
@@ -84,8 +84,8 @@ function onInit (node) {
 
         /**
          * This is the first event. Will be called only once and never again.
-         * @event Picimo.sg.Node#init
-         * @memberof Picimo.sg.Node
+         * @event Picimo.graph.Node#init
+         * @memberof Picimo.graph.Node
          */
         node.emit( 'init', makeDoneFunc( initPromises, node ) );
 
@@ -112,8 +112,8 @@ function onInitGl (node) {
 
         /**
          * Will be called just after *init*. Should only be used to perform webgl related tasks.
-         * @event Picimo.sg.Node#initGl
-         * @memberof Picimo.sg.Node
+         * @event Picimo.graph.Node#initGl
+         * @memberof Picimo.graph.Node
          */
         node.emit( 'initGl', makeDoneFunc( initGlPromises, node ) );
 

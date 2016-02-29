@@ -6,8 +6,8 @@ import { PicturePipeline } from '../webgl/pipeline';
 import * as core from '../core';
 
 /**
- * @class Picimo.sg.Picture
- * @extends Picimo.sg.Node
+ * @class Picimo.graph.Picture
+ * @extends Picimo.graph.Node
  *
  * @param {Picimo.App} app - The app instance
  * @param {object} [options] - The options

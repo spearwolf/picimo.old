@@ -39,8 +39,8 @@ function checkResize (scene) {
 
         /**
          * Announce a scene size ( width, height or pixelRatio ) change.
-         * @event Picimo.sg.Scene#resize
-         * @memberof Picimo.sg.Scene
+         * @event Picimo.graph.Scene#resize
+         * @memberof Picimo.graph.Scene
          * @param {number} width
          * @param {number} height
          * @param {number} pixelRatio

@@ -22,8 +22,8 @@ export default function destroy () {
             /**
              * Is only called if the *init* event successfully resolved. *Even if the *initGl* event failed*.
              * Is called before the *destroy* event.
-             * @event Picimo.sg.Node#destroyGl
-             * @memberof Picimo.sg.Node
+             * @event Picimo.graph.Node#destroyGl
+             * @memberof Picimo.graph.Node
              */
             this.emit( 'destroyGl' );
 
@@ -41,8 +41,8 @@ export default function destroy () {
 
             /**
              * Is only called if the *init* event successfully resolved and just after the *destroyGl* event.
-             * @event Picimo.sg.Node#destroy
-             * @memberof Picimo.sg.Node
+             * @event Picimo.graph.Node#destroy
+             * @memberof Picimo.graph.Node
              */
             this.emit( 'destroy' );
 

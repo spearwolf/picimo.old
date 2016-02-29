@@ -10,7 +10,7 @@ var app  = new Picimo.App({
 
 // ========= nodes ============================================== {{{
 
-var node = new Picimo.sg.Scene( app );
+var node = new Picimo.graph.Scene( app );
 
 node.on( 'init', function ( done ) {
 

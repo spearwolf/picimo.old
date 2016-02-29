@@ -1,12 +1,12 @@
-name: Picimo.sg.Picture
+name: Picimo.graph.Picture
 type: programming-interface
 
 interfaces:
     -
-        name: Picimo.sg.Picture
+        name: Picimo.graph.Picture
 
         extends:
-            - Picimo.sg.Node
+            - Picimo.graph.Node
 
         constructor:
             args:
@@ -17,17 +17,17 @@ interfaces:
                     optional: false
                 -
                     name: options
-                    type: Picimo.sg.Picture.Options
+                    type: Picimo.graph.Picture.Options
                     nullable: true
                     optional: true
 
         attributes:
             -
                 name: displayPosition
-                type: Picimo.sg.Picture.DisplayPosition
+                type: Picimo.graph.Picture.DisplayPosition
             -
                 name: displaySize
-                type: Picimo.sg.Picture.DisplaySize
+                type: Picimo.graph.Picture.DisplaySize
             -
                 name: scaleX
                 type: number
@@ -73,7 +73,7 @@ interfaces:
         functions:
             -
                 name: setPos
-                returns: Picimo.sg.Picture
+                returns: Picimo.graph.Picture
                 args:
                     -
                         name: x
@@ -83,7 +83,7 @@ interfaces:
                         type: number
             -
                 name: translate
-                returns: Picimo.sg.Picture
+                returns: Picimo.graph.Picture
                 args:
                     -
                         name: tx
@@ -93,7 +93,7 @@ interfaces:
                         type: number
             -
                 name: setScale
-                returns: Picimo.sg.Picture
+                returns: Picimo.graph.Picture
                 args:
                     -
                         name: sx
@@ -103,14 +103,14 @@ interfaces:
                         type: number
             -
                 name: setZoom
-                returns: Picimo.sg.Picture
+                returns: Picimo.graph.Picture
                 args:
                     -
                         name: zoom
                         type: number
             -
                 name: setRgb
-                returns: Picimo.sg.Picture
+                returns: Picimo.graph.Picture
                 args:
                     -
                         name: red
@@ -123,7 +123,7 @@ interfaces:
                         type: number
             -
                 name: setRgba
-                returns: Picimo.sg.Picture
+                returns: Picimo.graph.Picture
                 args:
                     -
                         name: red
@@ -168,7 +168,7 @@ interfaces:
 
 dictionaries:
     -
-        name: Picimo.sg.Picture.Options
+        name: Picimo.graph.Picture.Options
         attributes:
             -
                 name: texture
@@ -179,15 +179,15 @@ dictionaries:
                 description: The texture is mandatory. If you don't specify a texture you will see nothing.
             -
                 name: displaySize
-                type: Picimo.sg.Picture.DisplaySize
+                type: Picimo.graph.Picture.DisplaySize
                 default: "'contain'"
                 description: |
                     You should specify either of *displaySize* or *displayPosition*.
                     If both properties are *not* specified the *displaySize* will be set to `'contain'`.
-                    See [Picimo.sg.Picture.DisplaySize](#) for more information.
+                    See [Picimo.graph.Picture.DisplaySize](#) for more information.
             -
                 name: displayPosition
-                type: Picimo.sg.Picture.DisplayPosition
+                type: Picimo.graph.Picture.DisplayPosition
                 description: The *displayPosition* property has precedence over the *displaySize* property. If specified *displaySize* will be ignored.
             -
                 name: zoom
@@ -207,7 +207,7 @@ dictionaries:
                 default: "1"
 
     -
-        name: Picimo.sg.Picture.DisplayPosition
+        name: Picimo.graph.Picture.DisplayPosition
         description: |
             The display position specifies how the picture is positioned *in relationship to the scene dimension*.
 
@@ -292,7 +292,7 @@ dictionaries:
 
 enums:
     -
-        name: Picimo.sg.Picture.DisplaySize
+        name: Picimo.graph.Picture.DisplaySize
 
         description_after_idl: |
             ![The Display Size Property](/assets/images/doc/displaySize.png)
