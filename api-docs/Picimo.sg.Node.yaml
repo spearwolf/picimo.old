@@ -8,6 +8,7 @@
       description: |
         The base class for all other picimo scene graph nodes.
 
+
       description_after_events: |
         #### Node States and Events
         <img src="/assets/images/doc/node-events.png" srcset="/assets/images/doc/node-events.png 1x,/assets/images/doc/node-events@2x.png 2x" alt="Node Events and States">
@@ -182,7 +183,7 @@
           required: false
           description: The name of the node.
         -
-          name: "parent"
+          name: "parentNode"
           type: "Picimo.sg.Node"
           required: false
           description: When not set then this node will be acting as root node.

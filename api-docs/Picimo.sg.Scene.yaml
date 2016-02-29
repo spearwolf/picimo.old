@@ -12,10 +12,6 @@
 
       attributes:
         -
-          name: "app"
-          type: "Picimo.App"
-          readonly: true
-        -
           name: "scene"
           type: "Picimo.sg.Scene"
           readonly: true
