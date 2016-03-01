@@ -43,9 +43,8 @@ import initSprites from '../sprites/init';
  * @param {object} [options]                                    - The options.
  * @param {boolean} [options.alpha=false]                       - Create a transparent WebGL canvas.
  * @param {boolean} [options.antialias=false]                   - Enable antialiasing.
- * @param {boolean} [options.stats=false]                       - Create the [ mrdoob/stats.js ]( https://github.com/mrdoob/stats.js/ ) widget and append it to the container element.
  * @param {HTMLCanvasElement} [options.canvas]                  - The canvas dom element.
- * @param {HTMLElement} [options.appendTo=document.body]        - Set the container element. The WebGL Canvas (and the stats element) will be appended to this element. The container element also defines the size of the canvas. If this is the body element you will get an fullscreen WebGL canvas. *When the __canvas__ option is used, this option will be ignored.*
+ * @param {HTMLElement} [options.appendTo=document.body]        - Set the container element. The WebGL Canvas will be appended to this element. The container element also defines the size of the canvas. If this is the body element you will get an fullscreen WebGL canvas. *When the __canvas__ option is used, this option will be ignored.*
  * @param {string|Picimo.utils.Color} [options.bgColor=#000000] - Background color of the WebGL canvas. Use any CSS color format you like.
  * @param {string} [options.assetBaseUrl]                       - Set the base url prefix for all assets (images, json, ..). As an alternative to this option you could define a global var **PICIMO_ASSET_BASE_URL** before creating your Picimo instance. But the preferred way should be using *assetBaseUrl*!
  *
@@ -156,16 +155,6 @@ export default function App ( canvas, options ) {
 
     this.frameNo = 0;
 
-    this.renderer.onInitGl();
-    this.resize();
-
-    this.onResize = this.resize.bind( this );
-    window.addEventListener( 'resize', this.onResize, false );
-
-    this.onAnimationFrame = this.renderFrame.bind( this );
-    requestAnimationFrame( this.onAnimationFrame );
-
-
     /**
      * @member {Picimo.graph.Scene} Picimo.App#scene - The root node of the scene graph.
      */
@@ -176,6 +165,26 @@ export default function App ( canvas, options ) {
         pixelRatio: 1
 
     } ) );
+
+    //------------------------------------------------
+    // Enable picimo plugins
+    // to hook into app creation and initialization
+    //------------------------------------------------
+
+    let app = App.emitReduce('create', this, options);
+
+    app.emit('init');
+
+    app.renderer.onInitGl();
+    app.resize();
+
+    this.onResize = app.resize.bind(app);
+    window.addEventListener('resize', app.onResize, false);
+
+    this.onAnimationFrame = app.renderFrame.bind(app);
+    requestAnimationFrame(app.onAnimationFrame);
+
+    return app;
 
 }
 
@@ -225,6 +234,8 @@ App.prototype.resize = function () {
 
         }
 
+        this.emit('resize');
+
     }
 
 };
@@ -241,17 +252,23 @@ App.prototype.renderFrame = function () {
     this.frameTime = this.frameLastTime == null ? 0.0 : this.frameLastTime - this.now;
     this.frameLastTime = this.now;
 
+    this.emit('frameBegin');
+
     this.renderer.onStartFrame();
 
-    if ( this.scene ) {
+    this.emit('frame');
 
+    if (this.scene) {
         this.scene.renderFrame();
-
     }
+
+    this.emit('renderFrame');
 
     this.renderer.onEndFrame();
 
-    requestAnimationFrame( this.onAnimationFrame );
+    this.emit('frameEnd');
+
+    requestAnimationFrame(this.onAnimationFrame);
 
 };
 
@@ -383,4 +400,8 @@ function createWebGlContext ( app ) {
     return new webgl.WebGlContext( gl );
 
 }
+
+
+eventize(App);  // Enable plugins via Picimo.App.on('create', function (app, options))
+
 

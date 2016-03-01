@@ -159,6 +159,35 @@
             nullable: true
             optional: true
 
+      events:
+        -
+          name: init
+          description: |
+            Will be called right after app creation time.
+        -
+          name: resize
+          description: |
+            Canvas resized.
+        -
+          name: frameBegin
+          description: |
+            The frame begins.
+        -
+          name: frame
+          description: |
+            On frame event. The renderer has been initialized,
+            but this is before the scene graph is rendered.
+        -
+          name: renderFrame
+          description: |
+            On frame event. The renderer has been initialized
+            and the scene graph is executed but the renderer is not yet finished,
+            so this is the last call to create render commands if wanted.
+        -
+          name: frameEnd
+          description: |
+            The frame ends.
+
   dictionaries:
     -
       name: "Picimo.App.Options"
@@ -170,10 +199,6 @@
           required: false
         -
           name: "antialias"
-          type: "boolean"
-          default: "false"
-        -
-          name: "stats"
           type: "boolean"
           default: "false"
         -
