@@ -1,8 +1,9 @@
 /* global Picimo */
+/* global Stats */
 
 console.log('Welcome to the %c %cnobinger%c benchmark v1 %c%c a picimo demo! ', 'background-color:yellow', 'font-style:italic;background-color:yellow', 'font-style:normal;background-color:yellow', 'background-color:transparent', 'background-color:red;color:#fff' );
 
-(function () {
+(function () {  // --- stats.js ---- {{{
 
     Picimo.App.on('create', function (app, options) {
         if (options.showStats) {
@@ -22,11 +23,11 @@ console.log('Welcome to the %c %cnobinger%c benchmark v1 %c%c a picimo demo! ', 
                 app.on('frameEnd', stats.end.bind(stats));
 
             });
-        
+
         }
     });
 
-})();
+})(); // --- }}}
 
 var app = new Picimo.App({
     canvas    : document.getElementById( 'picimo' ),
@@ -47,6 +48,20 @@ app.scene.appendSpriteGroup(atlas, {
     sprites: 'simple'
 }, new Benchy());
 
+//-------------------------
+// add some html controls
+//-------------------------
+
+var container = document.createElement('div');
+container.className = 'benchy-controls';
+document.body.appendChild(container);
+
+
+//-----------------------------------------------------------------------------
+//
+// Benchy
+//
+//-----------------------------------------------------------------------------
 
 function Benchy () {
     this.allBunnys = [];
