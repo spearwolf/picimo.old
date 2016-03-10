@@ -5,19 +5,9 @@ import * as utils from '../utils';
 const { mat4 } = utils.glMatrix;
 //const { publicRO } = utils.object.decorator;
 
-
-/**
- * @class Picimo.math.Matrix4
- */
-
 export default class Matrix4 {
 
     serial = 1;
-
-    /**
-     * @member {mat4} Picimo.math.Matrix4#mat4
-     * @readonly
-     */
 
     //@publicRO
     //mat4 = mat4.create();
@@ -27,24 +17,12 @@ export default class Matrix4 {
         Object.seal(this);
     }
 
-    /**
-     * @method Picimo.math.Matrix4#identity
-     */
-
     identity () {
         mat4.identity(this.mat4);
         ++this.serial;
     }
 
-
-    /**
-     * @method Picimo.math.Matrix4#ortho
-     * @param {number} width
-     * @param {number} height
-     * @param {number} zRange
-     */
-
-    ortho ( width, height, zRange ) {
+    ortho (width, height, zRange) {
 
         let hw = width >> 1;
         let hh = height >> 1;
@@ -55,8 +33,28 @@ export default class Matrix4 {
 
     }
 
+    translate (x, y, z=0) {
+        mat4.translate(this.mat4, this.mat4, [x, y, z]);
+        ++this.serial;
+    }
+
     scale (x, y, z=1) {
         mat4.scale(this.mat4, this.mat4, [x, y, z]);
+        ++this.serial;
+    }
+
+    rotateX (deg) {
+        mat4.rotateX(this.mat4, this.mat4, deg * Math.PI / 180.0);
+        ++this.serial;
+    }
+
+    rotateY (deg) {
+        mat4.rotateY(this.mat4, this.mat4, deg * Math.PI / 180.0);
+        ++this.serial;
+    }
+
+    rotateZ (deg) {
+        mat4.rotateZ(this.mat4, this.mat4, deg * Math.PI / 180.0);
         ++this.serial;
     }
 
@@ -65,10 +63,71 @@ export default class Matrix4 {
         ++this.serial;
     }
 
-    copy (from) {
-        mat4.copy(this.mat4, from.mat4);
+    copy (src) {
+        mat4.copy(this.mat4, src.mat4);
+        ++this.serial;
+    }
+
+    clone () {
+        let dolly = new Matrix4();
+        dolly.copy(this);
+        return dolly;
+    }
+
+    get x () {
+        return this.mat4[12];
+    }
+
+    set x (val) {
+        this.mat4[12] = val;
+        ++this.serial;
+    }
+
+    get y () {
+        return this.mat4[13];
+    }
+
+    set y (val) {
+        this.mat4[13] = val;
+        ++this.serial;
+    }
+
+    get z () {
+        return this.mat4[14];
+    }
+
+    set z (val) {
+        this.mat4[14] = val;
+        ++this.serial;
+    }
+
+    get sx () {
+        return this.mat4[0];
+    }
+
+    set sx (val) {
+        this.mat4[0] = val;
+        ++this.serial;
+    }
+
+    get sy () {
+        return this.mat4[5];
+    }
+
+    set sy (val) {
+        this.mat4[5] = val;
+        ++this.serial;
+    }
+
+    get sz () {
+        return this.mat4[10];
+    }
+
+    set sz (val) {
+        this.mat4[10] = val;
         ++this.serial;
     }
 
 }
+
 

@@ -138,7 +138,7 @@ Object.defineProperties( Scene.prototype, {
 
         enumerable: true
 
-    }
+    },
 
 });
 
