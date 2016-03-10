@@ -47,6 +47,10 @@ UniformValueStack.prototype.exec = function ( cmd ) {
 
     }
 
+    //if (re && re.debugOutFrame) {
+        //console.debug('UniformValueStack exec cmd=', cmd, 'value=', value);
+    //}
+
     this.value = value;
 
 };

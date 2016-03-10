@@ -3,15 +3,17 @@
 import eventize from 'eventize-js';
 import * as utils from '../../utils';
 import * as math from '../../math';
-import { UniformValue } from '../../webgl/cmd';
+import { cmd } from '../../webgl';
 import { onRootFrame } from './frame';
 
 export function initTransform (scene) {  // --- {{{
 
-    scene.transform = new math.Matrix4();
-    scene.transformUniform = new UniformValue();
+    // Every scene has a transformation matrix !
 
-    // TODO Every scene should have a transformation matrix
+    scene.transform = new math.Matrix4();
+
+    scene.viewMatrixUniform = new cmd.UniformValue(true,
+        _computeViewMatrix.bind(null, scene, new math.Matrix4()) );
 
     if (scene.hasOwnProjection) {
 
@@ -24,6 +26,15 @@ export function initTransform (scene) {  // --- {{{
 
     }
 
+}
+
+function _computeViewMatrix (scene, viewMatrix, current) {
+    if (!current || scene.hasOwnProjection) {
+        scene.computeViewMatrix(viewMatrix);
+    } else {
+        viewMatrix.multiply(current, scene.transform);
+    }
+    return viewMatrix;
 }
 
 // --- initTransform }}}
@@ -111,7 +122,7 @@ export function initRootScene (scene) {  // --- {{{
             iFrameNo    : 0,
             iResolution : [0, 0],
 
-            projectionMatrix : scene.projection
+            //projectionMatrix : scene.projection
 
         }
 

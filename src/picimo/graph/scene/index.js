@@ -1,6 +1,8 @@
 'use strict';
 
 import Node from '../node';
+import * as math from '../../math';
+import { cmd } from '../../webgl';
 
 import {
     initTransform,
@@ -10,7 +12,7 @@ import {
     updateProjection
 } from './init';
 
-import { onFrame } from './frame';
+import { onFrame, onFrameEnd } from './frame';
 
 import createFactories from './factories';
 
@@ -74,13 +76,22 @@ export default function Scene (app, options = {}) {
     this.renderCmd = {
         uniforms: {                             // -> onFrame
             sceneInfo: [0, 0, 0],               // [ width, height, pixelRatio ]
-            transform: this.transformUniform,
+            viewMatrix: this.viewMatrixUniform,
+            projectionMatrix: new cmd.UniformValue(true, this.projection)
+        }
+    };
+
+    this.renderPostCmd = {
+        uniforms: {
+            viewMatrix: this.renderCmd.uniforms.viewMatrix.restoreCmd,
+            projectionMatrix: this.renderCmd.uniforms.projectionMatrix.restoreCmd
         }
     };
 
     if (this.isRootNode) initRootScene(this);
 
     this.on("frame", onFrame);
+    this.on("frameEnd", onFrameEnd);
 
     this.connect(options, {
 
@@ -164,6 +175,25 @@ Scene.prototype.setSize = function (width, height, sizeVariety) {
     }
 
     return this;
+
+};
+
+Scene.prototype.computeViewMatrix = function (viewMatrix) {
+
+    if (!viewMatrix) viewMatrix = new math.Matrix4();
+
+    if (this.hasOwnProjection) {
+        viewMatrix.multiply(this.projection, this.transform);
+    } else {
+        let parentScene = this.scene;
+        if (parentScene) {
+            viewMatrix.multiply(parentScene.computeViewMatrix(), this.transform);
+        } else {
+            viewMatrix.copy(this.transform);
+        }
+    }
+
+    return viewMatrix;
 
 };
 

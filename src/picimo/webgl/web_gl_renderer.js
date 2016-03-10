@@ -248,9 +248,9 @@ function logCommandQueueToConsole ( renderer ) {  // {{{
     renderer.cmdQueue.forEach( function ( cmd ) {
 
         if ('id' in cmd) {
-            console.log(cmd.id, cmd);
+            console.debug(`cmd{${cmd.id}}`, cmd);
         } else {
-            console.log(cmd);
+            console.debug('cmd', cmd);
         }
 
     });

@@ -55,5 +55,20 @@ export default class Matrix4 {
 
     }
 
+    scale (x, y, z=1) {
+        mat4.scale(this.mat4, this.mat4, [x, y, z]);
+        ++this.serial;
+    }
+
+    multiply (a, b) {
+        mat4.multiply(this.mat4, a.mat4, b.mat4);
+        ++this.serial;
+    }
+
+    copy (from) {
+        mat4.copy(this.mat4, from.mat4);
+        ++this.serial;
+    }
+
 }
 

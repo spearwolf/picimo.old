@@ -47,8 +47,9 @@ export default function drawElements ( re/*nderer*/, draw ) {
         if ( re.debugOutFrame ) {
 
             console.groupCollapsed('%cuniform', 'font-weight:bold;color:#26f', name);
-            console.log(uniform);
-            console.log(uniformValue);
+            console.debug('value', uniformValue);
+            console.debug('program->uniform', uniform);
+            console.debug('renderer->uniformStack', re.uniforms.get(name));
 
         }
 
@@ -63,7 +64,17 @@ export default function drawElements ( re/*nderer*/, draw ) {
 
         if ( programChanged ) uniform.valueChanged = true;
 
-        uniform.upload( gl );
+        try {
+
+            uniform.upload( gl );
+
+        } catch ( err ) {
+
+            if ( re.debugOutFrame ) {
+                console.error('[draw_elements] uniform upload panic:', name, uniform);
+            }
+
+        }
 
     }
 

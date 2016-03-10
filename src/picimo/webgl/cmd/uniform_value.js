@@ -7,11 +7,11 @@ import * as utils from '../../utils';
  *
  */
 
-export default function UniformValue ( isRestorable ) {
+export default function UniformValue ( isRestorable, value ) {
 
-    utils.addUid( this );
+    utils.addUid(this);
 
-    utils.object.definePropertiesPublicRO({
+    utils.object.definePropertiesPublicRO(this, {
 
         isRestorable      : !! isRestorable,
         isUniformValueCmd : true,
@@ -28,6 +28,10 @@ export default function UniformValue ( isRestorable ) {
     this.value = null;
     this.prevValue = null;
 
+    if (value !== undefined) {
+        this.setValue(value);
+    }
+
 }
 
 
@@ -37,17 +41,16 @@ export default function UniformValue ( isRestorable ) {
  * @method Picimo.webgl.cmd.UniformValue#getValue
  *
  * @param currentValue - The current uniform value.
- * @param uniforms - A map with all uniforms.
  *
  * @returns The new uniform value or if the value is null return the current value.
  *
  */
 
-UniformValue.prototype.getValue = function ( currentValue, uniforms ) {
+UniformValue.prototype.getValue = function ( currentValue ) {
+
+    if ( typeof this.value === 'function' ) return this.value( currentValue );
 
     if ( ! this.value ) return currentValue;
-
-    if ( typeof this.value === 'function' ) return this.value( currentValue, uniforms );
 
     return this.value;
 

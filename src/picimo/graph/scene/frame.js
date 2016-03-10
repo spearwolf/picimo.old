@@ -12,6 +12,10 @@ export function onFrame () {
 
 }
 
+export function onFrameEnd () {
+    this.app.renderer.addRenderCommand(this.renderPostCmd);
+}
+
 function createRenderCommand (scene) {
 
     let renderCmd = scene.renderCmd;
