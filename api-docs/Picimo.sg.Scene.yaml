@@ -20,6 +20,7 @@
           name: "projection"
           type: "Picimo.math.Matrix4"
           readonly: true
+          description: The projection matrix.
         -
           name: "hasOwnProjection"
           type: "boolean"
@@ -28,6 +29,10 @@
           name: "projectionNeedsUpdate"
           type: "boolean"
           readonly: false
+        -
+          name: "transform"
+          type: "Picimo.math.Matrix4"
+          description: The local transformation matrix. Change it to pan or zoom or whatever you want with the scene.
         -
           name: "blendMode"
           type: "Picimo.webgl.cmd.BlendMode"
