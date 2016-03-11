@@ -3,7 +3,7 @@
 import eventize from 'eventize-js';
 import * as utils from '../../utils';
 import * as math from '../../math';
-import { cmd } from '../../webgl';
+import { cmd } from '../../render';
 import { onRootFrame } from './frame';
 
 export function initTransform (scene) {  // --- {{{

@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * @class Picimo.webgl.WebGlTexture
+ * @class Picimo.render.WebGlTexture
  *
- * @param {Picimo.webgl.WebGlContext} glx
+ * @param {Picimo.render.WebGlContext} glx
  * @param {boolean} [flipY=false]
  * @param {boolean} [repeatable=false]
  *
@@ -33,13 +33,13 @@ function reset ( texture ) {
     texture.needsConf   = true;
 
     /**
-     * @member {boolean} Picimo.webgl.WebGlTexture#needsUpload
+     * @member {boolean} Picimo.render.WebGlTexture#needsUpload
      */
 
     texture.needsUpload = true;
 
     /**
-     * @member {number} Picimo.webgl.WebGlTexture#texUnit
+     * @member {number} Picimo.render.WebGlTexture#texUnit
      */
 
     texture.texUnit = -1;
@@ -49,7 +49,7 @@ function reset ( texture ) {
 Object.defineProperties( WebGlTexture.prototype, {
 
     /**
-     * @member {boolean} Picimo.webgl.WebGlTexture#isRepeatable
+     * @member {boolean} Picimo.render.WebGlTexture#isRepeatable
      */
 
     isRepeatable: {
@@ -76,7 +76,7 @@ Object.defineProperties( WebGlTexture.prototype, {
     },
 
     /**
-     * @member {number} Picimo.webgl.WebGlTexture#width
+     * @member {number} Picimo.render.WebGlTexture#width
      */
     width: {
 
@@ -100,7 +100,7 @@ Object.defineProperties( WebGlTexture.prototype, {
     },
 
     /**
-     * @member {number} Picimo.webgl.WebGlTexture#height
+     * @member {number} Picimo.render.WebGlTexture#height
      */
     height: {
 
@@ -124,7 +124,7 @@ Object.defineProperties( WebGlTexture.prototype, {
     },
 
     /**
-     * @member {Image} Picimo.webgl.WebGlTexture#image
+     * @member {Image} Picimo.render.WebGlTexture#image
      */
     image: {
 
@@ -183,7 +183,7 @@ Object.defineProperties( WebGlTexture.prototype, {
 
 
 /**
- * @method Picimo.webgl.WebGlTexture#bind
+ * @method Picimo.render.WebGlTexture#bind
  * @return {number} texture unit
  */
 
@@ -237,8 +237,8 @@ function configure ( texture ) {
 
 
 /**
- * @method Picimo.webgl.WebGlTexture#upload
- * @see Picimo.webgl.WebGlTexture#needsUpload
+ * @method Picimo.render.WebGlTexture#upload
+ * @see Picimo.render.WebGlTexture#needsUpload
  * @return self
  */
 
@@ -264,7 +264,7 @@ WebGlTexture.prototype.upload = function () {
 
 
 /**
- * @method Picimo.webgl.WebGlTexture#destroy
+ * @method Picimo.render.WebGlTexture#destroy
  */
 
 WebGlTexture.prototype.destroy = function () {

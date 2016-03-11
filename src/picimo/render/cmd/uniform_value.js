@@ -3,7 +3,7 @@
 import * as utils from '../../utils';
 
 /**
- * @class Picimo.webgl.cmd.UniformValue
+ * @class Picimo.render.cmd.UniformValue
  *
  */
 
@@ -38,7 +38,7 @@ export default function UniformValue ( isRestorable, value ) {
 /**
  * This method gets called from the renderer to set the new uniform value.
  *
- * @method Picimo.webgl.cmd.UniformValue#getValue
+ * @method Picimo.render.cmd.UniformValue#getValue
  *
  * @param currentValue - The current uniform value.
  *
@@ -60,7 +60,7 @@ UniformValue.prototype.getValue = function ( currentValue ) {
 /**
  * Set the uniform value.
  *
- * @method Picimo.webgl.cmd.UniformValue#setValue
+ * @method Picimo.render.cmd.UniformValue#setValue
  *
  * @param value - The uniform value or a function which returns the value.
  *

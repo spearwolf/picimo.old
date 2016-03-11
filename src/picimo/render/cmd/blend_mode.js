@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * @class Picimo.webgl.cmd.BlendMode
+ * @class Picimo.render.cmd.BlendMode
  * @classdesc
  *   WebGL blend and depth mode state description.
  *
@@ -14,11 +14,11 @@
  *
  * @example
  * // default settings
- * new Picimo.webgl.cmd.BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' )
+ * new Picimo.render.cmd.BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' )
  *
  * @example
  * // disable both
- * new Picimo.webgl.cmd.BlendMode( false, false )
+ * new Picimo.render.cmd.BlendMode( false, false )
  *
  */
 
@@ -53,31 +53,31 @@ export default function BlendMode ( depthTest, depthMask, depthFunc, blend, blen
 }
 
 /**
- * @member {boolean} Picimo.webgl.cmd.BlendMode#depthTest
+ * @member {boolean} Picimo.render.cmd.BlendMode#depthTest
  */
 
 /**
- * @member {boolean} Picimo.webgl.cmd.BlendMode#depthMask
+ * @member {boolean} Picimo.render.cmd.BlendMode#depthMask
  */
 
 /**
- * @member {string} Picimo.webgl.cmd.BlendMode#depthFunc
+ * @member {string} Picimo.render.cmd.BlendMode#depthFunc
  */
 
 /**
- * @member {boolean} Picimo.webgl.cmd.BlendMode#blend
+ * @member {boolean} Picimo.render.cmd.BlendMode#blend
  */
 
 /**
- * @member {string} Picimo.webgl.cmd.BlendMode#blendFuncSrc
+ * @member {string} Picimo.render.cmd.BlendMode#blendFuncSrc
  */
 
 /**
- * @member {string} Picimo.webgl.cmd.BlendMode#blendFuncDst
+ * @member {string} Picimo.render.cmd.BlendMode#blendFuncDst
  */
 
 /**
- * @method Picimo.webgl.cmd.BlendMode#activate
+ * @method Picimo.render.cmd.BlendMode#activate
  * @param {WebGlRenderingContext} gl - gl
  */
 
@@ -123,7 +123,7 @@ BlendMode.prototype.activate = function ( gl ) {
 
 
 /**
- * @memberof Picimo.webgl.cmd.BlendMode
+ * @memberof Picimo.render.cmd.BlendMode
  * @constant DEFAULT
  * @static
  */
@@ -131,7 +131,7 @@ BlendMode.prototype.activate = function ( gl ) {
 BlendMode.DEFAULT = new BlendMode( true, true, 'ALWAYS', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' );
 
 /**
- * @memberof Picimo.webgl.cmd.BlendMode
+ * @memberof Picimo.render.cmd.BlendMode
  * @constant ISO3D
  * @static
  */

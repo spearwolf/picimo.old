@@ -3,7 +3,7 @@
 import { Resource } from '../core';
 
 /**
- * @class Picimo.webgl.ShaderSource
+ * @class Picimo.render.ShaderSource
  * @extends Picimo.core.Resource
  * @param {Picimo.App} app
  * @param {string} shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
@@ -16,17 +16,17 @@ export default function ShaderSource ( app, shaderType, name, source ) {
     Resource.call( this, app, 'source' );
 
     /**
-     * @member {string} Picimo.webgl.ShaderSource#shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
+     * @member {string} Picimo.render.ShaderSource#shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
      */
     this.shaderType = shaderType;
 
     /**
-     * @member {string} Picimo.webgl.ShaderSource#name
+     * @member {string} Picimo.render.ShaderSource#name
      */
     this.name = name;
 
     /**
-     * @member {string} Picimo.webgl.ShaderSource#source - The shader source
+     * @member {string} Picimo.render.ShaderSource#source - The shader source
      */
     this.source = source;
 
@@ -37,9 +37,9 @@ ShaderSource.prototype.constructor = ShaderSource;
 
 
 /**
- * @method Picimo.webgl.ShaderSource#compile
+ * @method Picimo.render.ShaderSource#compile
  * @param {WebGlRenderingContext} gl
- * @return {WebGLShader} - webgl shader object or *undefined*
+ * @return {WebGLShader} - render shader object or *undefined*
  */
 
 ShaderSource.prototype.compile = function ( gl ) {
@@ -63,7 +63,7 @@ ShaderSource.prototype.compile = function ( gl ) {
 
 
 /**
- * @memberof Picimo.webgl.ShaderSource
+ * @memberof Picimo.render.ShaderSource
  * @constant VERTEX_SHADER
  * @static
  */
@@ -71,7 +71,7 @@ ShaderSource.prototype.compile = function ( gl ) {
 ShaderSource.VERTEX_SHADER = 'VERTEX_SHADER';
 
 /**
- * @memberof Picimo.webgl.ShaderSource
+ * @memberof Picimo.render.ShaderSource
  * @constant FRAGMENT_SHADER
  * @static
  */

@@ -35,7 +35,7 @@
           description: The local transformation matrix. Change it to pan or zoom or whatever you want with the scene.
         -
           name: "blendMode"
-          type: "Picimo.webgl.cmd.BlendMode"
+          type: "Picimo.render.cmd.BlendMode"
           readonly: false
         -
           name: "sizeVariety"
@@ -140,7 +140,7 @@
           default: "true"
         -
           name: "blendMode"
-          type: "Picimo.webgl.cmd.BlendMode"
+          type: "Picimo.render.cmd.BlendMode"
           required: false
         -
           name: "onResize"

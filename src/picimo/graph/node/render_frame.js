@@ -111,7 +111,7 @@ function onInitGl (node) {
     try {
 
         /**
-         * Will be called just after *init*. Should only be used to perform webgl related tasks.
+         * Will be called just after *init*. Should only be used to perform render related tasks.
          * @event Picimo.graph.Node#initGl
          * @memberof Picimo.graph.Node
          */

@@ -2,7 +2,7 @@
 
 import Node from '../node';
 import * as math from '../../math';
-import { cmd } from '../../webgl';
+import { cmd } from '../../render';
 
 import {
     initTransform,
@@ -31,7 +31,7 @@ import createFactories from './factories';
  *
  * @param {Picimo.App} app                                 - The app instance
  * @param {Object} [options]                               - The options
- * @param {Picimo.webgl.cmd.BlendMode} [options.blendMode] - Blend mode
+ * @param {Picimo.render.cmd.BlendMode} [options.blendMode] - Blend mode
  * @param {number} [options.width]                         - Wanted scene width
  * @param {number} [options.height]                        - Wanted scene height
  * @param {string} [options.sizeVariety="contain"]         - *cover* or *contain*
@@ -47,7 +47,7 @@ export default function Scene (app, options = {}) {
     Node.call(this, app, options);
 
     /**
-     * @member {Picimo.webgl.cmd.BlendMode} Picimo.graph.Scene#blendMode
+     * @member {Picimo.render.cmd.BlendMode} Picimo.graph.Scene#blendMode
      */
     this.blendMode = options.blendMode;
 

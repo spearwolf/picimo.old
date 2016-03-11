@@ -76,11 +76,11 @@
           readonly: true
         -
           name: "texture"
-          type: "Picimo.webgl.TextureManager"
+          type: "Picimo.render.TextureManager"
           readonly: true
         -
           name: "shader"
-          type: "Picimo.webgl.ShaderManager"
+          type: "Picimo.render.ShaderManager"
           readonly: true
         -
           separator: true
@@ -97,12 +97,12 @@
           readonly: true
         -
           name: "glx"
-          type: "Picimo.webgl.WebGlContext"
+          type: "Picimo.render.WebGlContext"
           readonly: true
           description: "A thin wrapper around the WebGlRenderingContext."
         -
           name: "renderer"
-          type: "Picimo.webgl.WebGlRenderer"
+          type: "Picimo.render.WebGlRenderer"
           readonly: true
           description: "The internal rendering context."
 

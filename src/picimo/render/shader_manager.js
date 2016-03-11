@@ -5,7 +5,7 @@ import ShaderSource from './shader_source';
 import Program from './program';
 
 /**
- * @class Picimo.webgl.ShaderManager
+ * @class Picimo.render.ShaderManager
  */
 
 export default function ShaderManager ( app ) {
@@ -24,11 +24,11 @@ export default function ShaderManager ( app ) {
 
 
 /**
- * @method Picimo.webgl.ShaderManager#addProgram
+ * @method Picimo.render.ShaderManager#addProgram
  * @param {string} name
  * @param {string} [vertexShaderName=name]
  * @param {string} [fragmentShaderName=name]
- * @return {Picimo.webgl.ShaderManager} self
+ * @return {Picimo.render.ShaderManager} self
  */
 
 ShaderManager.prototype.addProgram = function ( name, vertexShaderName, fragmentShaderName ) {
@@ -41,9 +41,9 @@ ShaderManager.prototype.addProgram = function ( name, vertexShaderName, fragment
 
 
 /**
- * @method Picimo.webgl.ShaderManager#getProgram
+ * @method Picimo.render.ShaderManager#getProgram
  * @param {string} name
- * @return {Picimo.webgl.Program} program
+ * @return {Picimo.render.Program} program
  */
 
 ShaderManager.prototype.getProgram = function ( name ) {
@@ -54,9 +54,9 @@ ShaderManager.prototype.getProgram = function ( name ) {
 
 
 /**
- * @method Picimo.webgl.ShaderManager#addShader
- * @param {Picimo.webgl.ShaderSource} shader
- * @return {Picimo.webgl.ShaderManager} self
+ * @method Picimo.render.ShaderManager#addShader
+ * @param {Picimo.render.ShaderSource} shader
+ * @return {Picimo.render.ShaderManager} self
  */
 
 ShaderManager.prototype.addShader = function ( shader ) {
@@ -77,10 +77,10 @@ ShaderManager.prototype.addShader = function ( shader ) {
 
 
 /**
- * @method Picimo.webgl.ShaderManager#addVertexShader
+ * @method Picimo.render.ShaderManager#addVertexShader
  * @param {string} name
  * @param {string} shader - The raw shader source string
- * @return {Picimo.webgl.ShaderManager} self
+ * @return {Picimo.render.ShaderManager} self
  */
 
 ShaderManager.prototype.addVertexShader = function ( name, source ) {
@@ -91,10 +91,10 @@ ShaderManager.prototype.addVertexShader = function ( name, source ) {
 
 
 /**
- * @method Picimo.webgl.ShaderManager#addFragmentShader
+ * @method Picimo.render.ShaderManager#addFragmentShader
  * @param {string} name
  * @param {string} shader - The raw shader source string
- * @return {Picimo.webgl.ShaderManager} self
+ * @return {Picimo.render.ShaderManager} self
  */
 
 ShaderManager.prototype.addFragmentShader = function ( name, source ) {
@@ -105,10 +105,10 @@ ShaderManager.prototype.addFragmentShader = function ( name, source ) {
 
 
 /**
- * @method Picimo.webgl.ShaderManager#loadVertexShader
+ * @method Picimo.render.ShaderManager#loadVertexShader
  * @param {string} name
  * @param {string} url
- * @return {Picimo.webgl.ShaderManager} self
+ * @return {Picimo.render.ShaderManager} self
  */
 
 ShaderManager.prototype.loadVertexShader = function ( name, url ) {
@@ -119,10 +119,10 @@ ShaderManager.prototype.loadVertexShader = function ( name, url ) {
 
 
 /**
- * @method Picimo.webgl.ShaderManager#loadFragmentShader
+ * @method Picimo.render.ShaderManager#loadFragmentShader
  * @param {string} name
  * @param {string} url
- * @return {Picimo.webgl.ShaderManager} self
+ * @return {Picimo.render.ShaderManager} self
  */
 
 ShaderManager.prototype.loadFragmentShader = function ( name, url ) {
@@ -133,9 +133,9 @@ ShaderManager.prototype.loadFragmentShader = function ( name, url ) {
 
 
 /**
- * @method Picimo.webgl.ShaderManager#getVertexShader
+ * @method Picimo.render.ShaderManager#getVertexShader
  * @param {string} name
- * @return {Picimo.webgl.ShaderSource} shader
+ * @return {Picimo.render.ShaderSource} shader
  */
 
 ShaderManager.prototype.getVertexShader = function ( name ) {
@@ -146,9 +146,9 @@ ShaderManager.prototype.getVertexShader = function ( name ) {
 
 
 /**
- * @method Picimo.webgl.ShaderManager#getFragmentShader
+ * @method Picimo.render.ShaderManager#getFragmentShader
  * @param {string} name
- * @return {Picimo.webgl.ShaderSource} shader
+ * @return {Picimo.render.ShaderSource} shader
  */
 
 ShaderManager.prototype.getFragmentShader = function ( name ) {

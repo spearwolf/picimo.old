@@ -3,12 +3,12 @@
 import * as utils from '../utils';
 
 /**
- * @class Picimo.webgl.WebGlContext
+ * @class Picimo.render.WebGlContext
  */
 
 export default function WebGlContext ( gl ) {
 
-    if ( ! gl ) throw new Error( '[new Picimo.webgl.WebGlContext] gl is undefined!' );
+    if ( ! gl ) throw new Error( '[new Picimo.render.WebGlContext] gl is undefined!' );
 
     utils.object.definePropertyPublicRO( this, 'gl', gl );
 
@@ -38,7 +38,7 @@ export default function WebGlContext ( gl ) {
 }
 
 /**
- * @method Picimo.webgl.WebGlContext#activeTexture
+ * @method Picimo.render.WebGlContext#activeTexture
  * @param {number} texUnit - texture unit
  */
 
@@ -57,7 +57,7 @@ WebGlContext.prototype.activeTexture = function ( texUnit ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlContext#bindTexture2d
+ * @method Picimo.render.WebGlContext#bindTexture2d
  * @param {number} textureType - gl.TEXTURE_2D or ..
  * @param texture
  */
@@ -78,7 +78,7 @@ WebGlContext.prototype.bindTexture2d = function ( texture ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlContext#bindBuffer
+ * @method Picimo.render.WebGlContext#bindBuffer
  * @param {number} bufferType - gl.ARRAY_BUFFER or gl.ELEMENT_ARRAY_BUFFER
  * @param buffer
  */
@@ -95,7 +95,7 @@ WebGlContext.prototype.bindBuffer = function ( bufferType, buffer ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlContext#bindArrayBuffer
+ * @method Picimo.render.WebGlContext#bindArrayBuffer
  * @param buffer
  */
 
@@ -106,7 +106,7 @@ WebGlContext.prototype.bindArrayBuffer = function ( buffer ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlContext#bindElementArrayBuffer
+ * @method Picimo.render.WebGlContext#bindElementArrayBuffer
  * @param buffer
  */
 
@@ -117,8 +117,8 @@ WebGlContext.prototype.bindElementArrayBuffer = function ( buffer ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlContext#glShader
- * @param {Picimo.webgl.ShaderSource} shader
+ * @method Picimo.render.WebGlContext#glShader
+ * @param {Picimo.render.ShaderSource} shader
  * @return {WebGLShader} The shader object or *undefined*
  */
 
@@ -145,9 +145,9 @@ WebGlContext.prototype.glShader = function ( shader ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlContext#glProgram
- * @param {Picimo.webgl.Program} program
- * @return {Picimo.webgl.WebGlProgram} The program object or *undefined*
+ * @method Picimo.render.WebGlContext#glProgram
+ * @param {Picimo.render.Program} program
+ * @return {Picimo.render.WebGlProgram} The program object or *undefined*
  */
 
 WebGlContext.prototype.glProgram = function ( program ) {
@@ -181,12 +181,12 @@ function readWebGlParameters ( webGlContext ) {
     utils.object.definePropertiesPublicRO( webGlContext, {
 
         /**
-         * @member {number} Picimo.webgl.WebGlContext#MAX_TEXTURE_SIZE - gl.MAX_TEXTURE_SIZE
+         * @member {number} Picimo.render.WebGlContext#MAX_TEXTURE_SIZE - gl.MAX_TEXTURE_SIZE
          */
         MAX_TEXTURE_SIZE : gl.getParameter( gl.MAX_TEXTURE_SIZE ),
 
         /**
-         * @member {number} Picimo.webgl.WebGlContext#MAX_TEXTURE_IMAGE_UNITS - gl.MAX_TEXTURE_IMAGE_UNITS
+         * @member {number} Picimo.render.WebGlContext#MAX_TEXTURE_IMAGE_UNITS - gl.MAX_TEXTURE_IMAGE_UNITS
          */
         MAX_TEXTURE_IMAGE_UNITS : gl.getParameter( gl.MAX_TEXTURE_IMAGE_UNITS )
 

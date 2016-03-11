@@ -3,7 +3,7 @@
 import eventize from 'eventize-js';
 import * as utils from '../utils';
 import * as graph from '../graph';
-import * as webgl from '../webgl';
+import * as render from '../render';
 import * as core from '../core';
 import * as sprites from '../sprites';
 import * as ui from '../ui';
@@ -121,22 +121,22 @@ export default function App ( canvas, options ) {
     this.backgroundColor = new utils.Color( options.bgColor !== undefined ? options.bgColor : ( this.glCtxAttrs.alpha ? 'transparent' : "#000000" ) );
 
     /**
-     * @member {Picimo.webgl.ShaderManager} Picimo.App#shader
+     * @member {Picimo.render.ShaderManager} Picimo.App#shader
      */
 
-    utils.object.definePropertyPublicRO( this, 'shader', new webgl.ShaderManager(this) );
+    utils.object.definePropertyPublicRO( this, 'shader', new render.ShaderManager(this) );
 
     /**
-     * @member {Picimo.webgl.TextureManager} Picimo.App#texture
+     * @member {Picimo.render.TextureManager} Picimo.App#texture
      */
 
-    utils.object.definePropertyPublicRO( this, 'texture', new webgl.TextureManager(this) );
+    utils.object.definePropertyPublicRO( this, 'texture', new render.TextureManager(this) );
 
     /**
-     * @member {Picimo.webgl.WebGlRenderer} Picimo.App#renderer
+     * @member {Picimo.render.WebGlRenderer} Picimo.App#renderer
      */
 
-    utils.object.definePropertyPublicRO( this, 'renderer', new webgl.WebGlRenderer(this) );
+    utils.object.definePropertyPublicRO( this, 'renderer', new render.WebGlRenderer(this) );
 
     /**
      * @member {Picimo.sprites.SpriteFactory} Picimo.App#sprites
@@ -162,7 +162,7 @@ export default function App ( canvas, options ) {
 
     utils.object.definePropertyPublicRO( this, 'scene', new graph.Scene( this, {
 
-        blendMode: webgl.cmd.BlendMode.DEFAULT,
+        blendMode: render.cmd.BlendMode.DEFAULT,
         pixelRatio: 1
 
     } ) );
@@ -398,7 +398,7 @@ function createWebGlContext ( app ) {
 
     }
 
-    return new webgl.WebGlContext( gl );
+    return new render.WebGlContext( gl );
 
 }
 

@@ -2,7 +2,7 @@
 
 import Node from './node';
 import * as core from '../core';
-import { SpriteGroupPipeline } from '../webgl/pipeline';
+import { SpriteGroupPipeline } from '../render/pipeline';
 
 /**
  * @class Picimo.graph.SpriteGroup
@@ -11,7 +11,7 @@ import { SpriteGroupPipeline } from '../webgl/pipeline';
  * @param {Picimo.App} app - The app instance
  * @param {object} [options] - The options
  * @param {Picimo.core.TextureAtlas|Promise} [options.textureAtlas]
- * @param {string} [options.program="sprite"] - The webgl program name
+ * @param {string} [options.program="sprite"] - The render/webgl program name
  * @param {number} [options.capacity=1000] - Max sprite capacity
  * @param {string|Picimo.core.VertexObjectDescriptor} [options.sprites='default']
  *

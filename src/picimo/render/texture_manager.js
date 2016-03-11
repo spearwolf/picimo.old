@@ -4,10 +4,10 @@ import * as utils from '../utils';
 import WebGlTexture from './web_gl_texture';
 
 // for some background informations see:
-//      https://www.khronos.org/webgl/wiki/TextureState
+//      https://www.khronos.org/render/wiki/TextureState
 
 /**
- * @class Picimo.webgl.TextureManager
+ * @class Picimo.render.TextureManager
  */
 
 export default function TextureManager ( app ) {
@@ -33,10 +33,10 @@ export default function TextureManager ( app ) {
 
 
 /**
- * @method Picimo.webgl.TextureManager#bindWebGlTexture
+ * @method Picimo.render.TextureManager#bindWebGlTexture
  * @description
- * Bind the given *texture* to a *webgl texture unit*.
- * @param {Picimo.webgl.WebGlTexture} glTexture
+ * Bind the given *texture* to a *render texture unit*.
+ * @param {Picimo.render.WebGlTexture} glTexture
  * @return {number} texture unit
  */
 
@@ -84,12 +84,12 @@ TextureManager.prototype.bindWebGlTexture = function ( glTexture ) {
 
 
 /**
- * @method Picimo.webgl.TextureManager#findOrCreateWebGlTexture
+ * @method Picimo.render.TextureManager#findOrCreateWebGlTexture
  * @description
- * Find or create **Picimo.webgl.WebGlTexture** from **Picimo.core.Texture** or **Picimo.core.TextureAtlas** or *everything* which has an **image** property.
+ * Find or create **Picimo.render.WebGlTexture** from **Picimo.core.Texture** or **Picimo.core.TextureAtlas** or *everything* which has an **image** property.
  * The *image* from the **image** property should have an **uid** property otherwise the *image object* itself will be used as cache key.
  * @param {Object} texture
- * @return {Picimo.webgl.WebGlTexture} webgl texture
+ * @return {Picimo.render.WebGlTexture} render texture
  */
 
 TextureManager.prototype.findOrCreateWebGlTexture = function ( texture ) {

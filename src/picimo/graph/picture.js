@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import Node from './node';
-import { PicturePipeline } from '../webgl/pipeline';
+import { PicturePipeline } from '../render/pipeline';
 import * as core from '../core';
 
 /**
@@ -12,7 +12,7 @@ import * as core from '../core';
  * @param {Picimo.App} app - The app instance
  * @param {object} [options] - The options
  * @param {Picimo.core.Texture|Promise} [options.texture] -
- * @param {string} [options.program="picture"] - The webgl program name
+ * @param {string} [options.program="picture"] - The render/webgl program name
  *
  * @summary
  * Represents a single picture.

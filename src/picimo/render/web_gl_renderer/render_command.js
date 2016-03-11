@@ -121,7 +121,7 @@ export default function renderCommand ( re/*nderer*/, cmd ) {
 
 function _warn () {
 
-    console.warn.apply( console, [ '[Picimo.webgl.WebGlRenderer#renderCommand]'].concat( Array.prototype.slice.apply( arguments ) ) );
+    console.warn.apply( console, [ '[Picimo.render.WebGlRenderer#renderCommand]'].concat( Array.prototype.slice.apply( arguments ) ) );
 
 }
 

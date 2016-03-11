@@ -3,11 +3,11 @@
 import * as utils from '../utils';
 
 /**
- * @class Picimo.webgl.WebGlBuffer
+ * @class Picimo.render.WebGlBuffer
  * @description
  * An object-orientated wrapper for the WebGL buffer api.
  *
- * @param {Picimo.webgl.WebGlContext} glx
+ * @param {Picimo.render.WebGlContext} glx
  * @param {Object} options
  */
 
@@ -37,7 +37,7 @@ export default function WebGlBuffer ( glx, options ) {
 }
 
 /**
- * @method Picimo.webgl.WebGlBuffer#bindBuffer
+ * @method Picimo.render.WebGlBuffer#bindBuffer
  * @return self
  */
 
@@ -49,7 +49,7 @@ WebGlBuffer.prototype.bindBuffer = function () {
 };
 
 /**
- * @method Picimo.webgl.WebGlBuffer#bufferData
+ * @method Picimo.render.WebGlBuffer#bufferData
  * @param arr
  * @return self
  */
@@ -67,7 +67,7 @@ WebGlBuffer.prototype.bufferData = function ( arr ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlBuffer#bufferSubData
+ * @method Picimo.render.WebGlBuffer#bufferSubData
  * @param arr
  * @param {number} count
  * @param {number} [offset]
@@ -95,7 +95,7 @@ WebGlBuffer.prototype.bufferSubData = function ( arr, count, offset ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlBuffer#vertexAttribPointer
+ * @method Picimo.render.WebGlBuffer#vertexAttribPointer
  * @param pointer
  * @param itemSize
  * @param stride
@@ -120,7 +120,7 @@ WebGlBuffer.prototype.vertexAttribPointer = function ( pointer, itemSize, stride
 };
 
 /**
- * @method Picimo.webgl.WebGlBuffer#drawElements
+ * @method Picimo.render.WebGlBuffer#drawElements
  * @param elemType
  * @param numItems
  * @param offset
@@ -135,7 +135,7 @@ WebGlBuffer.prototype.drawElements = function ( elemType, numItems, offset ) {
 };
 
 /**
- * @method Picimo.webgl.WebGlBuffer#destroy
+ * @method Picimo.render.WebGlBuffer#destroy
  */
 
 WebGlBuffer.prototype.destroy = function () {
@@ -157,9 +157,9 @@ WebGlBuffer.prototype.destroy = function () {
 
 /**
  * Returns a new WebGlBuffer.
- * @memberof Picimo.webgl.WebGlBuffer
+ * @memberof Picimo.render.WebGlBuffer
  * @method fromVertexArray
- * @param {Picimo.webgl.WebGlContext} glx
+ * @param {Picimo.render.WebGlContext} glx
  * @param {Picimo.core.VertexArrayDescriptor} descriptor
  * @param {Object} options
  * @static
@@ -191,9 +191,9 @@ WebGlBuffer.fromVertexArray = function ( glx, descriptor, options ) {
 
 /**
  * Returns a new WebGlBuffer.
- * @memberof Picimo.webgl.WebGlBuffer
+ * @memberof Picimo.render.WebGlBuffer
  * @method fromVertexIndexArray
- * @param {Picimo.webgl.WebGlContext} glx
+ * @param {Picimo.render.WebGlContext} glx
  * @param {Picimo.core.VertexIndexArray} vertexIndexArray
  * @static
  */
