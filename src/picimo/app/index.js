@@ -92,6 +92,7 @@ export default function App ( canvas, options ) {
     canvas.classList.add( 'picimo' );
 
     this.mouseController = new ui.MouseController(this);
+    this.mouseController.connect(this); // => forward all mouse events to app
 
     /**
      * @member {WebGlRenderingContext} Picimo.App#gl

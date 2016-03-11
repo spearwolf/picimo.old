@@ -1,11 +1,10 @@
-/* global DEBUG */
 'use strict';
 
 import eventize from 'eventize-js';
 
-const MOUSE_BTN_LEFT = 0;
+const MOUSE_BTN_LEFT   = 0;
 const MOUSE_BTN_MIDDLE = 1;
-const MOUSE_BTN_RIGHT = 2;
+const MOUSE_BTN_RIGHT  = 2;
 
 export default class MouseController {
 
@@ -13,12 +12,9 @@ export default class MouseController {
 
         this.picimo = picimo;
 
-        if (DEBUG) {
-            console.log('new MouseController', picimo);
-        }
-
         this.mouseBtnDown = [false, false, false];
         this.mouseBtnMove = [false, false, false];
+        this.isDrag = false;
 
         registerMouseListeners(this);
 
@@ -37,19 +33,16 @@ export default class MouseController {
         this.mouseBtnMove[MOUSE_BTN_MIDDLE] = this.mouseBtnDown[MOUSE_BTN_MIDDLE];
         this.mouseBtnMove[MOUSE_BTN_RIGHT] = this.mouseBtnDown[MOUSE_BTN_RIGHT];
 
-        let dpr = this.picimo.devicePixelRatio;
+        this.isDrag = this.isSomeBtnDown;
 
-        this.emit('mouseMove', movement(
-            event, (
-                this.mouseBtnDown[MOUSE_BTN_LEFT] ||
-                this.mouseBtnDown[MOUSE_BTN_MIDDLE] ||
-                this.mouseBtnDown[MOUSE_BTN_RIGHT])
-            ),
-            dpr );
+        const dpr = this.picimo.devicePixelRatio;
+        const moveEvent = movement(event, this.isDrag, dpr);
 
-        if (this.mouseBtnDown[MOUSE_BTN_LEFT]) this.emit('mouseDragLeft', movement(event, true, dpr));
-        if (this.mouseBtnDown[MOUSE_BTN_MIDDLE]) this.emit('mouseDragMiddle', movement(event, true, dpr));
-        if (this.mouseBtnDown[MOUSE_BTN_RIGHT]) this.emit('mouseDragRight', movement(event, true, dpr));
+        this.emit('mouseMove', moveEvent, this);
+
+        if (this.mouseBtnDown[MOUSE_BTN_LEFT]) this.emit('mouseDragLeft', moveEvent, this);
+        if (this.mouseBtnDown[MOUSE_BTN_MIDDLE]) this.emit('mouseDragMiddle', moveEvent, this);
+        if (this.mouseBtnDown[MOUSE_BTN_RIGHT]) this.emit('mouseDragRight', moveEvent, this);
 
     }
 
@@ -58,18 +51,20 @@ export default class MouseController {
         let btn = event.button;
         this.mouseBtnDown[btn] = false;
 
+        this.isDrag = this.isSomeBtnDown;
+
         if (this.mouseBtnMove[btn]) {
             this.mouseBtnMove[btn] = false;
         } else {
-            if (btn === MOUSE_BTN_LEFT) this.emit('mouseClickLeft', event);
-            if (btn === MOUSE_BTN_MIDDLE) this.emit('mouseClickMiddle', event);
-            if (btn === MOUSE_BTN_RIGHT) this.emit('mouseClickRight', event);
+            if (btn === MOUSE_BTN_LEFT) this.emit('mouseClickLeft', event, this);
+            if (btn === MOUSE_BTN_MIDDLE) this.emit('mouseClickMiddle', event, this);
+            if (btn === MOUSE_BTN_RIGHT) this.emit('mouseClickRight', event, this);
         }
 
     }
 
     mouseWheel (event) {
-        this.emit('mouseWheel', event.wheelDeltaX, event.wheelDeltaY);
+        this.emit('mouseWheel', event.wheelDeltaX, event.wheelDeltaY, this);
     }
 
     get isBtnLeftDown () {
@@ -82,6 +77,12 @@ export default class MouseController {
 
     get isBtnRightDown () {
         return this.mouseBtnDown[MOUSE_BTN_RIGHT];
+    }
+
+    get isSomeBtnDown () {
+        return (this.mouseBtnDown[MOUSE_BTN_LEFT] ||
+                this.mouseBtnDown[MOUSE_BTN_MIDDLE] ||
+                this.mouseBtnDown[MOUSE_BTN_RIGHT]);
     }
 
 }
