@@ -177,12 +177,11 @@ export default function App ( canvas, options ) {
     app.emit('init');
 
     app.renderer.onInitGl();
-    app.resize();
 
-    this.onResize = app.resize.bind(app);
-    window.addEventListener('resize', app.onResize, false);
+    if (!this.onAnimationFrame) {
+        this.onAnimationFrame = app.renderFrame.bind(app);
+    }
 
-    this.onAnimationFrame = app.renderFrame.bind(app);
     requestAnimationFrame(app.onAnimationFrame);
 
     return app;
@@ -252,6 +251,8 @@ App.prototype.renderFrame = function () {
     ++this.frameNo;
     this.frameTime = this.frameLastTime == null ? 0.0 : this.frameLastTime - this.now;
     this.frameLastTime = this.now;
+
+    this.resize();
 
     this.emit('frameBegin');
 
