@@ -26,7 +26,19 @@ export function loadTexture ( url ) {
     var texture = new core.Texture();
     texture.image = image;
 
-    return image.promise.then(() => texture);
+    return image.promise.then(forwardTexture.bind(null, texture));
+
+}
+
+function forwardTexture ( texture, image ) {
+
+    //var el = image.domElement;
+
+    //if (el.width !== texture.width || el.height !== texture.height) {
+        //return new core.Texture( texture, 0, 0, el.width, el.height );
+    //}
+
+    return texture;
 
 }
 

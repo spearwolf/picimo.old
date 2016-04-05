@@ -9,6 +9,24 @@ var app  = new Picimo.App({
 
 });
 
+// Set pixel resolution
+app.scene.setSize( 76, 12, "contain" );
+
+app.shader.loadVertexShader('picture', '/assets/shaders/complex-sprite/complex-sprite.vert');
+app.shader.loadFragmentShader('picture', '/assets/shaders/complex-sprite/complex-sprite.frag');
+app.shader.addProgram('picture', 'picture', 'picture');
+
+app.scene.appendPicture('/assets/images/test-76x12.png', {  // spw-mini-logo.png', {
+    name: 'spw',
+    displaySize: 'contain'
+    //displayPosition: {
+        //top: 0,
+        //left: 0,
+        //bottom: 0,
+        //right: 0
+    //}
+});
+
 // ========= nodes ============================================== {{{
 
 var node = new Picimo.graph.Scene( app );

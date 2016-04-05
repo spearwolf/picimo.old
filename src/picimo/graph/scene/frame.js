@@ -13,7 +13,11 @@ export function onFrame () {
 }
 
 export function onFrameEnd () {
-    this.app.renderer.addRenderCommand(this.renderPostCmd);
+
+    let re = this.app.renderer;
+    re.activatePipeline(null);  // => flush current
+    re.addRenderCommand(this.renderPostCmd);
+
 }
 
 function createRenderCommand (scene) {

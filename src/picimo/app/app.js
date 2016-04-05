@@ -12,6 +12,7 @@ import { initSprites, defineSprite } from '../sprites';
 import resize from './resize';
 import renderFrame from './render_frame';
 import createWebGlContext from './create_web_gl_context';
+import createCanvas from './create_canvas';
 import { getUrlDir, getAssetUrl, joinAssetUrl } from './asset_url_helper';
 import { loadTextureAtlas, loadTexture } from './texture_helpers';
 
@@ -23,55 +24,13 @@ export default function App ( canvas, options ) {
     this.now = window.performance.now() / 1000.0;
 
     if ( typeof canvas === 'object' && ! ( 'nodeName' in canvas ) ) {
-
         options = canvas;
         canvas  = options.canvas;
-
     } else if ( options == null ) {
-
         options = {};
-
     }
 
-    utils.object.definePropertyPublicRO( this, 'canvasIsPredefined', canvas !== undefined);
-
-    canvas = this.canvasIsPredefined ? canvas : document.createElement( "canvas" );
-    utils.object.definePropertyPublicRO( this, 'canvas', canvas );
-
-    if ( ! this.canvasIsPredefined ) {
-
-        canvas.style.boxSizing   = 'border-box;'
-        canvas.style.margin      = '0';
-        canvas.style.padding     = '0';
-        canvas.style.border      = '0';
-        canvas.style.position    = 'absolute';
-        canvas.style.top         = '0';
-        canvas.style.left        = '0';
-        canvas.style.bottom      = '0';
-        canvas.style.right       = '0';
-        canvas.style.touchAction = 'none';
-
-        let parentNode;
-        let containerNode;
-
-        containerNode = document.createElement('div');
-
-        containerNode.style.position    = 'relative';
-        containerNode.style.boxSizing   = 'border-box;'
-        containerNode.style.margin      = '0';
-        containerNode.style.padding     = '0';
-        containerNode.style.border      = '0';
-        containerNode.style.overflow    = 'hidden';
-        containerNode.style.width       = '100%';
-        containerNode.style.height      = '100%';
-        containerNode.style.touchAction = 'none';
-
-        containerNode.appendChild( canvas );
-
-        parentNode = options.appendTo ? options.appendTo : document.body;
-        parentNode.appendChild( containerNode );
-
-    }
+    createCanvas( this, canvas, options.appendTo );
 
     this.mouseController = new ui.MouseController(this);
     this.mouseController.connect(this); // => forward all mouse events to app

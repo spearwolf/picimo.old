@@ -22,7 +22,8 @@ attribute vec2 texCoords;   // s -> texCoords.x, t -> texCoords.y
 /*attribute int texUnit;*/
 attribute vec4 color;
 
-uniform mat4 projectionMatrix;
+/*uniform mat4 projectionMatrix;*/
+uniform mat4 viewMatrix;
 uniform float renderPrio;
 
 varying vec2 v_texCoords;
@@ -44,7 +45,7 @@ void main(void)
     mat4 rotationMatrix = rotateZ(rot_texUnit.x);
     vec2 pos2d = xwyh * size * scale;
 
-    gl_Position = projectionMatrix * ((rotationMatrix * vec4( pos2d, renderPrio, 1.0 )) + vec4(pos.xy, 0.0, 1.0));
+    gl_Position = viewMatrix * ((rotationMatrix * vec4( pos2d, renderPrio, 1.0 )) + vec4(pos.xy, 0.0, 1.0));
 
     v_texCoords = texCoords;
     v_texUnit = vec2(rot_texUnit.y, 0);

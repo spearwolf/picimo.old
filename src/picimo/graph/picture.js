@@ -46,6 +46,7 @@ import * as core from '../core';
 export default class Picture extends Node {
 
     constructor (app, options = {}) {
+
         super(app, options);
 
         initTexture(this, options.texture);
@@ -396,10 +397,11 @@ function initPipeline (picture) {
     if (!pipelines.length) {
 
         let pool = new core.VertexObjectPool(descriptor, PicturePipeline.DEFAULT_CAPACITY);
-        pipelines[0] = new PicturePipeline(picture.app, pool, texture, program);
+        let pipe = new PicturePipeline(picture.app, pool, texture, program);
+        pipelines.push(pipe);
 
-        pipelines[0].onInitGl();
-        picture.app.renderer.addPipeline(pipelines[0]);
+        pipe.onInitGl();
+        picture.app.renderer.addPipeline(pipe);
 
     }
 

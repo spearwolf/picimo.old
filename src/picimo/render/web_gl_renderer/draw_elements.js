@@ -53,7 +53,20 @@ export default function drawElements ( re/*nderer*/, draw ) {
 
         }
 
-        uniform.setValue( uniformValue, re.debugOutFrame );
+        try {
+
+            uniform.setValue( uniformValue, re.debugOutFrame );
+
+        } catch (ex) {
+
+            if (re.debugOutFrame) {
+                console.error('uniform.setValue panic!', ex);
+                console.debug('name', name, 'value', uniformValue);
+                console.debug('.. program->uniform', uniform);
+                console.debug('.. renderer->uniformStack', re.uniforms.get(name));
+            }
+
+        }
 
         if ( re.debugOutFrame ) {
 

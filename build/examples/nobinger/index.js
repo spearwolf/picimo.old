@@ -5,7 +5,7 @@ console.log( 'welcome to the %c %cnobinger%c benchmark v1 %c%c a picimo demo! ',
 // Setup
 var app = new Picimo.App({
 
-    canvas : document.getElementById( 'picimo' ),
+    //canvas : document.getElementById( 'picimo' ),
     alpha  : true,
 
 });
