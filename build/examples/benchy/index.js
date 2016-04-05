@@ -30,7 +30,6 @@ console.log('Welcome to the %c %cnobinger%c benchmark v1 %c%c a picimo demo! ', 
 })(); // --- }}}
 
 var app = new Picimo.App({
-    canvas    : document.getElementById( 'picimo' ),
     alpha     : true,
     showStats : true
 });

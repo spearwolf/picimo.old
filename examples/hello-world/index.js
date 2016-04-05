@@ -3,8 +3,9 @@
 
 var app  = new Picimo.App({
 
-    appendTo : document.getElementById( 'picimo' ),
-    alpha    : true
+    canvas  : document.getElementById( 'picimo' ),
+    alpha   : true,
+    bgColor : '#a0c0e0'
 
 });
 
@@ -70,18 +71,18 @@ console.log( "node", node );
 // -------------------------------------------------------------- }}}
 // ========= vertex objects ===================================== {{{
 
-var vod = new Picimo.core.VertexObjectDescriptor(
+var vod = app.defineSprite('plah', {
 
-    function () {
+    constructor: function Plah () {
 
         this.fooBar = 'plah!?';
 
     },
 
-    4,
-    12,
+    vertexCount: 4,
+    vertexAttrCount: 12,
 
-    [
+    attributes: [
 
         { name: 'position',  size: 3, attrNames: [ 'x', 'y', 'z' ] },
         { name: 'rotate',    size: 1, uniform: true },
@@ -92,21 +93,22 @@ var vod = new Picimo.core.VertexObjectDescriptor(
 
     ],
 
-    {
+    alias: {
 
         pos2d: { size: 2, offset: 0, uniform: true },
         posZ:  { size: 1, offset: 2, uniform: true },
         uv:    'texCoords'
 
+    },
+
+    proto: {
+        numberOfBeast: function () {
+            return 667;
+        }
     }
 
-);
+});
 
-vod.proto.numberOfBeast = function () {
-
-    return 666;
-
-};
 
 var vo = vod.create();
 

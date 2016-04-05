@@ -5,24 +5,65 @@
     -
       name: "Picimo.App"
       description: |
+        This is your starting point.
+
         Der Anfang von allem. Das ist der __Main Controller__ deiner App.
         Der einfachste Weg eine App Instanz zu erzeugen ist mittels
 
-        `let app = new Picimo.App(/* options */);`
+        `let app = new Picimo.App;`
 
-        Das `<canvas>` Element wird automatisch erzeugt und unterhalb von *document.body* in das DOM eingefügt.
-        Alternativ ist die Angabe des Container Elements mittels **appendTo** möglich.
-        Will man stattdessen ein vorhandenes `<canvas>` nutzen, oder einfach selbst erzeugen, übergibt man dieses
-        mit der Option **canvas**, alternativ auch als ersten Parameter bei der Erzeugung der App Instanz:
+        #### Options are optional
+
+        Options werden einfach an den Constructor als erstes Argument überreicht ..
+
+        `let app = new Picimo({ canvas: document.getElementById('myCanvas') });`
+
+        #### Canvas Setup
+
+        Picimo benötigt ein `<canvas>` Element zur Anzeige. Dieses kann mittels `canvas` option
+        oder einfach als ersten Parameter an den Constructor übergeben werden.
 
         `let app = new Picimo.App(myCanvas/* , options */);`
 
-        Egal, ob man das Canvas Element selbst erzeugt oder übergibt, es wird in jedem Falle die _CSS class_ __.picimo__
-        an das Element gehängt.
+        Wird kein Canvas angegeben, erzeugt die App instance einfach selbst einen eigenen Canvas.
+        Dieser wird unterhalb `document.body` eingehängt oder alternativ kann der Container mit der Option `appendTo` bestimmt werden.
 
-        Die wohl wichtigste Property einer App ist die *root* scene `app.scene`
+        Dieser automatisch erzeugte Canvas richtet seine Größe dynamisch an seinem Container Element (parentNode) aus.
+        Der Container sollte also eine eigene Größe haben.
 
-        Die App bietet auch Zugriff auf das *Sprite, Texture* und *Shader* Management.
+        Im Gegensatz dazu wird die Canvas Element Größe *niemals* von der App verändert,
+        wenn ein schon bestehendes Canvas (zB. per `canvas` option) verwendet wird.
+
+        #### Background (color/transparency)
+
+        Mit der Option `alpha: true` kann ein transparenter Canvas erzeugt werden. Mit `backgroundColor` kann alternativ
+        eine Hintergrundfarbe bestimmt werden.
+
+        #### Events and State Changes
+
+        While registering function callbacks with `app.on()` you can hook into the different app state changes
+        (like *init*, *resize* or *renderFrame* .. )
+
+        #### glx/gl/renderer states
+
+        TODO
+
+        #### assets/shader/texture/sprite factories/helpers
+
+        TODO
+
+        #### timing/frameNo state
+
+        TODO
+
+        #### scene graph root
+
+        TODO
+
+        #### plugin support
+
+        - `App.on('create')`
+
 
       extends: Picimo.events.CustomEvent
       attributes:
@@ -33,16 +74,7 @@
           description: "The *root* scene of the picimo scene graph."
         -
           separator: true
-        -
-          name: "width"
-          type: "number"
-          readonly: true
-          description: "The _device_ pixel width."
-        -
-          name: "height"
-          type: "number"
-          readonly: true
-          description: "The _device_ pixel height."
+          title: time/frame info
         -
           name: "now"
           type: "number"
@@ -55,23 +87,9 @@
           readonly: true
         -
           separator: true
+          title: Factories and helpers
         -
-          name: "backgroundColor"
-          type: "Picimo.utils.Color"
-          description: "The default background color is _black_ or if you set the __alpha__ option then _transparent_ is used."
-        -
-          name: "assetBaseUrl"
-          type: "string"
-          nullable: true
-          description: |
-            The base url for all assets. *Maybe* be undefined. The base url can be set via the __assetBaseUrl__
-            *option* or via the global var `PICIMO_ASSET_BASE_URL` (will override the option).
-            If unspecified the base url will be calculated from `locaation.href`
-        -
-          separator: true
-          title: Access to sprite, texture and shader management
-        -
-          name: "sprites"
+          name: "spriteFactory"
           type: "Picimo.sprites.SpriteFactory"
           readonly: true
         -
@@ -83,13 +101,35 @@
           type: "Picimo.render.ShaderManager"
           readonly: true
         -
+          name: "assetBaseUrl"
+          type: "string"
+          nullable: true
+          description: |
+            The base url for all assets. *Maybe* be undefined. The base url can be set via the __assetBaseUrl__
+            *option* or via the global var `PICIMO_ASSET_BASE_URL` (will override the option).
+            If unspecified the base url will be calculated from `locaation.href`
+        -
           separator: true
-          title: The rendering context
+          title: The webgl/rendering context
         -
           name: "canvas"
           type: "HTMLCanvasElement"
           readonly: true
           description: "The `<canvas>` dom element."
+        -
+          name: "backgroundColor"
+          type: "Picimo.utils.Color"
+          description: "The default background color is _black_ or if you set the __alpha__ option then _transparent_ is used."
+        -
+          name: "width"
+          type: "number"
+          readonly: true
+          description: "The _device_ pixel width."
+        -
+          name: "height"
+          type: "number"
+          readonly: true
+          description: "The _device_ pixel height."
         -
           name: "gl"
           type: "WebGlRenderingContext"
@@ -145,6 +185,22 @@
               name: "url"
               type: "string"
           returns: "string"
+        -
+          separator: true
+          title: "sprites"
+        -
+          name: "defineSprite"
+          args:
+            -
+              name: "constructor"
+              type: "function"
+            -
+              name: "options"
+              type: "object"
+            -
+              name: "proto"
+              type: "object"
+          returns: "Picimo.core.VertexObjectDescriptor"
 
       constructor:
         args:

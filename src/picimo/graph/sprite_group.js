@@ -44,7 +44,7 @@ export default function SpriteGroup ( app, options ) {
     initTextureAtlas( this, options.textureAtlas );
 
     this.program             = options.program || 'sprite';
-    this.spriteDescriptor    = app.sprites.getDescriptor(options.sprites || 'default');
+    this.spriteDescriptor    = app.spriteFactory.getDescriptor(options.sprites || 'default');
     this.pipeline            = null;
     this.defaultSpriteWidth  = options.defaultWidth || 0;
     this.defaultSpriteHeight = options.defaultHeight || options.defaultWidth;

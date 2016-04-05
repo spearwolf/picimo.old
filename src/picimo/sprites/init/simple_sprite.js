@@ -2,7 +2,10 @@
 
 export default function ( spriteFactory ) {
 
-    let descriptor = spriteFactory.createDescriptor( 'simple',
+    let descriptor = spriteFactory.getDescriptor('simple');
+    if (descriptor) return descriptor;
+
+    descriptor = spriteFactory.createDescriptor( 'simple',
 
         null,
 

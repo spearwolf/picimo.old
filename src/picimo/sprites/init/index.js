@@ -1,13 +1,16 @@
 'use strict';
 
+import SpriteFactory from '../sprite_factory';
+
 import defaultSprite from './default_sprite';
 import simpleSprite from './simple_sprite';
 
-export default function (spriteFactory) {
+export default function () {
 
-    defaultSprite(spriteFactory);
-    simpleSprite(spriteFactory);
+    defaultSprite(SpriteFactory);
+    simpleSprite(SpriteFactory);
 
-    return spriteFactory;
+    return SpriteFactory.createSubFactory();
 
 }
+

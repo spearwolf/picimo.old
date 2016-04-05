@@ -2,32 +2,57 @@
 
 import { VertexObjectDescriptor } from '../core';
 
-export default (function () {
+class SpriteFactory {
 
-    let registry = new Map;
-    let api = {
+    constructor ( parentFactory = null ) {
 
-        createDescriptor (name, ...args) {
+        this.registry = new Map;
+        this.parentFactory = parentFactory;
 
-            let vod = new VertexObjectDescriptor(...args);
-            registry.set(name, vod);
+    }
 
-            return vod;
+    createDescriptor (name, ...args) {
 
-        },
-
-        getDescriptor (descriptor = 'default') {
-            return descriptor instanceof VertexObjectDescriptor ? descriptor : registry.get(descriptor);
-        },
-
-        createSprite (descriptor, ...args) {
-            let d = this.getDescriptor(descriptor);
-            if (d) return d.create(...args);
+        if (this.getDescriptor(name)) {
+            throw new Error(`oops.. VertexObjectDescriptor '${name}' already exists!`);
         }
 
-    };
+        let vod = new VertexObjectDescriptor(...args);
+        this.registry.set(name, vod);
 
-    return api;
+        return vod;
+
+    }
+
+    getDescriptor (descriptor = 'default') {
+        if (descriptor instanceof VertexObjectDescriptor) {
+            return descriptor;
+        } else {
+            let vod = this.registry.get(descriptor);
+            if (!vod && this.parentFactory) {
+                return this.parentFactory.getDescriptor(descriptor);
+            } else {
+                return vod;
+            }
+        }
+    }
+
+    createSprite (descriptor, ...args) {
+        let vod = this.getDescriptor(descriptor);
+        if (vod) {
+            return vod.create(...args);
+        }
+    }
+
+    createSubFactory () {
+        return new SpriteFactory(this);
+    }
+
+}
+
+export default (function () {
+
+    return new SpriteFactory;
 
 })();
 

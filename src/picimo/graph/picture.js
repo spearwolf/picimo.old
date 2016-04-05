@@ -52,7 +52,7 @@ export default class Picture extends Node {
 
         this.program = options.program || "picture";
 
-        this.sprite = app.sprites.createSprite();
+        this.sprite = app.spriteFactory.createSprite();
 
         let zoom = typeof options.zoom === 'number' ? options.zoom : 1;
         this.sprite.sx = zoom;

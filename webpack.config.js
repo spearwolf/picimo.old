@@ -7,6 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const PUBLIC       = __dirname + "/build";
 const PACKAGE_JSON = require('./package.json');
 const BUILD_DEV    = !! JSON.parse(process.env.BUILD_DEV || 'true');
+const BANNER       = `spearwolf/${PACKAGE_JSON.name} version ${PACKAGE_JSON.version} built with ♥ by ${PACKAGE_JSON.author.name} <${PACKAGE_JSON.author.email}>`;
 
 var plugins = [
     new webpack.DefinePlugin({
@@ -18,7 +19,10 @@ var plugins = [
         { from: 'examples', to: 'examples' },
         { from: 'assets', to: 'assets' },
         { from: 'index.html' },
-    ])
+    ]),
+    new webpack.BannerPlugin(BANNER, {
+        entryOnly: true
+    })
 ];
 
 if (!BUILD_DEV) {

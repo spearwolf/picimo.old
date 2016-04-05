@@ -53,9 +53,10 @@ import VertexArray from './vertex_array';
  * vo.numberOfBeast()   // => 666
  *
  */
+
 export default function VertexObjectDescriptor ( vertexObjectConstructor, vertexCount, vertexAttrCount, attributes, aliases ) {
 
-    this.vertexObjectConstructor = typeof vertexObjectConstructor === 'function' ? vertexObjectConstructor : ( function () {} );
+    this.vertexObjectConstructor = buildVOConstructor(vertexObjectConstructor);
     this.vertexObjectConstructor.prototype = Object.create( VertexObject.prototype );
     this.vertexObjectConstructor.prototype.constructor = this.vertexObjectConstructor;
 
@@ -155,6 +156,21 @@ export default function VertexObjectDescriptor ( vertexObjectConstructor, vertex
 
 }
 
+function buildVOConstructor ( constructorFunc ) {
+    if (typeof constructorFunc === 'function') {
+        if (!constructorFunc.name) {
+            return function CustomVertexObject () {
+                return constructorFunc.call(this);
+            };
+        } else {
+            return constructorFunc;
+        }
+    } else {
+        return function CustomVertexObject () {};
+    }
+}
+
+
 /**
  * @method Picimo.core.VertexObjectDescriptor#createVertexArray
  * @param {number} [size=1]
@@ -250,7 +266,7 @@ VertexObjectAttrDescriptor.prototype.getAttrPostfix = function ( name, index ) {
 
 VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, descriptor ) {
 
-    var i, j, setter;
+    var i, j;
 
     if ( this.size === 1 ) {
 
@@ -268,7 +284,7 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
 
             obj[ "set" + camelize( name ) ] = {
 
-                value      : set_v1f_v( descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
+                value      : set_vNf_v( 1, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
                 enumerable : true
 
             };
@@ -278,7 +294,7 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
                 obj[ name + i ] = {
 
                     get        : get_v1f_u( this.offset + ( i * descriptor.vertexAttrCount ) ),
-                    set        : set_v1f_v( 1, 0, this.offset + ( i * descriptor.vertexAttrCount ) ),
+                    set        : set_vNf_v( 1, 1, 0, this.offset + ( i * descriptor.vertexAttrCount ) ),
                     enumerable : true
 
                 };
@@ -287,7 +303,7 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
 
         }
 
-    } else if ( this.size >= 2 && this.size <= 4 ) {
+    } else if ( this.size >= 2 ) {
 
         if ( this.uniform ) {
 
@@ -298,11 +314,9 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
 
             };
 
-            setter = [ set_v2f_u, set_v3f_u, set_v4f_u ][ this.size - 2 ];
-
             obj[ "set" + camelize( name ) ] = {
 
-                value      : setter( descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
+                value      : set_vNf_u( this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
                 enumerable : true
 
             };
@@ -321,11 +335,9 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
 
         } else {
 
-            setter = [ set_v2f_v, set_v3f_v ][ this.size - 2 ];
-
             obj[ "set" + camelize( name ) ] = {
 
-                value      : setter( descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
+                value      : set_vNf_v( this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
                 enumerable : true
 
             };
@@ -336,7 +348,7 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
                     obj[ this.getAttrPostfix( name, j ) + i ] = {
 
                         get        : get_v1f_u( this.offset + ( i * descriptor.vertexAttrCount ) + j ),
-                        set        : set_v1f_v( 1, 0, this.offset + ( i * descriptor.vertexAttrCount ) + j ),
+                        set        : set_vNf_v( 1, 1, 0, this.offset + ( i * descriptor.vertexAttrCount ) + j ),
                         enumerable : true
 
                     };
@@ -345,10 +357,6 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
             }
 
         }
-
-    } else {
-
-        throw new Error( 'Unsupprted vertex attribute size of ' + this.size + ' (should not be greater than 4)' );
 
     }
 
@@ -364,247 +372,61 @@ function get_vNf_u ( offset ) {
 
 }
 
-function set_v2f_u ( vertexCount, vertexAttrCount, offset ) {
-
-    return function ( v0, v1 ) {
-
-        var _vertices = this.vertexArray.vertices;
-
-        for ( var i = 0; i < vertexCount; ++i ) {
-
-            _vertices[ ( i * vertexAttrCount ) + offset     ] = v0;
-            _vertices[ ( i * vertexAttrCount ) + offset + 1 ] = v1;
-
-        }
-
-    };
-
-}
-
-function set_v3f_u ( vertexCount, vertexAttrCount, offset ) {
-
-    return function ( v0, v1, v2 ) {
-
-        var _vertices = this.vertexArray.vertices;
-
-        for ( var i = 0; i < vertexCount; ++i ) {
-
-            _vertices[ ( i * vertexAttrCount ) + offset     ] = v0;
-            _vertices[ ( i * vertexAttrCount ) + offset + 1 ] = v1;
-            _vertices[ ( i * vertexAttrCount ) + offset + 2 ] = v2;
-
-        }
-
-    };
-
-}
-
-function set_v4f_u ( vertexCount, vertexAttrCount, offset ) {
-
-    return function ( v0, v1, v2, v3 ) {
-
-        var _vertices = this.vertexArray.vertices;
-
-        for ( var i = 0; i < vertexCount; ++i ) {
-
-            _vertices[ ( i * vertexAttrCount ) + offset     ] = v0;
-            _vertices[ ( i * vertexAttrCount ) + offset + 1 ] = v1;
-            _vertices[ ( i * vertexAttrCount ) + offset + 2 ] = v2;
-            _vertices[ ( i * vertexAttrCount ) + offset + 3 ] = v3;
-
-        }
-
-    };
-
-}
-
-function get_v1f_u ( offset ) {
-
+function set_vNf_u ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
-        return this.vertexArray.vertices[ offset ];
+        let _vertices = this.vertexArray.vertices;
+        let i;
+        let n;
+
+        for ( i = 0; i < vertexCount; ++i ) {
+            for ( n = 0; n < vectorLength; ++n ) {
+                _vertices[ ( i * vertexAttrCount ) + offset + n ] = arguments[n];
+            }
+        }
 
     };
-
 }
 
-function set_v1f_v ( vertexCount, vertexAttrCount, offset ) {
 
-    if ( vertexCount === 1 ) {
-
-        return function ( value ) {
-
-            this.vertexArray.vertices[ offset ] = value;
-
-        };
-
-    } else if ( vertexCount === 3 ) {
-
-        return function ( v0, v1, v2 ) {
-
-            var _vertices = this.vertexArray.vertices;
-
-            _vertices[ offset ]                           = v0;
-            _vertices[ vertexAttrCount + offset ]         = v1;
-            _vertices[ ( 2 * vertexAttrCount ) + offset ] = v2;
-
-        };
-
-    } else if ( vertexCount === 4 ) {
-
-        return function ( v0, v1, v2, v3 ) {
-
-            var _vertices = this.vertexArray.vertices;
-
-            _vertices[ offset ]                           = v0;
-            _vertices[ vertexAttrCount + offset ]         = v1;
-            _vertices[ ( 2 * vertexAttrCount ) + offset ] = v2;
-            _vertices[ ( 3 * vertexAttrCount ) + offset ] = v3;
-
-        };
-
-    } else {
-
-        throw new Error( 'Unsupported vertexCount=' + vertexCount + ' for per vertex attribute (allowed is 1, 3 or 4)' );
-
-    }
-
+function get_v1f_u ( offset ) {
+    return function () {
+        return this.vertexArray.vertices[ offset ];
+    };
 }
 
-function set_v2f_v ( vertexCount, vertexAttrCount, offset ) {
+function set_vNf_v ( vectorLength, vertexCount, vertexAttrCount, offset ) {
+    return function () {
 
-    if ( vertexCount === 1 ) {
+        let _vertices = this.vertexArray.vertices;
+        let i;
+        let n;
 
-        return function ( value_0, value_1 ) {
+        for ( i = 0; i < vertexCount; ++i ) {
+            for ( n = 0; n < vectorLength; ++n ) {
+                _vertices[( i * vertexAttrCount ) + offset + n] = arguments[( i * vectorLength ) + n];
+            }
+        }
 
-            var _vertices = this.vertexArray.vertices;
-
-            _vertices[ offset ]     = value_0;
-            _vertices[ offset + 1 ] = value_1;
-
-        };
-
-    } else if ( vertexCount === 3 ) {
-
-        return function ( v0, v1, v0_1, v1_1, v0_2, v1_2 ) {
-
-            var _vertices = this.vertexArray.vertices;
-
-            _vertices[ offset ]                               = v0;
-            _vertices[ offset + 1 ]                           = v1;
-            _vertices[ vertexAttrCount + offset ]             = v0_1;
-            _vertices[ vertexAttrCount + offset + 1 ]         = v1_1;
-            _vertices[ ( 2 * vertexAttrCount ) + offset ]     = v0_2;
-            _vertices[ ( 2 * vertexAttrCount ) + offset + 1 ] = v1_2;
-
-        };
-
-    } else if ( vertexCount === 4 ) {
-
-        return function ( v0, v1, v0_1, v1_1, v0_2, v1_2, v0_3, v1_3 ) {
-
-            var _vertices = this.vertexArray.vertices;
-
-            _vertices[ offset ]                               = v0;
-            _vertices[ offset + 1 ]                           = v1;
-            _vertices[ vertexAttrCount + offset ]             = v0_1;
-            _vertices[ vertexAttrCount + offset + 1 ]         = v1_1;
-            _vertices[ ( 2 * vertexAttrCount ) + offset ]     = v0_2;
-            _vertices[ ( 2 * vertexAttrCount ) + offset + 1 ] = v1_2;
-            _vertices[ ( 3 * vertexAttrCount ) + offset ]     = v0_3;
-            _vertices[ ( 3 * vertexAttrCount ) + offset + 1 ] = v1_3;
-
-        };
-
-    } else {
-
-        throw new Error( 'Unsupported vertexCount=' + vertexCount + ' for per vertex attribute (allowed is 1, 3 or 4)' );
-
-    }
-
-}
-
-function set_v3f_v ( vertexCount, vertexAttrCount, offset ) {
-
-    if ( vertexCount === 1 ) {
-
-        return function ( value_0, value_1, value_2 ) {
-
-            var _vertices = this.vertexArray.vertices;
-
-            _vertices[ offset ]     = value_0;
-            _vertices[ offset + 1 ] = value_1;
-            _vertices[ offset + 2 ] = value_2;
-
-        };
-
-    } else if ( vertexCount === 3 ) {
-
-        return function ( v0, v1, v2, v0_1, v1_1, v2_1, v0_2, v1_2, v2_2 ) {
-
-            var _vertices = this.vertexArray.vertices;
-
-            _vertices[ offset ]                               = v0;
-            _vertices[ offset + 1 ]                           = v1;
-            _vertices[ offset + 2 ]                           = v2;
-            _vertices[ vertexAttrCount + offset ]             = v0_1;
-            _vertices[ vertexAttrCount + offset + 1 ]         = v1_1;
-            _vertices[ vertexAttrCount + offset + 2 ]         = v2_1;
-            _vertices[ ( 2 * vertexAttrCount ) + offset ]     = v0_2;
-            _vertices[ ( 2 * vertexAttrCount ) + offset + 1 ] = v1_2;
-            _vertices[ ( 2 * vertexAttrCount ) + offset + 2 ] = v2_2;
-
-        };
-
-    } else if ( vertexCount === 4 ) {
-
-        return function ( v0, v1, v2, v0_1, v1_1, v2_1, v0_2, v1_2, v2_2, v0_3, v1_3, v2_3 ) {
-
-            var _vertices = this.vertexArray.vertices;
-
-            _vertices[ offset ]                               = v0;
-            _vertices[ offset + 1 ]                           = v1;
-            _vertices[ offset + 2 ]                           = v2;
-            _vertices[ vertexAttrCount + offset ]             = v0_1;
-            _vertices[ vertexAttrCount + offset + 1 ]         = v1_1;
-            _vertices[ vertexAttrCount + offset + 2 ]         = v2_1;
-            _vertices[ ( 2 * vertexAttrCount ) + offset ]     = v0_2;
-            _vertices[ ( 2 * vertexAttrCount ) + offset + 1 ] = v1_2;
-            _vertices[ ( 2 * vertexAttrCount ) + offset + 2 ] = v2_2;
-            _vertices[ ( 3 * vertexAttrCount ) + offset ]     = v0_3;
-            _vertices[ ( 3 * vertexAttrCount ) + offset + 1 ] = v1_3;
-            _vertices[ ( 3 * vertexAttrCount ) + offset + 2 ] = v2_3;
-
-        };
-
-    } else {
-
-        throw new Error( 'Unsupported vertexCount=' + vertexCount + ' for per vertex attribute (allowed is 1, 3 or 4)' );
-
-    }
-
+    };
 }
 
 function set_v1f_u ( vertexCount, vertexAttrCount, offset ) {
-
     return function ( value ) {
 
         var _vertices = this.vertexArray.vertices;
 
-        for ( var i = 0; i < vertexCount; ++i ) {
+        for ( let i = 0; i < vertexCount; ++i ) {
 
             _vertices[ ( i * vertexAttrCount ) + offset ] = value;
 
         }
 
     };
-
 }
 
 
 function camelize ( name ) {
-
     return name[ 0 ].toUpperCase() + name.substr( 1 );
-
 }
 

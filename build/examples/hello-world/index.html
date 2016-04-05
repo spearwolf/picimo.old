@@ -10,19 +10,22 @@
     <title>picimo v1.0 example</title>
     <style>
         body {
-            background-color: #232323;
-            color: #888888;
-            font-family: monospace;
+            background-color: #ddd;
+            color: #00000;
             font-size: 14px; }
         #picimo {
-            width: 320px;
-            height: 200px;
-            border: 1px dotted #000; }
+            display: block;
+            min-width: 320px;
+            min-height: 200px;
+            width: 50vw;
+            height: 50vh;
+            margin: 0 auto 0 auto;
+            border: 2px dotted #f06; }
     </style>
   </head>
   <body>
-    <p>welcome!</p>
-    <div id="picimo"></div>
+    <p>:-)</p>
+    <canvas id="picimo"></canvas>
     <script src="../../picimo.js"></script>
     <script src="index.js"></script>
   </body>
