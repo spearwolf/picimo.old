@@ -1,0 +1,35 @@
+---
+  name: "AppOptions"
+  type: "programming-interface"
+  dictionaries:
+    -
+      name: "AppOptions"
+      attributes:
+        -
+          name: "alpha"
+          type: "boolean"
+          default: "false"
+          required: false
+        -
+          name: "antialias"
+          type: "boolean"
+          default: "false"
+        -
+          name: "canvas"
+          type: "HTMLCanvasElement"
+          default: "null"
+        -
+          name: "appendTo"
+          type: "HTMLElement"
+          default: "null"
+        -
+          name: "bgColor"
+          type:
+            - "string"
+            - "Picimo.utils.Color"
+          default: "'#000000'"
+        -
+          name: "assetBaseUrl"
+          type: "string"
+          default: "null"
+

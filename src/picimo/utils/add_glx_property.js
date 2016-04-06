@@ -19,14 +19,12 @@ export default function addGlxProperty (obj) {
                 _glx = glx;
                 Object.defineProperty(this, 'gl', {
                     value: ( typeof glx === 'object' ? glx.gl : undefined ),
-                    enumerable: true,
                     configurable: true
                 });
             },
             get: function () {
                 return _glx;
             },
-            enumerable: true
         }
     });
 

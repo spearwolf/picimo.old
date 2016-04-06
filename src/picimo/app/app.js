@@ -7,12 +7,13 @@ import * as graph from '../graph';
 import * as render from '../render';
 import * as ui from '../ui';
 
-import { initSprites, defineSprite } from '../sprites';
-
 import resize from './resize';
 import renderFrame from './render_frame';
 import createWebGlContext from './create_web_gl_context';
 import createCanvas from './create_canvas';
+import initSpriteFactory from './init_sprite_factory';
+import createShaderManager from './create_shader_manager';
+
 import { getUrlDir, getAssetUrl, joinAssetUrl } from './asset_url_helper';
 import { loadTextureAtlas, loadTexture } from './texture_helpers';
 
@@ -32,32 +33,28 @@ export default function App ( canvas, options ) {
 
     createCanvas( this, canvas, options.appendTo );
 
-    this.mouseController = new ui.MouseController(this);
+    utils.object.definePropertyPrivateRO(this, 'mouseController', new ui.MouseController(this));
     this.mouseController.connect(this); // => forward all mouse events to app
 
     utils.addGlxProperty( this );
 
-    this.glCtxAttrs = {
+    utils.object.definePropertyPrivateRO(this, 'glCtxAttrs', {
 
         alpha     : ( options.alpha === true ),
         antialias : ( options.antialias === true )
 
-    };
+    });
 
     this.glx = createWebGlContext( this );
 
     this.backgroundColor = new utils.Color( options.bgColor !== undefined ? options.bgColor : ( this.glCtxAttrs.alpha ? 'transparent' : "#000000" ) );
 
-    utils.object.definePropertyPublicRO( this, 'shader', new render.ShaderManager(this) );
+    createShaderManager( this );
 
-    utils.object.definePropertyPublicRO( this, 'texture', new render.TextureManager(this) );
-    utils.object.definePropertyPublicRO( this, 'renderer', new render.WebGlRenderer(this) );
+    utils.object.definePropertyPrivateRO( this, 'textureManager', new render.TextureManager(this) );
+    utils.object.definePropertyPrivateRO( this, 'renderer', new render.WebGlRenderer(this) );
 
-    let spriteFactory = initSprites();
-    utils.object.definePropertyPublicRO( this, 'spriteFactory', spriteFactory );
-    utils.object.definePropertyPublicRO( this, 'defineSprite', function (typeName, spriteOptions, spriteProto) {
-        return defineSprite(typeName, spriteOptions, spriteProto, spriteFactory );
-    });
+    initSpriteFactory( this );
 
     this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
 

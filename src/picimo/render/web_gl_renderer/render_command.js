@@ -97,7 +97,7 @@ export default function renderCommand ( re/*nderer*/, cmd ) {
 
         if ( typeof cmd.program === 'string' ) {  // Convert program to WebGlProgram
 
-            program = re.app.shader.getProgram( cmd.program );
+            program = re.app.getProgram( cmd.program );
 
             if ( ! program ) {
 

@@ -4,70 +4,69 @@ import * as utils from '../utils';
 import ShaderSource from './shader_source';
 import Program from './program';
 
-/**
- * @class Picimo.render.ShaderManager
- */
+//===================================================================
+//
+// ShaderManager
+//
+//====================================================================
 
 export default function ShaderManager ( app ) {
 
-    utils.object.definePropertyPublicRO( this, 'app', app );
-
     utils.object.definePropertiesPrivateRO( this, {
 
-        _vertexShader   : new Map,
-        _fragmentShader : new Map,
-        _programs       : new Map,
+        app : app,
+
+        vertexShaders   : new Map,
+        fragmentShaders : new Map,
+        programs        : new Map,
 
     });
 
 }
 
-
-/**
- * @method Picimo.render.ShaderManager#addProgram
- * @param {string} name
- * @param {string} [vertexShaderName=name]
- * @param {string} [fragmentShaderName=name]
- * @return {Picimo.render.ShaderManager} self
- */
+//---------------------------------------------------------------------------------------------------
+//
+// addProgram ( name [, vertexShaderName = name ] [, fragmentShaderName = name ] ) -> shaderManager
+//
+//--------------------------------------------------------------------------------------------------------
 
 ShaderManager.prototype.addProgram = function ( name, vertexShaderName, fragmentShaderName ) {
 
-    this._programs.set( name, new Program( name, vertexShaderName, fragmentShaderName ) );
+    this.programs.set( name, new Program( name, vertexShaderName, fragmentShaderName ) );
 
     return this;
 
 };
 
 
-/**
- * @method Picimo.render.ShaderManager#getProgram
- * @param {string} name
- * @return {Picimo.render.Program} program
- */
+//-----------------------------------------------
+//
+// getProgram ( name ) -> render.Program
+//
+//----------------------------------------------------
 
 ShaderManager.prototype.getProgram = function ( name ) {
 
-    return this._programs.get( name );
+    return this.programs.get( name );
 
 };
 
 
-/**
- * @method Picimo.render.ShaderManager#addShader
- * @param {Picimo.render.ShaderSource} shader
- * @return {Picimo.render.ShaderManager} self
- */
+//---------------------------------------------------------------
+//
+// addShader ( shader: render.ShaderSource ) -> shaderManager
+//
+//------------------------------------------------------------------
 
 ShaderManager.prototype.addShader = function ( shader ) {
 
     if ( shader.shaderType === ShaderSource.VERTEX_SHADER ) {
 
-        this._vertexShader.set( shader.name, shader );
+        this.vertexShaders.set( shader.name, shader );
 
     } else if ( shader.shaderType === ShaderSource.FRAGMENT_SHADER ) {
 
-        this._fragmentShader.set( shader.name, shader );
+        this.fragmentShaders.set( shader.name, shader );
 
     }
 
@@ -76,84 +75,88 @@ ShaderManager.prototype.addShader = function ( shader ) {
 };
 
 
-/**
- * @method Picimo.render.ShaderManager#addVertexShader
- * @param {string} name
- * @param {string} shader - The raw shader source string
- * @return {Picimo.render.ShaderManager} self
- */
+//---------------------------------------------------------------------
+//
+// defineVertexShader ( name, source: string ) -> shaderManager
+//
+//------------------------------------------------------------------------
 
-ShaderManager.prototype.addVertexShader = function ( name, source ) {
+ShaderManager.prototype.defineVertexShader = function ( name, source ) {
 
     return this.addShader( new ShaderSource( this.app, ShaderSource.VERTEX_SHADER, name, source ) );
 
 };
 
 
-/**
- * @method Picimo.render.ShaderManager#addFragmentShader
- * @param {string} name
- * @param {string} shader - The raw shader source string
- * @return {Picimo.render.ShaderManager} self
- */
+//---------------------------------------------------------------------
+//
+// defineFragmentShader ( name, source: string ) -> shaderManager
+//
+//------------------------------------------------------------------------
 
-ShaderManager.prototype.addFragmentShader = function ( name, source ) {
+ShaderManager.prototype.defineFragmentShader = function ( name, source ) {
 
     return this.addShader( new ShaderSource( this.app, ShaderSource.FRAGMENT_SHADER, name, source ) );
 
 };
 
 
-/**
- * @method Picimo.render.ShaderManager#loadVertexShader
- * @param {string} name
- * @param {string} url
- * @return {Picimo.render.ShaderManager} self
- */
+//---------------------------------------------------------------------
+//
+// loadVertexShader ( name, url ) -> Promise<ShaderSource>
+//
+//------------------------------------------------------------------------
 
 ShaderManager.prototype.loadVertexShader = function ( name, url ) {
 
-    return this.addShader( new ShaderSource( this.app, ShaderSource.VERTEX_SHADER, name ).load( url ) );
+    let source = new ShaderSource( this.app, ShaderSource.VERTEX_SHADER, name ).load( url );
+
+    this.addShader( source );
+
+    return source.promise;
 
 };
 
 
-/**
- * @method Picimo.render.ShaderManager#loadFragmentShader
- * @param {string} name
- * @param {string} url
- * @return {Picimo.render.ShaderManager} self
- */
+//---------------------------------------------------------------------
+//
+// loadFragmentShader ( name, url ) -> Promise<ShaderSource>
+//
+//------------------------------------------------------------------------
 
 ShaderManager.prototype.loadFragmentShader = function ( name, url ) {
 
-    return this.addShader( new ShaderSource( this.app, ShaderSource.FRAGMENT_SHADER, name ).load( url ) );
+    let source = new ShaderSource( this.app, ShaderSource.FRAGMENT_SHADER, name ).load( url );
+
+    this.addShader( source );
+
+    return source;
 
 };
 
 
-/**
- * @method Picimo.render.ShaderManager#getVertexShader
- * @param {string} name
- * @return {Picimo.render.ShaderSource} shader
- */
+//---------------------------------------------------------------------
+//
+// getVertexShader ( name ) -> render.ShaderSource
+//
+//------------------------------------------------------------------------
 
 ShaderManager.prototype.getVertexShader = function ( name ) {
 
-    return this._vertexShader.get( name );
+    return this.vertexShaders.get( name );
 
 };
 
 
-/**
- * @method Picimo.render.ShaderManager#getFragmentShader
- * @param {string} name
- * @return {Picimo.render.ShaderSource} shader
- */
+//---------------------------------------------------------------------
+//
+// getFragmentShader ( name ) -> render.ShaderSource
+//
+//------------------------------------------------------------------------
 
 ShaderManager.prototype.getFragmentShader = function ( name ) {
 
-    return this._fragmentShader.get( name );
+    return this.fragmentShaders.get( name );
 
 };
 

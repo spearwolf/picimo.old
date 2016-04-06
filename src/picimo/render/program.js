@@ -19,13 +19,13 @@ export default function Program ( name, vertexShaderName, fragmentShaderName ) {
 
 Program.prototype.linkProgram = function ( app ) {
 
-    var glx = app.glx;
-    var gl = glx.gl;
+    const glx = app.glx;
+    const gl = glx.gl;
 
-    var vertexShader = glx.glShader( app.shader.getVertexShader( this.vertexShaderName ) );
+    var vertexShader = glx.glShader( app.getVertexShader( this.vertexShaderName ) );
     if ( ! vertexShader ) return;
 
-    var fragmentShader = glx.glShader( app.shader.getFragmentShader( this.fragmentShaderName ) );
+    var fragmentShader = glx.glShader( app.getFragmentShader( this.fragmentShaderName ) );
     if ( ! fragmentShader ) return;
 
     var gl_program = gl.createProgram();

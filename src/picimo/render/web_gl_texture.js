@@ -191,7 +191,7 @@ WebGlTexture.prototype.bind = function () {
 
     if ( ! this.glId ) initialize( this );
 
-    return this.glx.app.texture.bindWebGlTexture( this );
+    return this.glx.app.textureManager.bindWebGlTexture( this );
 
 };
 

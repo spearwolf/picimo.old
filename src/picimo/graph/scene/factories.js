@@ -5,53 +5,42 @@ import Picture from '../picture';
 
 export default function (Scene) {
 
-    /**
-     * @method Picimo.graph.Scene#appendSpriteGroup
-     * @param {Picimo.core.TextureAtlas|Promise} textureAtlas
-     * @param {options} [options]
-     * @param {object} [extension]
-     * @return Picimo.graph.SpriteGroup
-     */
-
-    Scene.prototype.appendSpriteGroup = function (textureAtlas, options = {}, extension) {
+    Scene.prototype.appendSpriteGroup = function (textureAtlas, options = {}, extension = null) {
 
         options.parentNode = this;
         options.textureAtlas = textureAtlas;
 
-        var node = this.appendChild(new SpriteGroup(this.app, options));
-
-        if (extension) node.connect(extension);
-
-        return node;
+        return appendNode(new SpriteGroup(this.app, options), this, extension);
 
     };
 
-
-    Scene.prototype.appendPicture = function (url, options = {}, extension) {
+    Scene.prototype.appendPicture = function (url, options = {}, extension = null) {
 
         options.parentNode = this;
         options.texture = this.app.loadTexture(url);
 
-        var node = this.appendChild(new Picture(this.app, options));
-
-        if (extension) node.connect(extension);
-
-        return node;
+        return appendNode(new Picture(this.app, options), this, extension);
 
     };
 
-    Scene.prototype.appendGroup = function (options = {}, extension) {
+    Scene.prototype.appendGroup = function (options = {}, extension = null) {
 
         options.parentNode = this;
         options.projection = false;
 
-        var node = this.appendChild(new Scene(this.app, options));
-
-        if (extension) node.connect(extension);
-
-        return node;
+        return appendNode(new Scene(this.app, options), this, extension);
 
     };
+
+}
+
+function appendNode (node, scene, extension) {
+
+    scene.appendChild(node);
+
+    if (extension) node.connect(extension);
+
+    return node;
 
 }
 

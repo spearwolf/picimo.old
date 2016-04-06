@@ -83,7 +83,7 @@ function initRenderCmds ( self ) {
 
             program: self.program,
             uniforms: {
-                tex: self.app.texture.findOrCreateWebGlTexture( self.texture )
+                tex: self.app.textureManager.findOrCreateWebGlTexture( self.texture )
             },
             attributes: {},
             drawElements: {

@@ -1,0 +1,38 @@
+---
+  name: "VertexObjectDescription"
+  type: "programming-interface"
+  dictionaries:
+    -
+      name: "VertexObjectDescription"
+      attributes:
+        -
+          name: "constructor"
+          type: "function"
+          required: false
+          description: Constructor function for your sprite
+        -
+          name: "vertexCount"
+          type: "number"
+          required: true
+          description: Number of vertices per sprite
+        -
+          name: "vertexAttrCount"
+          type: "number"
+          required: true
+          description: Number of attributes per vertex
+        -
+          name: "attributes"
+          type: "Array"
+          required: true
+          description: Sprite attributes description
+        -
+          name: "alias"
+          type: "object"
+          required: false
+          description: Attribute alias descriptions
+        -
+          name: "proto"
+          type: "object"
+          required: false
+          description: The prototype object for your sprite
+

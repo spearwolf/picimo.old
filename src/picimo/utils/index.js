@@ -15,6 +15,8 @@ import ObjectPool from './object_pool';
 import Queue from './queue';
 export { ObjectPool, Queue };
 
+export delegateMethods from './delegate_methods';
+
 
 export function asNumber (arg, defVal) {
     return Number(isNaN(arg) ? (isNaN(defVal) ? 0 : defVal) : arg);
@@ -33,5 +35,4 @@ export function asBoolean (arg, defVal) {
 export function asString (arg, defVal) {
     return arg != null ? String(arg) : defVal;
 }
-
 

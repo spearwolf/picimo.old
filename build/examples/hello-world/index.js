@@ -12,9 +12,9 @@ var app  = new Picimo.App({
 // Set pixel resolution
 app.scene.setSize( (96+16)*2, 96, 'contain' );
 
-app.shader.loadVertexShader('picture', '/assets/shaders/complex-sprite/complex-sprite.vert');
-app.shader.loadFragmentShader('picture', '/assets/shaders/complex-sprite/complex-sprite.frag');
-app.shader.addProgram('picture', 'picture', 'picture');
+app.loadVertexShader('picture', '/assets/shaders/complex-sprite/complex-sprite.vert');
+app.loadFragmentShader('picture', '/assets/shaders/complex-sprite/complex-sprite.frag');
+app.addProgram('picture', 'picture', 'picture');
 
 app.scene.appendPicture('/assets/images/spw-mini-logo.png', {  // test-76x12.png', {
     name: 'spw',
@@ -133,17 +133,17 @@ console.log( "vo", vo );
 // -------------------------------------------------------------- }}}
 // ========= shaders ============================================ {{{
 
-app.shader.loadVertexShader( 'filmgrain', '/assets/shaders/filmgrain/shader.vert' );
-app.shader.loadFragmentShader( 'filmgrain', '/assets/shaders/filmgrain/shader.frag' );
-app.shader.addProgram( 'film', 'filmgrain', 'filmgrain' );
+app.loadVertexShader( 'filmgrain', '/assets/shaders/filmgrain/shader.vert' );
+app.loadFragmentShader( 'filmgrain', '/assets/shaders/filmgrain/shader.frag' );
+app.addProgram( 'film', 'filmgrain', 'filmgrain' );
 
-//gl_program = app.glx.glProgram( app.shader.getProgram( 'film' ) );
+//gl_program = app.glx.glProgram( app.getProgram( 'film' ) );
 
 // -------------------------------------------------------------- }}}
 
-app.shader.loadVertexShader( 'sprite', '/assets/shaders/sprite/shader.vert' );
-app.shader.loadFragmentShader( 'sprite', '/assets/shaders/sprite/shader.frag' );
-app.shader.addProgram( 'sprite', 'sprite', 'sprite' );
+app.loadVertexShader( 'sprite', '/assets/shaders/sprite/shader.vert' );
+app.loadFragmentShader( 'sprite', '/assets/shaders/sprite/shader.frag' );
+app.addProgram( 'sprite', 'sprite', 'sprite' );
 
 app.scene.appendGroup().appendSpriteGroup( app.loadTextureAtlas( '/assets/images/atlas/lab-walls-tiles.json' ), {
 
