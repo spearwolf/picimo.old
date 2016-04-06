@@ -65,7 +65,7 @@ WebGlRenderer.prototype.onInitGl = function () {
 
 WebGlRenderer.prototype.onResize = function () {
 
-    var app = this.app;
+    const app = this.app;
     app.gl.viewport( 0, 0, app.width, app.height );
 
 };

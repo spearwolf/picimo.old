@@ -21,6 +21,7 @@ export default function ( app, canvas, appendTo ) {
         canvas.style.bottom      = '0';
         canvas.style.right       = '0';
         canvas.style.touchAction = 'none';
+        setUserSelectStyle(canvas);
 
         let parentNode;
         let containerNode;
@@ -36,6 +37,7 @@ export default function ( app, canvas, appendTo ) {
         containerNode.style.width       = '100%';
         containerNode.style.height      = '100%';
         containerNode.style.touchAction = 'none';
+        setUserSelectStyle(containerNode);
 
         containerNode.appendChild( canvas );
 
@@ -43,6 +45,15 @@ export default function ( app, canvas, appendTo ) {
         parentNode.appendChild( containerNode );
 
     }
+
+}
+
+function setUserSelectStyle (element, value = 'none') {
+
+    if ('webkitUserSelect' in element.style) element.style.webkitUserSelect = value;
+    if ('mozUserSelect' in element.style) element.style.mozUserSelect = value;
+    if ('msUserSelect' in element.style) element.style.msUserSelect = value;
+    if ('userSelect' in element.style) element.style.userSelect = value;
 
 }
 

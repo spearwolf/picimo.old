@@ -10,7 +10,7 @@ var app  = new Picimo.App({
 });
 
 // Set pixel resolution
-app.scene.setSize( 76, 12, "contain" );
+app.scene.setSize( (96+16)*2, 96, 'contain' );
 
 app.shader.loadVertexShader('picture', '/assets/shaders/complex-sprite/complex-sprite.vert');
 app.shader.loadFragmentShader('picture', '/assets/shaders/complex-sprite/complex-sprite.frag');
@@ -154,17 +154,19 @@ app.scene.appendGroup().appendSpriteGroup( app.loadTextureAtlas( '/assets/images
 
     init: function (done, sprites) {
 
-        sprites.setDefaultSpriteSize( 16 );
+        sprites.setDefaultSpriteSize( 32, 32 );
 
         sprites.createSprite('numbers32_01').setTranslate( 0, 0 );
-        sprites.createSprite('numbers32_02').setTranslate( 16, 0 );
-        sprites.createSprite('numbers32_03').setTranslate( 16, -16 );
-        sprites.createSprite('numbers32_04').setTranslate( 32, 16 );
-        sprites.createSprite('numbers32_05').setTranslate( 32, 0 );
-        sprites.createSprite('numbers32_06').setTranslate( 32, -16 );
-        sprites.createSprite('numbers32_07').setTranslate( -32, 0 );
-        sprites.createSprite('numbers32_08').setTranslate( -48, 0 );
-        sprites.createSprite('numbers32_10').setTranslate( 60, 0 );
+        sprites.createSprite('numbers32_02').setTranslate( 32, 0 );
+        sprites.createSprite('numbers32_03').setTranslate( 32, -32 );
+        sprites.createSprite('numbers32_04').setTranslate( 64, 32 );
+        sprites.createSprite('numbers32_05').setTranslate( 64, 0 );
+        sprites.createSprite('numbers32_06').setTranslate( 64, -32 );
+        sprites.createSprite('numbers32_07').setTranslate( -64, 0 );
+        sprites.createSprite('numbers32_08').setTranslate( -96, -32 );
+        sprites.createSprite('numbers32_09').setTranslate( -96, 0 );
+        sprites.createSprite('numbers32_10').setTranslate( -96, 32 );
+        //sprites.createSprite('numbers32_10').setTranslate( 76-32, 0 );
 
         //sprites.display = false;
 

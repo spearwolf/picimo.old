@@ -80,6 +80,7 @@ export default function App ( canvas, options ) {
     app.emit('init');
 
     app.renderer.onInitGl();
+    app.resize();
 
     if (!this.onAnimationFrame) {  // plugins can predefine onAnimationFrame
         this.onAnimationFrame = app.renderFrame.bind(app);

@@ -74,7 +74,7 @@
   "dependencies": {
     "color-js": "^1.0.3",
     "eventize-js": "^0.0.10",
-    "gl-matrix": "^2.3.1",
+    "gl-matrix": "^2.3.2",
     "lodash": "^4.0.1"
   }
 }
