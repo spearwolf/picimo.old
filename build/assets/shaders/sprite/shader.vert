@@ -6,7 +6,8 @@ attribute float rotate;
 attribute float scale;
 attribute float opacity;
 
-uniform mat4 projectionMatrix;
+/*uniform mat4 projectionMatrix;*/
+uniform mat4 viewMatrix;
 
 varying vec4 vTextureCoordScaleOpacity;
 
@@ -28,6 +29,6 @@ mat4 rotateZ(float angle)
 void main(void)
 {
     mat4 rotationMatrix = rotateZ(rotate);
-    gl_Position = projectionMatrix * ((rotationMatrix * (vec4(scale, scale, scale, 1.0) * vec4(pos2d.xy, posZ, 1.0))) + vec4(translate.xy, 0.0, 0.0));
+    gl_Position = viewMatrix * ((rotationMatrix * (vec4(scale, scale, scale, 1.0) * vec4(pos2d.xy, posZ, 1.0))) + vec4(translate.xy, 0.0, 0.0));
     vTextureCoordScaleOpacity = vec4(uv.xy, opacity, 0.0);
 }

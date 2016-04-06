@@ -23,6 +23,7 @@ export default function drawElements ( re/*nderer*/, draw ) {
     if ( !re.currentProgram || re.currentProgram !== program ) {
 
         re.currentProgram = program;
+
         program.use();
         programChanged = true;
 

@@ -19,6 +19,8 @@ WebGlProgram.prototype.use = function () {
 
     if ( this.glx.activeProgram !== this ) {
 
+        //console.info('use program', this, this.glx.activeProgram);
+
         this.glx.activeProgram = this;
         this.glx.gl.useProgram( this.glProgram );
 

@@ -106,7 +106,11 @@ export default function renderCommand ( re/*nderer*/, cmd ) {
 
             }
 
-            re.program = cmd.program = re.app.glx.glProgram( program );
+            re.program = re.app.glx.glProgram( program );
+
+            //if (re.debugOutFrame) {
+                //console.log('activate program', program);
+            //}
 
         }
 

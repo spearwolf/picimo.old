@@ -5,8 +5,15 @@ import { updateProjection } from './init';
 
 export function onFrame () {
 
-    checkProjectionNeedsUpdate(this);
-    updateProjection(this);
+    //if (this.app.renderer.debugOutFrame) {
+        //console.debug('scene.onFrame()');
+    //}
+
+    if (this.hasOwnProjection) {
+        checkProjectionNeedsUpdate(this);
+        updateProjection(this);
+    }
+
     checkResize(this);
     createRenderCommand(this);
 
@@ -14,9 +21,11 @@ export function onFrame () {
 
 export function onFrameEnd () {
 
-    let re = this.app.renderer;
-    re.activatePipeline(null);  // => flush current
-    re.addRenderCommand(this.renderPostCmd);
+    //if (this.app.renderer.debugOutFrame) {
+        //console.debug('scene.onFrameEnd()');
+    //}
+
+    this.app.renderer.addRenderCommand(this.renderPostCmd, null);
 
 }
 
@@ -24,7 +33,8 @@ function createRenderCommand (scene) {
 
     let renderCmd = scene.renderCmd;
     renderCmd.uniforms.renderPrio = scene.renderPrio;
-    scene.app.renderer.addRenderCommand(renderCmd);
+
+    scene.app.renderer.addRenderCommand(renderCmd, null);
 
 }
 

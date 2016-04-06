@@ -76,17 +76,20 @@ export default function Scene (app, options = {}) {
     this.renderCmd = {
         uniforms: {                             // -> onFrame
             sceneInfo: [0, 0, 0],               // [ width, height, pixelRatio ]
-            viewMatrix: this.viewMatrixUniform,
-            projectionMatrix: new cmd.UniformValue(true, this.projection)
+            viewMatrix: this.viewMatrixUniform
         }
     };
 
     this.renderPostCmd = {
         uniforms: {
             viewMatrix: this.renderCmd.uniforms.viewMatrix.restoreCmd,
-            projectionMatrix: this.renderCmd.uniforms.projectionMatrix.restoreCmd
         }
     };
+
+    if (this.hasOwnProjection)  {
+        this.renderCmd.uniforms.projectionMatrix = new cmd.UniformValue(true, this.projection);
+        this.renderPostCmd.uniforms.projectionMatrix = this.renderCmd.uniforms.projectionMatrix.restoreCmd;
+    }
 
     if (this.isRootNode) initRootScene(this);
 

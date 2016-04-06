@@ -43,6 +43,11 @@ export default class PicturePipeline {
     }
 
     flush () {
+
+        //if (this.app.renderer.debugOutFrame) {
+            //console.debug('picturePipeline.flush()');
+        //}
+
         if (this.currentSpriteCount) {
 
             let cmd = this.renderCmd.create();
@@ -50,7 +55,7 @@ export default class PicturePipeline {
             cmd.drawElements.count = this.currentSpriteCount;
             cmd.drawElements.offset = this.currentSpriteOffset;
 
-            this.app.renderer.addRenderCommand(cmd);
+            this.app.renderer.addRenderCommand(cmd, this);
 
             this.currentSpriteOffset += this.currentSpriteCount;
             this.currentSpriteCount = 0;
@@ -58,6 +63,10 @@ export default class PicturePipeline {
     }
 
     render (sprite) {
+
+        //if (this.app.renderer.debugOutFrame) {
+            //console.debug('picturePipeline.render()');
+        //}
 
         this.app.renderer.activatePipeline(this);
 
@@ -69,10 +78,16 @@ export default class PicturePipeline {
     }
 
     finish () {
+
+        //if (this.app.renderer.debugOutFrame) {
+            //console.debug('picturePipeline.finish()');
+        //}
+
         if (this.totalSpritesCount) {
             this.flush();
             this.webGlBuffer.bufferSubData(null, this.totalSpritesCount * this.pool.descriptor.vertexAttrCount * this.pool.descriptor.vertexCount);
         }
+
     }
 
 }

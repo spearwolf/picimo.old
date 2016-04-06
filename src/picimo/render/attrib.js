@@ -23,12 +23,12 @@ export default function Attrib ( program, info ) {
 
 Attrib.prototype.upload = function () {  //} gl ) {
 
-    var val = this.value;
-    val.buffer.bindBuffer();
-
     if ( ! this.valueChanged ) return;
 
-    val.buffer.vertexAttribPointer( this.location, val.size, val.stride, val.offset );
+    let val = this.value;
+
+    val.buffer.bindBuffer().vertexAttribPointer( this.location, val.size, val.stride, val.offset );
+
     this.valueChanged = false;
 
 };

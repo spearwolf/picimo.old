@@ -16,15 +16,10 @@ app.shader.loadVertexShader('picture', '/assets/shaders/complex-sprite/complex-s
 app.shader.loadFragmentShader('picture', '/assets/shaders/complex-sprite/complex-sprite.frag');
 app.shader.addProgram('picture', 'picture', 'picture');
 
-app.scene.appendPicture('/assets/images/test-76x12.png', {  // spw-mini-logo.png', {
+app.scene.appendPicture('/assets/images/spw-mini-logo.png', {  // test-76x12.png', {
     name: 'spw',
-    displaySize: 'contain'
-    //displayPosition: {
-        //top: 0,
-        //left: 0,
-        //bottom: 0,
-        //right: 0
-    //}
+    displaySize: 'contain',
+    renderPrio: -10,
 });
 
 // ========= nodes ============================================== {{{
@@ -145,3 +140,35 @@ app.shader.addProgram( 'film', 'filmgrain', 'filmgrain' );
 //gl_program = app.glx.glProgram( app.shader.getProgram( 'film' ) );
 
 // -------------------------------------------------------------- }}}
+
+app.shader.loadVertexShader( 'sprite', '/assets/shaders/sprite/shader.vert' );
+app.shader.loadFragmentShader( 'sprite', '/assets/shaders/sprite/shader.frag' );
+app.shader.addProgram( 'sprite', 'sprite', 'sprite' );
+
+app.scene.appendGroup().appendSpriteGroup( app.loadTextureAtlas( '/assets/images/atlas/lab-walls-tiles.json' ), {
+
+    capacity: 20,
+    sprites: 'simple'
+
+}, {
+
+    init: function (done, sprites) {
+
+        sprites.setDefaultSpriteSize( 16 );
+
+        sprites.createSprite('numbers32_01').setTranslate( 0, 0 );
+        sprites.createSprite('numbers32_02').setTranslate( 16, 0 );
+        sprites.createSprite('numbers32_03').setTranslate( 16, -16 );
+        sprites.createSprite('numbers32_04').setTranslate( 32, 16 );
+        sprites.createSprite('numbers32_05').setTranslate( 32, 0 );
+        sprites.createSprite('numbers32_06').setTranslate( 32, -16 );
+        sprites.createSprite('numbers32_07').setTranslate( -32, 0 );
+        sprites.createSprite('numbers32_08').setTranslate( -48, 0 );
+        sprites.createSprite('numbers32_10').setTranslate( 60, 0 );
+
+        //sprites.display = false;
+
+    }
+
+});
+

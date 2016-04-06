@@ -34,11 +34,23 @@ export default class SpriteGroupPipeline {
     }
 
     render () {
+
+        //if (this.app.renderer.debugOutFrame) {
+            //console.debug('spriteGroupPipeline.render()');
+        //}
+
         this.app.renderer.addRenderCommand(this.renderCmd, this);
+
     }
 
     finish () {
+
+        //if (this.app.renderer.debugOutFrame) {
+            //console.debug('spriteGroupPipeline.finish()');
+        //}
+
         this.webGlBuffer.bufferSubData();  // TODO always upload the complete vertex buffer - is this a good idea?
+
     }
 
 }  // => end of class

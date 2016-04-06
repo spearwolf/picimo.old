@@ -40,5 +40,18 @@ export default function (Scene) {
 
     };
 
+    Scene.prototype.appendGroup = function (options = {}, extension) {
+
+        options.parentNode = this;
+        options.projection = false;
+
+        var node = this.appendChild(new Scene(this.app, options));
+
+        if (extension) node.connect(extension);
+
+        return node;
+
+    };
+
 }
 

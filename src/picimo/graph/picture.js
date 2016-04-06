@@ -51,9 +51,8 @@ export default class Picture extends Node {
 
         initTexture(this, options.texture);
 
-        this.program = options.program || "picture";
-
-        this.sprite = app.spriteFactory.createSprite();
+        this.program = options.program || 'picture';
+        this.sprite = app.spriteFactory.createSprite(options.spriteType || 'default');
 
         let zoom = typeof options.zoom === 'number' ? options.zoom : 1;
         this.sprite.sx = zoom;

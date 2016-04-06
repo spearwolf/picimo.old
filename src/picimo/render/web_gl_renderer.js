@@ -33,7 +33,6 @@ function initialize ( renderer ) {  // {{{
     renderer.program = null;
     renderer.currentProgram = null;
     renderer.currentPipeline = null;
-    renderer.currentProgramFromCmds = null;
 
     renderer.defaultBlendMode = BlendMode.DEFAULT;  // TODO let defaultBlendMode be configurable from outside (eg. Picimo.App)
     renderer.currentBlendMode = null;
@@ -97,9 +96,9 @@ function resetInternalRenderState ( renderer ) {  // {{{
     renderer.currentPipeline  = null;
     renderer.renderToTexture  = null;
 
-    renderer.currentProgramFromCmds = null;
+    renderer.currentProgram = null;
 
-    renderer.debugOutFrame = false;
+    renderer.debugOutFrame = renderer.app.frameNo === 120;
 
 }
 // }}}
@@ -118,8 +117,6 @@ WebGlRenderer.prototype.activateBlendMode = function ( blendMode ) {
 
 
 WebGlRenderer.prototype.onEndFrame = function () {
-
-    if ( this.app.frameNo === 120 ) this.dumpCommandQueue();  // TODO remove me!
 
     renderAll( this );
 
@@ -159,10 +156,13 @@ WebGlRenderer.prototype.addPipeline = function ( name, pipeline ) {
 
 WebGlRenderer.prototype.activatePipeline = function ( pipeline ) {
 
+    //if (this.debugOutFrame) {
+        //console.debug('renderer: activate pipeline=', pipeline, 'current=', this.currentPipeline);
+    //}
+
     if ( pipeline !== this.currentPipeline ) {
 
-        if ( this.currentPipeline && this.currentPipeline.flush ) this.currentPipeline.flush();
-
+        this.flush();
         this.currentPipeline = pipeline;
 
     }
@@ -180,7 +180,7 @@ WebGlRenderer.prototype.activatePipeline = function ( pipeline ) {
 
 WebGlRenderer.prototype.addRenderCommand = function ( cmd, pipeline ) {
 
-    if ( pipeline ) {
+    if ( pipeline !== undefined ) {
 
         this.activatePipeline( pipeline );
 
@@ -198,7 +198,7 @@ WebGlRenderer.prototype.addRenderCommand = function ( cmd, pipeline ) {
 
 WebGlRenderer.prototype.flush = function () {
 
-    if ( this.currentPipeline ) this.currentPipeline.flush();
+    if ( this.currentPipeline && this.currentPipeline.flush ) this.currentPipeline.flush();
 
 };
 
