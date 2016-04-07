@@ -1,0 +1,44 @@
+name: PICTURE_OPTIONS
+type: programming-interface
+dictionaries:
+    -
+        name: PICTURE_OPTIONS
+        extends:
+            - NODE_OPTIONS
+        attributes:
+            -
+                name: texture
+                type:
+                    - Picimo.core.Texture
+                    - Promise<Picimo.core.Texture>
+                required: true
+                description: The texture is mandatory. If you don't specify a texture you will see nothing.
+            -
+                name: displaySize
+                type: DISPLAY_SIZE
+                default: "'contain'"
+                description: |
+                    You should specify either of *displaySize* or *displayPosition*.
+                    If both properties are *not* specified the *displaySize* will be set to `'contain'`.
+                    See [DISPLAY_SIZE](#) for more information.
+            -
+                name: displayPosition
+                type: DISPLAY_POSITION
+                description: The *displayPosition* property has precedence over the *displaySize* property. If specified *displaySize* will be ignored.
+            -
+                name: zoom
+                type: number
+                default: "1"
+            -
+                name: posX
+                type: number
+                default: "0"
+            -
+                name: posY
+                type: number
+                default: "0"
+            -
+                name: opacity
+                type: number
+                default: "1"
+

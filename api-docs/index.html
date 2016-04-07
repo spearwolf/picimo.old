@@ -37,6 +37,14 @@
 
                         <h2><a href="#Picimo-Concepts">Guide</a></h2>
 
+                        <ol class="toc-sidebar__guide">
+                            {{#each guide}}
+                            {{#ref .}}
+                            <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
+                            {{/ref}}
+                            {{/each}}
+                        </ol>
+
                         <h2><a href="#Advanced-Topics">Advanced Topics</a></h2>
 
                         <ol class="toc-sidebar__advanced">
@@ -88,6 +96,11 @@
                         <li>
                             <a href="#Picimo-Concepts">Guide</a>
                             <ol class="toc-sub">
+                                {{#each guide}}
+                                {{#ref .}}
+                                <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
+                                {{/ref}}
+                                {{/each}}
                             </ol>
                         </li>
                         <li>
@@ -119,6 +132,18 @@
                             </ol>
                         </li>
                     </ol>
+
+                </section>
+
+                <section id="Guide" class="guide page-break">
+
+                    <h2>Guide</h2>
+
+                    {{#each guide}}
+                        {{#ref .}}
+                            {{> topic}}
+                        {{/ref}}
+                    {{/each}}
 
                 </section>
 

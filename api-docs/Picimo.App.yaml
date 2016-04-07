@@ -116,7 +116,7 @@
               type: "string"
             -
               name: "descriptor"
-              type: "VertexObjectDescription"
+              type: "VERTEX_OBJECT_DESCRIPTION"
             -
               name: "proto"
               type: "object"
@@ -215,7 +215,7 @@
             optional: true
           -
             name: "options"
-            type: "AppOptions"
+            type: "APP_OPTIONS"
             nullable: true
             optional: true
 

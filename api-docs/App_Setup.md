@@ -1,8 +1,6 @@
 ---
 title: App Setup
-type: topic
-tags:
-    - guide
+type: guide
 ---
 
 Der Anfang von allem. Das ist der __Main Controller__ deiner App.

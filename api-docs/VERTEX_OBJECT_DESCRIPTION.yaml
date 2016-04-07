@@ -1,9 +1,9 @@
 ---
-  name: "VertexObjectDescription"
+  name: "VERTEX_OBJECT_DESCRIPTION"
   type: "programming-interface"
   dictionaries:
     -
-      name: "VertexObjectDescription"
+      name: "VERTEX_OBJECT_DESCRIPTION"
       attributes:
         -
           name: "constructor"

@@ -17,17 +17,17 @@ interfaces:
                     optional: false
                 -
                     name: options
-                    type: Picimo.graph.Picture.Options
+                    type: PICTURE_OPTIONS
                     nullable: true
                     optional: true
 
         attributes:
             -
                 name: displayPosition
-                type: Picimo.graph.Picture.DisplayPosition
+                type: DISPLAY_POSITION
             -
                 name: displaySize
-                type: Picimo.graph.Picture.DisplaySize
+                type: DISPLAY_SIZE
             -
                 name: scaleX
                 type: number
@@ -165,148 +165,4 @@ interfaces:
                     -
                         name: y3
                         type: number
-
-dictionaries:
-    -
-        name: Picimo.graph.Picture.Options
-        attributes:
-            -
-                name: texture
-                type:
-                    - Picimo.core.Texture
-                    - Promise<Picimo.core.Texture>
-                required: true
-                description: The texture is mandatory. If you don't specify a texture you will see nothing.
-            -
-                name: displaySize
-                type: Picimo.graph.Picture.DisplaySize
-                default: "'contain'"
-                description: |
-                    You should specify either of *displaySize* or *displayPosition*.
-                    If both properties are *not* specified the *displaySize* will be set to `'contain'`.
-                    See [Picimo.graph.Picture.DisplaySize](#) for more information.
-            -
-                name: displayPosition
-                type: Picimo.graph.Picture.DisplayPosition
-                description: The *displayPosition* property has precedence over the *displaySize* property. If specified *displaySize* will be ignored.
-            -
-                name: zoom
-                type: number
-                default: "1"
-            -
-                name: posX
-                type: number
-                default: "0"
-            -
-                name: posY
-                type: number
-                default: "0"
-            -
-                name: opacity
-                type: number
-                default: "1"
-
-    -
-        name: Picimo.graph.Picture.DisplayPosition
-        description: |
-            The display position specifies how the picture is positioned *in relationship to the scene dimension*.
-
-            ![The Display Position](/assets/images/doc/displayPosition.png)
-            ![The Display Position Zoom](/assets/images/doc/displayPosition zoom.png)
-
-        attributes:
-            -
-                name: top
-                type:
-                    - number
-                    - string
-                description: |
-                    Set the top edge of the image under the top edge of the parent scene.
-
-                    The unit is either of **px** (if value is a *number*) or of **percantage _of scene height_** (if value is a *string* &mdash; eg. `'50%'`)
-
-            -
-                name: left
-                type:
-                    - number
-                    - string
-                description: |
-                    Set the left edge of the image right to the left edge of the parent scene.
-
-                    The unit is either of **px** (if value is a *number*) or of **percantage _of scene width_** (if value is a *string* &mdash; eg. `'50%'`)
-
-            -
-                name: bottom
-                type:
-                    - number
-                    - string
-                description: |
-                    Set the bottom edge of the image above the bottom edge of the parent scene.
-
-                    The unit is either of **px** (if value is a *number*) or of **percantage _of scene height_** (if value is a *string* &mdash; eg. `'50%'`)
-
-            -
-                name: right
-                type:
-                    - number
-                    - string
-                description: |
-                    Set the right edge of the image left to the right edge of the parent scene.
-
-                    The unit is either of **px** (if value is a *number*) or of **percantage _of scene width_** (if value is a *string* &mdash; eg. `'50%'`)
-
-            -
-                name: width
-                type:
-                    - number
-                    - string
-                description: |
-                    Set the width of the image.
-
-                    The unit is either of **px** (if value is a *number*) or of **percantage _of image width_** (if value is a *string* &mdash; eg. `'50%'`)
-
-            -
-                name: height
-                type:
-                    - number
-                    - string
-                description: |
-                    Set the height of the image.
-
-                    The unit is either of **px** (if value is a *number*) or of **percantage _of image height_** (if value is a *string* &mdash; eg. `'50%'`)
-
-            -
-                name: zoom
-                type: number
-                description: |
-                    Set the zoom factor.
-
-                    Default is `1.0` (no zoom). If set to `2.0` the size of the image will be _doubled_.
-
-            -
-                name: anchorX
-                type: number
-            -
-                name: anchorY
-                type: number
-
-enums:
-    -
-        name: Picimo.graph.Picture.DisplaySize
-
-        description_after_idl: |
-            ![The Display Size Property](/assets/images/doc/displaySize.png)
-
-            The display size specifies the size of the picture.
-
-            - **contain** will always show the whole image but may not fill up the whole screen area.
-            - **cover** will always fill the whole screen area, but the image may be cropped.
-
-            Both strategies will preserve the image size ratio.
-
-        values:
-            -
-                name: contain
-            -
-                name: cover
 

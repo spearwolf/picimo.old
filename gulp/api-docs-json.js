@@ -123,7 +123,9 @@ export function apiDocsJson (opt = {}) {
     function endStream (cb) {
 
         if (opt.contentJson) {
-            let outFile = makeFile(path.basename(opt.contentJson), JSON.stringify(apiDocContent, null, 2));
+            let content = JSON.stringify(apiDocContent, null, 2);
+            //console.log(content);
+            let outFile = makeFile(path.basename(opt.contentJson), content);
             this.push(outFile);
         }
 

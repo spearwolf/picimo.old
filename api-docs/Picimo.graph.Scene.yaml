@@ -109,45 +109,7 @@
             optional: false
           -
             name: "options"
-            type: "Picimo.graph.Scene.Options"
+            type: "SCENE_OPTIONS"
             nullable: true
             optional: true
-
-  dictionaries:
-    -
-      name: "Picimo.graph.Scene.Options"
-      attributes:
-        -
-          name: "width"
-          type: "number"
-          required: false
-        -
-          name: "height"
-          type: "number"
-          required: false
-        -
-          name: "pixelRatio"
-          type: "number"
-          required: false
-        -
-          name: "sizeVariety"
-          type: "string"
-          required: false
-        -
-          name: "projection"
-          type: "boolean"
-          required: false
-          default: "true"
-        -
-          name: "blendMode"
-          type: "Picimo.render.cmd.BlendMode"
-          required: false
-        -
-          name: "onResize"
-          type: "function"
-          required: false
-        -
-          name: "onProjectionUpdated"
-          type: "function"
-          required: false
 

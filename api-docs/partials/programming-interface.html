@@ -161,7 +161,7 @@
     {{/if}}
 
     <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>{{name}}</strong> {<br>
+        <em>dictionary</em> <strong>{{name}}</strong>{{#if extends}} : {{#ifArray extends}}{{#each extends}}{{> type-type .}}{{#unless @last}}, {{/unless}}{{/each}}{{else}}{{> type-type extends}}{{/ifArray}}{{/if}} {<br>
         <ul class="pid-idl__block">
             <li class="pid-dictionary__attributes">
                 <ul class="pid-idl__group">

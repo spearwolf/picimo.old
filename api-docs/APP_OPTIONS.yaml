@@ -1,9 +1,9 @@
 ---
-  name: "AppOptions"
+  name: "APP_OPTIONS"
   type: "programming-interface"
   dictionaries:
     -
-      name: "AppOptions"
+      name: "APP_OPTIONS"
       attributes:
         -
           name: "alpha"
