@@ -15,6 +15,7 @@ void main(void) {
     vec4 texColor;
 
     texColor = texture2D(tex, v_texCoords);
+    texColor.x = texColor.x + 0.3;
     /*if      ( v_texUnit.x == 0.0 ) { tex = texture2D(tex0, v_texCoords); }*/
     /*else if ( v_texUnit.x == 1.0 ) { tex = texture2D(tex1, v_texCoords); }*/
     /*else if ( v_texUnit.x == 2.0 ) { tex = texture2D(tex2, v_texCoords); }*/

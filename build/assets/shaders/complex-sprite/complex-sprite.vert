@@ -46,6 +46,7 @@ void main(void)
     vec2 pos2d = xwyh * size * scale;
 
     gl_Position = viewMatrix * ((rotationMatrix * vec4( pos2d, renderPrio, 1.0 )) + vec4(pos.xy, 0.0, 1.0));
+    /*gl_Position = projectionMatrix * ((rotationMatrix * vec4( pos2d, renderPrio, 1.0 )) + vec4(pos.xy, 0.0, 1.0));*/
 
     v_texCoords = texCoords;
     v_texUnit = vec2(rot_texUnit.y, 0);

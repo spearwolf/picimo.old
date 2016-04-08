@@ -1,9 +1,10 @@
 'use strict';
 
 import _ from 'lodash';
-import Node from './node';
-import { PicturePipeline } from '../render/pipeline';
-import * as core from '../core';
+import Node from '../node';
+import { PicturePipeline } from '../../render/pipeline';
+import * as core from '../../core';
+import DisplayPosition from './display_position';
 
 /**
  * @class Picimo.graph.Picture
@@ -37,10 +38,6 @@ import * as core from '../core';
  * }
  *
  * displayPosition has precedence over displaySize
- *
- * TODO
- *  - create DisplayPosition helper class ?
- *
  */
 
 export default class Picture extends Node {
@@ -70,12 +67,10 @@ export default class Picture extends Node {
         if (options.displayPosition) {
 
             this.displayPosition = options.displayPosition;
-            this.displaySize = null;
 
         } else {  // => displaySize
 
             this.displaySize = options.displaySize || "contain";
-            this.displayPosition = null;
 
         }
 
@@ -181,6 +176,26 @@ export default class Picture extends Node {
         this.sprite.rotate = degree * (Math.PI / 180.0);
     }
 
+    get displayPosition () {
+        return this._displayPosition;
+    }
+
+    get displaySize () {
+        return this._displaySize;
+    }
+
+    set displayPosition (dp) {
+        this._displayPosition = dp != null ? new DisplayPosition(this, dp) : null;
+        this._displaySize = null;
+        this.verticesNeedsUpdate = true;
+    }
+
+    set displaySize (ds) {
+        this._displaySize = ds;
+        this._displayPosition = null;
+        this.verticesNeedsUpdate = true;
+    }
+
 }
 
 
@@ -209,18 +224,20 @@ function updateVertices (picture) {
         // - zoom
         // - width
         // - height
+        // - anchorX
+        // - anchorY
 
         let sceneWidth = picture.parentNode.width;
         let sceneHeight = picture.parentNode.height;
 
-        let dpLeft   = typeof dp.left === 'string'   ? sceneWidth  * (parseFloat(dp.left) / 100.0)   : dp.left;
-        let dpRight  = typeof dp.right === 'string'  ? sceneWidth  * (parseFloat(dp.right) / 100.0)  : dp.right;
-        let dpTop    = typeof dp.top === 'string'    ? sceneHeight * (parseFloat(dp.top) / 100.0)    : dp.top;
+        let dpLeft   = typeof dp.left   === 'string' ? sceneWidth  * (parseFloat(dp.left)   / 100.0) : dp.left;
+        let dpRight  = typeof dp.right  === 'string' ? sceneWidth  * (parseFloat(dp.right)  / 100.0) : dp.right;
+        let dpTop    = typeof dp.top    === 'string' ? sceneHeight * (parseFloat(dp.top)    / 100.0) : dp.top;
         let dpBottom = typeof dp.bottom === 'string' ? sceneHeight * (parseFloat(dp.bottom) / 100.0) : dp.bottom;
 
-        let x0 = typeof dpLeft === 'number'   ? dpLeft                 : null;
-        let x1 = typeof dpRight === 'number'  ? sceneWidth - dpRight   : null;
-        let y0 = typeof dpTop === 'number'    ? dpTop                  : null;
+        let x0 = typeof dpLeft   === 'number' ? dpLeft                 : null;
+        let x1 = typeof dpRight  === 'number' ? sceneWidth - dpRight   : null;
+        let y0 = typeof dpTop    === 'number' ? dpTop                  : null;
         let y1 = typeof dpBottom === 'number' ? sceneHeight - dpBottom : null;
 
         // #=======# //
@@ -411,8 +428,8 @@ function initPipeline (picture) {
 
 function onRenderFrame ( picture ) {
 
-    updateVertices(picture);
-    picture.pipeline.render(picture.sprite);  // TODO display?
+    updateVertices( picture );
+    picture.pipeline.render( picture.sprite );
 
 }
 

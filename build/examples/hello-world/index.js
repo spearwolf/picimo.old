@@ -16,7 +16,7 @@ app.loadVertexShader('picture', '/assets/shaders/complex-sprite/complex-sprite.v
 app.loadFragmentShader('picture', '/assets/shaders/complex-sprite/complex-sprite.frag');
 app.addProgram('picture', 'picture', 'picture');
 
-app.scene.appendPicture('/assets/images/spw-mini-logo.png', {  // test-76x12.png', {
+app.scene.appendPicture('/assets/images/test-76x12.png', {  // spw-mini-logo.png', {
     name: 'spw',
     displaySize: 'contain',
     renderPrio: -10,
