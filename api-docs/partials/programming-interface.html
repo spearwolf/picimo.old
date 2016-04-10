@@ -1,8 +1,9 @@
-<section id="{{refId name}}" class="pid">
+<section class="pid">
 
   {{#interfaces}}
 
-    <h3 id="{{refId name}}">The <em>{{name}}</em> interface</h3>
+    <div id="{{refId name}}" class="nav-anchor"></div>
+    <h3>The <em>{{name}}</em> interface</h3>
 
     {{#if description}}
     <article class="pid__interface pid-idl__description md">
@@ -152,7 +153,8 @@
 
   {{#dictionaries}}
 
-    <h3 id="{{refId name}}">The <em>{{name}}</em> dictionary</h3>
+    <div id="{{refId name}}" class="nav-anchor"></div>
+    <h3>The <em>{{name}}</em> dictionary</h3>
 
     {{#if description}}
     <article class="pid__dictionary pid-idl__description md">
@@ -203,7 +205,8 @@
 
   {{#enums}}
 
-    <h3 id="{{refId name}}">The <em>{{name}}</em> enumeration</h3>
+    <div id="{{refId name}}" class="nav-anchor"></div>
+    <h3>The <em>{{name}}</em> enumeration</h3>
 
     {{#if description}}
     <article class="pid__enum pid-idl__description md">

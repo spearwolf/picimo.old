@@ -35,7 +35,9 @@
 
                     <section class="toc-sidebar">
 
-                        <h2><a href="#Picimo-Concepts">Guide</a></h2>
+                        <h2><a href="#TOC">Table of Contents</a></h2>
+
+                        <h2><a href="#Guide">Guide</a></h2>
 
                         <ol class="toc-sidebar__guide">
                             {{#each guide}}
@@ -91,10 +93,12 @@
 
                 <section class="toc">
 
+                    <div id="TOC" class="nav-anchor"></div>
                     <h2>Table of Contents</h2>
+
                     <ol class="toc-top">
                         <li>
-                            <a href="#Picimo-Concepts">Guide</a>
+                            <a href="#Guide">Guide</a>
                             <ol class="toc-sub">
                                 {{#each guide}}
                                 {{#ref .}}
@@ -135,7 +139,8 @@
 
                 </section>
 
-                <section id="Guide" class="guide page-break">
+                <section class="guide page-break">
+                    <div id="Guide" class="nav-anchor"></div>
 
                     <h2>Guide</h2>
 
@@ -147,7 +152,8 @@
 
                 </section>
 
-                <section id="Programming-Interface" class="programming-interface page-break">
+                <section class="programming-interface page-break">
+                    <div id="Programming-Interface" class="nav-anchor"></div>
 
                     <h2>Programming Interface</h2>
 
@@ -159,7 +165,8 @@
 
                 </section>
 
-                <section id="Advanced-Topics" class="advanced-topics page-break">
+                <section class="advanced-topics page-break">
+                    <div id="Advanced-Topics" class="nav-anchor"></div>
 
                     <h2>Advanced Topics</h2>
 

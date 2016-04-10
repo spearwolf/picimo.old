@@ -7,6 +7,7 @@ import NodeState from '../node_state';
 export default function renderFrame () {
 
     if ( ! this.ready ) return;
+
     if (this.state.is( NodeState.DESTROYED )) return;
 
     if (this.state.is( NodeState.CREATE )) {

@@ -16,6 +16,18 @@ body {
     position: relative;
 }
 
+.nav-anchor {
+    display: block;
+    width: 0;
+    height: 0;
+    position: relative;
+
+    @include compact-view {
+        top: -80px;
+        left: 0;
+    }
+}
+
 .topbar {
 
     position: fixed;
@@ -25,11 +37,13 @@ body {
 
     /*color: $col-white;*/
     color: $col-dark;
-    /*background: $col-prim6;*/
-    /*box-shadow: 0 1px 4px rgba(0,0,0, 0.42);*/
-    background-color: rgba(255, 255, 255, 0.8);
-    background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.66) 100%);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 2px 0 rgba(255, 255, 255, 0.5);
+
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0, 0.42);
+
+    /*background-color: rgba(255, 255, 255, 0.8);*/
+    /*background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.66) 100%);*/
+    /*box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 2px 0 rgba(255, 255, 255, 0.5);*/
 
     @include wide-view {
         display: none;

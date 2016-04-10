@@ -1,5 +1,7 @@
 @import '_colors';
 @import '_typography';
+@import 'includes/_media_queries';
+@import 'includes/_layout_vars';
 
 body {
     @include typo('text');
@@ -17,13 +19,18 @@ h2 {
     @include typo('headline', $size: $fontSizeHeadline);
     border-bottom: 1px dashed $col-gray;
     margin-top: 1.25em;
+    /*margin-top: 8px;*/
     margin-bottom: 0.75em;
+    /*margin-bottom: 0;*/
+    /*padding-top: $headerHeight;*/
 }
 h3 {
     @include typo('text', $size:$fontSizeBigger, $weight:'bold');
     color: $col-prim1-dark;
     margin-top: 1.4em;
+    /*margin-top: 8px;*/
     margin-bottom: 0.6em;
+    /*padding-top: $headerHeight;*/
     em {
         @include typo('monospace', $size:$fontSizeBig, $weight:'bold');
         color: $col-prim2;

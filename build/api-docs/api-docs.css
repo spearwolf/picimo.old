@@ -388,7 +388,10 @@ h2 {
   line-height: 32px;
   border-bottom: 1px dashed #949DA4;
   margin-top: 1.25em;
-  margin-bottom: 0.75em; }
+  /*margin-top: 8px;*/
+  margin-bottom: 0.75em;
+  /*margin-bottom: 0;*/
+  /*padding-top: $headerHeight;*/ }
 
 h3 {
   font-family: Roboto, sans-serif;
@@ -399,7 +402,9 @@ h3 {
   line-height: 42.068px;
   color: #1796DA;
   margin-top: 1.4em;
-  margin-bottom: 0.6em; }
+  /*margin-top: 8px;*/
+  margin-bottom: 0.6em;
+  /*padding-top: $headerHeight;*/ }
   h3 em {
     font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
     font-weight: 700;
@@ -459,6 +464,16 @@ body {
   display: flex;
   position: relative; }
 
+.nav-anchor {
+  display: block;
+  width: 0;
+  height: 0;
+  position: relative; }
+  @media (max-width: 920px) {
+    .nav-anchor {
+      top: -80px;
+      left: 0; } }
+
 .topbar {
   position: fixed;
   width: 100vw;
@@ -466,11 +481,11 @@ body {
   z-index: 10;
   /*color: $col-white;*/
   color: #404040;
-  /*background: $col-prim6;*/
-  /*box-shadow: 0 1px 4px rgba(0,0,0, 0.42);*/
-  background-color: rgba(255, 255, 255, 0.8);
-  background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.66) 100%);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 2px 0 rgba(255, 255, 255, 0.5); }
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.42);
+  /*background-color: rgba(255, 255, 255, 0.8);*/
+  /*background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.66) 100%);*/
+  /*box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 2px 0 rgba(255, 255, 255, 0.5);*/ }
   @media (min-width: 921px) {
     .topbar {
       display: none; } }
