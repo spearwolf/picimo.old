@@ -482,9 +482,11 @@ body {
   z-index: 100;
   transition: height 0.25s;
   color: #404040;
-  background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.42);
-  /*background-color: rgba(255, 255, 255, 0.8);*/
+  /*background-color: #fff;*/
+  background-color: #f5f5f5;
+  /*box-shadow: 0 1px 4px rgba(0,0,0, 0.42);*/
+  box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.1);
+  /*background-color: rgba(255, 255, 255, 0.95);*/
   /*background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.66) 100%);*/
   /*box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 2px 0 rgba(255, 255, 255, 0.5);*/ }
   @media (min-width: 921px) {
@@ -494,7 +496,7 @@ body {
 .overlay .topbar {
   height: 129px;
   box-shadow: none;
-  border-bottom: 1px dashed #404040; }
+  border-bottom: 1px dashed #cccccc; }
   .overlay .topbar .logo {
     width: 75vw;
     max-width: 272px;
@@ -516,6 +518,8 @@ body {
     overflow: auto;
     overflow-x: hidden;
     overflow-y: auto; }
+  .sidebar.overlay .sidebar__column--head {
+    display: none; }
 
 .sidebar.overlay {
   position: fixed;
@@ -928,6 +932,7 @@ body.overlay .main {
 .overlay .topbar__content .package-version {
   line-height: 130px; }
 
+/*@import 'includes/sticky-headers';*/
 .TODO {
   display: inline-block;
   background-color: #ffff44;
