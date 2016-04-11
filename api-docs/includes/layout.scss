@@ -33,9 +33,11 @@ body {
     position: fixed;
     width: 100vw;
     height: $headerHeight;
-    z-index: 10;
+    overflow: hidden;
+    z-index: 100;
 
-    /*color: $col-white;*/
+    transition: height 0.25s;
+
     color: $col-dark;
 
     background-color: #fff;
@@ -47,6 +49,21 @@ body {
 
     @include wide-view {
         display: none;
+    }
+
+}
+
+.overlay .topbar {
+
+    height: $headerExpandedHeight - 1px;
+
+    box-shadow: none;
+    border-bottom: 1px dashed $col-dark;
+
+    .logo {
+        width: 75vw;
+        max-width: 272px;
+        height: 100%;
     }
 
 }
@@ -79,8 +96,10 @@ body {
 .sidebar.overlay {
 
     position: fixed;
+    top: $headerExpandedHeight;
+
     width: 100vw;
-    z-index: 100;
+    z-index: 10;
 
     @include compact-view {
         display: block;
@@ -88,16 +107,19 @@ body {
 
     background-color: $col-white;
 
-    .logo {
-        width: 75vw;
-        max-width: 272px;
-    }
+    /*.logo {*/
+        /*display: none;  // XXX debug*/
+        /*width: 75vw;*/
+        /*max-width: 272px;*/
+    /*}*/
 
 
     & > .sidebar__content {
 
+        top: $headerExpandedHeight;
+
         width: 100vw;
-        padding: 0 0;
+        padding: 10px 0;
 
         & > .sidebar__column {
             width: 100vw;
@@ -139,7 +161,6 @@ body {
 }
 
 body.overlay .main {
-    /*visibility: hidden;*/
     display: none;
 }
 

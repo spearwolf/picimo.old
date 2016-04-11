@@ -6,9 +6,9 @@
     .pid-attrs {
         &__name {
             color: $col-black;
-            background-color: $col-prim0-light;
+            background-color: $col-prim1-light;
             &--readonly:after {
-                color: $col-prim0-dark;
+                color: $col-prim1-dark;
             }
         }
     }
@@ -28,7 +28,7 @@
 
     .pid-attrs__name {
         color: $col-black;
-        background-color: $col-prim1-light;
+        background-color: $col-prim0-light;
     }
 
 }
@@ -36,7 +36,7 @@
 
 .pid-attrs {
 
-    margin-left: 2rem;
+    /*margin-left: 2rem;*/
 
     &__name {
         display: inline-block;
