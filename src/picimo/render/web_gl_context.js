@@ -130,7 +130,7 @@ WebGlContext.prototype.glShader = function ( shader ) {
 
     if ( glShader === undefined ) {
 
-        glShader = shader.compile( this.gl );
+        glShader = shader.compile( this );
 
         if ( glShader !== undefined ) {
 

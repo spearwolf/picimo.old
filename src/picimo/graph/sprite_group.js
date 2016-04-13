@@ -11,7 +11,7 @@ import { SpriteGroupPipeline } from '../render/pipeline';
  * @param {Picimo.App} app - The app instance
  * @param {object} [options] - The options
  * @param {Picimo.core.TextureAtlas|Promise} [options.textureAtlas]
- * @param {string} [options.program="sprite"] - The render/webgl program name
+ * @param {string} [options.program="picimo.sprite"] - The render/webgl program name
  * @param {number} [options.capacity=1000] - Max sprite capacity
  * @param {string|Picimo.core.VertexObjectDescriptor} [options.sprites='default']
  *
@@ -43,7 +43,7 @@ export default function SpriteGroup ( app, options ) {
 
     initTextureAtlas( this, options.textureAtlas );
 
-    this.program             = options.program || 'sprite';
+    this.program             = options.program || 'picimo.sprite';
     this.spriteDescriptor    = app.spriteFactory.getDescriptor(options.sprites || 'default');
     this.pipeline            = null;
     this.defaultSpriteWidth  = options.defaultWidth || 0;

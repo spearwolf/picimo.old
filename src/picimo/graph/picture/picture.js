@@ -13,7 +13,7 @@ import DisplayPosition from './display_position';
  * @param {Picimo.App} app - The app instance
  * @param {object} [options] - The options
  * @param {Picimo.core.Texture|Promise} [options.texture] -
- * @param {string} [options.program="picture"] - The render/webgl program name
+ * @param {string} [options.program="picture.complexSprite"] - The render/webgl program name
  *
  * @summary
  * Represents a single picture.
@@ -48,7 +48,7 @@ export default class Picture extends Node {
 
         initTexture(this, options.texture);
 
-        this.program = options.program || 'picture';
+        this.program = options.program || 'picimo.complexSprite';
         this.sprite = app.spriteFactory.createSprite(options.spriteType || 'default');
 
         let zoom = typeof options.zoom === 'number' ? options.zoom : 1;

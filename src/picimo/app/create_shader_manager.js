@@ -2,6 +2,7 @@
 
 import * as utils from '../utils';
 import * as render from '../render';
+import { DefaultShader } from '../shader';
 
 export default function ( app ) {
 
@@ -31,6 +32,16 @@ export default function ( app ) {
         shaderManager.defineFragmentShader.apply(shaderManager, arguments);
         return app;
     };
+
+    const complexSpriteShaderName = 'picimo.complexSprite';
+    app.defineVertexShader(complexSpriteShaderName, DefaultShader.ComplexSprite.VertexShader);
+    app.defineFragmentShader(complexSpriteShaderName, DefaultShader.ComplexSprite.FragmentShader);
+    app.addProgram(complexSpriteShaderName, complexSpriteShaderName, complexSpriteShaderName);
+
+    const spriteShaderName = 'picimo.sprite';
+    app.defineVertexShader(spriteShaderName, DefaultShader.Sprite.VertexShader);
+    app.defineFragmentShader(spriteShaderName, DefaultShader.Sprite.FragmentShader);
+    app.addProgram(spriteShaderName, spriteShaderName, spriteShaderName);
 
 }
 

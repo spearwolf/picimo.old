@@ -12,10 +12,6 @@ var app  = new Picimo.App({
 // Set pixel resolution
 app.scene.setSize( (96+16)*2, 96, 'contain' );
 
-app.loadVertexShader('picture', '/assets/shaders/complex-sprite/complex-sprite.vert');
-app.loadFragmentShader('picture', '/assets/shaders/complex-sprite/complex-sprite.frag');
-app.addProgram('picture', 'picture', 'picture');
-
 app.scene.appendPicture('/assets/images/spw-mini-logo.png', {  // test-76x12.png', {
     name: 'spw',
     displaySize: 'contain',
@@ -140,10 +136,6 @@ app.addProgram( 'film', 'filmgrain', 'filmgrain' );
 //gl_program = app.glx.glProgram( app.getProgram( 'film' ) );
 
 // -------------------------------------------------------------- }}}
-
-app.loadVertexShader( 'sprite', '/assets/shaders/sprite/shader.vert' );
-app.loadFragmentShader( 'sprite', '/assets/shaders/sprite/shader.frag' );
-app.addProgram( 'sprite', 'sprite', 'sprite' );
 
 app.scene.appendGroup().appendSpriteGroup( app.loadTextureAtlas( '/assets/images/atlas/lab-walls-tiles.json' ), {
 

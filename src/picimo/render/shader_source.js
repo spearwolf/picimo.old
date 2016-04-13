@@ -1,5 +1,6 @@
 'use strict';
 
+import _ from 'lodash';
 import { Resource } from '../core';
 
 /**
@@ -38,22 +39,37 @@ ShaderSource.prototype.constructor = ShaderSource;
 
 /**
  * @method Picimo.render.ShaderSource#compile
- * @param {WebGlRenderingContext} gl
+ * @param {Picimo.render.WebGlContext} gl
  * @return {WebGLShader} - render shader object or *undefined*
  */
 
-ShaderSource.prototype.compile = function ( gl ) {
+ShaderSource.prototype.compile = function ( glx ) {
 
     if ( ! this.ready ) return;
 
+    const gl = glx.gl;
+
     var shader = gl.createShader( gl[ this.shaderType ] );
+
+    if (typeof this.source !== 'string') {
+        this.source = sourceToStr({
+            shaderSource: this,
+                     glx: glx
+        }, this.source);
+    }
 
     gl.shaderSource( shader, this.source );
     gl.compileShader( shader );
 
     if ( ! gl.getShaderParameter( shader, gl.COMPILE_STATUS ) ) {
 
-        throw new Error( gl.getShaderInfoLog( shader ) );
+        console.error(gl.getShaderInfoLog( shader ));
+        console.group('shader-info');
+        console.debug('shaderSource', this);
+        console.log(this.source);
+        console.groupEnd();
+
+        throw new Error('ShaderSource compile error');
 
     }
 
@@ -61,6 +77,25 @@ ShaderSource.prototype.compile = function ( gl ) {
 
 };
 
+function sourceToStr (shaderContext, source) {
+
+    //console.debug('sourceToStr', shaderContext, source);
+
+    if (typeof source === 'string') {
+        return source;
+
+    } else if (typeof source === 'function') {
+        return source(shaderContext);
+
+    } else if (Array.isArray(source)) {
+
+        return _.map(source, sourceToStr.bind(null, shaderContext)).join('\n');
+
+    } else {
+        return source+'';
+    }
+
+}
 
 /**
  * @memberof Picimo.render.ShaderSource
