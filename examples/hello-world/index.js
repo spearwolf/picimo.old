@@ -14,7 +14,7 @@ app.scene.setSize( (96+16)*2, 96, 'contain' );
 
 app.scene.appendPicture('/assets/images/spw-mini-logo.png', {  // test-76x12.png', {
     name: 'spw',
-    displaySize: 'contain',
+    sceneFit: 'contain',
     renderPrio: -10,
 });
 

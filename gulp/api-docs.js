@@ -20,6 +20,14 @@ gulp.task('api-docs:html', function () {
             template: './api-docs/index.html',
             partials: './api-docs/partials',
             contentJson: 'contents.json',
+            assetDirs: {
+                fs: {
+                    '/assets/images/': './assets/images/'
+                },
+                web: {
+                    './assets/images/': '/assets/images/'
+                }
+            }
         }))
         .pipe(minifyHtml({
             conditionals: true,

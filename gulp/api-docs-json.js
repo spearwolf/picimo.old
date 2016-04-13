@@ -8,7 +8,8 @@ import gutil from 'gulp-util';
 import Handlebars from 'handlebars';
 import glob from 'glob';
 import yamlFront from 'yaml-front-matter';
-import marked from 'marked';
+import markedRenderer from './api-docs-json/marked_renderer';
+
 //import highlightJs from 'highlight.js';
 import yaml from 'js-yaml';
 
@@ -25,6 +26,7 @@ export function apiDocsJson (opt = {}) {
     opt.template    = opt.template || 'index.html';
     opt.templateEnc = opt.templateEnc || 'utf-8';
     opt.contentJson = opt.contentJson || 'contents.json';
+    // opt.assetDirs
     // opt.partials
 
     let templateLoaded = loadTemplate(opt.template, opt.templateEnc);
@@ -32,6 +34,10 @@ export function apiDocsJson (opt = {}) {
         ref: {},
         package: _.pick(packageJson, ['name', 'version', 'author', 'repository', 'license', 'homepage', 'bugs'])
     };
+
+    Object.defineProperty(apiDocContent, 'assetDirs', {
+        value: opt.assetDirs
+    });
 
     // pre-load all handlebars helpers
     (function () {
@@ -72,7 +78,8 @@ export function apiDocsJson (opt = {}) {
             if (!context.name) context.name = _.kebabCase(context.fileBaseName);
             if (!context.type) context.type = 'topic';
 
-            context.html = marked(context.__content);  // TODO highlight.js?
+            //context.html = marked(context.__content);  // TODO highlight.js?
+            context.html = markedRenderer(apiDocContent, context.__content);  // TODO highlight.js?
             delete context.__content;
 
             addTo(apiDocContent, context);

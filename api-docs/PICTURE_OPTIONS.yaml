@@ -14,17 +14,19 @@ dictionaries:
                 required: true
                 description: The texture is mandatory. If you don't specify a texture you will see nothing.
             -
-                name: displaySize
-                type: DISPLAY_SIZE
+                name: sceneFit
+                type: OBJECT_FIT
                 default: "'contain'"
                 description: |
-                    You should specify either of *displaySize* or *displayPosition*.
-                    If both properties are *not* specified the *displaySize* will be set to `'contain'`.
-                    See [DISPLAY_SIZE](#) for more information.
+                    You should specify either of *sceneFit* or *displayPosition*.
+                    If both properties are *not* specified the *sceneFit* will be set to `'contain'`.
+                    See [OBJECT_FIT](#) for more information.
             -
                 name: displayPosition
                 type: DISPLAY_POSITION
-                description: The *displayPosition* property has precedence over the *displaySize* property. If specified *displaySize* will be ignored.
+                description: |
+                    The *displayPosition* property has precedence over the *sceneFit* property.
+                    When specified the *sceneFit* property will be ignored.
             -
                 name: zoom
                 type: number

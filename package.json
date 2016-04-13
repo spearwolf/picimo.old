@@ -1,6 +1,6 @@
 {
   "name": "picimo",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": {
     "name": "Wolfger Schramm",
     "email": "wolfger@spearwolf.de",
@@ -67,14 +67,14 @@
     "through2": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "webpack": "^1.12.12",
+    "webpack": "^1.12.15",
     "webpack-dev-server": "^1.14.1",
     "yaml-front-matter": "3.2.3"
   },
   "dependencies": {
     "color-js": "^1.0.3",
-    "eventize-js": "^0.0.10",
+    "eventize-js": "^0.0.11",
     "gl-matrix": "^2.3.2",
-    "lodash": "^4.0.1"
+    "lodash": "^4.10.0"
   }
 }

@@ -20,9 +20,13 @@
           type: "number"
           required: false
         -
-          name: "sizeVariety"
-          type: "string"
+          name: "sizeFit"
+          type: "OBJECT_FIT"
           required: false
+          default: "'contain'"
+          description: |
+            The size fit option describes how the scene dimension is computed
+            in relation to the scene container.
         -
           name: "projection"
           type: "boolean"

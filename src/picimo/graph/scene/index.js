@@ -34,7 +34,7 @@ import createFactories from './factories';
  * @param {Picimo.render.cmd.BlendMode} [options.blendMode] - Blend mode
  * @param {number} [options.width]                         - Wanted scene width
  * @param {number} [options.height]                        - Wanted scene height
- * @param {string} [options.sizeVariety="contain"]         - *cover* or *contain*
+ * @param {string} [options.sizeFit="contain"]             - *cover* or *contain*
  * @param {number} [options.pixelRatio]                    - Wanted pixel ratio
  * @param {boolean} [options.projection=true]              - Determinates if this scene should have an own projection matrix.
  * @param {function} [options.onResize]
@@ -52,9 +52,9 @@ export default function Scene (app, options = {}) {
     this.blendMode = options.blendMode;
 
     /**
-     * @member {string} Picimo.graph.Scene#sizeVariety - *cover* or *contain*
+     * @member {string} Picimo.graph.Scene#sizeFit - *cover* or *contain*
      */
-    this._sizeVariety = options.sizeVariety === 'cover' ? 'cover' : 'contain';
+    this._sizeFit = options.sizeFit === 'cover' ? 'cover' : 'contain';
 
     if (options.projection === false) {
 
@@ -150,11 +150,11 @@ Object.defineProperties( Scene.prototype, {
  * @method Picimo.graph.Scene#setSize
  * @param {number} width - Wanted scene width
  * @param {number} height - Wanted scene height
- * @param {string} [sizeVariety="contain"] - *cover* or *contain*
+ * @param {string} [sizeFit="contain"] - *cover* or *contain*
  * @return self
  */
 
-Scene.prototype.setSize = function (width, height, sizeVariety) {
+Scene.prototype.setSize = function (width, height, sizeFit) {
 
     let w = parseFloat(width);
     let h = parseFloat(height);
@@ -165,12 +165,12 @@ Scene.prototype.setSize = function (width, height, sizeVariety) {
         w = h;
     }
 
-    if (w && h && this._desiredWidth !== w || this._desiredHeight !== h || this.sizeVariety !== sizeVariety) {
+    if (w && h && this._desiredWidth !== w || this._desiredHeight !== h || this.sizeFit !== sizeFit) {
 
         this._desiredWidth         = w;
         this._desiredHeight        = h;
         this._desiredPixelRatio    = 0;
-        this.sizeVariety           = sizeVariety;
+        this.sizeFit               = sizeFit;
         this.projectionNeedsUpdate = true;
 
         updateProjection(this);  // TODO remove?

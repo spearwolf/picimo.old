@@ -259,21 +259,21 @@ export function initProjection (scene, options) {  // --- {{{
 
         },
 
-        'sizeVariety': {
+        'sizeFit': {
 
             get: function () {
 
-                return this._sizeVariety;
+                return this._sizeFit;
 
             },
 
             set: function ( variety ) {
 
-                var sizeVariety = variety === 'cover' ? 'cover' : 'contain';
+                var sizeFit = variety === 'cover' ? 'cover' : 'contain';
 
-                if ( this._sizeVariety !== sizeVariety ) {
+                if ( this._sizeFit !== sizeFit ) {
 
-                    this._sizeVariety = sizeVariety;
+                    this._sizeFit = sizeFit;
                     this.projectionNeedsUpdate = true;
 
                 }
@@ -303,7 +303,7 @@ export function updateProjection (scene) {  // --- {{{
 
         var appRatio   = scene.app.height / scene.app.width;            // <1 : landscape, >1 : portrait
         var sceneRatio = scene._desiredHeight / scene._desiredWidth;
-        var isCover    = scene._desiredWidth && scene._desiredHeight && scene.sizeVariety === 'cover';
+        var isCover    = scene._desiredWidth && scene._desiredHeight && scene.sizeFit === 'cover';
 
         if ( ( ! scene._desiredWidth && scene._desiredHeight ) || appRatio < sceneRatio ) {
 

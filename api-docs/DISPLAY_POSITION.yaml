@@ -1,4 +1,4 @@
-name: DISPLAY_POSITION_AND_SIZE
+name: DISPLAY_POSITION
 type: programming-interface
 
 dictionaries:
@@ -85,24 +85,4 @@ dictionaries:
             -
                 name: anchorY
                 type: number
-
-enums:
-    -
-        name: DISPLAY_SIZE
-
-        description_after_idl: |
-            ![The Display Size Property](/assets/images/doc/displaySize.png)
-
-            The display size specifies the size of the picture.
-
-            - **contain** will always show the whole image but may not fill up the whole screen area.
-            - **cover** will always fill the whole screen area, but the image may be cropped.
-
-            Both strategies will preserve the image size ratio.
-
-        values:
-            -
-                name: contain
-            -
-                name: cover
 

@@ -21,7 +21,7 @@ import DisplayPosition from './display_position';
  * @classdesc
  * A Picture renders an single image to the screen.
  *
- * displaySize: 'contain' or 'cover'
+ * sceneFit: 'contain' or 'cover'
  *
  * or
  *
@@ -37,7 +37,7 @@ import DisplayPosition from './display_position';
  *      anchorY: <number(0..1)>
  * }
  *
- * displayPosition has precedence over displaySize
+ * displayPosition has precedence over sceneFit
  */
 
 export default class Picture extends Node {
@@ -68,9 +68,9 @@ export default class Picture extends Node {
 
             this.displayPosition = options.displayPosition;
 
-        } else {  // => displaySize
+        } else {  // => sceneFit
 
-            this.displaySize = options.displaySize || "contain";
+            this.sceneFit = options.sceneFit || "contain";
 
         }
 
@@ -180,18 +180,18 @@ export default class Picture extends Node {
         return this._displayPosition;
     }
 
-    get displaySize () {
-        return this._displaySize;
+    get sceneFit () {
+        return this._sceneFit;
     }
 
     set displayPosition (dp) {
         this._displayPosition = dp != null ? new DisplayPosition(this, dp) : null;
-        this._displaySize = null;
+        this._sceneFit = null;
         this.verticesNeedsUpdate = true;
     }
 
-    set displaySize (ds) {
-        this._displaySize = ds;
+    set sceneFit (ds) {
+        this._sceneFit = ds;
         this._displayPosition = null;
         this.verticesNeedsUpdate = true;
     }
@@ -350,7 +350,7 @@ function updateVertices (picture) {
 
     } else {
 
-        // displaySize 'contain' or 'cover'
+        // sceneFit 'contain' or 'cover'
         // ----------------------------------------
 
         let viewWidth  = picture.parentNode.width;
@@ -360,7 +360,7 @@ function updateVertices (picture) {
 
         if (texRatio === 1) {
 
-            if ('cover' === picture.displaySize) {
+            if ('cover' === picture.sceneFit) {
                 halfHeight = halfWidth = 0.5 * (viewRatio > 1 ? viewHeight : viewWidth);
             } else { // 'contain'
                 halfHeight = halfWidth = 0.5 * (viewRatio < 1 ? viewHeight : viewWidth);
@@ -370,7 +370,7 @@ function updateVertices (picture) {
 
             let scale;
 
-            if ('cover' === picture.displaySize) {
+            if ('cover' === picture.sceneFit) {
                 scale = texRatio > viewRatio ? viewWidth / picture.texture.width : viewHeight / picture.texture.height;
             } else { // "contain"
                 scale = texRatio < viewRatio ? viewWidth / picture.texture.width : viewHeight / picture.texture.height;

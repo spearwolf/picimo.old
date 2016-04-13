@@ -8,13 +8,9 @@
 var app = new Picimo.App({ alpha: true, canvas: document.getElementById('picimo') });
 app.scene.setSize( 1000, 750, 'contain' );
 
-app.shader.loadVertexShader('complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.vert');
-app.shader.loadFragmentShader('complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.frag');
-app.shader.addProgram('picture', 'complex-sprite', 'complex-sprite');
-
 window.spearwolf = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {
 
-    displaySize: 'contain',
+    sceneFit: 'contain',
 
 }, {
 

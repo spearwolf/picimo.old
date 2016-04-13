@@ -19,13 +19,9 @@ console.log( '%c%s%c\n\n Welcome to the %ckastani%c demo -- a %c picimo %c demo!
 var app = new Picimo.App({ alpha: true });
 app.scene.setSize( 1000, 750, 'contain' );
 
-app.shader.loadVertexShader('complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.vert');
-app.shader.loadFragmentShader('complex-sprite', '/assets/shaders/complex-sprite/complex-sprite.frag');
-app.shader.addProgram('picture', 'complex-sprite', 'complex-sprite');
-
 window.spearwolf = app.scene.appendPicture('/assets/images/spw-mini-logo.png', {
 
-    displaySize: 'contain',
+    sceneFit: 'contain',
     zoom: 0.5,
     opacity: 0.9,
     posX: -400,

@@ -25,9 +25,15 @@ interfaces:
             -
                 name: displayPosition
                 type: DISPLAY_POSITION
+                description: |
+                    Describe the position where the picture is placed on the scene.
+                    When set the *sceneFit* property will be ignored.
             -
-                name: displaySize
-                type: DISPLAY_SIZE
+                name: sceneFit
+                type: OBJECT_FIT
+                description: |
+                    Describe how the picture dimension should be computed in relation to the scene dimension.
+                    This property has no effect if the *displayPosition* property is defined.
             -
                 name: scaleX
                 type: number
