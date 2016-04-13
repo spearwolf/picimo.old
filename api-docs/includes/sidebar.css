@@ -68,6 +68,8 @@
 
     .toc-sidebar ol > li > a {
         @include typo('text', $size: $fontSizeSmall);
+        line-height: 28px;
+
         color: $col-dark;
         &:hover {
             text-decoration: underline;

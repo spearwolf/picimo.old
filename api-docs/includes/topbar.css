@@ -1,17 +1,20 @@
-@import 'includes/_colors';
-@import 'includes/_typography';
-@import 'includes/_media_queries';
-@import 'includes/_layout_vars';
+@import '_colors';
+@import '_typography';
+@import '_media_queries';
+@import '_layout_vars';
+@import '_utils';
 
 .topbar__content {
+
+    @include user-select(none);
 
     position: relative;
 
     .logo {
+        border: 0;
         max-width: 100%;
         height: $headerHeight;
         margin-left: 10px;
-        border: 0;
     }
 
     .package-version {
@@ -33,4 +36,15 @@
     }
 
 }
+
+.overlay {
+
+    .topbar__content {
+        .package-version {
+            line-height: $headerExpandedHeight;
+        }
+    }
+
+}
+
 
