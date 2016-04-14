@@ -16,7 +16,7 @@ export default function renderCommand ( re/*nderer*/, cmd ) {
 
             blendMode = re.defaultBlendMode;
 
-        } else if ( cmd.blendMode ) {
+        } else if ( cmd.blendMode != null ) {
 
             blendMode = cmd.blendMode;
 

@@ -62,8 +62,9 @@ export default function App ( canvas, options ) {
 
     utils.object.definePropertyPublicRO( this, 'scene', new graph.Scene( this, {
 
-        blendMode: render.cmd.BlendMode.DEFAULT,
-        pixelRatio: 1
+        pixelRatio : 1,
+        projection : true,
+        blendMode  : render.cmd.BlendMode.DEFAULT,
 
     } ) );
 

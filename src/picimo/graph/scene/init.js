@@ -122,8 +122,6 @@ export function initRootScene (scene) {  // --- {{{
             iFrameNo    : 0,
             iResolution : [0, 0],
 
-            //projectionMatrix : scene.projection
-
         }
 
     };

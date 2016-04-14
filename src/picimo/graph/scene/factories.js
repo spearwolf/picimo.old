@@ -23,11 +23,9 @@ export default function (Scene) {
 
     };
 
-    Scene.prototype.appendGroup = function (options = {}, extension = null) {
+    Scene.prototype.appendScene = function (options = {}, extension = null) {
 
         options.parentNode = this;
-        options.projection = false;
-
         return appendNode(new Scene(this.app, options), this, extension);
 
     };

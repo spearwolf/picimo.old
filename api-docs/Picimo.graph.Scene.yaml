@@ -80,8 +80,41 @@
               optional: true
           returns: "Picimo.graph.Scene"
         -
+          name: "setBlendMode"
+          args:
+            -
+              name: "depthTest"
+              type: "boolean"
+            -
+              name: "depthMask"
+              type: "boolean"
+            -
+              name: "depthFunc"
+              type: "string"
+              optional: true
+            -
+              name: "blend"
+              type: "boolean"
+              optional: true
+            -
+              name: "blendFuncSrc"
+              type: "string"
+              optional: true
+            -
+              name: "blendFuncDst"
+              type: "string"
+              optional: true
+          returns: "Picimo.render.cmd.BlendMode"
+        -
           separator: true
           title: "Scene graph node factories"
+        -
+          name: "appendScene"
+          args:
+            -
+              name: "options"
+              type: "SCENE_OPTIONS"
+          returns: "Picimo.graph.Scene"
         -
           name: "appendPicture"
           args:
@@ -90,7 +123,7 @@
               type: "string"
             -
               name: "options"
-              type: "Picimo.graph.Picture.Options"
+              type: "PICTURE_OPTIONS"
           returns: "Picimo.graph.Picture"
         -
           name: "appendSpriteGroup"
@@ -102,7 +135,7 @@
                 - "Promise"
             -
               name: "options"
-              type: "Picimo.graph.SpriteGroup.Options"
+              type: "SPRITE_GROUP_OPTIONS"
           returns: "Picimo.graph.SpriteGroup"
 
       constructor:

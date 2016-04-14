@@ -818,6 +818,32 @@ body.overlay .main {
       font-size: 12px;
       line-height: 21.6px;
       color: #ca2166; }
+  .md table {
+    margin-top: 0.66em;
+    border-collapse: separate;
+    border-spacing: 2px; }
+    .md table th, .md table td {
+      text-align: left; }
+    .md table th {
+      background-color: #f8f9fa;
+      border-bottom: 2px solid #dae0e5;
+      padding: 0.5em 0.5em;
+      font-family: Roboto, sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      text-decoration: none;
+      font-size: 12px;
+      line-height: 19.416px;
+      text-transform: uppercase; }
+    .md table td {
+      border-bottom: 1px solid #dae0e5;
+      padding: 0 0.5em;
+      font-family: Roboto, sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 22.652px; }
 
 /*.md-inline {*/
 /*}*/

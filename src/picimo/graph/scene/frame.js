@@ -32,6 +32,7 @@ export function onFrameEnd () {
 function createRenderCommand (scene) {
 
     let renderCmd = scene.renderCmd;
+
     renderCmd.uniforms.renderPrio = scene.renderPrio;
 
     scene.app.renderer.addRenderCommand(renderCmd, null);

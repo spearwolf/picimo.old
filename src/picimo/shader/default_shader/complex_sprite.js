@@ -68,8 +68,8 @@ export const FragmentShader = [
     '    vec4 texColor;',
 
     '    texColor = texture2D(tex, v_texCoords);',
-    '    texColor.x = texColor.x + 0.5;',
-    '    texColor.w = texColor.w + 0.5;',
+    //'    texColor.x = texColor.x + 0.5;',
+    //'    texColor.w = texColor.w + 0.5;',
          /*if      ( v_texUnit.x == 0.0 ) { tex = texture2D(tex0, v_texCoords); }*/
          /*else if ( v_texUnit.x == 1.0 ) { tex = texture2D(tex1, v_texCoords); }*/
          /*else if ( v_texUnit.x == 2.0 ) { tex = texture2D(tex2, v_texCoords); }*/

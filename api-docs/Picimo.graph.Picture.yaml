@@ -35,25 +35,13 @@ interfaces:
                     Describe how the picture dimension should be computed in relation to the scene dimension.
                     This property has no effect if the *displayPosition* property is defined.
             -
-                name: scaleX
+                name: scale
                 type: number
-                description: horizontal scale *(default is 1.0)*
-            -
-                name: scaleY
-                type: number
-                description: vertical scale *(default is 1.0)*
+                description: scale factor *(default is 1.0)*
             -
                 name: opacity
                 type: number
                 description: opacity as value *[0..1]*
-            -
-                name: posX
-                type: number
-                description: horizontal position
-            -
-                name: posY
-                type: number
-                description: vertical position
             -
                 name: rotate
                 type: number
@@ -63,9 +51,13 @@ interfaces:
                 type: number
                 description: rotation in degree
             -
-                name: sprite
-                type: any
-                description: The internal sprite used to render the picture.
+                name: posX
+                type: number
+                description: horizontal position
+            -
+                name: posY
+                type: number
+                description: vertical position
             -
                 name: program
                 type: string
@@ -102,46 +94,7 @@ interfaces:
                 returns: Picimo.graph.Picture
                 args:
                     -
-                        name: sx
-                        type: number
-                    -
-                        name: sy
-                        type: number
-            -
-                name: setZoom
-                returns: Picimo.graph.Picture
-                args:
-                    -
-                        name: zoom
-                        type: number
-            -
-                name: setRgb
-                returns: Picimo.graph.Picture
-                args:
-                    -
-                        name: red
-                        type: number
-                    -
-                        name: green
-                        type: number
-                    -
-                        name: blue
-                        type: number
-            -
-                name: setRgba
-                returns: Picimo.graph.Picture
-                args:
-                    -
-                        name: red
-                        type: number
-                    -
-                        name: green
-                        type: number
-                    -
-                        name: blue
-                        type: number
-                    -
-                        name: alpha
+                        name: scale
                         type: number
             -
                 name: setVertexPositions

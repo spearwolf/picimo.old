@@ -25,6 +25,31 @@
         }
     }
 
+    table {
+
+        margin-top: 0.66em;
+
+        border-collapse: separate;
+        border-spacing: 2px;
+
+        th, td {
+            text-align: left;
+        }
+        th {
+            background-color: $col-table-head-bg;
+            border-bottom: 2px solid $col-table-border;
+            padding: 0.5em 0.5em;
+            @include typo('text', $weight: 'bold', $size: $fontSizeTiny);
+            text-transform: uppercase;
+        }
+        td {
+            border-bottom: 1px solid $col-table-border;
+            padding: 0 0.5em;
+            @include typo('text', $weight: 'normal', $size: $fontSizeSmall);
+        }
+    
+    }
+
 }
 
 /*.md-inline {*/

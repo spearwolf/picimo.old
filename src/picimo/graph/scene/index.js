@@ -47,22 +47,17 @@ export default function Scene (app, options = {}) {
     Node.call(this, app, options);
 
     /**
-     * @member {Picimo.render.cmd.BlendMode} Picimo.graph.Scene#blendMode
-     */
-    this.blendMode = options.blendMode;
-
-    /**
      * @member {string} Picimo.graph.Scene#sizeFit - *cover* or *contain*
      */
     this._sizeFit = options.sizeFit === 'cover' ? 'cover' : 'contain';
 
-    if (options.projection === false) {
+    if (options.projection) {
 
-        initWithoutProjection(this);
+        initProjection(this, options);
 
     } else {
 
-        initProjection(this, options);
+        initWithoutProjection(this);
 
     }
 
@@ -76,7 +71,7 @@ export default function Scene (app, options = {}) {
     this.renderCmd = {
         uniforms: {                             // -> onFrame
             sceneInfo: [0, 0, 0],               // [ width, height, pixelRatio ]
-            viewMatrix: this.viewMatrixUniform
+            viewMatrix: this.viewMatrixUniform,
         }
     };
 
@@ -85,6 +80,11 @@ export default function Scene (app, options = {}) {
             viewMatrix: this.renderCmd.uniforms.viewMatrix.restoreCmd,
         }
     };
+
+    /**
+     * @member {Picimo.render.cmd.BlendMode} Picimo.graph.Scene#blendMode
+     */
+    this.blendMode = options.blendMode;
 
     if (this.hasOwnProjection)  {
         this.renderCmd.uniforms.projectionMatrix = new cmd.UniformValue(true, this.projection);
@@ -143,7 +143,46 @@ Object.defineProperties( Scene.prototype, {
 
     },
 
+    blendMode: {
+
+        enumerable: true,
+
+        get: function () {
+            return this._blendMode;
+        },
+
+        set: function (blendMode) {
+            let _blendMode = blendMode != null ? blendMode : null;
+            this._blendMode = _blendMode;
+            if (_blendMode) {
+                this.renderCmd.blendMode = _blendMode;
+                this.renderPostCmd.blendMode = false;
+            } else {
+                delete this.renderCmd.blendMode;
+                delete this.renderPostCmd.blendMode;
+            }
+        }
+
+    }
+
 });
+
+
+Scene.prototype.setBlendMode = function (depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst) {
+
+    if (arguments.length === 0 || arguments[0] == null) {
+        this.blendMode = undefined;
+    } else if (arguments.length === 1 && typeof arguments[0] === 'string') {
+        let name = arguments[0].toUpperCase();
+        this.blendMode = cmd.BlendMode[name];
+    } else {
+        this.blendMode = new cmd.BlendMode(depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst);
+    }
+
+    return this.blendMode;
+
+};
+
 
 
 /**

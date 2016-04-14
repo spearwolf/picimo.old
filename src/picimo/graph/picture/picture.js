@@ -6,40 +6,6 @@ import { PicturePipeline } from '../../render/pipeline';
 import * as core from '../../core';
 import DisplayPosition from './display_position';
 
-/**
- * @class Picimo.graph.Picture
- * @extends Picimo.graph.Node
- *
- * @param {Picimo.App} app - The app instance
- * @param {object} [options] - The options
- * @param {Picimo.core.Texture|Promise} [options.texture] -
- * @param {string} [options.program="picture.complexSprite"] - The render/webgl program name
- *
- * @summary
- * Represents a single picture.
- *
- * @classdesc
- * A Picture renders an single image to the screen.
- *
- * sceneFit: 'contain' or 'cover'
- *
- * or
- *
- * displayPosition: {
- *      top: <number(pixel)> or '50%'
- *      left: <number(pixel)> or '50%'
- *      bottom: <number(pixel)> or '50%'
- *      right: <number(pixel)> or '50%'
- *      zoom: <number> (default is 1.0)
- *      width: <number(pixel)> or '50%'
- *      height: <number(pixel)> or '50%'
- *      anchorX: <number(0..1)>
- *      anchorY: <number(0..1)>
- * }
- *
- * displayPosition has precedence over sceneFit
- */
-
 export default class Picture extends Node {
 
     constructor (app, options = {}) {
@@ -48,12 +14,11 @@ export default class Picture extends Node {
 
         initTexture(this, options.texture);
 
-        this.program = options.program || 'picimo.complexSprite';
-        this.sprite = app.spriteFactory.createSprite(options.spriteType || 'default');
+        this.program = options.program || 'picimo.sprite'; //'picimo.complexSprite';
+        this.sprite = app.spriteFactory.createSprite(options.spriteType || 'simple'); //|| 'default');
 
-        let zoom = typeof options.zoom === 'number' ? options.zoom : 1;
-        this.sprite.sx = zoom;
-        this.sprite.sy = zoom;
+        let scale = typeof options.scale === 'number' ? options.scale : 1;
+        this.sprite.scale = scale;
         this.sprite.opacity = typeof options.opacity === 'number' ? options.opacity : 1;
 
         if (typeof options.posX === 'number') this.posX = options.posX;
@@ -81,59 +46,44 @@ export default class Picture extends Node {
     }
 
     setVertexPositions ( x0, y0, x1, y1, x2, y2, x3, y3 ) {
-        this.sprite.setSize(1, 1);
-        this.sprite.setXwyh(
+        this.sprite.setPos2d(
             x0, y2,
             x1, y3,
             x2, y0,
             x3, y1 );
+        return this;
     }
 
     setPos (x, y) {
-        this.sprite.setPos(x, y);
+        //this.sprite.setPos(x, y);
+        this.sprite.setTranslate(x, y);
         return this;
     }
 
     translate (tx, ty) {
         let sprite = this.sprite;
-        sprite.setPos(sprite.x + tx, sprite.y + ty);
+        //sprite.setPos(sprite.x + tx, sprite.y + ty);
+        sprite.tx += tx;
+        sprite.ty += ty;
         return this;
     }
 
-    setScale (sx, sy) {
-        this.sprite.setScale(sx, sy);
-        return this;
+    //setRgb (r, g, b) {
+        //this.sprite.setRgb(r, g, b);
+        //return this;
+    //}
+
+    //setRgba (r, g, b, a) {
+        //this.sprite.setColor(r, g, b, a);
+        //return this;
+    //}
+
+    get scale () {
+        return this.sprite.scale;
     }
 
-    setZoom (s) {
-        this.sprite.setScale(s, s);
-        return this;
-    }
-
-    setRgb (r, g, b) {
-        this.sprite.setRgb(r, g, b);
-        return this;
-    }
-
-    setRgba (r, g, b, a) {
-        this.sprite.setColor(r, g, b, a);
-        return this;
-    }
-
-    get scaleX () {
-        return this.sprite.sx;
-    }
-
-    set scaleX (sx) {
-        this.sprite.sx = sx;
-    }
-
-    get scaleY () {
-        return this.sprite.sy;
-    }
-
-    set scaleY (sy) {
-        this.sprite.sy = sy;
+    set scale (s) {
+        this.sprite.scale = s;
     }
 
     get opacity () {
@@ -145,19 +95,27 @@ export default class Picture extends Node {
     }
 
     get posX () {
-        return this.sprite.x;
+        return this.sprite.tx;
     }
 
     set posX (x) {
-        this.sprite.x = x;
+        this.sprite.tx = x;
     }
 
     get posY () {
-        return this.sprite.y;
+        return this.sprite.ty;
     }
 
     set posY (y) {
-        this.sprite.y = y;
+        this.sprite.ty = y;
+    }
+
+    get posZ () {
+        return this.sprite.posZ;
+    }
+
+    set posZ (z) {
+        this.sprite.posZ = z;
     }
 
     get rotate () {
@@ -176,23 +134,23 @@ export default class Picture extends Node {
         this.sprite.rotate = degree * (Math.PI / 180.0);
     }
 
-    get displayPosition () {
-        return this._displayPosition;
-    }
-
     get sceneFit () {
         return this._sceneFit;
-    }
-
-    set displayPosition (dp) {
-        this._displayPosition = dp != null ? new DisplayPosition(this, dp) : null;
-        this._sceneFit = null;
-        this.verticesNeedsUpdate = true;
     }
 
     set sceneFit (ds) {
         this._sceneFit = ds;
         this._displayPosition = null;
+        this.verticesNeedsUpdate = true;
+    }
+
+    get displayPosition () {
+        return this._displayPosition;
+    }
+
+    set displayPosition (dp) {
+        this._displayPosition = dp != null ? new DisplayPosition(this, dp) : null;
+        this._sceneFit = null;
         this.verticesNeedsUpdate = true;
     }
 
@@ -251,10 +209,9 @@ function updateVertices (picture) {
             // left & right
             w = x1 - x0;
 
-        } else if (typeof dp.zoom === 'number') {
-
+        //} else if (typeof dp.zoom === 'number') {
             // zoom
-            w = picture.texture.width * dp.zoom;
+            //w = picture.texture.width * dp.zoom;
 
         } else if (typeof dp.width === 'number') {
 
@@ -265,6 +222,13 @@ function updateVertices (picture) {
 
             // width
             w = picture.texture.width * parseFloat(dp.width) / 100.0;
+
+        }
+
+        if (typeof dp.zoom === 'number') {
+
+            // zoom
+            w = ( w === undefined ? picture.texture.width : w ) * dp.zoom;
 
         }
 
@@ -279,10 +243,9 @@ function updateVertices (picture) {
             // left and right
             h = y1 - y0;
 
-        } else if (typeof dp.zoom === 'number') {
-
+        //} else if (typeof dp.zoom === 'number') {
             // zoom
-            h = picture.texture.height * dp.zoom;
+            //h = picture.texture.height * dp.zoom;
 
         } else if (typeof dp.height === 'number') {
 
@@ -293,6 +256,13 @@ function updateVertices (picture) {
 
             // height
             h = picture.texture.height * parseFloat(dp.height) / 100.0;
+
+        }
+
+        if (typeof dp.zoom === 'number') {
+
+            // zoom
+            h = ( h === undefined ? picture.texture.height : h ) * dp.zoom;
 
         }
 

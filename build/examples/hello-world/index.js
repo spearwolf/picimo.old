@@ -15,6 +15,7 @@ app.scene.setSize( (96+16)*2, 96, 'contain' );
 app.scene.appendPicture('/assets/images/spw-mini-logo.png', {  // test-76x12.png', {
     name: 'spw',
     sceneFit: 'contain',
+    scale: 0.8,
     renderPrio: -10,
 });
 
@@ -137,7 +138,7 @@ app.addProgram( 'film', 'filmgrain', 'filmgrain' );
 
 // -------------------------------------------------------------- }}}
 
-app.scene.appendGroup().appendSpriteGroup( app.loadTextureAtlas( '/assets/images/atlas/lab-walls-tiles.json' ), {
+app.scene.appendSpriteGroup( app.loadTextureAtlas( '/assets/images/atlas/lab-walls-tiles.json' ), {
 
     capacity: 20,
     sprites: 'simple'
