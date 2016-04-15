@@ -52,12 +52,18 @@ interfaces:
                 description: rotation in degree
             -
                 name: posX
-                type: number
-                description: horizontal position
+                type:
+                    - number
+                    - string
+                description: |
+                    The horizontal position. Supports all the units from [DISPLAY_POSITION](#).
             -
                 name: posY
-                type: number
-                description: vertical position
+                type:
+                    - number
+                    - string
+                description: |
+                    The vertical position. Supports all the units from [DISPLAY_POSITION](#).
             -
                 name: program
                 type: string
@@ -75,20 +81,14 @@ interfaces:
                 args:
                     -
                         name: x
-                        type: number
+                        type:
+                            - number
+                            - string
                     -
                         name: y
-                        type: number
-            -
-                name: translate
-                returns: Picimo.graph.Picture
-                args:
-                    -
-                        name: tx
-                        type: number
-                    -
-                        name: ty
-                        type: number
+                        type:
+                            - number
+                            - string
             -
                 name: setScale
                 returns: Picimo.graph.Picture

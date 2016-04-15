@@ -19,6 +19,8 @@ app.scene.appendPicture('/assets/images/spw-mini-logo.png', {  // test-76x12.png
     renderPrio: -10,
 });
 
+window.spw = app.scene.findNode('spw');
+
 // ========= nodes ============================================== {{{
 
 var node = new Picimo.graph.Scene( app );
@@ -166,4 +168,5 @@ app.scene.appendSpriteGroup( app.loadTextureAtlas( '/assets/images/atlas/lab-wal
     }
 
 });
+
 

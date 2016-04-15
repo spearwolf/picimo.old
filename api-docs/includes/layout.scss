@@ -41,9 +41,11 @@ body {
     color: $col-dark;
 
     /*background-color: #fff;*/
-    background-color: #f5f5f5;
+    background-color: $col-background-light;
+    /*border-bottom: $col-border-2-white;*/
     /*box-shadow: 0 1px 4px rgba(0,0,0, 0.42);*/
-    box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.1);*/
+    box-shadow: 0 1px 0 $col-border-2-white, 0 1px 5px rgba(0, 0, 0, 0.2);
 
     /*background-color: rgba(255, 255, 255, 0.95);*/
     /*background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.66) 100%);*/
@@ -60,7 +62,7 @@ body {
     height: $headerExpandedHeight - 1px;
 
     box-shadow: none;
-    border-bottom: 1px dashed $col-gray-light;
+    border-bottom: 1px dashed $col-border-2-white;  //$col-gray-light;
 
     .logo {
         width: 75vw;

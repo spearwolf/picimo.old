@@ -7,6 +7,18 @@ dictionaries:
         description: |
             The display position specifies how the picture is positioned *in relationship to the scene dimension*.
 
+            Most properties will support a *string* as input. That means you can choose between different units:
+
+            | Type | Format | Unit | Description |
+            |------|------------|----------|---------|
+            | number | _any number_ | __px__ | pixel |
+            | string | `32px` | __px__ | pixel |
+            | string | `100iw` | __iw__ | image width percentage |
+            | string | `50.0ih` | __ih__ | image height percentage |
+            | string | `-80sw` | __sw__ | scene width percentage |
+            | string | `-1.1sh` | __sh__ | scene height percentage |
+            | string | `100 %` | __%__ | _see property description for the unit_ |
+
             ![The Display Position](/assets/images/doc/displayPosition.png)
             ![The Display Position Zoom](/assets/images/doc/displayPosition zoom.png)
 
@@ -82,7 +94,9 @@ dictionaries:
             -
                 name: anchorX
                 type: number
+                description: TODO
             -
                 name: anchorY
                 type: number
+                description: TODO
 

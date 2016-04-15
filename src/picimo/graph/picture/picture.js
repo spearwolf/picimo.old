@@ -17,16 +17,14 @@ export default class Picture extends Node {
         this.program = options.program || 'picimo.sprite'; //'picimo.complexSprite';
         this.sprite = app.spriteFactory.createSprite(options.spriteType || 'simple'); //|| 'default');
 
-        let scale = typeof options.scale === 'number' ? options.scale : 1;
-        this.sprite.scale = scale;
+        this.sprite.scale = typeof options.scale === 'number' ? options.scale : 1;
         this.sprite.opacity = typeof options.opacity === 'number' ? options.opacity : 1;
 
-        if (typeof options.posX === 'number') this.posX = options.posX;
-        if (typeof options.posY === 'number') this.posY = options.posY;
+        this.posX = options.posX;
+        this.posY = options.posY;
 
         this.pipeline = null;
         this.pipelineSprite = null;
-
         this.verticesNeedsUpdate = true;
 
         if (options.displayPosition) {
@@ -35,12 +33,12 @@ export default class Picture extends Node {
 
         } else {  // => sceneFit
 
-            this.sceneFit = options.sceneFit || "contain";
+            this.sceneFit = options.sceneFit || 'contain';
 
         }
 
-        this.on("initGl", onInitGl.bind(this, this));
-        this.on("renderFrame", onRenderFrame.bind(this, this));
+        this.on('initGl', onInitGl.bind(this, this));
+        this.on('renderFrame', onRenderFrame.bind(this, this));
         this.parentNode.on('resize', () => { this.verticesNeedsUpdate = true });
 
     }
@@ -55,28 +53,10 @@ export default class Picture extends Node {
     }
 
     setPos (x, y) {
-        //this.sprite.setPos(x, y);
-        this.sprite.setTranslate(x, y);
+        this.posX = x;
+        this.posY = y;
         return this;
     }
-
-    translate (tx, ty) {
-        let sprite = this.sprite;
-        //sprite.setPos(sprite.x + tx, sprite.y + ty);
-        sprite.tx += tx;
-        sprite.ty += ty;
-        return this;
-    }
-
-    //setRgb (r, g, b) {
-        //this.sprite.setRgb(r, g, b);
-        //return this;
-    //}
-
-    //setRgba (r, g, b, a) {
-        //this.sprite.setColor(r, g, b, a);
-        //return this;
-    //}
 
     get scale () {
         return this.sprite.scale;
@@ -95,19 +75,21 @@ export default class Picture extends Node {
     }
 
     get posX () {
-        return this.sprite.tx;
+        return this._posX;
     }
 
     set posX (x) {
-        this.sprite.tx = x;
+        this._posX = x;
+        this.verticesNeedsUpdate = true;
     }
 
     get posY () {
-        return this.sprite.ty;
+        return this._posY;
     }
 
     set posY (y) {
-        this.sprite.ty = y;
+        this._posY = y;
+        this.verticesNeedsUpdate = true;
     }
 
     get posZ () {
@@ -157,10 +139,41 @@ export default class Picture extends Node {
 }
 
 
+function parseLength (val, percentage, imageWidth, imageHeight, sceneWidth, sceneHeight) {
+
+    if (typeof val === 'string') {
+
+        const str = val.trim();
+
+        if (str.endsWith('px')) { return parseFloat(str); }
+        else if (percentage  !== undefined && str.endsWith('%'))  { return percentage  * parseFloat(str) / 100.0; }
+        else if (imageWidth  !== undefined && str.endsWith('iw')) { return imageWidth  * parseFloat(str) / 100.0; }
+        else if (imageHeight !== undefined && str.endsWith('ih')) { return imageHeight * parseFloat(str) / 100.0; }
+        else if (sceneWidth  !== undefined && str.endsWith('sw')) { return sceneWidth  * parseFloat(str) / 100.0; }
+        else if (sceneHeight !== undefined && str.endsWith('sh')) { return sceneHeight * parseFloat(str) / 100.0; }
+
+    } else if (typeof val === 'number') {
+        return val;
+    }
+
+    return val != null ? parseFloat(val) : null;  // fallback
+
+}
+
+function updateTranslate (picture, tx, ty) {
+
+    const scene = picture.parentNode;
+    const image = picture.texture;
+
+    picture.sprite.tx = tx + (parseLength(picture.posX, scene.width, image.width, image.height, scene.width, scene.height) || 0);
+    picture.sprite.ty = ty + (parseLength(picture.posY, scene.height, image.width, image.height, scene.width, scene.height) || 0);
+
+}
+
 function updateVertices (picture) {
 
     if (!picture.verticesNeedsUpdate) return;
-    else picture.verticesNeedsUpdate = false;
+    picture.verticesNeedsUpdate = false;
 
     // vertex positions
     // ========================================
@@ -168,7 +181,7 @@ function updateVertices (picture) {
     let halfWidth;
     let halfHeight;
 
-    let dp = picture.displayPosition;
+    const dp = picture.displayPosition;
 
     if (dp) {
 
@@ -185,13 +198,16 @@ function updateVertices (picture) {
         // - anchorX
         // - anchorY
 
-        let sceneWidth = picture.parentNode.width;
-        let sceneHeight = picture.parentNode.height;
+        const sceneWidth = picture.parentNode.width;
+        const sceneHeight = picture.parentNode.height;
 
-        let dpLeft   = typeof dp.left   === 'string' ? sceneWidth  * (parseFloat(dp.left)   / 100.0) : dp.left;
-        let dpRight  = typeof dp.right  === 'string' ? sceneWidth  * (parseFloat(dp.right)  / 100.0) : dp.right;
-        let dpTop    = typeof dp.top    === 'string' ? sceneHeight * (parseFloat(dp.top)    / 100.0) : dp.top;
-        let dpBottom = typeof dp.bottom === 'string' ? sceneHeight * (parseFloat(dp.bottom) / 100.0) : dp.bottom;
+        const pictureWidth = picture.texture.width;
+        const pictureHeight = picture.texture.height;
+
+        const dpLeft   = parseLength(dp.left,   sceneWidth,  pictureWidth, pictureHeight, sceneWidth, sceneHeight);
+        const dpRight  = parseLength(dp.right,  sceneWidth,  pictureWidth, pictureHeight, sceneWidth, sceneHeight);
+        const dpTop    = parseLength(dp.top,    sceneHeight, pictureWidth, pictureHeight, sceneWidth, sceneHeight);
+        const dpBottom = parseLength(dp.bottom, sceneHeight, pictureWidth, pictureHeight, sceneWidth, sceneHeight);
 
         let x0 = typeof dpLeft   === 'number' ? dpLeft                 : null;
         let x1 = typeof dpRight  === 'number' ? sceneWidth - dpRight   : null;
@@ -209,26 +225,17 @@ function updateVertices (picture) {
             // left & right
             w = x1 - x0;
 
-        //} else if (typeof dp.zoom === 'number') {
-            // zoom
-            //w = picture.texture.width * dp.zoom;
+        } else {
 
-        } else if (typeof dp.width === 'number') {
-
-            // width
-            w = dp.width;
-
-        } else if (typeof dp.width === 'string') {
-
-            // width
-            w = picture.texture.width * parseFloat(dp.width) / 100.0;
+            // dp.width
+            w = parseLength(dp.width, pictureWidth, pictureWidth, pictureHeight, sceneWidth, sceneHeight);
 
         }
 
         if (typeof dp.zoom === 'number') {
 
             // zoom
-            w = ( w === undefined ? picture.texture.width : w ) * dp.zoom;
+            w = ( w === null ? picture.texture.width : w ) * dp.zoom;
 
         }
 
@@ -243,26 +250,17 @@ function updateVertices (picture) {
             // left and right
             h = y1 - y0;
 
-        //} else if (typeof dp.zoom === 'number') {
-            // zoom
-            //h = picture.texture.height * dp.zoom;
+        } else {
 
-        } else if (typeof dp.height === 'number') {
-
-            // height
-            h = dp.height;
-
-        } else if (typeof dp.height === 'string') {
-
-            // height
-            h = picture.texture.height * parseFloat(dp.height) / 100.0;
+            // dp.height
+            h = parseLength(dp.height, pictureHeight, pictureWidth, pictureHeight, sceneWidth, sceneHeight);
 
         }
 
         if (typeof dp.zoom === 'number') {
 
             // zoom
-            h = ( h === undefined ? picture.texture.height : h ) * dp.zoom;
+            h = ( h === null ? picture.texture.height : h ) * dp.zoom;
 
         }
 
@@ -301,16 +299,35 @@ function updateVertices (picture) {
         halfWidth  = 0.5 * sceneWidth;
         halfHeight = 0.5 * sceneHeight;
 
-        let anchorX = dp.anchorX || 0.0;
-        let anchorY = dp.anchorY || 0.0;
+        const anchorX = dp.anchorX || 0.0;
+        const anchorY = dp.anchorY || 0.0;
 
-        let ax = anchorX * (x1 - x0);
-        let ay = anchorY * (y1 - y0);
+        const ax = anchorX * (x1 - x0);
+        const ay = anchorY * (y1 - y0);
 
         x0 -= halfWidth - ax;
         x1 -= halfWidth - ax;
+
         y0 = sceneHeight - y0 - halfHeight + ay;
         y1 = sceneHeight - y1 - halfHeight + ay;
+
+        //picture.setVertexPositions(
+            //x0, y1,
+            //x1, y1,
+            //x1, y0,
+            //x0, y0 );
+
+        const tx = x0 + ( x1 - x0 ) / 2;
+        const ty = y0 + ( y1 - y0 ) / 2;
+
+        x0 -= tx;
+        x1 -= tx;
+        y0 -= ty;
+        y1 -= ty;
+
+        //picture.sprite.tx = tx;
+        //picture.sprite.ty = ty;
+        updateTranslate(picture, tx, ty);
 
         picture.setVertexPositions(
             x0, y1,
@@ -323,10 +340,10 @@ function updateVertices (picture) {
         // sceneFit 'contain' or 'cover'
         // ----------------------------------------
 
-        let viewWidth  = picture.parentNode.width;
-        let viewHeight = picture.parentNode.height;
-        let viewRatio  = viewHeight / viewWidth;
-        let texRatio   = picture.texture.height / picture.texture.width;
+        const viewWidth  = picture.parentNode.width;
+        const viewHeight = picture.parentNode.height;
+        const viewRatio  = viewHeight / viewWidth;
+        const texRatio   = picture.texture.height / picture.texture.width;
 
         if (texRatio === 1) {
 
@@ -350,6 +367,8 @@ function updateVertices (picture) {
             halfHeight = 0.5 * scale * picture.texture.height
 
         }
+
+        updateTranslate(picture, 0, 0);
 
         picture.setVertexPositions(
             -halfWidth, -halfHeight,
