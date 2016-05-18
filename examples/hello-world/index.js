@@ -1,7 +1,7 @@
 /* global Picimo */
 /* global setTimeout */
 
-var app  = new Picimo.App({
+var app = new Picimo.App({
 
     canvas  : document.getElementById( 'picimo' ),
     alpha   : true,
@@ -13,23 +13,31 @@ var app  = new Picimo.App({
 app.scene.setSize( (96+16)*2, 96, 'contain' );
 
 app.scene.appendPicture('/assets/images/spw-mini-logo.png', {  // test-76x12.png', {
-    name: 'spw',
-    sceneFit: 'contain',
-    scale: 0.8,
-    renderPrio: -10,
-    opacity: 0.9
+    name       : 'spw',
+    sceneFit   : 'contain',
+    scale      : 0.8,
+    renderPrio : -10,
+    opacity    : 0.9
 });
 
 window.spw = app.scene.findNode('spw');
 
-app.scene.appendScene({ width: 200, height: 200, sizeFit: 'contain', projection: true, renderPrio: -20 }).appendPicture('bruce-lee.png', {  // test-76x12.png', {
-    name: 'bruceLee',
-    displayPosition: {
-        bottom: 0,
-        left: '300iw',
-        zoom: 1
-    }
-});
+app.scene
+    .appendScene({
+        width      : 200,
+        height     : 200,
+        sizeFit    : 'contain',
+        projection : true,
+        renderPrio : -20
+    })
+    .appendPicture('bruce-lee.png', {  // test-76x12.png', {
+        name: 'bruceLee',
+        displayPosition: {
+            bottom : 0,
+            left   : '300iw',
+            zoom   : 1
+        }
+    });
 
 // ========= nodes ============================================== {{{
 
