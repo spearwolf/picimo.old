@@ -169,17 +169,18 @@ app.scene.appendSpriteGroup( app.loadTextureAtlas( '/assets/images/atlas/lab-wal
 
         sprites.setDefaultSpriteSize( 32, 32 );
 
-        sprites.createSprite('numbers32_01').setTranslate( 0, 0 );
-        sprites.createSprite('numbers32_02').setTranslate( 32, 0 );
-        sprites.createSprite('numbers32_03').setTranslate( 32, -32 );
-        sprites.createSprite('numbers32_04').setTranslate( 64, 32 );
-        sprites.createSprite('numbers32_05').setTranslate( 64, 0 );
-        sprites.createSprite('numbers32_06').setTranslate( 64, -32 );
-        sprites.createSprite('numbers32_07').setTranslate( -64, 0 );
-        sprites.createSprite('numbers32_08').setTranslate( -96, -32 );
-        sprites.createSprite('numbers32_09').setTranslate( -96, 0 );
-        sprites.createSprite('numbers32_10').setTranslate( -96, 32 );
-        //sprites.createSprite('numbers32_10').setTranslate( 76-32, 0 );
+        sprites.createSprites([
+            'numbers32_01', 0, 0,
+            'numbers32_02', 32, 0,
+            'numbers32_03', 32, -32,
+            'numbers32_04', 64, 32,
+            'numbers32_05', 64, 0,
+            'numbers32_06', 64, -32,
+            'numbers32_07', -64, 0,
+            'numbers32_08', -96, -32,
+            'numbers32_09', -96, 0,
+            'numbers32_10', -96, 32,
+        ]);
 
         //sprites.display = false;
 

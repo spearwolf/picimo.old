@@ -2,7 +2,7 @@
 
 import { definePropertyPublicRO } from './object_utils';
 
-var UID = 0;
+let UID = 0;
 
 export default function addUid ( obj ) {
 

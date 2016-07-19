@@ -26,8 +26,7 @@ export default function Resource ( app, dataPropAlias ) {
      * @member {boolean} Picimo.core.Resource#ready
      */
 
-    //utils.Deferred.make( this );
-    utils.addReadyPromise( this );
+    utils.makeReadyPromise( this );
 
     /**
      * @member {String} Picimo.core.Resource#url

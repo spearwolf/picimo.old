@@ -33,7 +33,7 @@ export default function Po2Image ( app, image ) {
     /**
      * @member {Promise} Picimo.core.Po2Image#promise
      */
-    utils.addReadyPromise( this );
+    utils.makeReadyPromise( this );
 
     /**
      * @member {String} Picimo.core.Po2Image#url

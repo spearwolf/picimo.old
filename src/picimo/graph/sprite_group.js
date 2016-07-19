@@ -116,6 +116,23 @@ SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
 
 };
 
+SpriteGroup.prototype.createSprites = function ( arr ) {
+
+    const len = arr.length;
+    if (len && !(len % 3)) {
+
+        let i = 0;
+        while (i < len) {
+            this.createSprite(arr[i]).setTranslate(arr[i+1], arr[i+2]);
+            i += 3;
+        }
+
+    } else {
+        console.error('SpriteGroup.createSprites(): wrong array size: ', len, arr);
+    }
+
+};
+
 /**
  * @method Picimo.graph.SpriteGroup#setDefaultSpriteSize
  *
