@@ -30,6 +30,10 @@ export default class PicturePipeline {
 
     }
 
+    get glTexture () {
+        return this.app.textureManager.findOrCreateWebGlTexture( this.texture );
+    }
+
     onInitGl () {
         initBuffers(this);
         initRenderCmds(this);
@@ -122,7 +126,8 @@ function initRenderCmds ( self ) {
 
             program: self.program,
             uniforms: {
-                tex: self.app.textureManager.findOrCreateWebGlTexture( self.texture )
+                //tex: self.app.textureManager.findOrCreateWebGlTexture( self.texture )
+                tex: self.glTexture
             },
             attributes: {},
             drawElements: {

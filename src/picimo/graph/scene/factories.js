@@ -2,6 +2,7 @@
 
 import SpriteGroup from '../sprite_group';
 import Picture from '../picture';
+import Canvas from '../canvas';
 
 export default function (Scene) {
 
@@ -20,6 +21,22 @@ export default function (Scene) {
         options.texture = this.app.loadTexture(url);
 
         return appendNode(new Picture(this.app, options), this, extension);
+
+    };
+
+    Scene.prototype.appendCanvas = function (canvasSizeOrCanvas, options = {}, extension = null) {
+
+        options.parentNode = this;
+
+        let opts = Object.assign({}, options);
+
+        if (typeof canvasSizeOrCanvas === 'number' || Array.isArray(canvasSizeOrCanvas)) {
+            opts.canvasSize = canvasSizeOrCanvas;
+        } else if (typeof canvasSizeOrCanvas === 'object') {
+            opts.canvas = canvasSizeOrCanvas;
+        }
+
+        return appendNode(new Canvas(this.app, opts), this, extension);
 
     };
 

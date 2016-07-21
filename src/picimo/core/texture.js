@@ -358,3 +358,14 @@ Texture.prototype.setTexCoords = function ( obj ) {
 
 };
 
+
+Texture.fromCanvas = function (canvas) {
+
+    let texture = new Texture;
+    texture.image = canvas;
+
+    return texture;
+
+};
+
+
