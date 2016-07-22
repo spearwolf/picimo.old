@@ -5,6 +5,10 @@ import Node from '../node';
 import { PicturePipeline } from '../../render/pipeline';
 import * as core from '../../core';
 import DisplayPosition from './display_position';
+import { asNumber } from '../../utils';
+
+const DEFAULT_WEBGL_PROGRAM = 'picimo.sprite';
+const DEFAULT_SPRITE_TYPE   = 'simple';
 
 export default class Picture extends Node {
 
@@ -14,11 +18,13 @@ export default class Picture extends Node {
 
         initTexture(this, options.texture);
 
-        this.program = options.program || 'picimo.sprite'; //'picimo.complexSprite';
-        this.sprite = app.spriteFactory.createSprite(options.spriteType || 'simple'); //|| 'default');
+        this.program = options.program || DEFAULT_WEBGL_PROGRAM;
+        this.sprite = app.spriteFactory.createSprite(options.spriteType || DEFAULT_SPRITE_TYPE);
 
-        this.sprite.scale = typeof options.scale === 'number' ? options.scale : 1;
-        this.sprite.opacity = typeof options.opacity === 'number' ? options.opacity : 1;
+        //this.sprite.scale = typeof options.scale === 'number' ? options.scale : 1;
+        //this.sprite.opacity = typeof options.opacity === 'number' ? options.opacity : 1;
+        this.sprite.scale = asNumber(options.scale, 1);
+        this.sprite.opacity = asNumber(options.opacity, 1);
 
         this.posX = options.posX;
         this.posY = options.posY;

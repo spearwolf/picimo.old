@@ -30,7 +30,7 @@ export default class PicturePipeline {
 
     }
 
-    get glTexture () {
+    get webGlTexture () {
         return this.app.textureManager.findOrCreateWebGlTexture( this.texture );
     }
 
@@ -47,11 +47,6 @@ export default class PicturePipeline {
     }
 
     flush () {
-
-        //if (this.app.renderer.debugOutFrame) {
-            //console.debug('picturePipeline.flush()');
-        //}
-
         if (this.currentSpriteCount) {
 
             let cmd = this.renderCmd.create();
@@ -68,10 +63,6 @@ export default class PicturePipeline {
 
     render (sprite) {
 
-        //if (this.app.renderer.debugOutFrame) {
-            //console.debug('picturePipeline.render()');
-        //}
-
         this.app.renderer.activatePipeline(this);
 
         this.pool.vertexArray.copy(sprite, this.totalSpritesCount);
@@ -82,10 +73,6 @@ export default class PicturePipeline {
     }
 
     finish () {
-
-        //if (this.app.renderer.debugOutFrame) {
-            //console.debug('picturePipeline.finish()');
-        //}
 
         if (this.totalSpritesCount) {
             this.flush();
@@ -126,8 +113,7 @@ function initRenderCmds ( self ) {
 
             program: self.program,
             uniforms: {
-                //tex: self.app.textureManager.findOrCreateWebGlTexture( self.texture )
-                tex: self.glTexture
+                tex: self.webGlTexture
             },
             attributes: {},
             drawElements: {

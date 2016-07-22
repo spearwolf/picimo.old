@@ -2,92 +2,110 @@
 
 import Picture from './picture';
 import * as core from '../core';
-import { isPowerOfTwo } from '../math';
+import { isPowerOfTwo, findNextPowerOfTwo } from '../math';
+//import { definePropertyPublicRO } from '../utils/object_utils';
 
 export default class Canvas extends Picture {
 
-    /*
-     * Canvas extra options:
-     * ---------------------
-     *  - clearColor  : "#00f",
-     *  - autoClear   : false,
-     *  - canvas      : HTMLCanvasElement           // <= [ optional ]
-     *  - canvasSize  : [maze.width, maze.height],  // <= rect or 256 (quad)
-     */
+    //
+    // Canvas extra options:
+    // ---------------------
+    //  - clearColor  : "#00f",
+    //  - autoClear   : false,
+    //  - canvas      : HTMLCanvasElement           // [optional]
+    //  - canvasSize  : number                      // [optional]
+    //                | [width, height]
+    //                | {x, y, width, height}
+    //
 
     constructor (app, options) {
 
-        const dim = !options.canvas ? extractCanvasSize(options) : {
-            width  : options.canvas.width,
-            height : options.canvas.height
-        };
+        const dimension = extractCanvasSize(options);
 
-        if (!isPowerOfTwo(dim.width) || !isPowerOfTwo(dim.height)) {
-            throw new Error(`Picimo.graph.Canvas panic: width and height needs to be power of two! but is [${dim.width}, ${dim.height}]`);
+        let canvas;
+        if (options.canvas) {  // <= predefined canvas
+            canvas = options.canvas;
+            if (!isPowerOfTwo(canvas.width) || !isPowerOfTwo(canvas.height)) {
+                throw new Error(`Picimo.graph.Canvas panic: width and height of predefined canvas needs to be power of two! but is [${canvas.width}, ${canvas.height}]`);
+            }
+        } else {
+            canvas = createCanvas(dimension);
         }
 
-        const texture = !options.canvas ? createCanvasTexture(dim) : new core.Texture(options.canvas);
+        const texture = createTexture(canvas, dimension);
         const opts = Object.assign({}, options, { texture: texture });
 
         super(app, opts);
 
-        const canvas = texture.image;
-
-        Object.defineProperties(this, {
-            canvas: {
-                value: canvas,
-                enumerable: true,
-            },
-            ctx: {
-                value: canvas.getContext('2d'),
-                enumerable: true,
-            },
-        });
+        setCanvas(this, texture.image);
 
     }
 
-    get glTexture () {
-        return this.pipeline && this.pipeline.glTexture;
+    get webGlTexture () {
+        return this.pipeline && this.pipeline.webGlTexture;
     }
 
     update () {
-        const tex = this.glTexture;
+        const tex = this.webGlTexture;
         if (tex) tex.needsUpload = true;
     }
 
 }
 
-function extractCanvasSize (options) {
+function setCanvas (obj, canvas) {
 
-    let dim;
-
-    if (typeof options.canvasSize === 'number') {
-        dim = {
-            width  : options.canvasSize,
-            height : options.canvasSize,
-        }
-    } else if (Array.isArray(options.canvasSize)) {
-        dim = {
-            width  : options.canvasSize[0],
-            height : options.canvasSize[1],
-        }
-    }
-
-    return dim;
+    Object.defineProperties(obj, {
+        canvas: {
+            value: canvas,
+            enumerable: true,
+        },
+        ctx: {
+            value: canvas.getContext('2d'),
+            enumerable: true,
+        },
+    });
 
 }
 
-function createCanvasTexture (dimension) {
+function extractCanvasSize (options) {
 
-    let canvas = document.createElement('canvas');
-    canvas.width = dimension.width;
-    canvas.height = dimension.height;
+    if (typeof options.canvasSize === 'number') {
+        return new core.Viewport(0, 0, parseInt(options.canvasSize, 10), parseInt(options.canvasSize, 10));
+    } else if (Array.isArray(options.canvasSize)) {
+        return new core.Viewport(0, 0, parseInt(options.canvasSize[0], 10), parseInt(options.canvasSize[1], 10));
+    } else if (typeof options.canvasSize === 'object') {
+        return new core.Viewport(
+            parseInt(options.canvasSize.x, 10),
+            parseInt(options.canvasSize.y, 10),
+            parseInt(options.canvasSize.width, 10),
+            parseInt(options.canvasSize.height, 10));
+    } else if (options.canvas) {
+        return new core.Viewport(0, 0, options.canvas.width, options.canvas.height);
+    } else {
+        throw new Error(`Picimo.graph.Canvas panic! couldn't determinate canvas size!`);
+    }
 
-    //let texture = new core.Texture;
-    //texture.image = canvas;
-    //return texture;
+}
 
-    return core.Texture.fromCanvas(canvas);
+function createCanvas (dimension) {
+
+    const canvas = document.createElement('canvas');
+
+    canvas.width = findNextPowerOfTwo(dimension.x + dimension.width);
+    canvas.height = findNextPowerOfTwo(dimension.y + dimension.height);
+
+    return canvas;
+}
+
+function createTexture (canvas, dimension) {
+
+    let texture = core.Texture.fromCanvas(canvas);
+
+    if (dimension.x || dimension.y || dimension.width !== texture.width || dimension.height !== texture.height) {
+        texture = new core.Texture(texture, dimension.x, dimension.y, dimension.width, dimension.height);
+    }
+
+    return texture;
 
 }
 
