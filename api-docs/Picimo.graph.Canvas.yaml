@@ -1,0 +1,58 @@
+name: Picimo.graph.Canvas
+type: programming-interface
+
+interfaces:
+    -
+        name: Picimo.graph.Canvas
+
+        extends:
+            - Picimo.graph.Node
+            - Picimo.graph.Picture
+
+        constructor:
+            args:
+                -
+                    name: app
+                    type: Picimo.App
+                    nullable: false
+                    optional: false
+                -
+                    name: options
+                    type: CANVAS_OPTIONS
+                    nullable: true
+                    optional: true
+
+        attributes:
+            -
+                name: canvas
+                type: HTMLCanvasElement
+                description: |
+                    The HTMLCanvasElement interface.
+            -
+                name: alpha
+                type: boolean
+                description: Flag to indicate that the canvas context has alpha support enabled.
+            -
+                name: dimension
+                type: Picimo.core.Viewport
+                description: |
+                    Describes the texture viewport into the canvas.
+            -
+                name: autoClear
+                type: boolean
+                description: When set to true then on the begin of a frame the canvas will be cleared.
+            -
+                name: clearColor
+                type: string
+                description: When set then the canvas will be cleared with this color (canvas.fillStyle)
+            -
+                name: autoUpdate
+                type: boolean
+                description: When set to true then the texture will be synced at every frame (at the end).
+
+        functions:
+            -
+                name: update
+                returns: void
+                description: Sync the texture with current canvas content.
+

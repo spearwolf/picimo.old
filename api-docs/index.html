@@ -44,12 +44,14 @@
                             {{/each}}
                         </ol>
 
-                        <h2><a href="#Advanced-Topics">Advanced Topics</a></h2>
+                        <h2><a href="#Programming-Interface">Programming Interfaces</a></h2>
 
-                        <ol class="toc-sidebar__advanced">
-                            {{#each topic}}
+                        <ol class="toc-sidebar__pids">
+                            {{#each programming-interface}}
                             {{#ref .}}
-                            <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
+                            {{#each interfaces}}
+                            <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
+                            {{/each}}
                             {{/ref}}
                             {{/each}}
                         </ol>
@@ -61,20 +63,36 @@
 
                     <section class="toc-sidebar">
 
-                        <h2><a href="#Programming-Interface">Programming Interface</a></h2>
+                        <h2><a href="#Enumerations">Enumerations</a></h2>
 
-                        <ol class="toc-sidebar__pids">
+                        <ol class="toc-sidebar__enums">
                             {{#each programming-interface}}
                             {{#ref .}}
-                            {{#each interfaces}}
-                            <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
-                            {{/each}}
-                            {{#each dictionaries}}
-                            <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
-                            {{/each}}
                             {{#each enums}}
                             <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
                             {{/each}}
+                            {{/ref}}
+                            {{/each}}
+                        </ol>
+
+                        <h2><a href="#Dictionaries">Dictionaries</a></h2>
+
+                        <ol class="toc-sidebar__dictionaries">
+                            {{#each programming-interface}}
+                            {{#ref .}}
+                            {{#each dictionaries}}
+                            <li><a href="#{{refId name}}" class="toc__pid-link">{{name}}</a></li>
+                            {{/each}}
+                            {{/ref}}
+                            {{/each}}
+                        </ol>
+
+                        <h2><a href="#Advanced-Topics">Advanced Topics</a></h2>
+
+                        <ol class="toc-sidebar__advanced">
+                            {{#each topic}}
+                            {{#ref .}}
+                            <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
                             {{/ref}}
                             {{/each}}
                         </ol>
@@ -105,18 +123,36 @@
                             </ol>
                         </li>
                         <li>
-                            <a href="#Programming-Interface">Programming Interface</a>
+                            <a href="#Programming-Interface">Programming Interfaces</a>
                             <ol class="toc-sub">
                                 {{#each programming-interface}}
                                 {{#ref .}}
                                 {{#each interfaces}}
                                 <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> interface</li>
                                 {{/each}}
-                                {{#each dictionaries}}
-                                <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> dictionary</li>
+                                {{/ref}}
                                 {{/each}}
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#Enumerations">Enumerations</a>
+                            <ol class="toc-sub">
+                                {{#each programming-interface}}
+                                {{#ref .}}
                                 {{#each enums}}
                                 <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> enumeration</li>
+                                {{/each}}
+                                {{/ref}}
+                                {{/each}}
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#Dictionaries">Dictionaries</a>
+                            <ol class="toc-sub">
+                                {{#each programming-interface}}
+                                {{#ref .}}
+                                {{#each dictionaries}}
+                                <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> dictionary</li>
                                 {{/each}}
                                 {{/ref}}
                                 {{/each}}
@@ -152,7 +188,7 @@
                 <section class="programming-interface page-break">
                     <div id="Programming-Interface" class="nav-anchor"></div>
 
-                    <h2>Programming Interface</h2>
+                    <h2>Programming Interfaces</h2>
 
                     {{#each programming-interface}}
                         {{#ref .}}

@@ -85,6 +85,10 @@ export default class Canvas extends Picture {
         return this.pipeline && this.pipeline.webGlTexture;
     }
 
+    get alpha () {
+        return this.ctx.getContextAttributes().alpha;
+    }
+
     update () {
         const tex = this.webGlTexture;
         if (tex) tex.needsUpload = true;

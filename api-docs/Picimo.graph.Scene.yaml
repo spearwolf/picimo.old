@@ -126,6 +126,19 @@
               type: "PICTURE_OPTIONS"
           returns: "Picimo.graph.Picture"
         -
+          name: "appendCanvas"
+          args:
+            -
+              name: "canvasSize"
+              type:
+                - number
+                - 'Array<number>'
+                - '{x,y,width,height}'
+            -
+              name: "options"
+              type: "CANVAS_OPTIONS"
+          returns: "Picimo.graph.Canvas"
+        -
           name: "appendSpriteGroup"
           args:
             -
