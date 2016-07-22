@@ -26,18 +26,19 @@ export default function Node (app, options = {}) {
 
     Object.defineProperties(this, {
         initDone: {
-            value: false,
-            configurable: true,
-            enumerable: true
+            value        : false,
+            configurable : true,
+            enumerable   : true
         },
         initGlDone: {
-            value: false,
-            configurable: true,
-            enumerable: true
+            value        : false,
+            configurable : true,
+            enumerable   : true
         }
     });
 
     defineRenderPrio(this, options.renderPrio);
+
     setParentNode(this, options.parentNode);
     this.children = [];
 

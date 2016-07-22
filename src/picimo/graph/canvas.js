@@ -1,17 +1,20 @@
 'use strict';
 
+import eventize from 'eventize-js';
 import Picture from './picture';
 import * as core from '../core';
 import { isPowerOfTwo, findNextPowerOfTwo } from '../math';
-//import { definePropertyPublicRO } from '../utils/object_utils';
+import { asBoolean } from '../utils';
 
 export default class Canvas extends Picture {
 
     //
     // Canvas extra options:
     // ---------------------
-    //  - clearColor  : "#00f",
+    //  - clearColor  : "#00f",                     // [optional]
     //  - autoClear   : false,
+    //  - autoUpdate  : false,
+    //  - alpha       : true,                       // [optional]
     //  - canvas      : HTMLCanvasElement           // [optional]
     //  - canvasSize  : number                      // [optional]
     //                | [width, height]
@@ -37,8 +40,45 @@ export default class Canvas extends Picture {
 
         super(app, opts);
 
-        setCanvas(this, texture.image);
+        setCanvas(this, texture.image, asBoolean(options.alpha, true));
 
+        this.dimension = dimension;
+        this.clearColor = options.clearColor;
+        this.autoClear = options.autoClear;
+        this.autoUpdate = options.autoUpdate;
+
+    }
+
+    set autoClear (autoClear) {
+        this._autoClear = asBoolean(autoClear, false);
+        if (this._autoClear) {
+            if (!this._clearCanvas) {
+                this._clearCanvas = this.on('renderFrame', eventize.PRIO_MAX, clearCanvas.bind(this, this));
+            }
+        } else if (this._clearCanvas) {
+            this.off(this._clearCanvas);
+            this._clearCanvas = 0;
+        }
+    }
+
+    get autoClear () {
+        return this._autoClear;
+    }
+
+    set autoUpdate (autoUpdate) {
+        this._autoUpdate = asBoolean(autoUpdate, false);
+        if (this._autoUpdate) {
+            if (!this._updateTexture) {
+                this._updateTexture = this.on('renderFrame', this.update.bind(this));
+            }
+        } else if (this._updateTexture) {
+            this.off(this._updateTexture);
+            this._updateTexture = 0;
+        }
+    }
+
+    get autoUpdate () {
+        return this._autoUpdate;
     }
 
     get webGlTexture () {
@@ -52,7 +92,18 @@ export default class Canvas extends Picture {
 
 }
 
-function setCanvas (obj, canvas) {
+function clearCanvas (canvas) {
+    const dim = canvas.dimension;
+    const ctx = canvas.ctx;
+    if (canvas.clearColor) {
+        ctx.fillStyle = canvas.clearColor;
+        ctx.fillRect(dim.x, dim.y, dim.width, dim.height);
+    } else {
+        ctx.clearRect(dim.x, dim.y, dim.width, dim.height);
+    }
+}
+
+function setCanvas (obj, canvas, alpha) {
 
     Object.defineProperties(obj, {
         canvas: {
@@ -60,7 +111,7 @@ function setCanvas (obj, canvas) {
             enumerable: true,
         },
         ctx: {
-            value: canvas.getContext('2d'),
+            value: canvas.getContext('2d', { alpha }),
             enumerable: true,
         },
     });
@@ -95,6 +146,7 @@ function createCanvas (dimension) {
     canvas.height = findNextPowerOfTwo(dimension.y + dimension.height);
 
     return canvas;
+
 }
 
 function createTexture (canvas, dimension) {
