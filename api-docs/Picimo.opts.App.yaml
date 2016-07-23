@@ -1,9 +1,9 @@
 ---
-  name: "APP_OPTIONS"
+  name: "Picimo.opts.App"
   type: "programming-interface"
   dictionaries:
     -
-      name: "APP_OPTIONS"
+      name: "Picimo.opts.App"
       attributes:
         -
           name: "alpha"

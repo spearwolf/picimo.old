@@ -39,7 +39,7 @@
           readonly: false
         -
           name: "sizeFit"
-          type: "OBJECT_FIT"
+          type: "Picimo.enum.ObjectFit"
           readonly: false
           description: |
             The size fit property describes how the scene dimension is computed
@@ -75,7 +75,7 @@
               type: "number"
             -
               name: "sizeFit"
-              type: "OBJECT_FIT"
+              type: "Picimo.enum.ObjectFit"
               default: "'contain'"
               optional: true
           returns: "Picimo.graph.Scene"
@@ -113,7 +113,7 @@
           args:
             -
               name: "options"
-              type: "SCENE_OPTIONS"
+              type: "Picimo.opts.Scene"
           returns: "Picimo.graph.Scene"
         -
           name: "appendPicture"
@@ -123,7 +123,7 @@
               type: "string"
             -
               name: "options"
-              type: "PICTURE_OPTIONS"
+              type: "Picimo.opts.Picture"
           returns: "Picimo.graph.Picture"
         -
           name: "appendCanvas"
@@ -136,7 +136,7 @@
                 - '{x,y,width,height}'
             -
               name: "options"
-              type: "CANVAS_OPTIONS"
+              type: "Picimo.opts.Canvas"
           returns: "Picimo.graph.Canvas"
         -
           name: "appendSpriteGroup"
@@ -148,7 +148,7 @@
                 - "Promise"
             -
               name: "options"
-              type: "SPRITE_GROUP_OPTIONS"
+              type: "Picimo.opts.SpriteGroup"
           returns: "Picimo.graph.SpriteGroup"
 
       constructor:
@@ -160,7 +160,7 @@
             optional: false
           -
             name: "options"
-            type: "SCENE_OPTIONS"
+            type: "Picimo.opts.Scene"
             nullable: true
             optional: true
 

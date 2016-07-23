@@ -1,9 +1,9 @@
-name: DISPLAY_POSITION
+name: Picimo.struct.DisplayPosition
 type: programming-interface
 
 dictionaries:
     -
-        name: DISPLAY_POSITION
+        name: Picimo.struct.DisplayPosition
         description: |
             The display position specifies how the picture is positioned *in relationship to the scene dimension*.
 

@@ -73,7 +73,7 @@
             optional: false
           -
             name: "options"
-            type: "SPRITE_GROUP_OPTIONS"
+            type: "Picimo.opts.SpriteGroup"
             nullable: true
             optional: true
 

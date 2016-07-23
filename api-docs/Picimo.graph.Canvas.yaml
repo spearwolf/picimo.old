@@ -18,7 +18,7 @@ interfaces:
                     optional: false
                 -
                     name: options
-                    type: CANVAS_OPTIONS
+                    type: Picimo.opts.Canvas
                     nullable: true
                     optional: true
 

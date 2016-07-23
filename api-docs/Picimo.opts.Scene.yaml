@@ -1,11 +1,11 @@
 ---
-  name: "SCENE_OPTIONS"
+  name: "Picimo.opts.Scene"
   type: "programming-interface"
   dictionaries:
     -
-      name: "SCENE_OPTIONS"
+      name: "Picimo.opts.Scene"
       extends:
-        - NODE_OPTIONS
+        - Picimo.opts.Node
       attributes:
         -
           name: "width"
@@ -21,7 +21,7 @@
           required: false
         -
           name: "sizeFit"
-          type: "OBJECT_FIT"
+          type: "Picimo.enum.ObjectFit"
           required: false
           default: "'contain'"
           description: |

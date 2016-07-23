@@ -6,8 +6,7 @@
       name: "Picimo.graph.Node"
 
       description: |
-        The base class for all other picimo scene graph nodes.
-
+        A base class that all other scene graph nodes extend.
 
       description_after_events: |
         #### Node States and Events
@@ -109,7 +108,7 @@
             optional: false
           -
             name: "options"
-            type: "NODE_OPTIONS"
+            type: "Picimo.opts.Node"
             nullable: true
             optional: true
 
