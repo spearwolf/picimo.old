@@ -9,9 +9,12 @@
         max-width: 70%;
     }
 
+    pre {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
     code {
         @include typo('monospace', $size: $fontSizeTiny);
-        background-color: rgba(0, 0, 0, 0.05);
     }
 
     &__link {
@@ -47,7 +50,7 @@
             padding: 0 0.5em;
             @include typo('text', $weight: 'normal', $size: $fontSizeSmall);
         }
-    
+
     }
 
 }
