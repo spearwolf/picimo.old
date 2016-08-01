@@ -50,9 +50,10 @@ The *api docs* can be found here: [http://localhost:8080/api-docs](http://localh
 
 | command | description |
 |-----------|-------------|
-| `npm run build` | build the *development* version of `picimo.js` into [`build/`](build/) |
-| `npm run release` | build the *release* version `picimo.min.js` and the *api docs* into [`build/`](build/) |
+| `npm run build:dev` | build the *development* version of `picimo.js` into [`build/`](build/) |
+| `npm run build:release` | build the *release* version `picimo.min.js` |
 | `npm run api-docs` | generate the *api docs* into [`build/`](build/))|
+| `npm run release` | build the *release* version `picimo.min.js` and the *api docs* |
 | `npm run clean` | remove all *build artifacts* |
 | `npm start` | start a local http server and watch for changes |
 

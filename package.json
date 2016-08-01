@@ -1,6 +1,6 @@
 {
   "name": "picimo",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "author": {
     "name": "Wolfger Schramm",
     "email": "wolfger@spearwolf.de",
@@ -17,12 +17,14 @@
     "url": "https://github.com/spearwolf/picimo/issues"
   },
   "scripts": {
-    "start": "webpack-dev-server --inline --progress --colors",
-    "build": "webpack --progress --colors",
-    "release": "BUILD_DEV=0 webpack --progress --colors && gulp api-docs",
+    "build:dev": "webpack --progress --colors",
+    "build:release": "BUILD_DEV=0 webpack --progress --colors",
     "api-docs": "gulp api-docs",
-    "clean": "gulp clean",
-    "all": "npm run clean && npm run build && npm run release"
+    "watch:src": "webpack-dev-server --inline --progress --colors",
+    "watch:api-docs": "watch 'npm run api-docs' api-docs/",
+    "release": "run-p build:release api-docs",
+    "start": "run-p watch:src watch:api-docs",
+    "clean": "gulp clean"
   },
   "babel": {
     "presets": [
@@ -64,9 +66,11 @@
     "handlebars": "^4.0.5",
     "js-yaml": "^3.5.2",
     "marked": "^0.3.5",
+    "npm-run-all": "^2.3.0",
     "through2": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
+    "watch": "^0.19.1",
     "watchify": "^3.7.0",
     "webpack": "^1.12.15",
     "webpack-dev-server": "^1.14.1",
