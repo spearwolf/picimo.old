@@ -1,8 +1,6 @@
-![picimo](/assets/images/picimo-nobingers.png)
+# <img src="https://cdn.rawgit.com/spearwolf/picimo/master/assets/images/picimo-logo-640x248.png" alt="picimo" width="320">
 
-# picimo
-
-picimo is a __sprite__ engine for __javascript__ running in a modern __browser__. it is built from scratch and exclusively utilizes __webgl__ as rendering technology.
+_picimo_ is a __sprite__ engine for __javascript__ running in a modern __browser__. it is built from scratch and exclusively utilizes __webgl__ as rendering technology.
 
 it is written in <del>pure ES5 javascript (no transpilers are used)</del> ES2016 using the [babel](https://babeljs.io/) transpiler.
 
