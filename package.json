@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build:dev": "webpack --progress --colors",
-    "build:release": "BUILD_DEV=0 webpack --progress --colors",
+    "build:release": "BUILD_DEV=0 webpack --display-error-details -v",
     "api-docs": "gulp api-docs",
     "watch:src": "webpack-dev-server --inline --progress --colors",
     "watch:api-docs": "watch 'npm run api-docs' api-docs/",
