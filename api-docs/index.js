@@ -1,3 +1,4 @@
+/* global hljs */
 'use strict';
 
 const attachFastClick = require('fastclick');
@@ -11,5 +12,11 @@ $('.menu-icon').click(function () {
 $('.toc-sidebar a').click(function () {
     $('.sidebar.overlay,body.overlay').removeClass('overlay');
     return true;
+});
+
+$(document).ready(function () {
+    $('pre code').each(function (i, block) {
+        hljs.highlightBlock(block);
+    });
 });
 

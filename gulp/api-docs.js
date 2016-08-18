@@ -1,6 +1,7 @@
 import gulp from 'gulp';
 import sass from 'gulp-sass';
-import minifyHtml from 'gulp-minify-html';
+//import minifyHtml from 'gulp-minify-html';
+import htmlmin from 'gulp-htmlmin';
 import { apiDocsJson } from './api-docs-json';
 
 const browserify = require('browserify');
@@ -29,12 +30,13 @@ gulp.task('api-docs:html', function () {
                 }
             }
         }))
-        .pipe(minifyHtml({
-            conditionals: true,
-            spare: true,
-            quotes: true,
-            loose: true
-        }))
+        //.pipe(minifyHtml({
+            //conditionals: true,
+            //spare: true,
+            //quotes: true,
+            //loose: true
+        //}))
+        //.pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('./build/api-docs'));
 
 });

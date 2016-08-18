@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Picimo</title>
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lobster|Fira+Mono:400,700|Roboto:400,700" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster|Fira+Mono:400,700|Roboto:400,700" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css">
     <link rel="stylesheet" href="api-docs.css">
 </head>
 <body>
@@ -116,7 +117,7 @@
                             <a href="#Guide">Guide</a>
                             <ol class="toc-sub">
                                 {{#each guide}}
-                                {{#ref .}}
+{{#ref .}}
                                 <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
                                 {{/ref}}
                                 {{/each}}
@@ -126,7 +127,7 @@
                             <a href="#Programming-Interface">Programming Interfaces</a>
                             <ol class="toc-sub">
                                 {{#each programming-interface}}
-                                {{#ref .}}
+{{#ref .}}
                                 {{#each interfaces}}
                                 <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> interface</li>
                                 {{/each}}
@@ -138,7 +139,7 @@
                             <a href="#Enumerations">Enumerations</a>
                             <ol class="toc-sub">
                                 {{#each programming-interface}}
-                                {{#ref .}}
+{{#ref .}}
                                 {{#each enums}}
                                 <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> enumeration</li>
                                 {{/each}}
@@ -150,7 +151,7 @@
                             <a href="#Dictionaries">Dictionaries</a>
                             <ol class="toc-sub">
                                 {{#each programming-interface}}
-                                {{#ref .}}
+{{#ref .}}
                                 {{#each dictionaries}}
                                 <li>The <a href="#{{refId name}}" class="toc__pid-link">{{name}}</a> dictionary</li>
                                 {{/each}}
@@ -162,7 +163,7 @@
                             <a href="#Advanced-Topics">Advanced Topics</a>
                             <ol class="toc-sub">
                                 {{#each topic}}
-                                {{#ref .}}
+{{#ref .}}
                                 <li><a href="#{{refId name}}" class="toc__topic-link">{{title}}</a></li>
                                 {{/ref}}
                                 {{/each}}
@@ -178,9 +179,9 @@
                     <h2>Guide</h2>
 
                     {{#each guide}}
-                        {{#ref .}}
-                            {{> topic}}
-                        {{/ref}}
+{{#ref .}}
+{{> topic}}
+{{/ref}}
                     {{/each}}
 
                 </section>
@@ -191,9 +192,9 @@
                     <h2>Programming Interfaces</h2>
 
                     {{#each programming-interface}}
-                        {{#ref .}}
-                            {{> programming-interface}}
-                        {{/ref}}
+{{#ref .}}
+{{> programming-interface}}
+{{/ref}}
                     {{/each}}
 
                 </section>
@@ -204,9 +205,9 @@
                     <h2>Advanced Topics</h2>
 
                     {{#each topic}}
-                        {{#ref .}}
-                            {{> topic}}
-                        {{/ref}}
+{{#ref .}}
+{{> topic}}
+{{/ref}}
                     {{/each}}
 
                 </section>
@@ -216,6 +217,7 @@
 
     </main><!-- .page -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
     <script src="index.min.js"></script>
 </body>
 </html>

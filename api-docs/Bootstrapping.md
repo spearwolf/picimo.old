@@ -9,29 +9,33 @@ You instantiate a *picimo* application by explicitly creating a `new Picimo.App`
 
 Assuming this `index.html`:
 
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>a picimo application!</title>
-        <style>
-            html, body { height: 100%; }
-            body { margin: 0; padding: 0; }
-        </style>
-      </head>
-      <body>
-        <script src="picimo.min.js"></script>
-        <script>
-            /* your bootstrapping code here */
-        </script>
-      </body>
-    </html>
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>a picimo application!</title>
+    <style>
+        html, body { height: 100%; }
+        body { margin: 0; padding: 0; }
+    </style>
+  </head>
+  <body>
+    <script src="picimo.min.js"></script>
+    <script>
+        /* your bootstrapping code here */
+    </script>
+  </body>
+</html>
+```
 
 We can use this minimal *picimo* application bootstrapping code:
 
-    var app = new Picimo.App({ alpha: false, bgColor: '#a0c0e0' });
+```
+var app = new Picimo.App({ alpha: false, bgColor: '#a0c0e0' });
 
-    // Set pixel resolution
-    app.scene.setSize(640, 480, 'contain');
+// Set pixel resolution
+app.scene.setSize(640, 480, 'contain');
+```
 
 When you instantiate the `Picimo.App`, *picimo* performs the following tasks:
 

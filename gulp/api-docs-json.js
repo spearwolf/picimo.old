@@ -10,7 +10,6 @@ import glob from 'glob';
 import yamlFront from 'yaml-front-matter';
 import markedRenderer from './api-docs-json/marked_renderer';
 
-//import highlightJs from 'highlight.js';
 import yaml from 'js-yaml';
 
 const packageJson = require('../package.json');
@@ -78,8 +77,7 @@ export function apiDocsJson (opt = {}) {
             if (!context.name) context.name = _.kebabCase(context.fileBaseName);
             if (!context.type) context.type = 'topic';
 
-            //context.html = marked(context.__content);  // TODO highlight.js?
-            context.html = markedRenderer(apiDocContent, context.__content);  // TODO highlight.js?
+            context.html = markedRenderer(apiDocContent, context.__content);
             delete context.__content;
 
             addTo(apiDocContent, context);
