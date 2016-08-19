@@ -21,7 +21,7 @@ export function loadTextureAtlas ( url ) {
 
 export function loadTexture ( url ) {
 
-    var image = new core.Po2Image( this ).load( url );
+    var image = new core.PowerOfTwoImage( this ).load( url );
 
     var texture = new core.Texture();
     texture.image = image;

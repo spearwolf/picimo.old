@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * @private
+ */
 export default function (val, percentage, imageWidth, imageHeight, sceneWidth, sceneHeight) {
 
     if (typeof val === 'string') {

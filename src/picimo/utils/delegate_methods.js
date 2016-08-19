@@ -1,6 +1,6 @@
 'use strict';
 
-export default function (srcObj, target, methodName) {
+export default function delegateMethods (srcObj, target, methodName) {
 
     function delegate_method (failIfNotAFunction, key, newKey) {
 

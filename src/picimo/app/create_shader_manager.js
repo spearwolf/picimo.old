@@ -4,6 +4,9 @@ import * as utils from '../utils';
 import * as render from '../render';
 import { DefaultShader } from '../shader';
 
+/**
+ * @private
+ */
 export default function ( app ) {
 
     const shaderManager = new render.ShaderManager( app );

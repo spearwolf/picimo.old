@@ -4,7 +4,7 @@ import * as utils from '../../utils';
 
 const DEFAULT_RENDER_PRIO = 0;
 
-export default function (obj, initialRenderPrio) {
+export default function defineRenderPrio (obj, initialRenderPrio) {
 
     var _renderPrio = utils.asNumber(initialRenderPrio, DEFAULT_RENDER_PRIO);
 

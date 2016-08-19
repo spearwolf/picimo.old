@@ -4,6 +4,9 @@ import * as utils from '../utils';
 
 import { initSprites, defineSprite } from '../sprites';
 
+/**
+ * @private
+ */
 export default function ( app ) {
 
     let spriteFactory = initSprites();

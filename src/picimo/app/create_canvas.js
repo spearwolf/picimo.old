@@ -2,6 +2,9 @@
 
 import * as utils from '../utils';
 
+/**
+ * @private
+ */
 export default function ( app, canvas, appendTo ) {
 
     utils.object.definePropertyPublicRO( app, 'canvasIsPredefined', canvas !== undefined );

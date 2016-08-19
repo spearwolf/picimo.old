@@ -1,4 +1,5 @@
 # <img src="https://cdn.rawgit.com/spearwolf/picimo/master/assets/images/picimo-logo-640x248.png" alt="picimo" width="320">
+> Pictures in Motion
 
 _picimo_ is a __sprite__ engine for __javascript__ running in a modern __browser__. it is built from scratch and exclusively utilizes __webgl__ as rendering technology.
 
@@ -30,7 +31,7 @@ Find more examples in [spearwolf/picimo-examples/](//github.com/spearwolf/picimo
 
 ### Prerequisites
 
-To build this project you will require **node 5.11+**.
+- node **5.x** (5.11 or higher)
 
 
 ### Start local dev server
@@ -45,6 +46,8 @@ if changes are detected.
 
 The *api docs* can be found here: [http://localhost:8080/api-docs](http://localhost:8080/api-docs)
 
+The *source docs* can be found here: [http://localhost:8080/esdoc](http://localhost:8080/esdoc)
+
 
 ### Build scripts overview
 
@@ -52,7 +55,8 @@ The *api docs* can be found here: [http://localhost:8080/api-docs](http://localh
 |-----------|-------------|
 | `npm run build:dev` | build the *development* version of `picimo.js` into [`build/`](build/) |
 | `npm run build:release` | build the *release* version `picimo.min.js` |
-| `npm run api-docs` | generate the *api docs* into [`build/`](build/) |
+| `npm run api-docs` | generate the *api docs* into [`build/api-docs`](build/api-docs) |
+| `npm run esdoc` | generate the *source docs* into [`build/esdoc`](build/esdoc) |
 | `npm run release` | build the *release* version `picimo.min.js` and the *api docs* |
 | `npm run clean` | remove all *build artifacts* |
 | `npm start` | start a local http server and watch for changes |

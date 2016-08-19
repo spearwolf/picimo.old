@@ -1,6 +1,9 @@
 'use strict';
 
-export default function renderFrame () {
+/**
+ * @private
+ */
+export default function () {
 
     this.now = window.performance.now() / 1000.0;
     ++this.frameNo;

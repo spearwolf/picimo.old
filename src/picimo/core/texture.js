@@ -2,370 +2,295 @@
 
 /**
  * @class Picimo.core.Texture
- * @param {Picimo.core.Texture} [parent]
- * @param {number} [x=0]
- * @param {number} [y=0]
- * @param {number} [width]
- * @param {number} [height]
  * @example
- * var t = new Picimo.core.Texture;
- * t.image = document.createElement("canvas")
- * t.width                                       // => 300
- * t.height                                      // => 150
+ * let c = document.createElement("canvas");
+ * let t = new Picimo.core.Texture.fromCanvas(c);
+ * t.width    // => 300
+ * t.height   // => 150
  *
- * var tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
- * t.width                                       // => 100
+ * let tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
+ * t.width    // => 100
  *
  */
-
-export default function Texture ( parent, x, y, width, height ) {
-
-    this._parent = parent;
-    this._image  = null;
-    this._width  = width;
-    this._height = height;
+export default class Texture {
 
     /**
-     * @member {number} Picimo.core.Texture#x
+     * @param {Texture} [parent]
+     * @param {number} [x=0]
+     * @param {number} [y=0]
+     * @param {number} [width]
+     * @param {number} [height]
      */
-    this.x = x != null ? x : 0;
+    constructor (parent, x, y, width, height) {
+
+        this._parent = parent;
+        this._image  = null;
+        this._width  = width;
+        this._height = height;
+
+        /**
+         * @type {number}
+         */
+        this.x = x != null ? x : 0;
+
+        /**
+         * @type {number}
+         */
+        this.y = y != null ? y : 0;
+
+    }
 
     /**
-     * @member {number} Picimo.core.Texture#y
+     * @type {?Texture}
      */
-    this.y = y != null ? y : 0;
-
-}
-
-
-Object.defineProperties( Texture.prototype, {
+    get parent () {
+        return this._parent;
+    }
 
     /**
-     * @member {Picimo.core.Texture} Picimo.core.Texture#parent
+     * @param {?Texture} parent
+     * @type {?Texture}
      */
-
-    parent: {
-
-        get: function () { return this._parent; },
-
-        set: function ( parent ) {
-
-            this._parent = parent;
-
-        },
-
-        enumerable: true
-
-    },
+    set parent (parent) {
+        this._parent = parent;
+    }
 
     /**
-     * @member {Picimo.core.Texture} Picimo.core.Texture#root
-     * @readonly
+     * @type {?Texture}
      */
-
-    root: {
-
-        get: function () {
-
-            return this._parent ? this._parent : this;
-
-        },
-
-        enumerable: true
-
-    },
+    get root () {
+        return this._parent ? this._parent : this;
+    }
 
     /**
-     * @member {image|canvas} Picimo.core.Texture#image
+     * @type {Image|HTMLImageElement|HTMLCanvasElement}
      */
-
-    image: {
-
-        get: function () {
-
-            return this._image ? this._image : ( this._parent ? this._parent.image : null );
-
-        },
-
-        set: function ( image ) {
-
-            this._image = image;
-
-        },
-
-        enumerable: true
-
-    },
+    get image () {
+        return this._image ? this._image : ( this._parent ? this._parent.image : null );
+    }
 
     /**
-     * @member {number} Picimo.core.Texture#root_width
-     * @readonly
+     * @param {Image|HTMLImageElement|HTMLCanvasElement} image
+     * @type {Image|HTMLImageElement|HTMLCanvasElement}
      */
-
-    root_width: {
-
-        get: function () {
-
-            var root = this.root;
-
-            if ( this === root ) {
-
-                if ( this._width != null ) {
-
-                    return this._width;
-
-                } else if ( this._image ) {
-
-                    return this._image.width;
-
-                } else {
-
-                    return 0;
-
-                }
-
-            } else {
-
-                return root.root_width;
-
-            }
-
-        },
-
-        enumerable: true
-
-    },
+    set image ( image ) {
+        this._image = image;
+    }
 
     /**
-     * @member {number} Picimo.core.Texture#root_height
-     * @readonly
+     * @type {number}
      */
+    get root_width () {
 
-    root_height: {
+        var root = this.root;
 
-        get: function () {
-
-            var root = this.root;
-
-            if ( this === root ) {
-
-                if ( this._height != null ) {
-
-                    return this._height;
-
-                } else if ( this._image ) {
-
-                    return this._image.height;
-
-                } else {
-
-                    return 0;
-
-                }
-
-            } else {
-
-                return root.root_height;
-
-            }
-
-        },
-
-        enumerable: true
-
-    },
-
-    /**
-     * @member {number} Picimo.core.Texture#width
-     */
-
-    width: {
-
-        get: function () {
+        if ( this === root ) {
 
             if ( this._width != null ) {
 
                 return this._width;
 
+            } else if ( this._image ) {
+
+                return this._image.width;
+
+            } else {
+
+                return 0;
+
             }
 
-            return this.root_width;
+        } else {
 
-        },
+            return root.root_width;
 
-        set: function ( width ) {
+        }
 
-            this._width = width;
-
-        },
-
-        enumerable: true
-
-    },
+    }
 
     /**
-     * @member {number} Picimo.core.Texture#height
+     * @type {number}
      */
+    get root_height () {
 
-    height: {
+        var root = this.root;
 
-        get: function () {
+        if ( this === root ) {
 
             if ( this._height != null ) {
 
                 return this._height;
 
+            } else if ( this._image ) {
+
+                return this._image.height;
+
+            } else {
+
+                return 0;
+
             }
 
-            return this.root_height;
+        } else {
 
-        },
+            return root.root_height;
 
-        set: function ( height ) {
+        }
 
-            this._height = height;
-
-        },
-
-        enumerable: true
-
-    },
+    }
 
     /**
-     * @member {number} Picimo.core.Texture#min_s
-     * @readonly
+     * @type {number}
      */
+    get width () {
 
-    min_s: {
+        if ( this._width != null ) {
 
-        get: function () {
+            return this._width;
 
-            var x = this.x;
-            var tex = this;
+        }
 
-            while ( ( tex = tex.parent ) != null ) {
+        return this.root_width;
 
-                x += tex.x;
-
-            }
-
-            return x / this.root_width;
-
-        },
-
-        enumerable: true
-
-    },
+    }
 
     /**
-     * @member {number} Picimo.core.Texture#min_t
-     * @readonly
+     * @param {number} width
+     * @type {number}
      */
+    set width ( width ) {
 
-    min_t: {
+        this._width = width;
 
-        get: function () {
-
-            var y = this.y;
-            var tex = this;
-
-            while ( ( tex = tex.parent ) != null ) {
-
-                y += tex.y;
-
-            }
-
-            return y / this.root_height;
-
-        },
-
-        enumerable: true
-
-    },
+    }
 
     /**
-     * @member {number} Picimo.core.Texture#max_s
-     * @readonly
+     * @type {number}
      */
+    get height () {
 
-    max_s: {
+        if ( this._height != null ) {
 
-        get: function () {
+            return this._height;
 
-            var x = this.x + this.width;
-            var tex = this;
+        }
 
-            while ( ( tex = tex.parent ) != null ) {
+        return this.root_height;
 
-                x += tex.x;
-
-            }
-
-            return x / this.root_width;
-
-        },
-
-        enumerable: true
-
-    },
+    }
 
     /**
-     * @member {number} Picimo.core.Texture#max_t
-     * @readonly
+     * @param {number} height
+     * @type {number}
      */
+    set height ( height ) {
 
-    max_t: {
+        this._height = height;
 
-        get: function () {
+    }
 
-            var y = this.y + this.height;
-            var tex = this;
+    /**
+     * @type {number}
+     */
+    get min_s () {
 
-            while ( ( tex = tex.parent ) != null ) {
+        var x = this.x;
+        var tex = this;
 
-                y += tex.y;
+        while ( ( tex = tex.parent ) != null ) {
 
-            }
+            x += tex.x;
 
-            return y / this.root_height;
+        }
 
-        },
+        return x / this.root_width;
 
-        enumerable: true
+    }
 
-    },
+    /**
+     * @type {number}
+     */
+    get min_t () {
 
-});
+        var y = this.y;
+        var tex = this;
 
+        while ( ( tex = tex.parent ) != null ) {
 
-/**
- * @method Picimo.core.Texture#setTexCoords
- * @param {Object} obj - Any object which has a `.setTexCoords()` method
- */
+            y += tex.y;
 
-Texture.prototype.setTexCoords = function ( obj ) {
+        }
 
-    var x0 = this.min_s;
-    var y0 = this.min_t;
-    var x1 = this.max_s;
-    var y1 = this.max_t;
+        return y / this.root_height;
 
-    obj.setTexCoords(
-        x0, y0,
-        x1, y0,
-        x1, y1,
-        x0, y1 );
+    }
 
-};
+    /**
+     * @type {number}
+     */
+    get max_s () {
 
+        var x = this.x + this.width;
+        var tex = this;
 
-Texture.fromCanvas = function (canvas) {
+        while ( ( tex = tex.parent ) != null ) {
 
-    let texture = new Texture;
-    texture.image = canvas;
+            x += tex.x;
 
-    return texture;
+        }
 
-};
+        return x / this.root_width;
 
+    }
+
+    /**
+     * @type {number}
+     */
+    get max_t () {
+
+        var y = this.y + this.height;
+        var tex = this;
+
+        while ( ( tex = tex.parent ) != null ) {
+
+            y += tex.y;
+
+        }
+
+        return y / this.root_height;
+
+    }
+
+    /**
+     * @param {Object} obj - Any object which has a `.setTexCoords()` method
+     */
+    setTexCoords (obj) {
+
+        let x0 = this.min_s;
+        let y0 = this.min_t;
+        let x1 = this.max_s;
+        let y1 = this.max_t;
+
+        obj.setTexCoords(
+            x0, y0,
+            x1, y0,
+            x1, y1,
+            x0, y1 );
+
+    }
+
+    /**
+     * @param {HTMLImageElement|HTMLCanvasElement} canvas
+     * @return {Texture}
+     */
+    static fromCanvas (canvas) {
+
+        let texture = new Texture;
+        texture.image = canvas;
+
+        return texture;
+
+    }
+
+}
 

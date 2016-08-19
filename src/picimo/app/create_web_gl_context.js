@@ -2,7 +2,10 @@
 
 import { WebGlContext } from '../render';
 
-export default function createWebGlContext ( app ) {
+/**
+ * @private
+ */
+export default function ( app ) {
 
     let gl;
 

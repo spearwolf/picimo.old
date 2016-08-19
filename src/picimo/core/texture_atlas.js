@@ -2,80 +2,111 @@
 
 import Resource from './resource';
 import Texture from './texture';
-import Po2Image from './po2image';
-
-
-/**
- * @class Picimo.core.TextureAtlas
- * @extends Picimo.core.Resource
- * @param {Picimo.App} app
- * @param {String} imageUrl
- * @param {String|Object} conf
- */
-
-export default function TextureAtlas ( app, imageUrl, conf ) {
-
-    Resource.call( this, app, 'conf' );
-
-    /**
-     * @member {Object} Picimo.core.TextureAtlas#conf - The texture atlas configuration.
-     */
-    this.conf = conf;
-
-    this.frameNames = null;
-
-    /**
-     * @member {Picimo.core.Texture} Picimo.core.TextureAtlas#texture - The root texture for the atlas image.
-     */
-    this.texture = null;
-
-    this.frames = null;
-    this.imageUrl = imageUrl;
-
-    Object.seal( this );
-
-}
-
-TextureAtlas.prototype = Object.create( Resource.prototype );
-TextureAtlas.prototype.constructor = TextureAtlas;
-
-
-TextureAtlas.prototype.convertData = function ( data ) {
-
-    return typeof data === 'string' ? JSON.parse( data ) : data;
-
-};
-
+import PowerOfTwoImage from './power_of_two_image';
 
 /**
- * @method Picimo.core.TextureAtlas#getImageUrl
- * @param {string} url
- * @return {string} url
+ * Represents a texture atlas definition and holds references to the image, frames and textures.
  */
+export default class TextureAtlas extends Resource {
 
-TextureAtlas.prototype.getImageUrl = function ( url ) {
+    /**
+     * @param {App} app
+     * @param {string} imageUrl
+     * @param {string|Object} conf
+     */
+    constructor (app, imageUrl, conf) {
 
-    if ( this.imageUrl !== undefined ) {
+        super(app, 'conf');
 
-        return this.imageUrl;
+        this.on('incomingData', toJson);
+        this.on('data', parseTextureAtlasDefinition);
+
+        /**
+         * The texture atlas definition
+         * @type {Object}
+         */
+        this.conf = conf;
+
+        /**
+         * The root texture
+         * @type {Texture}
+         */
+        this.texture = null;
+
+        /**
+         * @type {Map<Texture>}
+         */
+        this.frames = null;
+
+        /**
+         * All texture frame names
+         * @type {string[]}
+         */
+        this.frameNames = null;
+
+        /**
+         * @type {string}
+         */
+        this.imageUrl = imageUrl;
+
+        Object.seal(this);
 
     }
 
-    return this.app.joinAssetUrl( this.url, url );
+    /**
+     * Return texture by frame name
+     * @param {string} name
+     * @return {Texture} texture
+     */
+    getTexture (name) {
 
-};
+        if ( this.frames ) {
 
-/**
- * @private
- */
+            return this.frames.get( name );
 
-TextureAtlas.prototype.onData = function ( conf ) {
+        }
+
+    }
+
+    /**
+     * @return {Texture} texture
+     */
+    getRandomTexture () {
+
+        if ( this.frames ) {
+
+            return this.frames.get( this.frameNames[ parseInt( this.frameNames.length * Math.random(), 10 ) ] );
+
+        }
+
+    }
+
+} // => class TextureAtlas
+
+
+function toJson (data) {
+    return typeof data === 'string' ? JSON.parse( data ) : data;
+}
+
+function constructImageUrl (textureAtlas, imageUrl) {
+
+    if ( textureAtlas.imageUrl !== undefined ) {
+
+        return textureAtlas.imageUrl;
+
+    }
+
+    return textureAtlas.app.joinAssetUrl( textureAtlas.url, imageUrl );
+
+}
+
+function parseTextureAtlasDefinition (conf) {
 
     this.texture = new Texture();
 
     this.texture.width  = conf.meta.size.w;
     this.texture.height = conf.meta.size.h;
-    this.texture.image  = new Po2Image( this.app ).load( this.getImageUrl( conf.meta.image ) );
+    this.texture.image  = new PowerOfTwoImage( this.app ).load( constructImageUrl( this, conf.meta.image ) );
 
     this.frameNames = [];
     this.frames = new Map;
@@ -94,37 +125,5 @@ TextureAtlas.prototype.onData = function ( conf ) {
 
     }
 
-};
-
-/**
- * @method Picimo.core.TextureAtlas#getTexture
- * @param {string} name
- * @return {Picimo.core.Texture} texture
- */
-
-TextureAtlas.prototype.getTexture = function ( name ) {
-
-    if ( this.frames ) {
-
-        return this.frames.get( name );
-
-    }
-
-};
-
-
-/**
- * @method Picimo.core.TextureAtlas#getRandomTexture
- * @return {Picimo.core.Texture} texture
- */
-
-TextureAtlas.prototype.getRandomTexture = function () {
-
-    if ( this.frames ) {
-
-        return this.frames.get( this.frameNames[ parseInt( this.frameNames.length * Math.random(), 10 ) ] );
-
-    }
-
-};
+}
 

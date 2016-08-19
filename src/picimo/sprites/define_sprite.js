@@ -2,7 +2,7 @@
 
 import SpriteFactory from './sprite_factory';
 
-export default function (typeName, options, proto, spriteFactory = SpriteFactory) {
+export default function defineSprite (typeName, options, proto, spriteFactory = SpriteFactory) {
 
     let descriptor = spriteFactory.createDescriptor(typeName, options.constructor, options.vertexCount, options.vertexAttrCount, options.attributes, options.aliases);
 

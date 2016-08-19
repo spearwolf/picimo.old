@@ -1,70 +1,70 @@
 'use strict';
 
-/**
- * @class Picimo.core.VertexArray
- * @param {Picimo.core.VertexObjectDescriptor} descriptor - The descriptor.
- * @param {number} capacity - Maximum number of vertex objects
- * @param {Float32Array} [vertices]
- */
-export default function VertexArray ( descriptor, capacity, vertices ) {
-
-    this.descriptor = descriptor;
-    this.capacity   = capacity;
+export default class VertexArray {
 
     /**
-     * @member {Float32Array} Picimo.core.VertexArray#vertices - The float array buffer.
+     * @param {VertexObjectDescriptor} descriptor - The vertex descriptor
+     * @param {number} capacity - Maximum number of vertex objects
+     * @param {?Float32Array} vertices
      */
+    constructor (descriptor, capacity, vertices) {
 
-    if ( vertices !== undefined ) {
+        /**
+         * @type {VertexObjectDescriptor}
+         */
+        this.descriptor = descriptor;
 
-        this.vertices = vertices;
+        /**
+         * @type {number}
+         */
+        this.capacity = capacity;
 
-    } else {
-
-        this.vertices = new Float32Array( capacity * descriptor.vertexCount * descriptor.vertexAttrCount );
-
-    }
-
-}
-
-/**
- * @method Picimo.core.VertexArray#copy
- * @param {Picimo.core.VertexArray} fromVertexArray
- * @param {number} [toOffset=0] - Vertex object offset
- */
-VertexArray.prototype.copy = function ( fromVertexArray, toOffset ) {
-
-    var offset = 0;
-
-    if ( toOffset === undefined ) {
-
-        offset = toOffset * this.descriptor.vertexCount * this.descriptor.vertexAttrCount;
+        /**
+         * The float array buffer
+         * @type {Float32Array}
+         */
+        this.vertices = vertices !== undefined ? vertices : new Float32Array( capacity * descriptor.vertexCount * descriptor.vertexAttrCount );
 
     }
 
-    this.vertices.set( fromVertexArray.vertices, offset );
+    /**
+     * @param {VertexArray} fromVertexArray
+     * @param {number} [toOffset=0] - Vertex object offset
+     */
+    copy (fromVertexArray, toOffset) {
 
-};
+        let offset = 0;
 
-/**
- * @method Picimo.core.VertexArray#subarray
- * @param {number} begin - Index of first vertex object
- * @param {number} [size=1] -
- * @return {Picimo.core.VertexArray}
- */
-VertexArray.prototype.subarray = function ( begin, size ) {
+        if ( toOffset === undefined ) {
 
-    if ( size === undefined ) {
+            offset = toOffset * this.descriptor.vertexCount * this.descriptor.vertexAttrCount;
 
-        size = 1;
+        }
+
+        this.vertices.set( fromVertexArray.vertices, offset );
 
     }
 
-    var vertices = this.vertices.subarray(
-            begin * this.descriptor.vertexCount * this.descriptor.vertexAttrCount,
-            (begin + size) * this.descriptor.vertexCount * this.descriptor.vertexAttrCount );
+    /**
+     * @param {number} begin - Index of first vertex object
+     * @param {number} [size=1]
+     * @return {VertexArray}
+     */
+    subarray (begin, size) {
 
-    return new VertexArray( this.descriptor, size, vertices );
+        if ( size === undefined ) {
 
-};
+            size = 1;
+
+        }
+
+        var vertices = this.vertices.subarray(
+                begin * this.descriptor.vertexCount * this.descriptor.vertexAttrCount,
+                (begin + size) * this.descriptor.vertexCount * this.descriptor.vertexAttrCount );
+
+        return new VertexArray( this.descriptor, size, vertices );
+
+    }
+
+} // => class VertexArray
 

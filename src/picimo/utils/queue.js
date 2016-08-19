@@ -1,19 +1,17 @@
 'use strict';
 
 import { definePropertyPublicRO } from './object_utils';
-//import { publicRO } from './object_decorator';
 
 /**
- * A fast and simple queue.
+ * @desc
+ *   A fast and simple queue.
  *
- * @class Picimo.utils.Queue
- * @classdesc
- * As long as the queue is stable, meaning values are added and removed at roughtly the same pace,
- * the backing store will not create new objects.
- *
+ *   As long as the queue is stable, meaning values are added and removed at roughtly the same pace,
+ *   the backing store will not create new objects.
  */
-
 export default class Queue {
+
+    length  = 0;
 
     constructor () {
         definePropertyPublicRO(this, 'entries', []);
@@ -27,14 +25,9 @@ export default class Queue {
     //entries = [];
 
     /**
-     * @member {number} Picimo.utils.Queue#length
-     */
-    length  = 0;
-
-    /**
-     * Push value at the end of the queue.
-     * @method Picimo.utils.Queue#push
-     * @param value
+     * Append value to the end of the queue.
+     *
+     * @param {*} value
      */
     push (value) {
 
@@ -57,9 +50,9 @@ export default class Queue {
     }
 
     /**
-     * Returns the last added value from the end of the queue.
-     * @method Picimo.utils.Queue#pop
-     * @return value or undefined
+     * Return the last added value from the end of the queue.
+     *
+     * @return {*|undefined}
      */
     pop () {
 
@@ -82,7 +75,7 @@ export default class Queue {
 
     /**
      * Clears the queue.
-     * @method Picimo.utils.Queue#pop
+     *
      * @param {boolean} hard - By default the backing store will not destroy its internal objects. If you want do that set this param to true.
      */
     clear (hard) {
@@ -101,9 +94,9 @@ export default class Queue {
 
     /**
      * Iterate over all items and execute the callback function for each item.
-     * @method Picimo.utils.Queue#forEach
-     * @param {function} callback
-     * @param {object} [ctx] Define an explicit context for the callback function.
+     *
+     * @param {function(item:*)} callback
+     * @param {?object} ctx - Define an explicit context for the callback function.
      */
     forEach (callback, ctx) {
 

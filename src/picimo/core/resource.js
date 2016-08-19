@@ -1,160 +1,116 @@
 'use strict';
 
+import eventize from 'eventize-js';
 import * as utils from '../utils';
 
 /**
- * @class Picimo.core.Resource
- * @param {Picimo.App} app
- * @param {string} dataPropAlias
+ * @desc
+ *   A generic resource which has a ready state and loads data from an url.
+ *
+ *   The resource will load the data immediately after you set the url. The incoming data object can be transformed
+ *   by subscribing to the `incomingData` event. When data is successfully loaded and transformed the `data`
+ *   event will be emitted.
  */
-
-export default function Resource ( app, dataPropAlias ) {
-
-    /**
-     * @member {Picimo.App} Picimo.core.Resource#app
-     * @readonly
-     */
-    utils.object.definePropertyPublicRO( this, 'app', app );
+export default class Resource {
 
     /**
-     * @member {number} Picimo.core.Resource#uid
-     * @readonly
+     * @param {App} app - the app instance
+     * @param {string} [dataPropAlias] - name alias of the data property
      */
-    utils.addUid( this );
+    constructor (app, dataPropAlias) {
 
-    /**
-     * @member {boolean} Picimo.core.Resource#ready
-     */
+        eventize(this);
 
-    utils.makeReadyPromise( this );
+        utils.object.definePropertyPublicRO(this, 'app', app);
+        utils.addUid(this);
+        utils.makeReadyPromise(this);
 
-    /**
-     * @member {String} Picimo.core.Resource#url
-     */
-    this.url = null;
+        /**
+         * @type {boolean}
+         */
+        this.ready = false;
 
-    /**
-     * @member {Object} Picimo.core.Resource#data
-     */
-    this._data = null;
+        /**
+         * @type {string}
+         */
+        this.url = null;
 
-    if ( dataPropAlias !== undefined ) {
+        /**
+         * @type {Object}
+         */
+        this._data = null;
 
-        Object.defineProperty( this, dataPropAlias, {
+        if (dataPropAlias) {
 
-            get        : function () { return this.data; },
-            set        : function ( data ) { this.data = data; },
-            enumerable : true
+            Object.defineProperty(this, dataPropAlias, {
 
-        });
+                get        : function () { return this.data; },
+                set        : function ( data ) { this.data = data; },
+                enumerable : true
 
-    }
-
-}
-
-
-/**
- * @method Picimo.core.Resource#convertData
- * @param {Object} data
- */
-
-Resource.prototype.convertData = function ( data ) {
-
-    return data;
-
-};
-
-
-/**
- * @method Picimo.core.Resource#onData
- * @param {Object} data
- */
-
-Resource.prototype.onData = function ( /* data */ ) { /* override */ };
-
-
-/**
- * @method Picimo.core.Resource#load
- * @param {string} url
- * @return self
- */
-
-Resource.prototype.load = function ( url ) {
-
-    var self = this;
-
-    this.url = this.app.getAssetUrl( url );
-
-    var req = new XMLHttpRequest();
-
-    req.open( "GET", this.url, true );
-
-    req.onreadystatechange = function () {
-
-        if ( req.readyState !== 4 /* DONE */ ) return;
-
-        if ( req.status >= 200 && req.status < 300 ) {
-
-            self.data = req.responseText;
+            });
 
         }
 
-    };
+    } // => constructor
 
-    req.send();
+    /**
+     * Load the resource and set the Resource#data property to the content.
+     *
+     * @param {!string} url - the resource url
+     * @return {Resource} self
+     */
+    load (url) {
 
-    return this;
+        this.url = this.app.getAssetUrl(url);
 
-};
+        let req = new XMLHttpRequest();
+        req.open("GET", this.url, true);
 
+        req.onreadystatechange = () => {
 
-/**
- * @method Picimo.core.Resource#getData
- * @param {function} resolve
- */
+            if (req.readyState !== 4 /* DONE */) return;
 
-Resource.prototype.getData = function ( resolve ) {
+            if (req.status >= 200 && req.status < 300) {
 
-    console.warn('Picimo.core.Resource#getData()', resolve);
-    throw new Error('undead code here!')
-    //this.deferred.forward( 'data', resolve );
-
-};
-
-
-
-Object.defineProperties( Resource.prototype, {
-
-    'data': {
-
-        get: function () { return this._data; },
-
-        set: function ( data ) {
-
-            if ( data ) {
-
-                var data_ = this.convertData( data );
-
-                if ( data_ ) {
-
-                    this._data = data_;
-                    this.onData( data_ );
-
-                }
-
-            } else {
-
-                this._data = data;
+                this.data = req.responseText;
 
             }
 
-            this.ready = !! this._data;
+        };
 
-        },
+        req.send();
 
-        enumerable: true
+        return this;
 
     }
 
-});
+    get data () {
+        return this._data;
+    }
+
+    set data (incomingData) {
+
+        if (incomingData) {
+
+            let transformedData = this.emitReduce('incomingData', incomingData);
+
+            if (transformedData) {
+
+                this._data = transformedData;
+                this.emit('data', transformedData);
+
+            }
+
+        } else {
+
+            this._data = incomingData;
+
+        }
+
+        this.ready = !! this._data; // => trigger the ready promise
+
+    }
+
+} // => class Resource
 

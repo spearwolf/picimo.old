@@ -1,6 +1,7 @@
 {
   "source": "./src",
-  "destination": "./esdoc",
+  "destination": "./build/esdoc",
+  "styles": ["esdoc.css"],
   "plugins": [
     {"name": "esdoc-es7-plugin"}
   ]

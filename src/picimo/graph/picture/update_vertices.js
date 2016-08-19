@@ -12,6 +12,9 @@ function updateTranslate (picture, tx, ty) {
 
 }
 
+/**
+ * @private
+ */
 export default function (picture) {
 
     if (!picture.verticesNeedsUpdate) return;

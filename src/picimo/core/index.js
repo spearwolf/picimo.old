@@ -2,7 +2,7 @@
 
 export AABB2 from './aabb2';
 export Viewport from './viewport';
-export Po2Image from './po2image';
+export PowerOfTwoImage from './power_of_two_image';
 export Resource from './resource';
 export Texture from './texture';
 export TextureAtlas from './texture_atlas';

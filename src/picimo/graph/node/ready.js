@@ -12,7 +12,7 @@ import NodeState from '../node_state';
 //
 // ---------------------------------------------------------------------
 
-export default function (obj, initialReady) {
+export default function defineReady (obj, initialReady) {
 
     let _ready = !! initialReady;
     let _readyFunc = null;

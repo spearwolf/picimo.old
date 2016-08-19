@@ -1,6 +1,9 @@
 'use strict';
 
-export default function resize () {
+/**
+ * @private
+ */
+export default function () {
 
     var node, w, h, wPx, hPx;
 

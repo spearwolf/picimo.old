@@ -1,17 +1,13 @@
 'use strict';
 
-import * as decorator from './object_decorator';
-export { decorator };
-
 /**
- * @function Picimo.utils.object.definePropertyPublicRO
- * @description
- *   Define a *read-only* property which is *enumerable* but not *writable* and *configurable*.
+ * Define a *read-only* property which is *enumerable* but not *writable* and *configurable*.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
- * @param value
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
- * @return obj
+ * @param {*} value
+ * @return {Object} obj
  */
 export function definePropertyPublicRO ( obj, name, value ) {
 
@@ -26,14 +22,13 @@ export function definePropertyPublicRO ( obj, name, value ) {
 
 
 /**
- * @function Picimo.utils.object.definePropertyPrivate
- * @description
- *   Define a property which is NOT *enumerable* and *configurable* BUT *writable*.
+ * Define a property which is NOT *enumerable* and *configurable* BUT *writable*.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
- * @param value
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
- * @return obj
+ * @param {*} value
+ * @return {Object} obj
  */
 export function definePropertyPrivate ( obj, name, value ) {
 
@@ -48,14 +43,13 @@ export function definePropertyPrivate ( obj, name, value ) {
 
 
 /**
- * @function Picimo.utils.object.definePropertyPrivateRO
- * @description
- *   Define a **read-only** property which is NOT *enumerable*, *configurable* and *writable*.
+ * Define a **read-only** property which is NOT *enumerable*, *configurable* and *writable*.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
- * @param value
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
- * @return obj
+ * @param {*} value
+ * @return {Object} obj
  */
 export function definePropertyPrivateRO ( obj, name, value ) {
 
@@ -69,15 +63,7 @@ export function definePropertyPrivateRO ( obj, name, value ) {
 
 
 /**
- * @function Picimo.utils.object.definePropertiesPublicRO
- *
- * @description
  * Define *read-only* properties which are *enumerable* but not *writable* and *configurable*.
- *
- * @param {Object} obj
- * @param {Object} The name/value map
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties
  *
  * @example
  * Picimo.utils.object.definePropertiesPublicRO( obj, {
@@ -85,7 +71,12 @@ export function definePropertyPrivateRO ( obj, name, value ) {
  *     BAR: 'plah!'
  * });
  *
- * @return obj
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties
+ *
+ * @param {Object} obj
+ * @param {Object} map - the name/value map
+ *
+ * @return {Object} obj
  */
 export function definePropertiesPublicRO ( obj, map ) {
 
@@ -106,17 +97,8 @@ export function definePropertiesPublicRO ( obj, map ) {
 
 }
 
-
 /**
- * @function Picimo.utils.object.definePropertiesPrivateRO
- *
- * @description
  * Define *read-only* properties which are NOT *enumerable*, *writable* or *configurable*.
- *
- * @param {Object} obj
- * @param {Object} The name/value map
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties
  *
  * @example
  * Picimo.utils.object.definePropertiesPrivateRO( obj, {
@@ -124,7 +106,12 @@ export function definePropertiesPublicRO ( obj, map ) {
  *     _bar: 'plah!'
  * });
  *
- * @return obj
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties
+ *
+ * @param {Object} obj
+ * @param {Object} map - the name/value map
+ *
+ * @return {Object} obj
  */
 export function definePropertiesPrivateRO ( obj, map ) {
 
