@@ -5,6 +5,8 @@
 
 .sidebar__content {
 
+    border-right: 1px solid $col-gray-light;
+
     .sidebar__column--head {
         margin-top: 160px;
     }
@@ -15,6 +17,31 @@
         img {
             width: 60px;
             image-rendering: pixelated;
+        }
+    }
+
+    .toc__kind-of {
+        width: 1.4em;
+        height: 1.4em;
+        display: inline-block;
+        text-align: center;
+        border-radius: 0.2em;
+        margin-right: 0.2em;
+        font-weight: bold;
+
+        &--interface {
+            color: #009800;
+            background-color: #bfe5bf;
+        }
+
+        &--dictionary {
+            color: #6b0090;
+            background-color: #d6bdde;
+        }
+
+        &--enum {
+            color: #eb6420;
+            background-color: #fad8c7;
         }
     }
 
@@ -43,7 +70,8 @@
         display: block;
         /*text-align: right;*/
         /*margin-right: -20px;*/
-        @include typo('text', $weight: 'normal', $size: $fontSizeTiny);
+        margin-top: -2em;
+        @include typo('text', $weight: 'bold', $size: $fontSizeTiny);
         color: $col-dark;
     }
 

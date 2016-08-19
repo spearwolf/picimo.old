@@ -1,10 +1,10 @@
-name: Picimo.opts.Picture
+name: PictureOpts
 type: programming-interface
 dictionaries:
     -
-        name: Picimo.opts.Picture
+        name: PictureOpts
         extends:
-            - Picimo.opts.Node
+            - NodeOpts
         attributes:
             -
                 name: texture
@@ -15,15 +15,15 @@ dictionaries:
                 description: The texture is mandatory. If you don't specify a texture you will see nothing.
             -
                 name: sceneFit
-                type: Picimo.enum.ObjectFit
+                type: ObjectFit
                 default: "'contain'"
                 description: |
                     You should specify either of *sceneFit* or *displayPosition*.
                     If both properties are *not* specified the *sceneFit* will be set to `'contain'`.
-                    See [Picimo.enum.ObjectFit](#) for more information.
+                    See [ObjectFit](#) for more information.
             -
                 name: displayPosition
-                type: Picimo.struct.DisplayPosition
+                type: DisplayPosition
                 description: |
                     The *displayPosition* property has precedence over the *sceneFit* property.
                     When specified the *sceneFit* property will be ignored.

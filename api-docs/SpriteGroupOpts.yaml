@@ -1,11 +1,11 @@
 ---
-  name: "Picimo.opts.SpriteGroup"
+  name: "SpriteGroupOpts"
   type: "programming-interface"
   dictionaries:
     -
-      name: Picimo.opts.SpriteGroup
+      name: SpriteGroupOpts
       extends:
-        - Picimo.opts.Node
+        - NodeOpts
       attributes:
         -
           name: textureAtlas

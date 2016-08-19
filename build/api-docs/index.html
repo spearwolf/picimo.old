@@ -15,7 +15,7 @@
         <aside class="topbar">
             <div class="topbar__content">
                 <img class="logo" src="/assets/images/picimo-logo-640x248.png" alt="Picimo by spearwolf">
-                <span class="package-version">v0.0.20</span>
+                <span class="package-version">v0.0.21</span>
                 <i class="menu-icon fa fa-bars"></i>
             </div>
         </aside>
@@ -25,7 +25,7 @@
 
                 <div class="sidebar__column sidebar__column--head">
                     <img class="logo" src="/assets/images/picimo-logo-640x248.png" alt="picimo by spearwolf">
-                    <span class="package-version">v0.0.20</span>
+                    <span class="package-version">v0.0.21</span>
                 </div>
 
                 <div class="sidebar__column sidebar__column--left">
@@ -40,15 +40,11 @@
                             <li><a href="#bootstrapping" class="toc__topic-link">Bootstrapping</a></li>
                         </ol>
 
-                        <h2><a href="#Programming-Interface">Programming Interfaces</a></h2>
+                        <h2><a href="#Advanced-Topics">Advanced Topics</a></h2>
 
-                        <ol class="toc-sidebar__pids">
-                            <li><a href="#picimo-app" class="toc__pid-link">Picimo.App</a></li>
-                            <li><a href="#picimo-graph-canvas" class="toc__pid-link">Picimo.graph.Canvas</a></li>
-                            <li><a href="#picimo-graph-node" class="toc__pid-link">Picimo.graph.Node</a></li>
-                            <li><a href="#picimo-graph-picture" class="toc__pid-link">Picimo.graph.Picture</a></li>
-                            <li><a href="#picimo-graph-scene" class="toc__pid-link">Picimo.graph.Scene</a></li>
-                            <li><a href="#picimo-graph-sprite-group" class="toc__pid-link">Picimo.graph.SpriteGroup</a></li>
+                        <ol class="toc-sidebar__advanced">
+                            <li><a href="#internal-coding-guidelines" class="toc__topic-link">Internal Coding Guidelines</a></li>
+                            <li><a href="#the-rendering-pipeline" class="toc__topic-link">The Rendering Pipeline</a></li>
                         </ol>
 
                     </section>
@@ -58,30 +54,24 @@
 
                     <section class="toc-sidebar">
 
-                        <h2><a href="#Enumerations">Enumerations</a></h2>
+                        <h2><a href="#Programming-Interface">Programming Interfaces</a></h2>
 
-                        <ol class="toc-sidebar__enums">
-                            <li><a href="#picimo-enum-object-fit" class="toc__pid-link">Picimo.enum.ObjectFit</a></li>
-                        </ol>
-
-                        <h2><a href="#Dictionaries">Dictionaries</a></h2>
-
-                        <ol class="toc-sidebar__dictionaries">
-                            <li><a href="#picimo-opts-app" class="toc__pid-link">Picimo.opts.App</a></li>
-                            <li><a href="#picimo-opts-canvas" class="toc__pid-link">Picimo.opts.Canvas</a></li>
-                            <li><a href="#picimo-opts-node" class="toc__pid-link">Picimo.opts.Node</a></li>
-                            <li><a href="#picimo-opts-picture" class="toc__pid-link">Picimo.opts.Picture</a></li>
-                            <li><a href="#picimo-opts-scene" class="toc__pid-link">Picimo.opts.Scene</a></li>
-                            <li><a href="#picimo-opts-sprite-group" class="toc__pid-link">Picimo.opts.SpriteGroup</a></li>
-                            <li><a href="#picimo-struct-display-position" class="toc__pid-link">Picimo.struct.DisplayPosition</a></li>
-                            <li><a href="#picimo-struct-vertex-object-description" class="toc__pid-link">Picimo.struct.VertexObjectDescription</a></li>
-                        </ol>
-
-                        <h2><a href="#Advanced-Topics">Advanced Topics</a></h2>
-
-                        <ol class="toc-sidebar__advanced">
-                            <li><a href="#internal-coding-guidelines" class="toc__topic-link">Internal Coding Guidelines</a></li>
-                            <li><a href="#the-rendering-pipeline" class="toc__topic-link">The Rendering Pipeline</a></li>
+                        <ol class="toc-sidebar__pids">
+                            <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-app" class="toc__pid-link">Picimo.App</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-graph-canvas" class="toc__pid-link">Picimo.graph.Canvas</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-graph-node" class="toc__pid-link">Picimo.graph.Node</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-graph-picture" class="toc__pid-link">Picimo.graph.Picture</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-graph-scene" class="toc__pid-link">Picimo.graph.Scene</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-graph-sprite-group" class="toc__pid-link">Picimo.graph.SpriteGroup</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--enum">E</span><a href="#object-fit" class="toc__pid-link">ObjectFit</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--dictionary">D</span><a href="#app-opts" class="toc__pid-link">AppOpts</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--dictionary">D</span><a href="#canvas-opts" class="toc__pid-link">CanvasOpts</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--dictionary">D</span><a href="#display-position" class="toc__pid-link">DisplayPosition</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--dictionary">D</span><a href="#node-opts" class="toc__pid-link">NodeOpts</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--dictionary">D</span><a href="#picture-opts" class="toc__pid-link">PictureOpts</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--dictionary">D</span><a href="#scene-opts" class="toc__pid-link">SceneOpts</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--dictionary">D</span><a href="#sprite-group-opts" class="toc__pid-link">SpriteGroupOpts</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--dictionary">D</span><a href="#vertex-object-description" class="toc__pid-link">VertexObjectDescription</a></li>
                         </ol>
 
                     </section>
@@ -115,25 +105,15 @@
                                 <li>The <a href="#picimo-graph-picture" class="toc__pid-link">Picimo.graph.Picture</a> interface</li>
                                 <li>The <a href="#picimo-graph-scene" class="toc__pid-link">Picimo.graph.Scene</a> interface</li>
                                 <li>The <a href="#picimo-graph-sprite-group" class="toc__pid-link">Picimo.graph.SpriteGroup</a> interface</li>
-                            </ol>
-                        </li>
-                        <li>
-                            <a href="#Enumerations">Enumerations</a>
-                            <ol class="toc-sub">
-                                <li>The <a href="#picimo-enum-object-fit" class="toc__pid-link">Picimo.enum.ObjectFit</a> enumeration</li>
-                            </ol>
-                        </li>
-                        <li>
-                            <a href="#Dictionaries">Dictionaries</a>
-                            <ol class="toc-sub">
-                                <li>The <a href="#picimo-opts-app" class="toc__pid-link">Picimo.opts.App</a> dictionary</li>
-                                <li>The <a href="#picimo-opts-canvas" class="toc__pid-link">Picimo.opts.Canvas</a> dictionary</li>
-                                <li>The <a href="#picimo-opts-node" class="toc__pid-link">Picimo.opts.Node</a> dictionary</li>
-                                <li>The <a href="#picimo-opts-picture" class="toc__pid-link">Picimo.opts.Picture</a> dictionary</li>
-                                <li>The <a href="#picimo-opts-scene" class="toc__pid-link">Picimo.opts.Scene</a> dictionary</li>
-                                <li>The <a href="#picimo-opts-sprite-group" class="toc__pid-link">Picimo.opts.SpriteGroup</a> dictionary</li>
-                                <li>The <a href="#picimo-struct-display-position" class="toc__pid-link">Picimo.struct.DisplayPosition</a> dictionary</li>
-                                <li>The <a href="#picimo-struct-vertex-object-description" class="toc__pid-link">Picimo.struct.VertexObjectDescription</a> dictionary</li>
+                                <li>The <a href="#object-fit" class="toc__pid-link">ObjectFit</a> enumeration</li>
+                                <li>The <a href="#app-opts" class="toc__pid-link">AppOpts</a> dictionary</li>
+                                <li>The <a href="#canvas-opts" class="toc__pid-link">CanvasOpts</a> dictionary</li>
+                                <li>The <a href="#display-position" class="toc__pid-link">DisplayPosition</a> dictionary</li>
+                                <li>The <a href="#node-opts" class="toc__pid-link">NodeOpts</a> dictionary</li>
+                                <li>The <a href="#picture-opts" class="toc__pid-link">PictureOpts</a> dictionary</li>
+                                <li>The <a href="#scene-opts" class="toc__pid-link">SceneOpts</a> dictionary</li>
+                                <li>The <a href="#sprite-group-opts" class="toc__pid-link">SpriteGroupOpts</a> dictionary</li>
+                                <li>The <a href="#vertex-object-description" class="toc__pid-link">VertexObjectDescription</a> dictionary</li>
                             </ol>
                         </li>
                         <li>
@@ -211,12 +191,437 @@ will only see a blank <em>blue</em> scene here as result).</li>
 <section class="pid">
 
 
+
+    <div id="app-opts" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>AppOpts</em> dictionary</h3>
+
+
+    <article class="pid__dictionary pid-idl">
+        <em>dictionary</em> <strong>AppOpts</strong> {<br>
+        <ul class="pid-idl__block">
+            <li class="pid-dictionary__attributes">
+                <ul class="pid-idl__group">
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">alpha</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">false</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">antialias</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">false</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">HTMLCanvasElement</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">canvas</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">null</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">HTMLElement</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">appendTo</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">null</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">string</span> or <span class="pid-idl__type-type">Picimo.utils.Color</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">bgColor</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">&#x27;#000000&#x27;</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">string</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">assetBaseUrl</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">null</span>;</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        }<br>
+    </article>
+
+
+    <article class="pid__dictionary pid__attributes page-break-after">
+
+        <dl class="pid-attrs">
+        </dl>
+
+    </article>
+
+
+
+</section><section class="pid">
+
+
+
+    <div id="canvas-opts" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>CanvasOpts</em> dictionary</h3>
+
+
+    <article class="pid__dictionary pid-idl">
+        <em>dictionary</em> <strong>CanvasOpts</strong> : <a href="#node-opts" class="pid-idl__type-type pid-idl__type-link">NodeOpts</a>, <a href="#picture-opts" class="pid-idl__type-type pid-idl__type-link">PictureOpts</a> {<br>
+        <ul class="pid-idl__block">
+            <li class="pid-dictionary__attributes">
+                <ul class="pid-idl__group">
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">Array&lt;number&gt;</span> or <span class="pid-idl__type-type">{x,y,width,height}</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">canvasSize;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">HTMLCanvasElement</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">canvas;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">alpha</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">true</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">autoClear;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">autoUpdate;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">string</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">clearColor;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        }<br>
+    </article>
+
+
+    <article class="pid__dictionary pid__attributes page-break-after">
+
+        <dl class="pid-attrs">
+            <dt class="pid-attrs__name">canvasSize</dt>
+            <dd class="pid-attrs__description md md-inline"><p>The texture viewport into the canvas. Describes which part of the canvas should be show&#39;ed by the texture.</p></dd>
+            <dt class="pid-attrs__name">canvas</dt>
+            <dd class="pid-attrs__description md md-inline"><p>A predefined canvas element. When not set, a canvas element will be created for you.</p></dd>
+            <dt class="pid-attrs__name">alpha</dt>
+            <dd class="pid-attrs__description md md-inline"><p>Enable alpha support for the canvas context.</p></dd>
+            <dt class="pid-attrs__name">autoClear</dt>
+            <dd class="pid-attrs__description md md-inline"><p>When set to true then on the begin of a frame the canvas will be cleared.</p></dd>
+            <dt class="pid-attrs__name">autoUpdate</dt>
+            <dd class="pid-attrs__description md md-inline"><p>When set to true then the texture will be synced at every frame (at the end).</p></dd>
+            <dt class="pid-attrs__name">clearColor</dt>
+            <dd class="pid-attrs__description md md-inline"><p>When set then the canvas will be cleared with this color (canvas.fillStyle)</p></dd>
+        </dl>
+
+    </article>
+
+
+
+</section><section class="pid">
+
+
+
+    <div id="display-position" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>DisplayPosition</em> dictionary</h3>
+
+    <article class="pid__dictionary pid-idl__description md">
+        <p>The display position specifies how the picture is positioned <em>in relationship to the scene dimension</em>.</p>
+<p>Most properties will support a <em>string</em> as input. That means you can choose between different units:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Format</th>
+<th>Unit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>number</td>
+<td><em>any number</em></td>
+<td><strong>px</strong></td>
+<td>pixel</td>
+</tr>
+<tr>
+<td>string</td>
+<td><code>32px</code></td>
+<td><strong>px</strong></td>
+<td>pixel</td>
+</tr>
+<tr>
+<td>string</td>
+<td><code>100iw</code></td>
+<td><strong>iw</strong></td>
+<td>image width percentage</td>
+</tr>
+<tr>
+<td>string</td>
+<td><code>50.0ih</code></td>
+<td><strong>ih</strong></td>
+<td>image height percentage</td>
+</tr>
+<tr>
+<td>string</td>
+<td><code>-80sw</code></td>
+<td><strong>sw</strong></td>
+<td>scene width percentage</td>
+</tr>
+<tr>
+<td>string</td>
+<td><code>-1.1sh</code></td>
+<td><strong>sh</strong></td>
+<td>scene height percentage</td>
+</tr>
+<tr>
+<td>string</td>
+<td><code>100 %</code></td>
+<td><strong>%</strong></td>
+<td><em>see property description for the unit</em></td>
+</tr>
+</tbody>
+</table>
+<p><img src="/assets/images/doc/displayPosition.png" srcset="/assets/images/doc/displayPosition.png 1x, /assets/images/doc/displayPosition@2x.png 2x" alt="The Display Position">
+<img src="/assets/images/doc/displayPosition zoom.png" srcset="/assets/images/doc/displayPosition%20zoom.png 1x, /assets/images/doc/displayPosition%20zoom@2x.png 2x" alt="The Display Position Zoom"></p>
+    </article>
+
+    <article class="pid__dictionary pid-idl">
+        <em>dictionary</em> <strong>DisplayPosition</strong> {<br>
+        <ul class="pid-idl__block">
+            <li class="pid-dictionary__attributes">
+                <ul class="pid-idl__group">
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">top;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">left;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">bottom;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">right;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">width;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">height;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">zoom;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">anchorX;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">anchorY;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        }<br>
+    </article>
+
+
+    <article class="pid__dictionary pid__attributes page-break-after">
+
+        <dl class="pid-attrs">
+            <dt class="pid-attrs__name">top</dt>
+            <dd class="pid-attrs__description md md-inline"><p>Set the top edge of the image under the top edge of the parent scene.</p>
+<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of scene height</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
+            <dt class="pid-attrs__name">left</dt>
+            <dd class="pid-attrs__description md md-inline"><p>Set the left edge of the image right to the left edge of the parent scene.</p>
+<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of scene width</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
+            <dt class="pid-attrs__name">bottom</dt>
+            <dd class="pid-attrs__description md md-inline"><p>Set the bottom edge of the image above the bottom edge of the parent scene.</p>
+<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of scene height</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
+            <dt class="pid-attrs__name">right</dt>
+            <dd class="pid-attrs__description md md-inline"><p>Set the right edge of the image left to the right edge of the parent scene.</p>
+<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of scene width</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
+            <dt class="pid-attrs__name">width</dt>
+            <dd class="pid-attrs__description md md-inline"><p>Set the width of the image.</p>
+<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of image width</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
+            <dt class="pid-attrs__name">height</dt>
+            <dd class="pid-attrs__description md md-inline"><p>Set the height of the image.</p>
+<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of image height</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
+            <dt class="pid-attrs__name">zoom</dt>
+            <dd class="pid-attrs__description md md-inline"><p>Set the zoom factor.</p>
+<p>Default is <code>1.0</code> (no zoom). If set to <code>2.0</code> the size of the image will be <em>doubled</em>.</p></dd>
+            <dt class="pid-attrs__name">anchorX</dt>
+            <dd class="pid-attrs__description md md-inline"><p>TODO</p></dd>
+            <dt class="pid-attrs__name">anchorY</dt>
+            <dd class="pid-attrs__description md md-inline"><p>TODO</p></dd>
+        </dl>
+
+    </article>
+
+
+
+</section><section class="pid">
+
+
+
+    <div id="node-opts" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>NodeOpts</em> dictionary</h3>
+
+
+    <article class="pid__dictionary pid-idl">
+        <em>dictionary</em> <strong>NodeOpts</strong> {<br>
+        <ul class="pid-idl__block">
+            <li class="pid-dictionary__attributes">
+                <ul class="pid-idl__group">
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">renderPrio</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">0</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">display</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">true</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">boolean</span> or <span class="pid-idl__type-type">function</span>)<span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">ready</span>
+                        <span class="pid-idl__default">= <span class="pid-idl__default-value">true</span>;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">string</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">name;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">parentNode;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">onInit;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">onInitGl;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">onFrame;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">onRenderFrame;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">onFrameEnd;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">onDestroyGl;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">onDestroy;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__name">onChildrenUpdated;</span>
+                        <span class="pid-idl__default"></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        }<br>
+    </article>
+
+
+    <article class="pid__dictionary pid__attributes page-break-after">
+
+        <dl class="pid-attrs">
+            <dt class="pid-attrs__name">renderPrio</dt>
+            <dd class="pid-attrs__description md md-inline"><p>The render priority of this node. Defaults to <code>0</code>.</p></dd>
+            <dt class="pid-attrs__name">display</dt>
+            <dd class="pid-attrs__description md md-inline"><p>The initial display state. Defaults to <code>true</code>.</p></dd>
+            <dt class="pid-attrs__name">ready</dt>
+            <dd class="pid-attrs__description md md-inline"><p>The initial ready state. Defaults to <code>true</code>.</p></dd>
+            <dt class="pid-attrs__name">name</dt>
+            <dd class="pid-attrs__description md md-inline"><p>The name of the node.</p></dd>
+            <dt class="pid-attrs__name">parentNode</dt>
+            <dd class="pid-attrs__description md md-inline"><p>When not set then this node will be acting as root node.</p></dd>
+        </dl>
+
+    </article>
+
+
+
+</section><section class="pid">
+
+
+
+
+    <div id="object-fit" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>ObjectFit</em> enumeration</h3>
+
+
+    <article class="pid__enum pid-idl">
+        <div class="pid-idl__pre-block">
+            <em>enum</em> <strong>ObjectFit</strong> {<ul class="pid-idl__func-args"><li class="pid-idl__func-arg">"<span class="pid-idl__args-name">contain</span>", </li><li class="pid-idl__func-arg">"<span class="pid-idl__args-name">cover</span>"</li></ul>}
+        </div>
+    </article>
+
+    <article class="pid__enum pid-idl__description md">
+        <p><img src="/assets/images/doc/displaySize.png" srcset="/assets/images/doc/displaySize.png 1x, /assets/images/doc/displaySize@2x.png 2x" alt="The Object Fit Property"></p>
+<p>The object fit describes how an object size is computed in relation to its container area.</p>
+<ul>
+<li><strong>contain</strong> will always show the whole object but may not fill up the whole area.</li>
+<li><strong>cover</strong> will always fill the whole area, but the object may be cropped.</li>
+</ul>
+<p>Both strategies will preserve the object size ratio.</p>
+    </article>
+
+    <article class="pid__enum pid__attributes page-break-after">
+
+        <dl class="pid-attrs">
+        </dl>
+
+    </article>
+
+
+</section><section class="pid">
+
+
     <div id="picimo-app" class="nav-anchor"></div>
     <h3 class="sticky-header">The <em>Picimo.App</em> interface</h3>
 
     <article class="pid__interface pid-idl__description md">
         <p>Bootstrapping for <em>picimo</em> applications.</p>
-<p>You instantiate a <em>picimo</em> application by explicitly creating a <code>new Picimo.App</code> instance.</p>
     </article>
 
     <article class="pid__interface pid-idl">
@@ -224,7 +629,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
 
         <div class="pid__constructor pid-idl__pre-block">
             [Constructor
-            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg">optional <span class="pid-idl__type-type">HTMLCanvasElement</span><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">canvas</span>, </li><li class="pid-idl__func-arg">optional <a href="#picimo-opts-app" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.App</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
+            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg">optional <span class="pid-idl__type-type">HTMLCanvasElement</span><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">canvas</span>, </li><li class="pid-idl__func-arg">optional <a href="#app-opts" class="pid-idl__type-type pid-idl__type-link">AppOpts</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
         </div>
 
         <em>interface</em> <strong>Picimo.App</strong> {<br>
@@ -343,7 +748,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
                         <span class="pid-idl__type"><span class="pid-idl__type-type">Picimo.core.VertexObjectDescriptor</span></span>
                         <span class="pid-idl__name">defineSprite</span>
                         <span class="pid-idl__args">
-                            (<ul class="pid-idl__func-args args-3"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-idl__args-name">name</span>, </li><li class="pid-idl__func-arg"><a href="#picimo-struct-vertex-object-description" class="pid-idl__type-type pid-idl__type-link">Picimo.struct.VertexObjectDescription</a> <span class="pid-idl__args-name">descriptor</span>, </li><li class="pid-idl__func-arg"><span class="pid-idl__type-type">object</span> <span class="pid-idl__args-name">proto</span></li></ul>);
+                            (<ul class="pid-idl__func-args args-3"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-idl__args-name">name</span>, </li><li class="pid-idl__func-arg"><a href="#vertex-object-description" class="pid-idl__type-type pid-idl__type-link">VertexObjectDescription</a> <span class="pid-idl__args-name">descriptor</span>, </li><li class="pid-idl__func-arg"><span class="pid-idl__type-type">object</span> <span class="pid-idl__args-name">proto</span></li></ul>);
                         </span>
                     </li>
                     <li class="pid-idl__func">
@@ -517,39 +922,6 @@ so this is the last call to create render commands if wanted.</p></td>
 </section><section class="pid">
 
 
-
-
-    <div id="picimo-enum-object-fit" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.enum.ObjectFit</em> enumeration</h3>
-
-
-    <article class="pid__enum pid-idl">
-        <div class="pid-idl__pre-block">
-            <em>enum</em> <strong>Picimo.enum.ObjectFit</strong> {<ul class="pid-idl__func-args"><li class="pid-idl__func-arg">"<span class="pid-idl__args-name">contain</span>", </li><li class="pid-idl__func-arg">"<span class="pid-idl__args-name">cover</span>"</li></ul>}
-        </div>
-    </article>
-
-    <article class="pid__enum pid-idl__description md">
-        <p><img src="/assets/images/doc/displaySize.png" srcset="/assets/images/doc/displaySize.png 1x, /assets/images/doc/displaySize@2x.png 2x" alt="The Object Fit Property"></p>
-<p>The object fit describes how an object size is computed in relation to its container area.</p>
-<ul>
-<li><strong>contain</strong> will always show the whole object but may not fill up the whole area.</li>
-<li><strong>cover</strong> will always fill the whole area, but the object may be cropped.</li>
-</ul>
-<p>Both strategies will preserve the object size ratio.</p>
-    </article>
-
-    <article class="pid__enum pid__attributes page-break-after">
-
-        <dl class="pid-attrs">
-        </dl>
-
-    </article>
-
-
-</section><section class="pid">
-
-
     <div id="picimo-graph-canvas" class="nav-anchor"></div>
     <h3 class="sticky-header">The <em>Picimo.graph.Canvas</em> interface</h3>
 
@@ -559,7 +931,7 @@ so this is the last call to create render commands if wanted.</p></td>
 
         <div class="pid__constructor pid-idl__pre-block">
             [Constructor
-            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#picimo-opts-canvas" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Canvas</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
+            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#canvas-opts" class="pid-idl__type-type pid-idl__type-link">CanvasOpts</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
         </div>
 
         <em>interface</em> <strong>Picimo.graph.Canvas</strong> : <a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a>, <a href="#picimo-graph-picture" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Picture</a> {<br>
@@ -663,7 +1035,7 @@ so this is the last call to create render commands if wanted.</p></td>
 
         <div class="pid__constructor pid-idl__pre-block">
             [Constructor
-            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#picimo-opts-node" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Node</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
+            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#node-opts" class="pid-idl__type-type pid-idl__type-link">NodeOpts</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
         </div>
 
         <em>interface</em> <strong>Picimo.graph.Node</strong> {<br>
@@ -909,7 +1281,7 @@ When your <em>init is <strong>async</strong></em> call <code>done()</code> with 
 
         <div class="pid__constructor pid-idl__pre-block">
             [Constructor
-            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#picimo-opts-picture" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Picture</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
+            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#picture-opts" class="pid-idl__type-type pid-idl__type-link">PictureOpts</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
         </div>
 
         <em>interface</em> <strong>Picimo.graph.Picture</strong> : <a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a> {<br>
@@ -920,13 +1292,13 @@ When your <em>init is <strong>async</strong></em> call <code>done()</code> with 
                     <li class="pid-idl__attr">
                         <span class="pid-idl__readonly pid-idl__readonly--blank"></span>
                         <span class="pid-idl__keyword">attribute</span>
-                        <span class="pid-idl__type"><a href="#picimo-struct-display-position" class="pid-idl__type-type pid-idl__type-link">Picimo.struct.DisplayPosition</a></span>
+                        <span class="pid-idl__type"><a href="#display-position" class="pid-idl__type-type pid-idl__type-link">DisplayPosition</a></span>
                         <span class="pid-idl__name">displayPosition;</span>
                     </li>
                     <li class="pid-idl__attr">
                         <span class="pid-idl__readonly pid-idl__readonly--blank"></span>
                         <span class="pid-idl__keyword">attribute</span>
-                        <span class="pid-idl__type"><a href="#picimo-enum-object-fit" class="pid-idl__type-type pid-idl__type-link">Picimo.enum.ObjectFit</a></span>
+                        <span class="pid-idl__type"><a href="#object-fit" class="pid-idl__type-type pid-idl__type-link">ObjectFit</a></span>
                         <span class="pid-idl__name">sceneFit;</span>
                     </li>
                     <li class="pid-idl__attr">
@@ -1029,9 +1401,9 @@ This property has no effect if the <em>displayPosition</em> property is defined.
             <dt class="pid-attrs__name">rotateDegree</dt>
             <dd class="pid-attrs__description md md-inline"><p>rotation in degree</p></dd>
             <dt class="pid-attrs__name">posX</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The horizontal position. Supports all the units from <a href="#picimo-struct-display-position" alt="Picimo.struct.DisplayPosition" class="md__link md__link--type">Picimo.struct.DisplayPosition</a>.</p></dd>
+            <dd class="pid-attrs__description md md-inline"><p>The horizontal position. Supports all the units from <a href="#display-position" alt="DisplayPosition" class="md__link md__link--type">DisplayPosition</a>.</p></dd>
             <dt class="pid-attrs__name">posY</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The vertical position. Supports all the units from <a href="#picimo-struct-display-position" alt="Picimo.struct.DisplayPosition" class="md__link md__link--type">Picimo.struct.DisplayPosition</a>.</p></dd>
+            <dd class="pid-attrs__description md md-inline"><p>The vertical position. Supports all the units from <a href="#display-position" alt="DisplayPosition" class="md__link md__link--type">DisplayPosition</a>.</p></dd>
             <dt class="pid-attrs__name">program</dt>
             <dd class="pid-attrs__description md md-inline"><p>The shader program name.</p></dd>
             <dt class="pid-attrs__name">texture</dt>
@@ -1061,7 +1433,7 @@ This property has no effect if the <em>displayPosition</em> property is defined.
 
         <div class="pid__constructor pid-idl__pre-block">
             [Constructor
-            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#picimo-opts-scene" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Scene</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
+            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#scene-opts" class="pid-idl__type-type pid-idl__type-link">SceneOpts</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
         </div>
 
         <em>interface</em> <strong>Picimo.graph.Scene</strong> : <a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a> {<br>
@@ -1108,7 +1480,7 @@ This property has no effect if the <em>displayPosition</em> property is defined.
                     <li class="pid-idl__attr">
                         <span class="pid-idl__readonly pid-idl__readonly--blank"></span>
                         <span class="pid-idl__keyword">attribute</span>
-                        <span class="pid-idl__type"><a href="#picimo-enum-object-fit" class="pid-idl__type-type pid-idl__type-link">Picimo.enum.ObjectFit</a></span>
+                        <span class="pid-idl__type"><a href="#object-fit" class="pid-idl__type-type pid-idl__type-link">ObjectFit</a></span>
                         <span class="pid-idl__name">sizeFit;</span>
                     </li>
                     <li class="pid-idl__attr">
@@ -1143,7 +1515,7 @@ This property has no effect if the <em>displayPosition</em> property is defined.
                         <span class="pid-idl__type"><a href="#picimo-graph-scene" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Scene</a></span>
                         <span class="pid-idl__name">setSize</span>
                         <span class="pid-idl__args">
-                            (<ul class="pid-idl__func-args args-3"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-idl__args-name">width</span>, </li><li class="pid-idl__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-idl__args-name">height</span>, </li><li class="pid-idl__func-arg">optional <a href="#picimo-enum-object-fit" class="pid-idl__type-type pid-idl__type-link">Picimo.enum.ObjectFit</a> <span class="pid-idl__args-name">sizeFit</span>= <span class="pid-idl__default-value">&#x27;contain&#x27;</span></li></ul>);
+                            (<ul class="pid-idl__func-args args-3"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-idl__args-name">width</span>, </li><li class="pid-idl__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-idl__args-name">height</span>, </li><li class="pid-idl__func-arg">optional <a href="#object-fit" class="pid-idl__type-type pid-idl__type-link">ObjectFit</a> <span class="pid-idl__args-name">sizeFit</span>= <span class="pid-idl__default-value">&#x27;contain&#x27;</span></li></ul>);
                         </span>
                     </li>
                     <li class="pid-idl__func">
@@ -1160,28 +1532,28 @@ This property has no effect if the <em>displayPosition</em> property is defined.
                         <span class="pid-idl__type"><a href="#picimo-graph-scene" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Scene</a></span>
                         <span class="pid-idl__name">appendScene</span>
                         <span class="pid-idl__args">
-                            (<ul class="pid-idl__func-args args-1"><li class="pid-idl__func-arg"><a href="#picimo-opts-scene" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Scene</a> <span class="pid-idl__args-name">options</span></li></ul>);
+                            (<ul class="pid-idl__func-args args-1"><li class="pid-idl__func-arg"><a href="#scene-opts" class="pid-idl__type-type pid-idl__type-link">SceneOpts</a> <span class="pid-idl__args-name">options</span></li></ul>);
                         </span>
                     </li>
                     <li class="pid-idl__func">
                         <span class="pid-idl__type"><a href="#picimo-graph-picture" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Picture</a></span>
                         <span class="pid-idl__name">appendPicture</span>
                         <span class="pid-idl__args">
-                            (<ul class="pid-idl__func-args args-2"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-idl__args-name">url</span>, </li><li class="pid-idl__func-arg"><a href="#picimo-opts-picture" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Picture</a> <span class="pid-idl__args-name">options</span></li></ul>);
+                            (<ul class="pid-idl__func-args args-2"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-idl__args-name">url</span>, </li><li class="pid-idl__func-arg"><a href="#picture-opts" class="pid-idl__type-type pid-idl__type-link">PictureOpts</a> <span class="pid-idl__args-name">options</span></li></ul>);
                         </span>
                     </li>
                     <li class="pid-idl__func">
                         <span class="pid-idl__type"><a href="#picimo-graph-canvas" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Canvas</a></span>
                         <span class="pid-idl__name">appendCanvas</span>
                         <span class="pid-idl__args">
-                            (<ul class="pid-idl__func-args args-2"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">number</span> | <span class="pid-idl__type-type">Array&lt;number&gt;</span> | <span class="pid-idl__type-type">{x,y,width,height}</span> <span class="pid-idl__args-name">canvasSize</span>, </li><li class="pid-idl__func-arg"><a href="#picimo-opts-canvas" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Canvas</a> <span class="pid-idl__args-name">options</span></li></ul>);
+                            (<ul class="pid-idl__func-args args-2"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">number</span> | <span class="pid-idl__type-type">Array&lt;number&gt;</span> | <span class="pid-idl__type-type">{x,y,width,height}</span> <span class="pid-idl__args-name">canvasSize</span>, </li><li class="pid-idl__func-arg"><a href="#canvas-opts" class="pid-idl__type-type pid-idl__type-link">CanvasOpts</a> <span class="pid-idl__args-name">options</span></li></ul>);
                         </span>
                     </li>
                     <li class="pid-idl__func">
                         <span class="pid-idl__type"><a href="#picimo-graph-sprite-group" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.SpriteGroup</a></span>
                         <span class="pid-idl__name">appendSpriteGroup</span>
                         <span class="pid-idl__args">
-                            (<ul class="pid-idl__func-args args-2"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">Picimo.core.TextureAtlas</span> | <span class="pid-idl__type-type">Promise</span> <span class="pid-idl__args-name">textureAtlas</span>, </li><li class="pid-idl__func-arg"><a href="#picimo-opts-sprite-group" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.SpriteGroup</a> <span class="pid-idl__args-name">options</span></li></ul>);
+                            (<ul class="pid-idl__func-args args-2"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">Picimo.core.TextureAtlas</span> | <span class="pid-idl__type-type">Promise</span> <span class="pid-idl__args-name">textureAtlas</span>, </li><li class="pid-idl__func-arg"><a href="#sprite-group-opts" class="pid-idl__type-type pid-idl__type-link">SpriteGroupOpts</a> <span class="pid-idl__args-name">options</span></li></ul>);
                         </span>
                     </li>
                 </ul>
@@ -1233,7 +1605,7 @@ So that&#39;s why you should choose the capacity carefully.</p>
 
         <div class="pid__constructor pid-idl__pre-block">
             [Constructor
-            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#picimo-opts-sprite-group" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.SpriteGroup</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
+            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a> <span class="pid-idl__args-name">app</span>, </li><li class="pid-idl__func-arg">optional <a href="#sprite-group-opts" class="pid-idl__type-type pid-idl__type-link">SpriteGroupOpts</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">options</span></li></ul>)]
         </div>
 
         <em>interface</em> <strong>Picimo.graph.SpriteGroup</strong> : <a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a> {<br>
@@ -1327,246 +1699,12 @@ So that&#39;s why you should choose the capacity carefully.</p>
 
 
 
-    <div id="picimo-opts-app" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.opts.App</em> dictionary</h3>
+    <div id="picture-opts" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>PictureOpts</em> dictionary</h3>
 
 
     <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>Picimo.opts.App</strong> {<br>
-        <ul class="pid-idl__block">
-            <li class="pid-dictionary__attributes">
-                <ul class="pid-idl__group">
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">alpha</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">false</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">antialias</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">false</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">HTMLCanvasElement</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">canvas</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">null</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">HTMLElement</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">appendTo</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">null</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">string</span> or <span class="pid-idl__type-type">Picimo.utils.Color</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">bgColor</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">&#x27;#000000&#x27;</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">string</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">assetBaseUrl</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">null</span>;</span>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        }<br>
-    </article>
-
-
-    <article class="pid__dictionary pid__attributes page-break-after">
-
-        <dl class="pid-attrs">
-        </dl>
-
-    </article>
-
-
-
-</section><section class="pid">
-
-
-
-    <div id="picimo-opts-canvas" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.opts.Canvas</em> dictionary</h3>
-
-
-    <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>Picimo.opts.Canvas</strong> : <a href="#picimo-opts-node" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Node</a>, <a href="#picimo-opts-picture" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Picture</a> {<br>
-        <ul class="pid-idl__block">
-            <li class="pid-dictionary__attributes">
-                <ul class="pid-idl__group">
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">Array&lt;number&gt;</span> or <span class="pid-idl__type-type">{x,y,width,height}</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">canvasSize;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">HTMLCanvasElement</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">canvas;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">alpha</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">true</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">autoClear;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">autoUpdate;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">string</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">clearColor;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        }<br>
-    </article>
-
-
-    <article class="pid__dictionary pid__attributes page-break-after">
-
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name">canvasSize</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The texture viewport into the canvas. Describes which part of the canvas should be show&#39;ed by the texture.</p></dd>
-            <dt class="pid-attrs__name">canvas</dt>
-            <dd class="pid-attrs__description md md-inline"><p>A predefined canvas element. When not set, a canvas element will be created for you.</p></dd>
-            <dt class="pid-attrs__name">alpha</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Enable alpha support for the canvas context.</p></dd>
-            <dt class="pid-attrs__name">autoClear</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When set to true then on the begin of a frame the canvas will be cleared.</p></dd>
-            <dt class="pid-attrs__name">autoUpdate</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When set to true then the texture will be synced at every frame (at the end).</p></dd>
-            <dt class="pid-attrs__name">clearColor</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When set then the canvas will be cleared with this color (canvas.fillStyle)</p></dd>
-        </dl>
-
-    </article>
-
-
-
-</section><section class="pid">
-
-
-
-    <div id="picimo-opts-node" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.opts.Node</em> dictionary</h3>
-
-
-    <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>Picimo.opts.Node</strong> {<br>
-        <ul class="pid-idl__block">
-            <li class="pid-dictionary__attributes">
-                <ul class="pid-idl__group">
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">renderPrio</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">0</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">display</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">true</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">boolean</span> or <span class="pid-idl__type-type">function</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">ready</span>
-                        <span class="pid-idl__default">= <span class="pid-idl__default-value">true</span>;</span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">string</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">name;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">parentNode;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">onInit;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">onInitGl;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">onFrame;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">onRenderFrame;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">onFrameEnd;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">onDestroyGl;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">onDestroy;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">function</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">onChildrenUpdated;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        }<br>
-    </article>
-
-
-    <article class="pid__dictionary pid__attributes page-break-after">
-
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name">renderPrio</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The render priority of this node. Defaults to <code>0</code>.</p></dd>
-            <dt class="pid-attrs__name">display</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The initial display state. Defaults to <code>true</code>.</p></dd>
-            <dt class="pid-attrs__name">ready</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The initial ready state. Defaults to <code>true</code>.</p></dd>
-            <dt class="pid-attrs__name">name</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The name of the node.</p></dd>
-            <dt class="pid-attrs__name">parentNode</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When not set then this node will be acting as root node.</p></dd>
-        </dl>
-
-    </article>
-
-
-
-</section><section class="pid">
-
-
-
-    <div id="picimo-opts-picture" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.opts.Picture</em> dictionary</h3>
-
-
-    <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>Picimo.opts.Picture</strong> : <a href="#picimo-opts-node" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Node</a> {<br>
+        <em>dictionary</em> <strong>PictureOpts</strong> : <a href="#node-opts" class="pid-idl__type-type pid-idl__type-link">NodeOpts</a> {<br>
         <ul class="pid-idl__block">
             <li class="pid-dictionary__attributes">
                 <ul class="pid-idl__group">
@@ -1576,12 +1714,12 @@ So that&#39;s why you should choose the capacity carefully.</p>
                         <span class="pid-idl__default"></span>
                     </li>
                     <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><a href="#picimo-enum-object-fit" class="pid-idl__type-type pid-idl__type-link">Picimo.enum.ObjectFit</a><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__type"><a href="#object-fit" class="pid-idl__type-type pid-idl__type-link">ObjectFit</a><span class="pid-idl__optional">?</span></span>
                         <span class="pid-idl__name">sceneFit</span>
                         <span class="pid-idl__default">= <span class="pid-idl__default-value">&#x27;contain&#x27;</span>;</span>
                     </li>
                     <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><a href="#picimo-struct-display-position" class="pid-idl__type-type pid-idl__type-link">Picimo.struct.DisplayPosition</a><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__type"><a href="#display-position" class="pid-idl__type-type pid-idl__type-link">DisplayPosition</a><span class="pid-idl__optional">?</span></span>
                         <span class="pid-idl__name">displayPosition;</span>
                         <span class="pid-idl__default"></span>
                     </li>
@@ -1620,7 +1758,7 @@ So that&#39;s why you should choose the capacity carefully.</p>
             <dt class="pid-attrs__name">sceneFit</dt>
             <dd class="pid-attrs__description md md-inline"><p>You should specify either of <em>sceneFit</em> or <em>displayPosition</em>.
 If both properties are <em>not</em> specified the <em>sceneFit</em> will be set to <code>&#39;contain&#39;</code>.
-See <a href="#picimo-enum-object-fit" alt="Picimo.enum.ObjectFit" class="md__link md__link--type">Picimo.enum.ObjectFit</a> for more information.</p></dd>
+See <a href="#object-fit" alt="ObjectFit" class="md__link md__link--type">ObjectFit</a> for more information.</p></dd>
             <dt class="pid-attrs__name">displayPosition</dt>
             <dd class="pid-attrs__description md md-inline"><p>The <em>displayPosition</em> property has precedence over the <em>sceneFit</em> property.
 When specified the <em>sceneFit</em> property will be ignored.</p></dd>
@@ -1634,12 +1772,12 @@ When specified the <em>sceneFit</em> property will be ignored.</p></dd>
 
 
 
-    <div id="picimo-opts-scene" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.opts.Scene</em> dictionary</h3>
+    <div id="scene-opts" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>SceneOpts</em> dictionary</h3>
 
 
     <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>Picimo.opts.Scene</strong> : <a href="#picimo-opts-node" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Node</a> {<br>
+        <em>dictionary</em> <strong>SceneOpts</strong> : <a href="#node-opts" class="pid-idl__type-type pid-idl__type-link">NodeOpts</a> {<br>
         <ul class="pid-idl__block">
             <li class="pid-dictionary__attributes">
                 <ul class="pid-idl__group">
@@ -1659,7 +1797,7 @@ When specified the <em>sceneFit</em> property will be ignored.</p></dd>
                         <span class="pid-idl__default"></span>
                     </li>
                     <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><a href="#picimo-enum-object-fit" class="pid-idl__type-type pid-idl__type-link">Picimo.enum.ObjectFit</a><span class="pid-idl__optional">?</span></span>
+                        <span class="pid-idl__type"><a href="#object-fit" class="pid-idl__type-type pid-idl__type-link">ObjectFit</a><span class="pid-idl__optional">?</span></span>
                         <span class="pid-idl__name">sizeFit</span>
                         <span class="pid-idl__default">= <span class="pid-idl__default-value">&#x27;contain&#x27;</span>;</span>
                     </li>
@@ -1706,12 +1844,12 @@ in relation to the scene container.</p></dd>
 
 
 
-    <div id="picimo-opts-sprite-group" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.opts.SpriteGroup</em> dictionary</h3>
+    <div id="sprite-group-opts" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>SpriteGroupOpts</em> dictionary</h3>
 
 
     <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>Picimo.opts.SpriteGroup</strong> : <a href="#picimo-opts-node" class="pid-idl__type-type pid-idl__type-link">Picimo.opts.Node</a> {<br>
+        <em>dictionary</em> <strong>SpriteGroupOpts</strong> : <a href="#node-opts" class="pid-idl__type-type pid-idl__type-link">NodeOpts</a> {<br>
         <ul class="pid-idl__block">
             <li class="pid-dictionary__attributes">
                 <ul class="pid-idl__group">
@@ -1817,171 +1955,12 @@ has the following properties:</p>
 
 
 
-    <div id="picimo-struct-display-position" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.struct.DisplayPosition</em> dictionary</h3>
-
-    <article class="pid__dictionary pid-idl__description md">
-        <p>The display position specifies how the picture is positioned <em>in relationship to the scene dimension</em>.</p>
-<p>Most properties will support a <em>string</em> as input. That means you can choose between different units:</p>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Format</th>
-<th>Unit</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>number</td>
-<td><em>any number</em></td>
-<td><strong>px</strong></td>
-<td>pixel</td>
-</tr>
-<tr>
-<td>string</td>
-<td><code>32px</code></td>
-<td><strong>px</strong></td>
-<td>pixel</td>
-</tr>
-<tr>
-<td>string</td>
-<td><code>100iw</code></td>
-<td><strong>iw</strong></td>
-<td>image width percentage</td>
-</tr>
-<tr>
-<td>string</td>
-<td><code>50.0ih</code></td>
-<td><strong>ih</strong></td>
-<td>image height percentage</td>
-</tr>
-<tr>
-<td>string</td>
-<td><code>-80sw</code></td>
-<td><strong>sw</strong></td>
-<td>scene width percentage</td>
-</tr>
-<tr>
-<td>string</td>
-<td><code>-1.1sh</code></td>
-<td><strong>sh</strong></td>
-<td>scene height percentage</td>
-</tr>
-<tr>
-<td>string</td>
-<td><code>100 %</code></td>
-<td><strong>%</strong></td>
-<td><em>see property description for the unit</em></td>
-</tr>
-</tbody>
-</table>
-<p><img src="/assets/images/doc/displayPosition.png" srcset="/assets/images/doc/displayPosition.png 1x, /assets/images/doc/displayPosition@2x.png 2x" alt="The Display Position">
-<img src="/assets/images/doc/displayPosition zoom.png" srcset="/assets/images/doc/displayPosition%20zoom.png 1x, /assets/images/doc/displayPosition%20zoom@2x.png 2x" alt="The Display Position Zoom"></p>
-    </article>
-
-    <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>Picimo.struct.DisplayPosition</strong> {<br>
-        <ul class="pid-idl__block">
-            <li class="pid-dictionary__attributes">
-                <ul class="pid-idl__group">
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">top;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">left;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">bottom;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">right;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">width;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">number</span> or <span class="pid-idl__type-type">string</span>)<span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">height;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">zoom;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">anchorX;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                    <li class="pid-idl__attr">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span></span>
-                        <span class="pid-idl__name">anchorY;</span>
-                        <span class="pid-idl__default"></span>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        }<br>
-    </article>
-
-
-    <article class="pid__dictionary pid__attributes page-break-after">
-
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name">top</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Set the top edge of the image under the top edge of the parent scene.</p>
-<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of scene height</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
-            <dt class="pid-attrs__name">left</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Set the left edge of the image right to the left edge of the parent scene.</p>
-<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of scene width</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
-            <dt class="pid-attrs__name">bottom</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Set the bottom edge of the image above the bottom edge of the parent scene.</p>
-<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of scene height</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
-            <dt class="pid-attrs__name">right</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Set the right edge of the image left to the right edge of the parent scene.</p>
-<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of scene width</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
-            <dt class="pid-attrs__name">width</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Set the width of the image.</p>
-<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of image width</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
-            <dt class="pid-attrs__name">height</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Set the height of the image.</p>
-<p>The unit is either of <strong>px</strong> (if value is a <em>number</em>) or of <strong>percantage <em>of image height</em></strong> (if value is a <em>string</em> &mdash; eg. <code>&#39;50%&#39;</code>)</p></dd>
-            <dt class="pid-attrs__name">zoom</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Set the zoom factor.</p>
-<p>Default is <code>1.0</code> (no zoom). If set to <code>2.0</code> the size of the image will be <em>doubled</em>.</p></dd>
-            <dt class="pid-attrs__name">anchorX</dt>
-            <dd class="pid-attrs__description md md-inline"><p>TODO</p></dd>
-            <dt class="pid-attrs__name">anchorY</dt>
-            <dd class="pid-attrs__description md md-inline"><p>TODO</p></dd>
-        </dl>
-
-    </article>
-
-
-
-</section><section class="pid">
-
-
-
-    <div id="picimo-struct-vertex-object-description" class="nav-anchor"></div>
-    <h3 class="sticky-header">The <em>Picimo.struct.VertexObjectDescription</em> dictionary</h3>
+    <div id="vertex-object-description" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>VertexObjectDescription</em> dictionary</h3>
 
 
     <article class="pid__dictionary pid-idl">
-        <em>dictionary</em> <strong>Picimo.struct.VertexObjectDescription</strong> {<br>
+        <em>dictionary</em> <strong>VertexObjectDescription</strong> {<br>
         <ul class="pid-idl__block">
             <li class="pid-dictionary__attributes">
                 <ul class="pid-idl__group">

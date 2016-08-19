@@ -95,10 +95,18 @@ body {
         overflow-y: scroll;
     }
 
+    .toc-sidebar__pids {
+        margin-bottom: 3em;
+    }
+
     &.overlay {
 
         .sidebar__column--head {
             display: none;
+        }
+
+        .toc-sidebar__pids {
+            margin-bottom: 0;
         }
 
     }

@@ -1,9 +1,9 @@
-name: Picimo.enum.ObjectFit
+name: ObjectFit
 type: programming-interface
 
 enums:
     -
-        name: Picimo.enum.ObjectFit
+        name: ObjectFit
 
         description_after_idl: |
             ![The Object Fit Property](/assets/images/doc/displaySize.png)

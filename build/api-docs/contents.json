@@ -1,12 +1,295 @@
 {
   "ref": {
+    "AppOpts": {
+      "name": "AppOpts",
+      "type": "programming-interface",
+      "dictionaries": [
+        {
+          "name": "AppOpts",
+          "attributes": [
+            {
+              "name": "alpha",
+              "type": "boolean",
+              "default": "false",
+              "required": false
+            },
+            {
+              "name": "antialias",
+              "type": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "canvas",
+              "type": "HTMLCanvasElement",
+              "default": "null"
+            },
+            {
+              "name": "appendTo",
+              "type": "HTMLElement",
+              "default": "null"
+            },
+            {
+              "name": "bgColor",
+              "type": [
+                "string",
+                "Picimo.utils.Color"
+              ],
+              "default": "'#000000'"
+            },
+            {
+              "name": "assetBaseUrl",
+              "type": "string",
+              "default": "null"
+            }
+          ]
+        }
+      ]
+    },
+    "CanvasOpts": {
+      "name": "CanvasOpts",
+      "type": "programming-interface",
+      "dictionaries": [
+        {
+          "name": "CanvasOpts",
+          "extends": [
+            "NodeOpts",
+            "PictureOpts"
+          ],
+          "attributes": [
+            {
+              "name": "canvasSize",
+              "type": [
+                "number",
+                "Array<number>",
+                "{x,y,width,height}"
+              ],
+              "required": false,
+              "description": "The texture viewport into the canvas. Describes which part of the canvas should be show'ed by the texture."
+            },
+            {
+              "name": "canvas",
+              "type": "HTMLCanvasElement",
+              "required": false,
+              "description": "A predefined canvas element. When not set, a canvas element will be created for you."
+            },
+            {
+              "name": "alpha",
+              "type": "boolean",
+              "default": true,
+              "required": false,
+              "description": "Enable alpha support for the canvas context."
+            },
+            {
+              "name": "autoClear",
+              "type": "boolean",
+              "default": false,
+              "required": false,
+              "description": "When set to true then on the begin of a frame the canvas will be cleared."
+            },
+            {
+              "name": "autoUpdate",
+              "type": "boolean",
+              "default": false,
+              "required": false,
+              "description": "When set to true then the texture will be synced at every frame (at the end)."
+            },
+            {
+              "name": "clearColor",
+              "type": "string",
+              "required": false,
+              "description": "When set then the canvas will be cleared with this color (canvas.fillStyle)"
+            }
+          ]
+        }
+      ]
+    },
+    "DisplayPosition": {
+      "name": "DisplayPosition",
+      "type": "programming-interface",
+      "dictionaries": [
+        {
+          "name": "DisplayPosition",
+          "description": "The display position specifies how the picture is positioned *in relationship to the scene dimension*.\n\nMost properties will support a *string* as input. That means you can choose between different units:\n\n| Type | Format | Unit | Description |\n|------|------------|----------|---------|\n| number | _any number_ | __px__ | pixel |\n| string | `32px` | __px__ | pixel |\n| string | `100iw` | __iw__ | image width percentage |\n| string | `50.0ih` | __ih__ | image height percentage |\n| string | `-80sw` | __sw__ | scene width percentage |\n| string | `-1.1sh` | __sh__ | scene height percentage |\n| string | `100 %` | __%__ | _see property description for the unit_ |\n\n![The Display Position](/assets/images/doc/displayPosition.png)\n![The Display Position Zoom](/assets/images/doc/displayPosition zoom.png)\n",
+          "attributes": [
+            {
+              "name": "top",
+              "type": [
+                "number",
+                "string"
+              ],
+              "description": "Set the top edge of the image under the top edge of the parent scene.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of scene height_** (if value is a *string* &mdash; eg. `'50%'`)\n"
+            },
+            {
+              "name": "left",
+              "type": [
+                "number",
+                "string"
+              ],
+              "description": "Set the left edge of the image right to the left edge of the parent scene.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of scene width_** (if value is a *string* &mdash; eg. `'50%'`)\n"
+            },
+            {
+              "name": "bottom",
+              "type": [
+                "number",
+                "string"
+              ],
+              "description": "Set the bottom edge of the image above the bottom edge of the parent scene.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of scene height_** (if value is a *string* &mdash; eg. `'50%'`)\n"
+            },
+            {
+              "name": "right",
+              "type": [
+                "number",
+                "string"
+              ],
+              "description": "Set the right edge of the image left to the right edge of the parent scene.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of scene width_** (if value is a *string* &mdash; eg. `'50%'`)\n"
+            },
+            {
+              "name": "width",
+              "type": [
+                "number",
+                "string"
+              ],
+              "description": "Set the width of the image.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of image width_** (if value is a *string* &mdash; eg. `'50%'`)\n"
+            },
+            {
+              "name": "height",
+              "type": [
+                "number",
+                "string"
+              ],
+              "description": "Set the height of the image.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of image height_** (if value is a *string* &mdash; eg. `'50%'`)\n"
+            },
+            {
+              "name": "zoom",
+              "type": "number",
+              "description": "Set the zoom factor.\n\nDefault is `1.0` (no zoom). If set to `2.0` the size of the image will be _doubled_.\n"
+            },
+            {
+              "name": "anchorX",
+              "type": "number",
+              "description": "TODO"
+            },
+            {
+              "name": "anchorY",
+              "type": "number",
+              "description": "TODO"
+            }
+          ]
+        }
+      ]
+    },
+    "NodeOpts": {
+      "name": "NodeOpts",
+      "type": "programming-interface",
+      "dictionaries": [
+        {
+          "name": "NodeOpts",
+          "attributes": [
+            {
+              "name": "renderPrio",
+              "type": "number",
+              "required": false,
+              "default": "0",
+              "description": "The render priority of this node. Defaults to `0`."
+            },
+            {
+              "name": "display",
+              "type": "number",
+              "required": false,
+              "default": true,
+              "description": "The initial display state. Defaults to `true`."
+            },
+            {
+              "name": "ready",
+              "type": [
+                "boolean",
+                "function"
+              ],
+              "required": false,
+              "default": true,
+              "description": "The initial ready state. Defaults to `true`."
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "description": "The name of the node."
+            },
+            {
+              "name": "parentNode",
+              "type": "Picimo.graph.Node",
+              "required": false,
+              "description": "When not set then this node will be acting as root node."
+            },
+            {
+              "name": "onInit",
+              "type": "function",
+              "required": false
+            },
+            {
+              "name": "onInitGl",
+              "type": "function",
+              "required": false
+            },
+            {
+              "name": "onFrame",
+              "type": "function",
+              "required": false
+            },
+            {
+              "name": "onRenderFrame",
+              "type": "function",
+              "required": false
+            },
+            {
+              "name": "onFrameEnd",
+              "type": "function",
+              "required": false
+            },
+            {
+              "name": "onDestroyGl",
+              "type": "function",
+              "required": false
+            },
+            {
+              "name": "onDestroy",
+              "type": "function",
+              "required": false
+            },
+            {
+              "name": "onChildrenUpdated",
+              "type": "function",
+              "required": false
+            }
+          ]
+        }
+      ]
+    },
+    "ObjectFit": {
+      "name": "ObjectFit",
+      "type": "programming-interface",
+      "enums": [
+        {
+          "name": "ObjectFit",
+          "description_after_idl": "![The Object Fit Property](/assets/images/doc/displaySize.png)\n\nThe object fit describes how an object size is computed in relation to its container area.\n\n- **contain** will always show the whole object but may not fill up the whole area.\n- **cover** will always fill the whole area, but the object may be cropped.\n\nBoth strategies will preserve the object size ratio.\n",
+          "values": [
+            {
+              "name": "contain"
+            },
+            {
+              "name": "cover"
+            }
+          ]
+        }
+      ]
+    },
     "Picimo.App": {
       "name": "Picimo.App",
       "type": "programming-interface",
       "interfaces": [
         {
           "name": "Picimo.App",
-          "description": "Bootstrapping for *picimo* applications.\n\nYou instantiate a *picimo* application by explicitly creating a `new Picimo.App` instance.\n",
+          "description": "Bootstrapping for *picimo* applications.\n",
           "attributes": [
             {
               "separator": true,
@@ -143,7 +426,7 @@
                 },
                 {
                   "name": "descriptor",
-                  "type": "Picimo.struct.VertexObjectDescription"
+                  "type": "VertexObjectDescription"
                 },
                 {
                   "name": "proto",
@@ -281,7 +564,7 @@
               },
               {
                 "name": "options",
-                "type": "Picimo.opts.App",
+                "type": "AppOpts",
                 "nullable": true,
                 "optional": true
               }
@@ -316,24 +599,6 @@
         }
       ]
     },
-    "Picimo.enum.ObjectFit": {
-      "name": "Picimo.enum.ObjectFit",
-      "type": "programming-interface",
-      "enums": [
-        {
-          "name": "Picimo.enum.ObjectFit",
-          "description_after_idl": "![The Object Fit Property](/assets/images/doc/displaySize.png)\n\nThe object fit describes how an object size is computed in relation to its container area.\n\n- **contain** will always show the whole object but may not fill up the whole area.\n- **cover** will always fill the whole area, but the object may be cropped.\n\nBoth strategies will preserve the object size ratio.\n",
-          "values": [
-            {
-              "name": "contain"
-            },
-            {
-              "name": "cover"
-            }
-          ]
-        }
-      ]
-    },
     "Picimo.graph.Canvas": {
       "name": "Picimo.graph.Canvas",
       "type": "programming-interface",
@@ -354,7 +619,7 @@
               },
               {
                 "name": "options",
-                "type": "Picimo.opts.Canvas",
+                "type": "CanvasOpts",
                 "nullable": true,
                 "optional": true
               }
@@ -523,7 +788,7 @@
               },
               {
                 "name": "options",
-                "type": "Picimo.opts.Node",
+                "type": "NodeOpts",
                 "nullable": true,
                 "optional": true
               }
@@ -597,7 +862,7 @@
               },
               {
                 "name": "options",
-                "type": "Picimo.opts.Picture",
+                "type": "PictureOpts",
                 "nullable": true,
                 "optional": true
               }
@@ -606,12 +871,12 @@
           "attributes": [
             {
               "name": "displayPosition",
-              "type": "Picimo.struct.DisplayPosition",
+              "type": "DisplayPosition",
               "description": "Describe the position where the picture is placed on the scene.\nWhen set the *sceneFit* property will be ignored.\n"
             },
             {
               "name": "sceneFit",
-              "type": "Picimo.enum.ObjectFit",
+              "type": "ObjectFit",
               "description": "Describe how the picture dimension should be computed in relation to the scene dimension.\nThis property has no effect if the *displayPosition* property is defined.\n"
             },
             {
@@ -640,7 +905,7 @@
                 "number",
                 "string"
               ],
-              "description": "The horizontal position. Supports all the units from [Picimo.struct.DisplayPosition](#).\n"
+              "description": "The horizontal position. Supports all the units from [DisplayPosition](#).\n"
             },
             {
               "name": "posY",
@@ -648,7 +913,7 @@
                 "number",
                 "string"
               ],
-              "description": "The vertical position. Supports all the units from [Picimo.struct.DisplayPosition](#).\n"
+              "description": "The vertical position. Supports all the units from [DisplayPosition](#).\n"
             },
             {
               "name": "program",
@@ -780,7 +1045,7 @@
             },
             {
               "name": "sizeFit",
-              "type": "Picimo.enum.ObjectFit",
+              "type": "ObjectFit",
               "readonly": false,
               "description": "The size fit property describes how the scene dimension is computed\nin relation to the scene container. When there is no containing scene the\napp viewport is used instead.\n"
             },
@@ -819,7 +1084,7 @@
                 },
                 {
                   "name": "sizeFit",
-                  "type": "Picimo.enum.ObjectFit",
+                  "type": "ObjectFit",
                   "default": "'contain'",
                   "optional": true
                 }
@@ -869,7 +1134,7 @@
               "args": [
                 {
                   "name": "options",
-                  "type": "Picimo.opts.Scene"
+                  "type": "SceneOpts"
                 }
               ],
               "returns": "Picimo.graph.Scene"
@@ -883,7 +1148,7 @@
                 },
                 {
                   "name": "options",
-                  "type": "Picimo.opts.Picture"
+                  "type": "PictureOpts"
                 }
               ],
               "returns": "Picimo.graph.Picture"
@@ -901,7 +1166,7 @@
                 },
                 {
                   "name": "options",
-                  "type": "Picimo.opts.Canvas"
+                  "type": "CanvasOpts"
                 }
               ],
               "returns": "Picimo.graph.Canvas"
@@ -918,7 +1183,7 @@
                 },
                 {
                   "name": "options",
-                  "type": "Picimo.opts.SpriteGroup"
+                  "type": "SpriteGroupOpts"
                 }
               ],
               "returns": "Picimo.graph.SpriteGroup"
@@ -934,7 +1199,7 @@
               },
               {
                 "name": "options",
-                "type": "Picimo.opts.Scene",
+                "type": "SceneOpts",
                 "nullable": true,
                 "optional": true
               }
@@ -1029,7 +1294,7 @@
               },
               {
                 "name": "options",
-                "type": "Picimo.opts.SpriteGroup",
+                "type": "SpriteGroupOpts",
                 "nullable": true,
                 "optional": true
               }
@@ -1038,204 +1303,14 @@
         }
       ]
     },
-    "Picimo.opts.App": {
-      "name": "Picimo.opts.App",
+    "PictureOpts": {
+      "name": "PictureOpts",
       "type": "programming-interface",
       "dictionaries": [
         {
-          "name": "Picimo.opts.App",
-          "attributes": [
-            {
-              "name": "alpha",
-              "type": "boolean",
-              "default": "false",
-              "required": false
-            },
-            {
-              "name": "antialias",
-              "type": "boolean",
-              "default": "false"
-            },
-            {
-              "name": "canvas",
-              "type": "HTMLCanvasElement",
-              "default": "null"
-            },
-            {
-              "name": "appendTo",
-              "type": "HTMLElement",
-              "default": "null"
-            },
-            {
-              "name": "bgColor",
-              "type": [
-                "string",
-                "Picimo.utils.Color"
-              ],
-              "default": "'#000000'"
-            },
-            {
-              "name": "assetBaseUrl",
-              "type": "string",
-              "default": "null"
-            }
-          ]
-        }
-      ]
-    },
-    "Picimo.opts.Canvas": {
-      "name": "Picimo.opts.Canvas",
-      "type": "programming-interface",
-      "dictionaries": [
-        {
-          "name": "Picimo.opts.Canvas",
+          "name": "PictureOpts",
           "extends": [
-            "Picimo.opts.Node",
-            "Picimo.opts.Picture"
-          ],
-          "attributes": [
-            {
-              "name": "canvasSize",
-              "type": [
-                "number",
-                "Array<number>",
-                "{x,y,width,height}"
-              ],
-              "required": false,
-              "description": "The texture viewport into the canvas. Describes which part of the canvas should be show'ed by the texture."
-            },
-            {
-              "name": "canvas",
-              "type": "HTMLCanvasElement",
-              "required": false,
-              "description": "A predefined canvas element. When not set, a canvas element will be created for you."
-            },
-            {
-              "name": "alpha",
-              "type": "boolean",
-              "default": true,
-              "required": false,
-              "description": "Enable alpha support for the canvas context."
-            },
-            {
-              "name": "autoClear",
-              "type": "boolean",
-              "default": false,
-              "required": false,
-              "description": "When set to true then on the begin of a frame the canvas will be cleared."
-            },
-            {
-              "name": "autoUpdate",
-              "type": "boolean",
-              "default": false,
-              "required": false,
-              "description": "When set to true then the texture will be synced at every frame (at the end)."
-            },
-            {
-              "name": "clearColor",
-              "type": "string",
-              "required": false,
-              "description": "When set then the canvas will be cleared with this color (canvas.fillStyle)"
-            }
-          ]
-        }
-      ]
-    },
-    "Picimo.opts.Node": {
-      "name": "Picimo.opts.Node",
-      "type": "programming-interface",
-      "dictionaries": [
-        {
-          "name": "Picimo.opts.Node",
-          "attributes": [
-            {
-              "name": "renderPrio",
-              "type": "number",
-              "required": false,
-              "default": "0",
-              "description": "The render priority of this node. Defaults to `0`."
-            },
-            {
-              "name": "display",
-              "type": "number",
-              "required": false,
-              "default": true,
-              "description": "The initial display state. Defaults to `true`."
-            },
-            {
-              "name": "ready",
-              "type": [
-                "boolean",
-                "function"
-              ],
-              "required": false,
-              "default": true,
-              "description": "The initial ready state. Defaults to `true`."
-            },
-            {
-              "name": "name",
-              "type": "string",
-              "required": false,
-              "description": "The name of the node."
-            },
-            {
-              "name": "parentNode",
-              "type": "Picimo.graph.Node",
-              "required": false,
-              "description": "When not set then this node will be acting as root node."
-            },
-            {
-              "name": "onInit",
-              "type": "function",
-              "required": false
-            },
-            {
-              "name": "onInitGl",
-              "type": "function",
-              "required": false
-            },
-            {
-              "name": "onFrame",
-              "type": "function",
-              "required": false
-            },
-            {
-              "name": "onRenderFrame",
-              "type": "function",
-              "required": false
-            },
-            {
-              "name": "onFrameEnd",
-              "type": "function",
-              "required": false
-            },
-            {
-              "name": "onDestroyGl",
-              "type": "function",
-              "required": false
-            },
-            {
-              "name": "onDestroy",
-              "type": "function",
-              "required": false
-            },
-            {
-              "name": "onChildrenUpdated",
-              "type": "function",
-              "required": false
-            }
-          ]
-        }
-      ]
-    },
-    "Picimo.opts.Picture": {
-      "name": "Picimo.opts.Picture",
-      "type": "programming-interface",
-      "dictionaries": [
-        {
-          "name": "Picimo.opts.Picture",
-          "extends": [
-            "Picimo.opts.Node"
+            "NodeOpts"
           ],
           "attributes": [
             {
@@ -1249,13 +1324,13 @@
             },
             {
               "name": "sceneFit",
-              "type": "Picimo.enum.ObjectFit",
+              "type": "ObjectFit",
               "default": "'contain'",
-              "description": "You should specify either of *sceneFit* or *displayPosition*.\nIf both properties are *not* specified the *sceneFit* will be set to `'contain'`.\nSee [Picimo.enum.ObjectFit](#) for more information.\n"
+              "description": "You should specify either of *sceneFit* or *displayPosition*.\nIf both properties are *not* specified the *sceneFit* will be set to `'contain'`.\nSee [ObjectFit](#) for more information.\n"
             },
             {
               "name": "displayPosition",
-              "type": "Picimo.struct.DisplayPosition",
+              "type": "DisplayPosition",
               "description": "The *displayPosition* property has precedence over the *sceneFit* property.\nWhen specified the *sceneFit* property will be ignored.\n"
             },
             {
@@ -1282,14 +1357,14 @@
         }
       ]
     },
-    "Picimo.opts.Scene": {
-      "name": "Picimo.opts.Scene",
+    "SceneOpts": {
+      "name": "SceneOpts",
       "type": "programming-interface",
       "dictionaries": [
         {
-          "name": "Picimo.opts.Scene",
+          "name": "SceneOpts",
           "extends": [
-            "Picimo.opts.Node"
+            "NodeOpts"
           ],
           "attributes": [
             {
@@ -1309,7 +1384,7 @@
             },
             {
               "name": "sizeFit",
-              "type": "Picimo.enum.ObjectFit",
+              "type": "ObjectFit",
               "required": false,
               "default": "'contain'",
               "description": "The size fit option describes how the scene dimension is computed\nin relation to the scene container.\n"
@@ -1339,14 +1414,14 @@
         }
       ]
     },
-    "Picimo.opts.SpriteGroup": {
-      "name": "Picimo.opts.SpriteGroup",
+    "SpriteGroupOpts": {
+      "name": "SpriteGroupOpts",
       "type": "programming-interface",
       "dictionaries": [
         {
-          "name": "Picimo.opts.SpriteGroup",
+          "name": "SpriteGroupOpts",
           "extends": [
-            "Picimo.opts.Node"
+            "NodeOpts"
           ],
           "attributes": [
             {
@@ -1390,87 +1465,12 @@
         }
       ]
     },
-    "Picimo.struct.DisplayPosition": {
-      "name": "Picimo.struct.DisplayPosition",
+    "VertexObjectDescription": {
+      "name": "VertexObjectDescription",
       "type": "programming-interface",
       "dictionaries": [
         {
-          "name": "Picimo.struct.DisplayPosition",
-          "description": "The display position specifies how the picture is positioned *in relationship to the scene dimension*.\n\nMost properties will support a *string* as input. That means you can choose between different units:\n\n| Type | Format | Unit | Description |\n|------|------------|----------|---------|\n| number | _any number_ | __px__ | pixel |\n| string | `32px` | __px__ | pixel |\n| string | `100iw` | __iw__ | image width percentage |\n| string | `50.0ih` | __ih__ | image height percentage |\n| string | `-80sw` | __sw__ | scene width percentage |\n| string | `-1.1sh` | __sh__ | scene height percentage |\n| string | `100 %` | __%__ | _see property description for the unit_ |\n\n![The Display Position](/assets/images/doc/displayPosition.png)\n![The Display Position Zoom](/assets/images/doc/displayPosition zoom.png)\n",
-          "attributes": [
-            {
-              "name": "top",
-              "type": [
-                "number",
-                "string"
-              ],
-              "description": "Set the top edge of the image under the top edge of the parent scene.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of scene height_** (if value is a *string* &mdash; eg. `'50%'`)\n"
-            },
-            {
-              "name": "left",
-              "type": [
-                "number",
-                "string"
-              ],
-              "description": "Set the left edge of the image right to the left edge of the parent scene.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of scene width_** (if value is a *string* &mdash; eg. `'50%'`)\n"
-            },
-            {
-              "name": "bottom",
-              "type": [
-                "number",
-                "string"
-              ],
-              "description": "Set the bottom edge of the image above the bottom edge of the parent scene.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of scene height_** (if value is a *string* &mdash; eg. `'50%'`)\n"
-            },
-            {
-              "name": "right",
-              "type": [
-                "number",
-                "string"
-              ],
-              "description": "Set the right edge of the image left to the right edge of the parent scene.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of scene width_** (if value is a *string* &mdash; eg. `'50%'`)\n"
-            },
-            {
-              "name": "width",
-              "type": [
-                "number",
-                "string"
-              ],
-              "description": "Set the width of the image.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of image width_** (if value is a *string* &mdash; eg. `'50%'`)\n"
-            },
-            {
-              "name": "height",
-              "type": [
-                "number",
-                "string"
-              ],
-              "description": "Set the height of the image.\n\nThe unit is either of **px** (if value is a *number*) or of **percantage _of image height_** (if value is a *string* &mdash; eg. `'50%'`)\n"
-            },
-            {
-              "name": "zoom",
-              "type": "number",
-              "description": "Set the zoom factor.\n\nDefault is `1.0` (no zoom). If set to `2.0` the size of the image will be _doubled_.\n"
-            },
-            {
-              "name": "anchorX",
-              "type": "number",
-              "description": "TODO"
-            },
-            {
-              "name": "anchorY",
-              "type": "number",
-              "description": "TODO"
-            }
-          ]
-        }
-      ]
-    },
-    "Picimo.struct.VertexObjectDescription": {
-      "name": "Picimo.struct.VertexObjectDescription",
-      "type": "programming-interface",
-      "dictionaries": [
-        {
-          "name": "Picimo.struct.VertexObjectDescription",
+          "name": "VertexObjectDescription",
           "attributes": [
             {
               "name": "constructor",
@@ -1542,7 +1542,7 @@
   },
   "package": {
     "name": "picimo",
-    "version": "0.0.20",
+    "version": "0.0.21",
     "author": {
       "name": "Wolfger Schramm",
       "email": "wolfger@spearwolf.de",
@@ -1559,21 +1559,21 @@
     }
   },
   "programming-interface": [
+    "AppOpts",
+    "CanvasOpts",
+    "DisplayPosition",
+    "NodeOpts",
+    "ObjectFit",
     "Picimo.App",
-    "Picimo.enum.ObjectFit",
     "Picimo.graph.Canvas",
     "Picimo.graph.Node",
     "Picimo.graph.Picture",
     "Picimo.graph.Scene",
     "Picimo.graph.SpriteGroup",
-    "Picimo.opts.App",
-    "Picimo.opts.Canvas",
-    "Picimo.opts.Node",
-    "Picimo.opts.Picture",
-    "Picimo.opts.Scene",
-    "Picimo.opts.SpriteGroup",
-    "Picimo.struct.DisplayPosition",
-    "Picimo.struct.VertexObjectDescription"
+    "PictureOpts",
+    "SceneOpts",
+    "SpriteGroupOpts",
+    "VertexObjectDescription"
   ],
   "guide": [
     "bootstrapping"

@@ -1,9 +1,9 @@
 ---
-  name: "Picimo.opts.Node"
+  name: "NodeOpts"
   type: "programming-interface"
   dictionaries:
     -
-      name: "Picimo.opts.Node"
+      name: "NodeOpts"
       attributes:
         -
           name: "renderPrio"

@@ -108,7 +108,7 @@
             optional: false
           -
             name: "options"
-            type: "Picimo.opts.Node"
+            type: "NodeOpts"
             nullable: true
             optional: true
 

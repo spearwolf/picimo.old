@@ -17,20 +17,20 @@ interfaces:
                     optional: false
                 -
                     name: options
-                    type: Picimo.opts.Picture
+                    type: PictureOpts
                     nullable: true
                     optional: true
 
         attributes:
             -
                 name: displayPosition
-                type: Picimo.struct.DisplayPosition
+                type: DisplayPosition
                 description: |
                     Describe the position where the picture is placed on the scene.
                     When set the *sceneFit* property will be ignored.
             -
                 name: sceneFit
-                type: Picimo.enum.ObjectFit
+                type: ObjectFit
                 description: |
                     Describe how the picture dimension should be computed in relation to the scene dimension.
                     This property has no effect if the *displayPosition* property is defined.
@@ -56,14 +56,14 @@ interfaces:
                     - number
                     - string
                 description: |
-                    The horizontal position. Supports all the units from [Picimo.struct.DisplayPosition](#).
+                    The horizontal position. Supports all the units from [DisplayPosition](#).
             -
                 name: posY
                 type:
                     - number
                     - string
                 description: |
-                    The vertical position. Supports all the units from [Picimo.struct.DisplayPosition](#).
+                    The vertical position. Supports all the units from [DisplayPosition](#).
             -
                 name: program
                 type: string

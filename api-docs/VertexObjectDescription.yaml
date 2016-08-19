@@ -1,9 +1,9 @@
 ---
-  name: "Picimo.struct.VertexObjectDescription"
+  name: "VertexObjectDescription"
   type: "programming-interface"
   dictionaries:
     -
-      name: "Picimo.struct.VertexObjectDescription"
+      name: "VertexObjectDescription"
       attributes:
         -
           name: "constructor"

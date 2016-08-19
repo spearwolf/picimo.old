@@ -7,9 +7,6 @@
       description: |
         Bootstrapping for *picimo* applications.
 
-        You instantiate a *picimo* application by explicitly creating a `new Picimo.App` instance.
-
-
       attributes:
         -
           separator: true
@@ -119,7 +116,7 @@
               type: "string"
             -
               name: "descriptor"
-              type: "Picimo.struct.VertexObjectDescription"
+              type: "VertexObjectDescription"
             -
               name: "proto"
               type: "object"
@@ -218,7 +215,7 @@
             optional: true
           -
             name: "options"
-            type: "Picimo.opts.App"
+            type: "AppOpts"
             nullable: true
             optional: true
 

@@ -1,11 +1,11 @@
-name: Picimo.opts.Canvas
+name: CanvasOpts
 type: programming-interface
 dictionaries:
     -
-        name: Picimo.opts.Canvas
+        name: CanvasOpts
         extends:
-            - Picimo.opts.Node
-            - Picimo.opts.Picture
+            - NodeOpts
+            - PictureOpts
         attributes:
             -
                 name: canvasSize
