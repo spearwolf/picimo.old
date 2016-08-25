@@ -52,6 +52,7 @@ $fontSizeNormal   : 16px;
 $fontSizeSmall    : 14px;
 $fontSizeTiny     : 12px;
 
+$pidIdlMonoFontSize: $fontSizeTiny;
 
 @mixin typo($family:'text', $weight:'normal', $style:'normal', $decoration:none, $size:$fontSizeNormal) {
     font-family     : map-get($typoFontFamily, $family);

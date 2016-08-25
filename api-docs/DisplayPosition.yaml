@@ -5,9 +5,9 @@ dictionaries:
     -
         name: DisplayPosition
         description: |
-            The display position specifies how the picture is positioned *in relationship to the scene dimension*.
+            The display position specifies how a image is positioned *in the context of the scene*.
 
-            Most properties will support a *string* as input. That means you can choose between different units:
+            Most properties will support *number* or *string* as input. Using a *string* means you can choose between different units:
 
             | Type | Format | Unit | Description |
             |------|------------|----------|---------|

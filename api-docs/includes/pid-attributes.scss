@@ -1,77 +1,15 @@
 @import 'includes/_colors';
 @import 'includes/_typography';
 
-.pid__interface {
+.pid-table {
 
-    .pid-attrs {
-        &__name {
-            color: $col-black;
-            background-color: $col-prim1-light;
-            &--readonly:after {
-                color: $col-prim1-dark;
-            }
-        }
-    }
-
-}
-
-.pid__dictionary {
-
-    .pid-attrs__name {
-        color: $col-black;
-        background-color: $col-prim3-light;
-    }
-
-}
-
-.pid__enum {
-
-    .pid-attrs__name {
-        color: $col-black;
-        background-color: $col-prim0-light;
-    }
-
-}
-
-
-.pid-attrs {
-
-    /*margin-left: 2rem;*/
-
-    &__name {
-        display: inline-block;
-        padding: 0 0.25em;
-
-        @include typo('monospace', $weight: 'bold', $size: $fontSizeTiny);
-
-        &--readonly:after {
-            content: "\f023";
-            margin-left: 0.33em;
-            font-family: FontAwesome;
-        }
-    }
-
-    &__description {
-
-        margin-bottom: 1em;
-
-        & > p {
-            margin: 0;
-        }
-
-    }
-
-}
-
-.pid-events {
-
-    /*width: 100%;*/
     border-collapse: separate;
     border-spacing: 2px;
 
     th, td {
         text-align: left;
     }
+
     th {
         background-color: $col-table-head-bg;
         border-bottom: 2px solid $col-table-border;
@@ -91,14 +29,131 @@
         span {
             @include typo('monospace', $weight: 'normal', $size: $fontSizeTiny);
             color: $col-black;
-            background-color: $col-prim1-light;
-            padding-left: 0.5em;
-            padding-right: 0.5em;
         }
     }
 
     &__description {
         @include typo('text', $weight: 'normal', $size: $fontSizeSmall);
+
+        p {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
     }
+
+}
+
+
+.pid__interface {
+
+    .pid-table, .pid-func {
+        margin-left: 2em;
+    }
+
+    .pid-attrs {
+
+        &__name {
+            @include typo('monospace', $size: $pidIdlMonoFontSize, $weight: 'bold');
+            &--readonly:after {
+                color: $col-prim0;
+            }
+        }
+
+    }
+
+    .pid-func {
+        &__name {
+
+            &> .pid-func__name {
+                @include typo('monospace', $size: $pidIdlMonoFontSize, $weight: 'bold');
+            }
+            &> .pid-func__args {
+                .pid-func__args-name {
+                    @include typo('monospace', $size: $pidIdlMonoFontSize, $weight: 'bold');
+                }
+            }
+            &> .pid-func__type {
+            }
+            & .pid-idl__type-link {
+                background-color: transparent;
+            }
+
+        }
+
+    }
+
+}
+
+.pid__dictionary {
+    .pid-attrs {
+
+        margin-left: 2em;
+
+        &__name {
+            color: $col-black;
+            background-color: $col-prim3-light;
+        }
+
+        &__description {
+            p {
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
+            }
+            margin-bottom: 1.5em;
+        }
+
+    }
+}
+
+.pid__enum {
+
+    .pid-attrs__name {
+        color: $col-black;
+        background-color: $col-prim0-light;
+    }
+
+}
+
+
+.pid-attrs {
+
+    &__name {
+        display: inline-block;
+        padding: 0 0.25em;
+
+        @include typo('monospace', $weight: 'bold', $size: $fontSizeTiny);
+
+        &--readonly:after {
+            content: "\f023";
+            margin-left: 0.33em;
+            font-family: FontAwesome;
+        }
+    }
+
+}
+
+.pid-func {
+
+    &__description {
+
+        margin-top: 0.25em;
+        margin-bottom: 0.5em;
+
+        & > p {
+            margin: 0;
+        }
+
+    }
+
+}
+
+.pid-events {
+
+    &__name {
+        span {
+            background-color: $col-prim1-light;
+        }
+    }
+
 }
 

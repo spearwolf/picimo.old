@@ -92,14 +92,24 @@
 
         <h4>Attributes</h4>
 
-        <dl class="pid-attrs">
-          {{#attributes}}
-            {{#if description}}
-            <dt class="pid-attrs__name{{#if readonly}} pid-attrs__name--readonly{{/if}}">{{name}}</dt>
-            <dd class="pid-attrs__description md md-inline">{{{md description}}}</dd>
-            {{/if}}
-          {{/attributes}}
-        </dl>
+        <table class="pid-table pid-attrs">
+            <thead>
+                <tr>
+                    <th class="pid-table__title">attr name</th>
+                    <th class="pid-table__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#attributes}}
+               {{#if name}}
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name{{#if readonly}} pid-attrs__name--readonly{{/if}}">{{name}}</span></td>
+                    <td class="pid-table__description md md-inline">{{{md description}}}</td>
+                </tr>
+               {{/if}}
+              {{/attributes}}
+            </tbody>
+        </table>
 
     </article>
   {{/if}}
@@ -110,23 +120,53 @@
     </article>
   {{/if}}
 
+  {{#if functions}}
+    <article class="pid__interface pid__functions page-break-after">
+
+        <h4>Methods</h4>
+
+        <dl class="pid-func">
+          {{#functions}}
+           {{#if name}}
+            <dt class="pid-func__name">
+                <span class="pid-func__name">{{name}}</span>
+                <span class="pid-func__args">
+                    ({{#if args}}<span class="pid-func__args args-{{args.length}}">{{#each args}}<span class="pid-func__func-arg">{{#if optional}}optional {{/if}}{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}} | {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}} <span class="pid-func__args-name">{{name}}</span>{{#if default}}= <span class="pid-func__default-value">{{default}}</span>{{/if}}{{#unless @last}}, {{/unless}}</span>{{/each}}</span>{{/if}})
+                </span>
+                :
+                <span class="pid-func__type">{{> type-type returns}}</span>
+            </dt>
+            <dd class="pid-func__description md md-inline">{{{md description}}}</dd>
+           {{/if}}
+          {{/functions}}
+        </dl>
+
+    </article>
+  {{/if}}
+
+  {{#if description_after_functions}}
+    <article class="pid__interface pid-idl__description md">
+        {{{md description_after_functions}}}
+    </article>
+  {{/if}}
+
   {{#if events}}
     <article class="pid__interface pid__events page-break-after">
 
         <h4>Events</h4>
 
-        <table class="pid-events">
+        <table class="pid-table pid-events">
             <thead>
                 <tr>
-                    <th class="pid-events__title">event name</th>
-                    <th class="pid-events__title">parameters</th>
-                    <th class="pid-events__title">description</th>
+                    <th class="pid-table__title">event name</th>
+                    <th class="pid-table__title">parameters</th>
+                    <th class="pid-table__title">description</th>
                 </tr>
             </thead>
             <tbody>
               {{#events}}
                 <tr>
-                    <td class="pid-events__name"><span>{{name}}</span></td>
+                    <td class="pid-table__name pid-events__name"><span>{{name}}</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                       {{#if args}}
                         (<ul class="pid-idl__func-args args-{{args.length}}">{{#each args}}<li class="pid-idl__func-arg">{{#if optional}}optional {{/if}}{{#ifArray type}}{{#each type}}{{> type-type .}}{{#unless @last}} | {{/unless}}{{/each}}{{else}}{{> type-type type}}{{/ifArray}} <span class="pid-idl__args-name">{{name}}</span>{{#if default}}= <span class="pid-idl__default-value">{{default}}</span>{{/if}}{{#unless @last}}, {{/unless}}</li>{{/each}}</ul>)
@@ -134,7 +174,7 @@
                         -
                       {{/if}}
                     </td>
-                    <td class="pid-events__description md md-inline">{{{md description}}}</td>
+                    <td class="pid-table__description md md-inline">{{{md description}}}</td>
                 </tr>
               {{/events}}
             </tbody>

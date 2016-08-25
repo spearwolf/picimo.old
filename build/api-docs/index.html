@@ -58,6 +58,7 @@
 
                         <ol class="toc-sidebar__pids">
                             <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-app" class="toc__pid-link">Picimo.App</a></li>
+                            <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-core-texture" class="toc__pid-link">Picimo.core.Texture</a></li>
                             <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-graph-canvas" class="toc__pid-link">Picimo.graph.Canvas</a></li>
                             <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-graph-node" class="toc__pid-link">Picimo.graph.Node</a></li>
                             <li><span class="toc__kind-of toc__kind-of--interface">I</span><a href="#picimo-graph-picture" class="toc__pid-link">Picimo.graph.Picture</a></li>
@@ -100,6 +101,7 @@
                             <a href="#Programming-Interface">Programming Interfaces</a>
                             <ol class="toc-sub">
                                 <li>The <a href="#picimo-app" class="toc__pid-link">Picimo.App</a> interface</li>
+                                <li>The <a href="#picimo-core-texture" class="toc__pid-link">Picimo.core.Texture</a> interface</li>
                                 <li>The <a href="#picimo-graph-canvas" class="toc__pid-link">Picimo.graph.Canvas</a> interface</li>
                                 <li>The <a href="#picimo-graph-node" class="toc__pid-link">Picimo.graph.Node</a> interface</li>
                                 <li>The <a href="#picimo-graph-picture" class="toc__pid-link">Picimo.graph.Picture</a> interface</li>
@@ -326,8 +328,8 @@ will only see a blank <em>blue</em> scene here as result).</li>
     <h3 class="sticky-header">The <em>DisplayPosition</em> dictionary</h3>
 
     <article class="pid__dictionary pid-idl__description md">
-        <p>The display position specifies how the picture is positioned <em>in relationship to the scene dimension</em>.</p>
-<p>Most properties will support a <em>string</em> as input. That means you can choose between different units:</p>
+        <p>The display position specifies how a image is positioned <em>in the context of the scene</em>.</p>
+<p>Most properties will support <em>number</em> or <em>string</em> as input. Using a <em>string</em> means you can choose between different units:</p>
 <table>
 <thead>
 <tr>
@@ -718,7 +720,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
                         </span>
                     </li>
                     <li class="pid-idl__func">
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">Promise&lt;Picimo.core.Texture&gt;</span></span>
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">Promise&lt;<a href="#picimo-core-texture" class="pid-idl__type-type pid-idl__type-link">Picimo.core.Texture</a>&gt;</span></span>
                         <span class="pid-idl__name">loadTexture</span>
                         <span class="pid-idl__args">
                             (<ul class="pid-idl__func-args args-1"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-idl__args-name">url</span></li></ul>);
@@ -828,25 +830,189 @@ will only see a blank <em>blue</em> scene here as result).</li>
 
         <h4>Attributes</h4>
 
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name pid-attrs__name--readonly">scene</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The <em>root</em> scene node of the picimo scene graph.</p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">now</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The number of seconds from application start.</p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">frameNo</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The current frame number.</p></dd>
-            <dt class="pid-attrs__name">assetBaseUrl</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The base url for all assets. <em>Maybe</em> be undefined. The base url can be set via the <strong>assetBaseUrl</strong>
+        <table class="pid-table pid-attrs">
+            <thead>
+                <tr>
+                    <th class="pid-table__title">attr name</th>
+                    <th class="pid-table__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">scene</span></td>
+                    <td class="pid-table__description md md-inline"><p>The <em>root</em> scene node of the picimo scene graph.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">now</span></td>
+                    <td class="pid-table__description md md-inline"><p>The number of seconds from application start.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">frameNo</span></td>
+                    <td class="pid-table__description md md-inline"><p>The current frame number.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">assetBaseUrl</span></td>
+                    <td class="pid-table__description md md-inline"><p>The base url for all assets. <em>Maybe</em> be undefined. The base url can be set via the <strong>assetBaseUrl</strong>
 <em>option</em> or via the global var <code>PICIMO_ASSET_BASE_URL</code> (will override the option).
-If unspecified the base url will be calculated from <code>locaation.href</code></p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">canvas</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The <code>&lt;canvas&gt;</code> dom element.</p></dd>
-            <dt class="pid-attrs__name">backgroundColor</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The default background color is <em>black</em> or if you set the <strong>alpha</strong> option then <em>transparent</em> is used.</p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">width</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The <em>device</em> pixel width.</p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">height</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The <em>device</em> pixel height.</p></dd>
+If unspecified the base url will be calculated from <code>locaation.href</code></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">canvas</span></td>
+                    <td class="pid-table__description md md-inline"><p>The <code>&lt;canvas&gt;</code> dom element.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">canvasIsPredefined</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">backgroundColor</span></td>
+                    <td class="pid-table__description md md-inline"><p>The default background color is <em>black</em> or if you set the <strong>alpha</strong> option then <em>transparent</em> is used.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">width</span></td>
+                    <td class="pid-table__description md md-inline"><p>The <em>device</em> pixel width.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">height</span></td>
+                    <td class="pid-table__description md md-inline"><p>The <em>device</em> pixel height.</p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </article>
+
+
+    <article class="pid__interface pid__functions page-break-after">
+
+        <h4>Methods</h4>
+
+        <dl class="pid-func">
+            <dt class="pid-func__name">
+                <span class="pid-func__name">loadTextureAtlas</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">url</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Promise&lt;Picimo.core.TextureAtlas&gt;</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">loadTexture</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">url</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Promise&lt;<a href="#picimo-core-texture" class="pid-idl__type-type pid-idl__type-link">Picimo.core.Texture</a>&gt;</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">getAssetUrl</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">url</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">string</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">joinAssetUrl</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">baseUrl</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">url</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">string</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">defineSprite</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-3"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span>, </span><span class="pid-func__func-arg"><a href="#vertex-object-description" class="pid-idl__type-type pid-idl__type-link">VertexObjectDescription</a> <span class="pid-func__args-name">descriptor</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">object</span> <span class="pid-func__args-name">proto</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Picimo.core.VertexObjectDescriptor</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">createSprite</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Picimo.core.VertexObject</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">defineVertexShader</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">source</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">defineFragmentShader</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">source</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">loadVertexShader</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">url</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Promise&lt;Picimo.render.ShaderSource&gt;</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">loadFragmentShader</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">url</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Promise&lt;Picimo.render.ShaderSource&gt;</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">getVertexShader</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Picimo.render.ShaderSource</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">getFragmentShader</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Picimo.render.ShaderSource</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">addProgram</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-3"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">vertexShaderName</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">fragmentShaderName</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">getProgram</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Picimo.render.Program</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
         </dl>
 
     </article>
@@ -856,64 +1022,185 @@ If unspecified the base url will be calculated from <code>locaation.href</code><
 
         <h4>Events</h4>
 
-        <table class="pid-events">
+        <table class="pid-table pid-events">
             <thead>
                 <tr>
-                    <th class="pid-events__title">event name</th>
-                    <th class="pid-events__title">parameters</th>
-                    <th class="pid-events__title">description</th>
+                    <th class="pid-table__title">event name</th>
+                    <th class="pid-table__title">parameters</th>
+                    <th class="pid-table__title">description</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="pid-events__name"><span>init</span></td>
+                    <td class="pid-table__name pid-events__name"><span>init</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>Will be called right after app creation time.</p></td>
+                    <td class="pid-table__description md md-inline"><p>Will be called right after app creation time.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>resize</span></td>
+                    <td class="pid-table__name pid-events__name"><span>resize</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>Canvas resized.</p></td>
+                    <td class="pid-table__description md md-inline"><p>Canvas resized.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>frameBegin</span></td>
+                    <td class="pid-table__name pid-events__name"><span>frameBegin</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>The frame begins.</p></td>
+                    <td class="pid-table__description md md-inline"><p>The frame begins.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>frame</span></td>
+                    <td class="pid-table__name pid-events__name"><span>frame</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>On frame event. The renderer has been initialized,
+                    <td class="pid-table__description md md-inline"><p>On frame event. The renderer has been initialized,
 but this is before the scene graph is rendered.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>renderFrame</span></td>
+                    <td class="pid-table__name pid-events__name"><span>renderFrame</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>On frame event. The renderer has been initialized
+                    <td class="pid-table__description md md-inline"><p>On frame event. The renderer has been initialized
 and the scene graph is executed but the renderer is not yet finished,
 so this is the last call to create render commands if wanted.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>frameEnd</span></td>
+                    <td class="pid-table__name pid-events__name"><span>frameEnd</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>The frame ends.</p></td>
+                    <td class="pid-table__description md md-inline"><p>The frame ends.</p></td>
                 </tr>
             </tbody>
         </table>
 
     </article>
+
+
+
+
+
+</section><section class="pid">
+
+
+    <div id="picimo-core-texture" class="nav-anchor"></div>
+    <h3 class="sticky-header">The <em>Picimo.core.Texture</em> interface</h3>
+
+
+    <article class="pid__interface pid-idl">
+
+
+        <div class="pid__constructor pid-idl__pre-block">
+            [Constructor
+            (<ul class="pid-idl__func-args"><li class="pid-idl__func-arg">optional <a href="#picimo-core-texture" class="pid-idl__type-type pid-idl__type-link">Picimo.core.Texture</a><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">parent</span>, </li><li class="pid-idl__func-arg">optional <span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">x</span>, </li><li class="pid-idl__func-arg">optional <span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">y</span>, </li><li class="pid-idl__func-arg">optional <span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">width</span>, </li><li class="pid-idl__func-arg">optional <span class="pid-idl__type-type">number</span><span class="pid-idl__optional">?</span> <span class="pid-idl__args-name">height</span></li></ul>)]
+        </div>
+
+        <em>interface</em> <strong>Picimo.core.Texture</strong> {<br>
+
+        <ul class="pid-idl__block">
+            <li class="pid-interface__attributes">
+                <ul class="pid-idl__group">
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__readonly pid-idl__readonly--blank"></span>
+                        <span class="pid-idl__keyword">attribute</span>
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span></span>
+                        <span class="pid-idl__name">width;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__readonly pid-idl__readonly--blank"></span>
+                        <span class="pid-idl__keyword">attribute</span>
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">number</span></span>
+                        <span class="pid-idl__name">height;</span>
+                    </li>
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__readonly pid-idl__readonly--blank"></span>
+                        <span class="pid-idl__keyword">attribute</span>
+                        <span class="pid-idl__type">(<span class="pid-idl__type-type">HTMLCanvasElement</span> or <span class="pid-idl__type-type">HTMLImageElement</span>)</span>
+                        <span class="pid-idl__name">image;</span>
+                    </li>
+                </ul>
+            </li>
+            <li class="pid-interface__functions">
+                <ul class="pid-idl__group">
+                    <li class="pid-idl__func">
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">void</span></span>
+                        <span class="pid-idl__name">setTexCoords</span>
+                        <span class="pid-idl__args">
+                            (<ul class="pid-idl__func-args args-1"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">Object</span> <span class="pid-idl__args-name">obj</span></li></ul>);
+                        </span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        }<br>
+    </article>
+
+    <article class="pid__interface pid-idl__description md">
+        <h4 id="example">Example</h4>
+<pre><code>let c = document.createElement(&quot;canvas&quot;);
+let t = new Picimo.core.Texture.fromCanvas(c);
+t.width    // =&gt; 300
+t.height   // =&gt; 150
+
+let tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
+t.width    // =&gt; 100
+</code></pre>
+    </article>
+
+    <article class="pid__interface pid__attributes page-break-after">
+
+        <h4>Attributes</h4>
+
+        <table class="pid-table pid-attrs">
+            <thead>
+                <tr>
+                    <th class="pid-table__title">attr name</th>
+                    <th class="pid-table__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">width</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">height</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">image</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </article>
+
+
+    <article class="pid__interface pid__functions page-break-after">
+
+        <h4>Methods</h4>
+
+        <dl class="pid-func">
+            <dt class="pid-func__name">
+                <span class="pid-func__name">setTexCoords</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">Object</span> <span class="pid-func__args-name">obj</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">void</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+        </dl>
+
+    </article>
+
+
 
 
 
@@ -997,19 +1284,58 @@ so this is the last call to create render commands if wanted.</p></td>
 
         <h4>Attributes</h4>
 
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name">canvas</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The HTMLCanvasElement interface.</p></dd>
-            <dt class="pid-attrs__name">alpha</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Flag to indicate that the canvas context has alpha support enabled.</p></dd>
-            <dt class="pid-attrs__name">dimension</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Describes the texture viewport into the canvas.</p></dd>
-            <dt class="pid-attrs__name">autoClear</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When set to true then on the begin of a frame the canvas will be cleared.</p></dd>
-            <dt class="pid-attrs__name">clearColor</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When set then the canvas will be cleared with this color (canvas.fillStyle)</p></dd>
-            <dt class="pid-attrs__name">autoUpdate</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When set to true then the texture will be synced at every frame (at the end).</p></dd>
+        <table class="pid-table pid-attrs">
+            <thead>
+                <tr>
+                    <th class="pid-table__title">attr name</th>
+                    <th class="pid-table__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">canvas</span></td>
+                    <td class="pid-table__description md md-inline"><p>The HTMLCanvasElement interface.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">alpha</span></td>
+                    <td class="pid-table__description md md-inline"><p>Flag to indicate that the canvas context has alpha support enabled.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">dimension</span></td>
+                    <td class="pid-table__description md md-inline"><p>Describes the texture viewport into the canvas.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">autoClear</span></td>
+                    <td class="pid-table__description md md-inline"><p>When set to true then on the begin of a frame the canvas will be cleared.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">clearColor</span></td>
+                    <td class="pid-table__description md md-inline"><p>When set then the canvas will be cleared with this color (canvas.fillStyle)</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">autoUpdate</span></td>
+                    <td class="pid-table__description md md-inline"><p>When set to true then the texture will be synced at every frame (at the end).</p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </article>
+
+
+    <article class="pid__interface pid__functions page-break-after">
+
+        <h4>Methods</h4>
+
+        <dl class="pid-func">
+            <dt class="pid-func__name">
+                <span class="pid-func__name">update</span>
+                <span class="pid-func__args">
+                    ()
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">void</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p>Sync the texture with current canvas content.</p></dd>
         </dl>
 
     </article>
@@ -1027,7 +1353,7 @@ so this is the last call to create render commands if wanted.</p></td>
     <h3 class="sticky-header">The <em>Picimo.graph.Node</em> interface</h3>
 
     <article class="pid__interface pid-idl__description md">
-        <p>A base class that all other scene graph nodes extend.</p>
+        <p>The base class that all other scene graph nodes extend.</p>
     </article>
 
     <article class="pid__interface pid-idl">
@@ -1159,27 +1485,112 @@ so this is the last call to create render commands if wanted.</p></td>
 
         <h4>Attributes</h4>
 
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name">name</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The node name is optional. You can search for a node by name with <code>findNode()</code>.</p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">app</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The picimo app instance.</p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">parentNode</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The parent node or <code>null</code>.</p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">isRootNode</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Returns <code>parent == null</code></p></dd>
-            <dt class="pid-attrs__name">renderPrio</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Die render priority bestimmt die Reihenfolge in der die Nodes
-mittels <code>renderFrame()</code> aufgerufen werden.</p></dd>
-            <dt class="pid-attrs__name">children</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Every node can have children.</p></dd>
-            <dt class="pid-attrs__name">ready</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When set to <code>false</code> this node will be ignored by <em>initialization</em> and <em>rendering</em> process.</p></dd>
-            <dt class="pid-attrs__name">readyFunc</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Accepts a boolean value or a function. When the ready function returns a <em>truthy</em> value then this is node is <em>ready</em>.</p></dd>
-            <dt class="pid-attrs__name">display</dt>
-            <dd class="pid-attrs__description md md-inline"><p>When set to <code>false</code> the node will not be displayed. The <em>frame</em>, <em>renderFrame</em> and <em>frameEnd</em> events will not be called.
-BUT <code>init</code> and <code>initGl</code> will be called. If you don&#39;t want to initialize the node set the <em>ready</em> attribute to <code>false</code>.</p></dd>
+        <table class="pid-table pid-attrs">
+            <thead>
+                <tr>
+                    <th class="pid-table__title">attr name</th>
+                    <th class="pid-table__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">name</span></td>
+                    <td class="pid-table__description md md-inline"><p>The node name is optional. You can search for a node by name with <code>findNode()</code>.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">app</span></td>
+                    <td class="pid-table__description md md-inline"><p>The picimo app instance.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">parentNode</span></td>
+                    <td class="pid-table__description md md-inline"><p>The parent node or <code>null</code>.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">isRootNode</span></td>
+                    <td class="pid-table__description md md-inline"><p>Returns <code>parent == null</code></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">renderPrio</span></td>
+                    <td class="pid-table__description md md-inline"><p>Die render priority bestimmt die Reihenfolge in der die Nodes
+mittels <code>renderFrame()</code> aufgerufen werden.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">children</span></td>
+                    <td class="pid-table__description md md-inline"><p>Every node can have children.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">state</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">ready</span></td>
+                    <td class="pid-table__description md md-inline"><p>When set to <code>false</code> this node will be ignored by <em>initialization</em> and <em>rendering</em> process.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">readyFunc</span></td>
+                    <td class="pid-table__description md md-inline"><p>Accepts a boolean value or a function. When the ready function returns a <em>truthy</em> value then this is node is <em>ready</em>.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">display</span></td>
+                    <td class="pid-table__description md md-inline"><p>When set to <code>false</code> the node will not be displayed. The <em>frame</em>, <em>renderFrame</em> and <em>frameEnd</em> events will not be called.
+BUT <code>init</code> and <code>initGl</code> will be called. If you don&#39;t want to initialize the node set the <em>ready</em> attribute to <code>false</code>.</p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </article>
+
+
+    <article class="pid__interface pid__functions page-break-after">
+
+        <h4>Methods</h4>
+
+        <dl class="pid-func">
+            <dt class="pid-func__name">
+                <span class="pid-func__name">appendChild</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a> <span class="pid-func__args-name">node</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">removeChild</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a> <span class="pid-func__args-name">node</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">findNode</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">name</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-node" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Node</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">renderFrame</span>
+                <span class="pid-func__args">
+                    ()
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">void</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">destroy</span>
+                <span class="pid-func__args">
+                    ()
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">void</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
         </dl>
 
     </article>
@@ -1189,72 +1600,72 @@ BUT <code>init</code> and <code>initGl</code> will be called. If you don&#39;t w
 
         <h4>Events</h4>
 
-        <table class="pid-events">
+        <table class="pid-table pid-events">
             <thead>
                 <tr>
-                    <th class="pid-events__title">event name</th>
-                    <th class="pid-events__title">parameters</th>
-                    <th class="pid-events__title">description</th>
+                    <th class="pid-table__title">event name</th>
+                    <th class="pid-table__title">parameters</th>
+                    <th class="pid-table__title">description</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="pid-events__name"><span>init</span></td>
+                    <td class="pid-table__name pid-events__name"><span>init</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         (<ul class="pid-idl__func-args args-1"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">function</span> <span class="pid-idl__args-name">done</span></li></ul>)
                     </td>
-                    <td class="pid-events__description md md-inline"><p>Initialize your node!
+                    <td class="pid-table__description md md-inline"><p>Initialize your node!
 When your <em>init is <strong>async</strong></em> call <code>done()</code> with your <code>Promise</code> as first argument.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>initGl</span></td>
+                    <td class="pid-table__name pid-events__name"><span>initGl</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         (<ul class="pid-idl__func-args args-1"><li class="pid-idl__func-arg"><span class="pid-idl__type-type">function</span> <span class="pid-idl__args-name">done</span></li></ul>)
                     </td>
-                    <td class="pid-events__description md md-inline"><p>Initialize webgl resources here if needed!
+                    <td class="pid-table__description md md-inline"><p>Initialize webgl resources here if needed!
 When your <em>init is <strong>async</strong></em> call <code>done()</code> with your <code>Promise</code> as first argument.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>childrenUpdated</span></td>
+                    <td class="pid-table__name pid-events__name"><span>childrenUpdated</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>A child node was added or removed.</p></td>
+                    <td class="pid-table__description md md-inline"><p>A child node was added or removed.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>frame</span></td>
+                    <td class="pid-table__name pid-events__name"><span>frame</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>A new frame begins!</p></td>
+                    <td class="pid-table__description md md-inline"><p>A new frame begins!</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>renderFrame</span></td>
+                    <td class="pid-table__name pid-events__name"><span>renderFrame</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>Time to create your render commands here!</p></td>
+                    <td class="pid-table__description md md-inline"><p>Time to create your render commands here!</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>frameEnd</span></td>
+                    <td class="pid-table__name pid-events__name"><span>frameEnd</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>The frame ends. All your children completed the frame.</p></td>
+                    <td class="pid-table__description md md-inline"><p>The frame ends. All your children completed the frame.</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>destroyGl</span></td>
+                    <td class="pid-table__name pid-events__name"><span>destroyGl</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>Free all your webgl resources!</p></td>
+                    <td class="pid-table__description md md-inline"><p>Free all your webgl resources!</p></td>
                 </tr>
                 <tr>
-                    <td class="pid-events__name"><span>destroy</span></td>
+                    <td class="pid-table__name pid-events__name"><span>destroy</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-events__description md md-inline"><p>Destroy or release all additional resources allocated by this node.</p></td>
+                    <td class="pid-table__description md md-inline"><p>Destroy or release all additional resources allocated by this node.</p></td>
                 </tr>
             </tbody>
         </table>
@@ -1346,7 +1757,7 @@ When your <em>init is <strong>async</strong></em> call <code>done()</code> with 
                     <li class="pid-idl__attr">
                         <span class="pid-idl__readonly pid-idl__readonly--blank"></span>
                         <span class="pid-idl__keyword">attribute</span>
-                        <span class="pid-idl__type"><span class="pid-idl__type-type">Picimo.core.Texture</span></span>
+                        <span class="pid-idl__type"><a href="#picimo-core-texture" class="pid-idl__type-type pid-idl__type-link">Picimo.core.Texture</a></span>
                         <span class="pid-idl__name">texture;</span>
                     </li>
                 </ul>
@@ -1385,29 +1796,94 @@ When your <em>init is <strong>async</strong></em> call <code>done()</code> with 
 
         <h4>Attributes</h4>
 
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name">displayPosition</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Describe the position where the picture is placed on the scene.
-When set the <em>sceneFit</em> property will be ignored.</p></dd>
-            <dt class="pid-attrs__name">sceneFit</dt>
-            <dd class="pid-attrs__description md md-inline"><p>Describe how the picture dimension should be computed in relation to the scene dimension.
-This property has no effect if the <em>displayPosition</em> property is defined.</p></dd>
-            <dt class="pid-attrs__name">scale</dt>
-            <dd class="pid-attrs__description md md-inline"><p>scale factor <em>(default is 1.0)</em></p></dd>
-            <dt class="pid-attrs__name">opacity</dt>
-            <dd class="pid-attrs__description md md-inline"><p>opacity as value <em>[0..1]</em></p></dd>
-            <dt class="pid-attrs__name">rotate</dt>
-            <dd class="pid-attrs__description md md-inline"><p>rotation in radian</p></dd>
-            <dt class="pid-attrs__name">rotateDegree</dt>
-            <dd class="pid-attrs__description md md-inline"><p>rotation in degree</p></dd>
-            <dt class="pid-attrs__name">posX</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The horizontal position. Supports all the units from <a href="#display-position" alt="DisplayPosition" class="md__link md__link--type">DisplayPosition</a>.</p></dd>
-            <dt class="pid-attrs__name">posY</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The vertical position. Supports all the units from <a href="#display-position" alt="DisplayPosition" class="md__link md__link--type">DisplayPosition</a>.</p></dd>
-            <dt class="pid-attrs__name">program</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The shader program name.</p></dd>
-            <dt class="pid-attrs__name">texture</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The texture used to render the sprite.</p></dd>
+        <table class="pid-table pid-attrs">
+            <thead>
+                <tr>
+                    <th class="pid-table__title">attr name</th>
+                    <th class="pid-table__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">displayPosition</span></td>
+                    <td class="pid-table__description md md-inline"><p>Describe the position where the picture is placed on the scene.
+When set the <em>sceneFit</em> property will be ignored.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">sceneFit</span></td>
+                    <td class="pid-table__description md md-inline"><p>Describe how the picture dimension should be computed in relation to the scene dimension.
+This property has no effect if the <em>displayPosition</em> property is defined.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">scale</span></td>
+                    <td class="pid-table__description md md-inline"><p>scale factor <em>(default is 1.0)</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">opacity</span></td>
+                    <td class="pid-table__description md md-inline"><p>opacity as value <em>[0..1]</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">rotate</span></td>
+                    <td class="pid-table__description md md-inline"><p>rotation in radian</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">rotateDegree</span></td>
+                    <td class="pid-table__description md md-inline"><p>rotation in degree</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">posX</span></td>
+                    <td class="pid-table__description md md-inline"><p>The horizontal position. Supports all the units from <a href="#display-position" alt="DisplayPosition" class="md__link md__link--type">DisplayPosition</a>.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">posY</span></td>
+                    <td class="pid-table__description md md-inline"><p>The vertical position. Supports all the units from <a href="#display-position" alt="DisplayPosition" class="md__link md__link--type">DisplayPosition</a>.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">program</span></td>
+                    <td class="pid-table__description md md-inline"><p>The shader program name.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">texture</span></td>
+                    <td class="pid-table__description md md-inline"><p>The texture used to render the sprite.</p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </article>
+
+
+    <article class="pid__interface pid__functions page-break-after">
+
+        <h4>Methods</h4>
+
+        <dl class="pid-func">
+            <dt class="pid-func__name">
+                <span class="pid-func__name">setPos</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> | <span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">x</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> | <span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">y</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-picture" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Picture</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p>Set the image position</p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">setScale</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">scale</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-picture" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Picture</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">setVertexPositions</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-8"><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">x0</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">y0</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">x1</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">y1</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">x2</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">y2</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">x3</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">y3</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">void</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
         </dl>
 
     </article>
@@ -1567,17 +2043,125 @@ This property has no effect if the <em>displayPosition</em> property is defined.
 
         <h4>Attributes</h4>
 
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name pid-attrs__name--readonly">scene</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The parent scene. Every scene has a parent scene &mdash; unless the root scene &mdash; for the root scene this value is <code>undefined</code>.</p></dd>
-            <dt class="pid-attrs__name pid-attrs__name--readonly">projection</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The projection matrix.</p></dd>
-            <dt class="pid-attrs__name">transform</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The local transformation matrix. Change it to pan or zoom or whatever you want with the scene.</p></dd>
-            <dt class="pid-attrs__name">sizeFit</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The size fit property describes how the scene dimension is computed
+        <table class="pid-table pid-attrs">
+            <thead>
+                <tr>
+                    <th class="pid-table__title">attr name</th>
+                    <th class="pid-table__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">scene</span></td>
+                    <td class="pid-table__description md md-inline"><p>The parent scene. Every scene has a parent scene &mdash; unless the root scene &mdash; for the root scene this value is <code>undefined</code>.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">projection</span></td>
+                    <td class="pid-table__description md md-inline"><p>The projection matrix.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">hasOwnProjection</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">projectionNeedsUpdate</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">transform</span></td>
+                    <td class="pid-table__description md md-inline"><p>The local transformation matrix. Change it to pan or zoom or whatever you want with the scene.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">blendMode</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">sizeFit</span></td>
+                    <td class="pid-table__description md md-inline"><p>The size fit property describes how the scene dimension is computed
 in relation to the scene container. When there is no containing scene the
-app viewport is used instead.</p></dd>
+app viewport is used instead.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">width</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">height</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">pixelRatio</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">devicePixelRatio</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </article>
+
+
+    <article class="pid__interface pid__functions page-break-after">
+
+        <h4>Methods</h4>
+
+        <dl class="pid-func">
+            <dt class="pid-func__name">
+                <span class="pid-func__name">setSize</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-3"><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">width</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">height</span>, </span><span class="pid-func__func-arg">optional <a href="#object-fit" class="pid-idl__type-type pid-idl__type-link">ObjectFit</a> <span class="pid-func__args-name">sizeFit</span>= <span class="pid-func__default-value">&#x27;contain&#x27;</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-scene" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Scene</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">setBlendMode</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-6"><span class="pid-func__func-arg"><span class="pid-idl__type-type">boolean</span> <span class="pid-func__args-name">depthTest</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">boolean</span> <span class="pid-func__args-name">depthMask</span>, </span><span class="pid-func__func-arg">optional <span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">depthFunc</span>, </span><span class="pid-func__func-arg">optional <span class="pid-idl__type-type">boolean</span> <span class="pid-func__args-name">blend</span>, </span><span class="pid-func__func-arg">optional <span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">blendFuncSrc</span>, </span><span class="pid-func__func-arg">optional <span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">blendFuncDst</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Picimo.render.cmd.BlendMode</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">appendScene</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-1"><span class="pid-func__func-arg"><a href="#scene-opts" class="pid-idl__type-type pid-idl__type-link">SceneOpts</a> <span class="pid-func__args-name">options</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-scene" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Scene</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">appendPicture</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">url</span>, </span><span class="pid-func__func-arg"><a href="#picture-opts" class="pid-idl__type-type pid-idl__type-link">PictureOpts</a> <span class="pid-func__args-name">options</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-picture" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Picture</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">appendCanvas</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> | <span class="pid-idl__type-type">Array&lt;number&gt;</span> | <span class="pid-idl__type-type">{x,y,width,height}</span> <span class="pid-func__args-name">canvasSize</span>, </span><span class="pid-func__func-arg"><a href="#canvas-opts" class="pid-idl__type-type pid-idl__type-link">CanvasOpts</a> <span class="pid-func__args-name">options</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-canvas" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.Canvas</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">appendSpriteGroup</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">Picimo.core.TextureAtlas</span> | <span class="pid-idl__type-type">Promise</span> <span class="pid-func__args-name">textureAtlas</span>, </span><span class="pid-func__func-arg"><a href="#sprite-group-opts" class="pid-idl__type-type pid-idl__type-link">SpriteGroupOpts</a> <span class="pid-func__args-name">options</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><a href="#picimo-graph-sprite-group" class="pid-idl__type-type pid-idl__type-link">Picimo.graph.SpriteGroup</a></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
         </dl>
 
     </article>
@@ -1678,13 +2262,67 @@ So that&#39;s why you should choose the capacity carefully.</p>
 
         <h4>Attributes</h4>
 
-        <dl class="pid-attrs">
-            <dt class="pid-attrs__name">program</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The gl program name.</p></dd>
-            <dt class="pid-attrs__name">spriteDescriptor</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The sprite descriptor.</p></dd>
-            <dt class="pid-attrs__name">pool</dt>
-            <dd class="pid-attrs__description md md-inline"><p>The sprite objects pool.</p></dd>
+        <table class="pid-table pid-attrs">
+            <thead>
+                <tr>
+                    <th class="pid-table__title">attr name</th>
+                    <th class="pid-table__title">description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">textureAtlas</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">program</span></td>
+                    <td class="pid-table__description md md-inline"><p>The gl program name.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">spriteDescriptor</span></td>
+                    <td class="pid-table__description md md-inline"><p>The sprite descriptor.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">pool</span></td>
+                    <td class="pid-table__description md md-inline"><p>The sprite objects pool.</p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">defaultSpriteWidth</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name">defaultSpriteHeight</span></td>
+                    <td class="pid-table__description md md-inline"><p><em>TODO description</em></p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </article>
+
+
+    <article class="pid__interface pid__functions page-break-after">
+
+        <h4>Methods</h4>
+
+        <dl class="pid-func">
+            <dt class="pid-func__name">
+                <span class="pid-func__name">setDefaultSpriteSize</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-2"><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">width</span>, </span><span class="pid-func__func-arg"><span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">height</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">void</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
+            <dt class="pid-func__name">
+                <span class="pid-func__name">createSprite</span>
+                <span class="pid-func__args">
+                    (<span class="pid-func__args args-3"><span class="pid-func__func-arg">optional <span class="pid-idl__type-type">string</span> <span class="pid-func__args-name">texture</span>, </span><span class="pid-func__func-arg">optional <span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">width</span>, </span><span class="pid-func__func-arg">optional <span class="pid-idl__type-type">number</span> <span class="pid-func__args-name">height</span></span></span>)
+                </span>
+                :
+                <span class="pid-func__type"><span class="pid-idl__type-type">Picimo.core.VertexObject</span></span>
+            </dt>
+            <dd class="pid-func__description md md-inline"><p><em>TODO description</em></p></dd>
         </dl>
 
     </article>
@@ -1709,7 +2347,7 @@ So that&#39;s why you should choose the capacity carefully.</p>
             <li class="pid-dictionary__attributes">
                 <ul class="pid-idl__group">
                     <li class="pid-idl__attr">
-                        <span class="pid-idl__type">(<span class="pid-idl__type-type">Picimo.core.Texture</span> or <span class="pid-idl__type-type">Promise&lt;Picimo.core.Texture&gt;</span>)</span>
+                        <span class="pid-idl__type">(<a href="#picimo-core-texture" class="pid-idl__type-type pid-idl__type-link">Picimo.core.Texture</a> or <span class="pid-idl__type-type">Promise&lt;<a href="#picimo-core-texture" class="pid-idl__type-type pid-idl__type-link">Picimo.core.Texture</a>&gt;</span>)</span>
                         <span class="pid-idl__name">texture;</span>
                         <span class="pid-idl__default"></span>
                     </li>

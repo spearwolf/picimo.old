@@ -6,7 +6,7 @@
       name: "Picimo.graph.Node"
 
       description: |
-        A base class that all other scene graph nodes extend.
+        The base class that all other scene graph nodes extend.
 
       description_after_events: |
         #### Node States and Events

@@ -24,6 +24,7 @@ $col-prim3       : #15978e;  // #009744;            // green
 $col-prim3-light : lighten($col-prim3, 59%); // 66%);
 
 $col-prim5       : #f0a030;                         // orange/yellow
+$col-prim5-light : lighten($col-prim5, 25%);
 $col-prim51      : #ffff44;                         // marker yellow
 
 $col-prim5-light : #ffffd0;

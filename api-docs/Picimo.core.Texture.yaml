@@ -1,0 +1,68 @@
+---
+  name: "Picimo.core.Texture"
+  type: "programming-interface"
+  interfaces:
+    -
+      name: "Picimo.core.Texture"
+      description_after_idl: |
+        #### Example
+        ```
+        let c = document.createElement("canvas");
+        let t = new Picimo.core.Texture.fromCanvas(c);
+        t.width    // => 300
+        t.height   // => 150
+
+        let tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
+        t.width    // => 100
+        ```
+
+      attributes:
+        -
+          name: "width"
+          type: "number"
+        -
+          name: "height"
+          type: "number"
+        -
+          name: "image"
+          type:
+              - HTMLCanvasElement
+              - HTMLImageElement
+
+      functions:
+        -
+          name: "setTexCoords"
+          args:
+            -
+              name: "obj"
+              type: "Object"
+          returns: void
+
+      constructor:
+        args:
+          -
+            name: "parent"
+            type: "Picimo.core.Texture"
+            nullable: true
+            optional: true
+          -
+            name: "x"
+            type: "number"
+            nullable: true
+            optional: true
+          -
+            name: "y"
+            type: "number"
+            nullable: true
+            optional: true
+          -
+            name: "width"
+            type: "number"
+            nullable: true
+            optional: true
+          -
+            name: "height"
+            type: "number"
+            nullable: true
+            optional: true
+

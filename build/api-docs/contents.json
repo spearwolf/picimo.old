@@ -109,7 +109,7 @@
       "dictionaries": [
         {
           "name": "DisplayPosition",
-          "description": "The display position specifies how the picture is positioned *in relationship to the scene dimension*.\n\nMost properties will support a *string* as input. That means you can choose between different units:\n\n| Type | Format | Unit | Description |\n|------|------------|----------|---------|\n| number | _any number_ | __px__ | pixel |\n| string | `32px` | __px__ | pixel |\n| string | `100iw` | __iw__ | image width percentage |\n| string | `50.0ih` | __ih__ | image height percentage |\n| string | `-80sw` | __sw__ | scene width percentage |\n| string | `-1.1sh` | __sh__ | scene height percentage |\n| string | `100 %` | __%__ | _see property description for the unit_ |\n\n![The Display Position](/assets/images/doc/displayPosition.png)\n![The Display Position Zoom](/assets/images/doc/displayPosition zoom.png)\n",
+          "description": "The display position specifies how a image is positioned *in the context of the scene*.\n\nMost properties will support *number* or *string* as input. Using a *string* means you can choose between different units:\n\n| Type | Format | Unit | Description |\n|------|------------|----------|---------|\n| number | _any number_ | __px__ | pixel |\n| string | `32px` | __px__ | pixel |\n| string | `100iw` | __iw__ | image width percentage |\n| string | `50.0ih` | __ih__ | image height percentage |\n| string | `-80sw` | __sw__ | scene width percentage |\n| string | `-1.1sh` | __sh__ | scene height percentage |\n| string | `100 %` | __%__ | _see property description for the unit_ |\n\n![The Display Position](/assets/images/doc/displayPosition.png)\n![The Display Position Zoom](/assets/images/doc/displayPosition zoom.png)\n",
           "attributes": [
             {
               "name": "top",
@@ -599,6 +599,79 @@
         }
       ]
     },
+    "Picimo.core.Texture": {
+      "name": "Picimo.core.Texture",
+      "type": "programming-interface",
+      "interfaces": [
+        {
+          "name": "Picimo.core.Texture",
+          "description_after_idl": "#### Example\n```\nlet c = document.createElement(\"canvas\");\nlet t = new Picimo.core.Texture.fromCanvas(c);\nt.width    // => 300\nt.height   // => 150\n\nlet tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )\nt.width    // => 100\n```\n",
+          "attributes": [
+            {
+              "name": "width",
+              "type": "number"
+            },
+            {
+              "name": "height",
+              "type": "number"
+            },
+            {
+              "name": "image",
+              "type": [
+                "HTMLCanvasElement",
+                "HTMLImageElement"
+              ]
+            }
+          ],
+          "functions": [
+            {
+              "name": "setTexCoords",
+              "args": [
+                {
+                  "name": "obj",
+                  "type": "Object"
+                }
+              ],
+              "returns": "void"
+            }
+          ],
+          "constructor": {
+            "args": [
+              {
+                "name": "parent",
+                "type": "Picimo.core.Texture",
+                "nullable": true,
+                "optional": true
+              },
+              {
+                "name": "x",
+                "type": "number",
+                "nullable": true,
+                "optional": true
+              },
+              {
+                "name": "y",
+                "type": "number",
+                "nullable": true,
+                "optional": true
+              },
+              {
+                "name": "width",
+                "type": "number",
+                "nullable": true,
+                "optional": true
+              },
+              {
+                "name": "height",
+                "type": "number",
+                "nullable": true,
+                "optional": true
+              }
+            ]
+          }
+        }
+      ]
+    },
     "Picimo.graph.Canvas": {
       "name": "Picimo.graph.Canvas",
       "type": "programming-interface",
@@ -673,7 +746,7 @@
       "interfaces": [
         {
           "name": "Picimo.graph.Node",
-          "description": "A base class that all other scene graph nodes extend.\n",
+          "description": "The base class that all other scene graph nodes extend.\n",
           "description_after_events": "#### Node States and Events\n<img src=\"/assets/images/doc/node-events.png\" srcset=\"/assets/images/doc/node-events.png 1x,/assets/images/doc/node-events@2x.png 2x\" alt=\"Node Events and States\">\n",
           "attributes": [
             {
@@ -930,6 +1003,7 @@
           "functions": [
             {
               "name": "setPos",
+              "description": "Set the image position",
               "returns": "Picimo.graph.Picture",
               "args": [
                 {
@@ -1565,6 +1639,7 @@
     "NodeOpts",
     "ObjectFit",
     "Picimo.App",
+    "Picimo.core.Texture",
     "Picimo.graph.Canvas",
     "Picimo.graph.Node",
     "Picimo.graph.Picture",

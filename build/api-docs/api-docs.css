@@ -725,54 +725,19 @@ body.overlay .main {
     color: #949DA4; }
 
 /*$col-prim6       : #a9274b;                         // topbar (compcat view) bg*/
-.pid__interface .pid-attrs__name {
-  color: #000;
-  background-color: #dbf0fb; }
-  .pid__interface .pid-attrs__name--readonly:after {
-    color: #1796DA; }
-
-.pid__dictionary .pid-attrs__name {
-  color: #000;
-  background-color: #defaf9; }
-
-.pid__enum .pid-attrs__name {
-  color: #000;
-  background-color: #f5f5f5; }
-
-.pid-attrs {
-  /*margin-left: 2rem;*/ }
-  .pid-attrs__name {
-    display: inline-block;
-    padding: 0 0.25em;
-    font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
-    font-weight: 700;
-    font-style: normal;
-    text-decoration: none;
-    font-size: 12px;
-    line-height: 21.6px; }
-    .pid-attrs__name--readonly:after {
-      content: "\f023";
-      margin-left: 0.33em;
-      font-family: FontAwesome; }
-  .pid-attrs__description {
-    margin-bottom: 1em; }
-    .pid-attrs__description > p {
-      margin: 0; }
-
-.pid-events {
-  /*width: 100%;*/
+.pid-table {
   border-collapse: separate;
   border-spacing: 2px; }
-  .pid-events th, .pid-events td {
+  .pid-table th, .pid-table td {
     text-align: left; }
-  .pid-events th {
+  .pid-table th {
     background-color: #f8f9fa;
     border-bottom: 2px solid #dae0e5;
     padding: 0.5em 0.5em; }
-  .pid-events td {
+  .pid-table td {
     border-bottom: 1px solid #dae0e5;
     padding: 0 0.5em; }
-  .pid-events__title {
+  .pid-table__title {
     font-family: Roboto, sans-serif;
     font-weight: 700;
     font-style: normal;
@@ -780,24 +745,94 @@ body.overlay .main {
     font-size: 12px;
     line-height: 19.416px;
     text-transform: uppercase; }
-  .pid-events__name span {
+  .pid-table__name span {
     font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
     font-weight: 400;
     font-style: normal;
     text-decoration: none;
     font-size: 12px;
     line-height: 21.6px;
-    color: #000;
-    background-color: #dbf0fb;
-    padding-left: 0.5em;
-    padding-right: 0.5em; }
-  .pid-events__description {
+    color: #000; }
+  .pid-table__description {
     font-family: Roboto, sans-serif;
     font-weight: 400;
     font-style: normal;
     text-decoration: none;
     font-size: 14px;
     line-height: 22.652px; }
+    .pid-table__description p {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em; }
+
+.pid__interface .pid-table, .pid__interface .pid-func {
+  margin-left: 2em; }
+
+.pid__interface .pid-attrs__name {
+  font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+  font-weight: 700;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 21.6px; }
+  .pid__interface .pid-attrs__name--readonly:after {
+    color: #d0d0d0; }
+
+.pid__interface .pid-func__name > .pid-func__name {
+  font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+  font-weight: 700;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 21.6px; }
+
+.pid__interface .pid-func__name > .pid-func__args .pid-func__args-name {
+  font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+  font-weight: 700;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 21.6px; }
+
+.pid__interface .pid-func__name .pid-idl__type-link {
+  background-color: transparent; }
+
+.pid__dictionary .pid-attrs {
+  margin-left: 2em; }
+  .pid__dictionary .pid-attrs__name {
+    color: #000;
+    background-color: #defaf9; }
+  .pid__dictionary .pid-attrs__description {
+    margin-bottom: 1.5em; }
+    .pid__dictionary .pid-attrs__description p {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em; }
+
+.pid__enum .pid-attrs__name {
+  color: #000;
+  background-color: #f5f5f5; }
+
+.pid-attrs__name {
+  display: inline-block;
+  padding: 0 0.25em;
+  font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+  font-weight: 700;
+  font-style: normal;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 21.6px; }
+  .pid-attrs__name--readonly:after {
+    content: "\f023";
+    margin-left: 0.33em;
+    font-family: FontAwesome; }
+
+.pid-func__description {
+  margin-top: 0.25em;
+  margin-bottom: 0.5em; }
+  .pid-func__description > p {
+    margin: 0; }
+
+.pid-events__name span {
+  background-color: #dbf0fb; }
 
 /*$col-prim6       : #a9274b;                         // topbar (compcat view) bg*/
 .md {

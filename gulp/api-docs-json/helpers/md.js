@@ -11,6 +11,7 @@ export function configure (ctx) {
 }
 
 Handlebars.registerHelper('md', function (text) {
-    return _.trim(text ? markedRenderer(apiDocContext, text) : '<span class="TODO">TODO</span>');
+    //return _.trim(text ? markedRenderer(apiDocContext, text) : '<span class="TODO">TODO</span>');
+    return _.trim(markedRenderer(apiDocContext, text ? text : '*TODO description*'));
 });
 
