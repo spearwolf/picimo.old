@@ -289,7 +289,7 @@
       "interfaces": [
         {
           "name": "Picimo.App",
-          "description": "Bootstrapping for *picimo* applications.\n",
+          "description": "The main interface to your *picimo* application.\n",
           "attributes": [
             {
               "separator": true,
@@ -299,43 +299,43 @@
               "name": "scene",
               "type": "Picimo.graph.Scene",
               "readonly": true,
-              "description": "The *root* scene node of the picimo scene graph."
+              "description": "The *root* node of your scene graph"
             },
             {
               "separator": true,
-              "title": "time/frame info"
+              "title": "time"
             },
             {
               "name": "now",
               "type": "number",
-              "description": "The number of seconds from application start.",
+              "description": "Number of seconds from application start",
               "readonly": true
             },
             {
               "name": "frameNo",
               "type": "number",
-              "description": "The current frame number.",
+              "description": "Current frame number",
               "readonly": true
             },
             {
               "separator": true,
-              "title": "asset/urls"
+              "title": "asset urls"
             },
             {
               "name": "assetBaseUrl",
               "type": "string",
               "nullable": true,
-              "description": "The base url for all assets. *Maybe* be undefined. The base url can be set via the __assetBaseUrl__\n*option* or via the global var `PICIMO_ASSET_BASE_URL` (will override the option).\nIf unspecified the base url will be calculated from `locaation.href`\n"
+              "description": "The base url for all assets.\nThis is *optional* and value may be `null` (or `undefined`).\nThis url can also be set with the [assetBaseUrl](#app-opts) option or\nas an alternative you can define a global variable `PICIMO_ASSET_BASE_URL`\n(this will override the option).\nIf unset the url will be calculated from `location.href`\n"
             },
             {
               "separator": true,
-              "title": "canvas/webgl/context info"
+              "title": "html dom context"
             },
             {
               "name": "canvas",
               "type": "HTMLCanvasElement",
               "readonly": true,
-              "description": "The `<canvas>` dom element."
+              "description": "The `<canvas>` dom element"
             },
             {
               "name": "canvasIsPredefined",
@@ -345,25 +345,25 @@
             {
               "name": "backgroundColor",
               "type": "Picimo.utils.Color",
-              "description": "The default background color is _black_ or if you set the __alpha__ option then _transparent_ is used."
+              "description": "Default background color is __black__ or if you activate the [alpha](#app-opts) option then your canvas will be set to _transparent_"
             },
             {
               "name": "width",
               "type": "number",
               "readonly": true,
-              "description": "The _device_ pixel width."
+              "description": "_Device_ pixel width"
             },
             {
               "name": "height",
               "type": "number",
               "readonly": true,
-              "description": "The _device_ pixel height."
+              "description": "_Device_ pixel height"
             }
           ],
           "functions": [
             {
               "separator": true,
-              "title": "textures"
+              "title": "texture management"
             },
             {
               "name": "loadTextureAtlas",
@@ -387,7 +387,7 @@
             },
             {
               "separator": true,
-              "title": "url helpers"
+              "title": "asset url helpers"
             },
             {
               "name": "getAssetUrl",
@@ -415,7 +415,7 @@
             },
             {
               "separator": true,
-              "title": "sprites"
+              "title": "sprite management"
             },
             {
               "name": "defineSprite",
@@ -447,7 +447,7 @@
             },
             {
               "separator": true,
-              "title": "shader"
+              "title": "shader management"
             },
             {
               "name": "defineVertexShader",
@@ -573,27 +573,27 @@
           "events": [
             {
               "name": "init",
-              "description": "Will be called right after app creation time.\n"
+              "description": "Will be called right after app creation time\n"
             },
             {
               "name": "resize",
-              "description": "Canvas resized.\n"
+              "description": "Canvas resized\n"
             },
             {
               "name": "frameBegin",
-              "description": "The frame begins.\n"
+              "description": "The frame begins\n"
             },
             {
               "name": "frame",
-              "description": "On frame event. The renderer has been initialized,\nbut this is before the scene graph is rendered.\n"
+              "description": "On frame event. The renderer has been initialized,\nbut this will be thrown before the scene graph is rendered\n"
             },
             {
               "name": "renderFrame",
-              "description": "On frame event. The renderer has been initialized\nand the scene graph is executed but the renderer is not yet finished,\nso this is the last call to create render commands if wanted.\n"
+              "description": "On frame event. The renderer has been initialized\nand the scene graph is executed but the renderer is not yet finished,\nso this is your last call to push additional render commands to command queue\n"
             },
             {
               "name": "frameEnd",
-              "description": "The frame ends.\n"
+              "description": "The frame ends\n"
             }
           ]
         }

@@ -623,7 +623,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
     <h3 class="sticky-header">The <em>Picimo.App</em> interface</h3>
 
     <article class="pid__interface pid-idl__description md">
-        <p>Bootstrapping for <em>picimo</em> applications.</p>
+        <p>The main interface to your <em>picimo</em> application.</p>
     </article>
 
     <article class="pid__interface pid-idl">
@@ -649,7 +649,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
                         <span class="pid-idl__name">scene;</span>
                     </li>
                   </ul>
-                    <p class="pid-idl__comment">// time/frame info</span>
+                    <p class="pid-idl__comment">// time</span>
                   <ul class="pid-idl__group">
                     <li class="pid-idl__attr">
                         <span class="pid-idl__readonly ">readonly</span>
@@ -664,7 +664,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
                         <span class="pid-idl__name">frameNo;</span>
                     </li>
                   </ul>
-                    <p class="pid-idl__comment">// asset/urls</span>
+                    <p class="pid-idl__comment">// asset urls</span>
                   <ul class="pid-idl__group">
                     <li class="pid-idl__attr">
                         <span class="pid-idl__readonly pid-idl__readonly--blank"></span>
@@ -673,7 +673,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
                         <span class="pid-idl__name">assetBaseUrl;</span>
                     </li>
                   </ul>
-                    <p class="pid-idl__comment">// canvas/webgl/context info</span>
+                    <p class="pid-idl__comment">// html dom context</span>
                   <ul class="pid-idl__group">
                     <li class="pid-idl__attr">
                         <span class="pid-idl__readonly ">readonly</span>
@@ -710,7 +710,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
             <li class="pid-interface__functions">
                 <ul class="pid-idl__group">
                   </ul>
-                    <p class="pid-idl__comment">// textures</span>
+                    <p class="pid-idl__comment">// texture management</span>
                   <ul class="pid-idl__group">
                     <li class="pid-idl__func">
                         <span class="pid-idl__type"><span class="pid-idl__type-type">Promise&lt;Picimo.core.TextureAtlas&gt;</span></span>
@@ -727,7 +727,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
                         </span>
                     </li>
                   </ul>
-                    <p class="pid-idl__comment">// url helpers</span>
+                    <p class="pid-idl__comment">// asset url helpers</span>
                   <ul class="pid-idl__group">
                     <li class="pid-idl__func">
                         <span class="pid-idl__type"><span class="pid-idl__type-type">string</span></span>
@@ -744,7 +744,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
                         </span>
                     </li>
                   </ul>
-                    <p class="pid-idl__comment">// sprites</span>
+                    <p class="pid-idl__comment">// sprite management</span>
                   <ul class="pid-idl__group">
                     <li class="pid-idl__func">
                         <span class="pid-idl__type"><span class="pid-idl__type-type">Picimo.core.VertexObjectDescriptor</span></span>
@@ -761,7 +761,7 @@ will only see a blank <em>blue</em> scene here as result).</li>
                         </span>
                     </li>
                   </ul>
-                    <p class="pid-idl__comment">// shader</span>
+                    <p class="pid-idl__comment">// shader management</span>
                   <ul class="pid-idl__group">
                     <li class="pid-idl__func">
                         <span class="pid-idl__type"><a href="#picimo-app" class="pid-idl__type-type pid-idl__type-link">Picimo.App</a></span>
@@ -840,25 +840,28 @@ will only see a blank <em>blue</em> scene here as result).</li>
             <tbody>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">scene</span></td>
-                    <td class="pid-table__description md md-inline"><p>The <em>root</em> scene node of the picimo scene graph.</p></td>
+                    <td class="pid-table__description md md-inline"><p>The <em>root</em> node of your scene graph</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">now</span></td>
-                    <td class="pid-table__description md md-inline"><p>The number of seconds from application start.</p></td>
+                    <td class="pid-table__description md md-inline"><p>Number of seconds from application start</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">frameNo</span></td>
-                    <td class="pid-table__description md md-inline"><p>The current frame number.</p></td>
+                    <td class="pid-table__description md md-inline"><p>Current frame number</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name">assetBaseUrl</span></td>
-                    <td class="pid-table__description md md-inline"><p>The base url for all assets. <em>Maybe</em> be undefined. The base url can be set via the <strong>assetBaseUrl</strong>
-<em>option</em> or via the global var <code>PICIMO_ASSET_BASE_URL</code> (will override the option).
-If unspecified the base url will be calculated from <code>locaation.href</code></p></td>
+                    <td class="pid-table__description md md-inline"><p>The base url for all assets.
+This is <em>optional</em> and value may be <code>null</code> (or <code>undefined</code>).
+This url can also be set with the <a href="#app-opts" alt="assetBaseUrl" class="md__link">assetBaseUrl</a> option or
+as an alternative you can define a global variable <code>PICIMO_ASSET_BASE_URL</code>
+(this will override the option).
+If unset the url will be calculated from <code>location.href</code></p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">canvas</span></td>
-                    <td class="pid-table__description md md-inline"><p>The <code>&lt;canvas&gt;</code> dom element.</p></td>
+                    <td class="pid-table__description md md-inline"><p>The <code>&lt;canvas&gt;</code> dom element</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">canvasIsPredefined</span></td>
@@ -866,15 +869,15 @@ If unspecified the base url will be calculated from <code>locaation.href</code><
                 </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name">backgroundColor</span></td>
-                    <td class="pid-table__description md md-inline"><p>The default background color is <em>black</em> or if you set the <strong>alpha</strong> option then <em>transparent</em> is used.</p></td>
+                    <td class="pid-table__description md md-inline"><p>Default background color is <strong>black</strong> or if you activate the <a href="#app-opts" alt="alpha" class="md__link">alpha</a> option then your canvas will be set to <em>transparent</em></p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">width</span></td>
-                    <td class="pid-table__description md md-inline"><p>The <em>device</em> pixel width.</p></td>
+                    <td class="pid-table__description md md-inline"><p><em>Device</em> pixel width</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">height</span></td>
-                    <td class="pid-table__description md md-inline"><p>The <em>device</em> pixel height.</p></td>
+                    <td class="pid-table__description md md-inline"><p><em>Device</em> pixel height</p></td>
                 </tr>
             </tbody>
         </table>
@@ -1036,21 +1039,21 @@ If unspecified the base url will be calculated from <code>locaation.href</code><
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-table__description md md-inline"><p>Will be called right after app creation time.</p></td>
+                    <td class="pid-table__description md md-inline"><p>Will be called right after app creation time</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name pid-events__name"><span>resize</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-table__description md md-inline"><p>Canvas resized.</p></td>
+                    <td class="pid-table__description md md-inline"><p>Canvas resized</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name pid-events__name"><span>frameBegin</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-table__description md md-inline"><p>The frame begins.</p></td>
+                    <td class="pid-table__description md md-inline"><p>The frame begins</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name pid-events__name"><span>frame</span></td>
@@ -1058,7 +1061,7 @@ If unspecified the base url will be calculated from <code>locaation.href</code><
                         -
                     </td>
                     <td class="pid-table__description md md-inline"><p>On frame event. The renderer has been initialized,
-but this is before the scene graph is rendered.</p></td>
+but this will be thrown before the scene graph is rendered</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name pid-events__name"><span>renderFrame</span></td>
@@ -1067,14 +1070,14 @@ but this is before the scene graph is rendered.</p></td>
                     </td>
                     <td class="pid-table__description md md-inline"><p>On frame event. The renderer has been initialized
 and the scene graph is executed but the renderer is not yet finished,
-so this is the last call to create render commands if wanted.</p></td>
+so this is your last call to push additional render commands to command queue</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name pid-events__name"><span>frameEnd</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-table__description md md-inline"><p>The frame ends.</p></td>
+                    <td class="pid-table__description md md-inline"><p>The frame ends</p></td>
                 </tr>
             </tbody>
         </table>

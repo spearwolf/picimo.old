@@ -5,7 +5,7 @@
     -
       name: "Picimo.App"
       description: |
-        Bootstrapping for *picimo* applications.
+        The main interface to your *picimo* application.
 
       attributes:
         -
@@ -15,39 +15,42 @@
           name: "scene"
           type: "Picimo.graph.Scene"
           readonly: true
-          description: "The *root* scene node of the picimo scene graph."
+          description: The *root* node of your scene graph
         -
           separator: true
-          title: time/frame info
+          title: time
         -
           name: "now"
           type: "number"
-          description: "The number of seconds from application start."
+          description: Number of seconds from application start
           readonly: true
         -
           name: "frameNo"
           type: "number"
-          description: "The current frame number."
+          description: Current frame number
           readonly: true
         -
           separator: true
-          title: asset/urls
+          title: asset urls
         -
           name: "assetBaseUrl"
           type: "string"
           nullable: true
           description: |
-            The base url for all assets. *Maybe* be undefined. The base url can be set via the __assetBaseUrl__
-            *option* or via the global var `PICIMO_ASSET_BASE_URL` (will override the option).
-            If unspecified the base url will be calculated from `locaation.href`
+            The base url for all assets.
+            This is *optional* and value may be `null` (or `undefined`).
+            This url can also be set with the [assetBaseUrl](#app-opts) option or
+            as an alternative you can define a global variable `PICIMO_ASSET_BASE_URL`
+            (this will override the option).
+            If unset the url will be calculated from `location.href`
         -
           separator: true
-          title: canvas/webgl/context info
+          title: html dom context
         -
           name: "canvas"
           type: "HTMLCanvasElement"
           readonly: true
-          description: "The `<canvas>` dom element."
+          description: The `<canvas>` dom element
         -
           name: "canvasIsPredefined"
           type: "boolean"
@@ -55,22 +58,22 @@
         -
           name: "backgroundColor"
           type: "Picimo.utils.Color"
-          description: "The default background color is _black_ or if you set the __alpha__ option then _transparent_ is used."
+          description: Default background color is __black__ or if you activate the [alpha](#app-opts) option then your canvas will be set to _transparent_
         -
           name: "width"
           type: "number"
           readonly: true
-          description: "The _device_ pixel width."
+          description: _Device_ pixel width
         -
           name: "height"
           type: "number"
           readonly: true
-          description: "The _device_ pixel height."
+          description: _Device_ pixel height
 
       functions:
         -
           separator: true
-          title: "textures"
+          title: "texture management"
         -
           name: "loadTextureAtlas"
           args:
@@ -87,7 +90,7 @@
           returns: "Promise<Picimo.core.Texture>"
         -
           separator: true
-          title: "url helpers"
+          title: "asset url helpers"
         -
           name: "getAssetUrl"
           args:
@@ -107,7 +110,7 @@
           returns: "string"
         -
           separator: true
-          title: "sprites"
+          title: "sprite management"
         -
           name: "defineSprite"
           args:
@@ -130,7 +133,7 @@
           returns: "Picimo.core.VertexObject"
         -
           separator: true
-          title: "shader"
+          title: "shader management"
         -
           name: "defineVertexShader"
           args:
@@ -223,28 +226,28 @@
         -
           name: init
           description: |
-            Will be called right after app creation time.
+            Will be called right after app creation time
         -
           name: resize
           description: |
-            Canvas resized.
+            Canvas resized
         -
           name: frameBegin
           description: |
-            The frame begins.
+            The frame begins
         -
           name: frame
           description: |
             On frame event. The renderer has been initialized,
-            but this is before the scene graph is rendered.
+            but this will be thrown before the scene graph is rendered
         -
           name: renderFrame
           description: |
             On frame event. The renderer has been initialized
             and the scene graph is executed but the renderer is not yet finished,
-            so this is the last call to create render commands if wanted.
+            so this is your last call to push additional render commands to command queue
         -
           name: frameEnd
           description: |
-            The frame ends.
+            The frame ends
 
