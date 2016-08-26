@@ -25,7 +25,9 @@
     "watch:api-docs": "watch 'npm run api-docs' api-docs/",
     "release": "run-p build:release esdoc api-docs",
     "start": "run-p watch:src watch:api-docs",
-    "clean": "gulp clean"
+    "clean": "gulp clean",
+    "karma": "karma start",
+    "test": "run-s build:dev karma"
   },
   "babel": {
     "presets": [
