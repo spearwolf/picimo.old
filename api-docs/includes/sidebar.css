@@ -30,18 +30,18 @@
         font-weight: bold;
 
         &--interface {
-            color: #009800;
-            background-color: #bfe5bf;
+            color: $col-interface-fg;
+            background-color:  $col-interface-bg;
         }
 
         &--dictionary {
-            color: #6b0090;
-            background-color: #d6bdde;
+            color: $col-dict-fg;
+            background-color: $col-dict-bg;
         }
 
         &--enum {
-            color: #eb6420;
-            background-color: #fad8c7;
+            color: $col-enum-fg;
+            background-color: $col-enum-bg;
         }
     }
 

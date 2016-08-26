@@ -63,6 +63,7 @@
 
     .pid-func {
         &__name {
+            @include typo('monospace', $size: $pidIdlMonoFontSize);
 
             &> .pid-func__name {
                 @include typo('monospace', $size: $pidIdlMonoFontSize, $weight: 'bold');
@@ -91,7 +92,7 @@
 
         &__name {
             color: $col-black;
-            background-color: $col-prim3-light;
+            background-color: $col-prim0-light;
         }
 
         &__description {

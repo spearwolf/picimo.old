@@ -421,7 +421,7 @@ h4 {
   text-decoration: none;
   font-size: 21px;
   line-height: 33.978px;
-  color: #15978e;
+  color: #60ac02;
   margin-top: 1.25em;
   margin-bottom: 0.75em; }
 
@@ -627,7 +627,7 @@ body.overlay .main {
   .pid-idl.pid__enum {
     background: linear-gradient(to bottom right, #f5f5f5 0%, #ffffff 100%); }
   .pid-idl.pid__dictionary {
-    background: linear-gradient(to bottom right, #defaf9 0%, #ffffff 100%); }
+    background: linear-gradient(to bottom right, #f5f5f5 0%, #ffffff 100%); }
   .pid-idl.pid__interface {
     background: linear-gradient(to bottom right, #dbf0fb 0%, #ffffff 100%); }
   .pid-idl em {
@@ -777,30 +777,35 @@ body.overlay .main {
   .pid__interface .pid-attrs__name--readonly:after {
     color: #d0d0d0; }
 
-.pid__interface .pid-func__name > .pid-func__name {
+.pid__interface .pid-func__name {
   font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
-  font-weight: 700;
+  font-weight: 400;
   font-style: normal;
   text-decoration: none;
   font-size: 12px;
   line-height: 21.6px; }
-
-.pid__interface .pid-func__name > .pid-func__args .pid-func__args-name {
-  font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
-  font-weight: 700;
-  font-style: normal;
-  text-decoration: none;
-  font-size: 12px;
-  line-height: 21.6px; }
-
-.pid__interface .pid-func__name .pid-idl__type-link {
-  background-color: transparent; }
+  .pid__interface .pid-func__name > .pid-func__name {
+    font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+    font-weight: 700;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 21.6px; }
+  .pid__interface .pid-func__name > .pid-func__args .pid-func__args-name {
+    font-family: Fira Mono, Menlo Consolas, DejaVu Sans Mono, monospace;
+    font-weight: 700;
+    font-style: normal;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 21.6px; }
+  .pid__interface .pid-func__name .pid-idl__type-link {
+    background-color: transparent; }
 
 .pid__dictionary .pid-attrs {
   margin-left: 2em; }
   .pid__dictionary .pid-attrs__name {
     color: #000;
-    background-color: #defaf9; }
+    background-color: #f5f5f5; }
   .pid__dictionary .pid-attrs__description {
     margin-bottom: 1.5em; }
     .pid__dictionary .pid-attrs__description p {
@@ -909,8 +914,8 @@ body.overlay .main {
     margin-right: 0.2em;
     font-weight: bold; }
     .sidebar__content .toc__kind-of--interface {
-      color: #009800;
-      background-color: #bfe5bf; }
+      color: #58952B;
+      background-color: #D2DD64; }
     .sidebar__content .toc__kind-of--dictionary {
       color: #6b0090;
       background-color: #d6bdde; }

@@ -20,7 +20,7 @@ $col-prim1-light : lighten($col-prim1-dark, 45%);
 $col-prim2       : #ca2166; // #da1156;             // pink!
 $col-prim2-light : lighten($col-prim2, 25%);
 
-$col-prim3       : #15978e;  // #009744;            // green
+$col-prim3       : #60ac02; // #15978e;  // #009744;            // green
 $col-prim3-light : lighten($col-prim3, 59%); // 66%);
 
 $col-prim5       : #f0a030;                         // orange/yellow
@@ -33,4 +33,17 @@ $col-prim5-light : #ffffd0;
 
 $col-table-head-bg : #f8f9fa;
 $col-table-border  : #dae0e5;
+
+// sidebar
+//---------------------------------
+
+$col-interface-bg: #D2DD64; //#bfe5bf;
+$col-interface-fg: #58952B; //#009800;
+
+$col-enum-bg: #fad8c7;
+$col-enum-fg: #eb6420;
+
+$col-dict-bg: #d6bdde;
+$col-dict-fg: #6b0090;
+
 
