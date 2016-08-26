@@ -51,7 +51,7 @@ export default function () {
 
         }
 
-        this.emit('resize');
+        if (this.ready) this.emit('resize');
 
     }
 

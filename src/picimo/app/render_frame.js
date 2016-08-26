@@ -12,6 +12,12 @@ export default function () {
 
     this.resize();
 
+    if (!this.ready) {
+        Object.defineProperty(this, 'ready', { value: true, configurable: true, enumerable: true });
+        this.emit('ready');
+        this.emit('resize');
+    }
+
     this.emit('frameBegin');
 
     this.renderer.onStartFrame();

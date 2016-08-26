@@ -9,6 +9,11 @@
 
       attributes:
         -
+          name: ready
+          type: boolean
+          description: Ready is truthy after all app initializations are done and before the very first frame will be rendered
+          readonly: true
+        -
           separator: true
           title: "scene graph"
         -
@@ -228,9 +233,12 @@
           description: |
             Will be called right after app creation time
         -
+          name: ready
+          description: All initializations are successfully done
+        -
           name: resize
           description: |
-            Canvas resized
+            Canvas resized (never called before but always after after the `ready` event)
         -
           name: frameBegin
           description: |

@@ -2,7 +2,7 @@
 
 const Picimo = require('../build/picimo');
 
-describe("picimo", function () {
+describe("Picimo", function () {
 
     it("should contain Picimo.App constructor", function () {
 

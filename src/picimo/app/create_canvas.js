@@ -53,10 +53,13 @@ export default function ( app, canvas, appendTo ) {
 
 function setUserSelectStyle (element, value = 'none') {
 
-    if ('webkitUserSelect' in element.style) element.style.webkitUserSelect = value;
-    if ('mozUserSelect' in element.style) element.style.mozUserSelect = value;
-    if ('msUserSelect' in element.style) element.style.msUserSelect = value;
-    if ('userSelect' in element.style) element.style.userSelect = value;
+    if ('userSelect' in element.style) {
+        element.style.userSelect = value;
+    } else {
+        if ('webkitUserSelect' in element.style) element.style.webkitUserSelect = value;
+        if ('mozUserSelect' in element.style) element.style.mozUserSelect = value;
+        if ('msUserSelect' in element.style) element.style.msUserSelect = value;
+    }
 
 }
 

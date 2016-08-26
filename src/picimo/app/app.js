@@ -22,6 +22,8 @@ export default function App ( canvas, options ) {
 
     eventize( this );
 
+    Object.defineProperty(this, 'ready', { value: false, configurable: true, enumerable: true });
+
     this.now = window.performance.now() / 1000.0;
 
     if ( typeof canvas === 'object' && ! ( 'nodeName' in canvas ) ) {
