@@ -40,7 +40,9 @@ describe("Picimo.App", () => {
             if (!app.ready) resizeBeforeReady = true;
         });
 
-        app.on('frameEnd', () => app.once('frameBegin', done));
+        app.on('frameEnd', () => {
+            if (app.frameNo === 60) done();
+        });
 
     });
 
