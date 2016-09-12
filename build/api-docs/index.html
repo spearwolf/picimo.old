@@ -639,6 +639,12 @@ will only see a blank <em>blue</em> scene here as result).</li>
         <ul class="pid-idl__block">
             <li class="pid-interface__attributes">
                 <ul class="pid-idl__group">
+                    <li class="pid-idl__attr">
+                        <span class="pid-idl__readonly ">readonly</span>
+                        <span class="pid-idl__keyword">attribute</span>
+                        <span class="pid-idl__type"><span class="pid-idl__type-type">boolean</span></span>
+                        <span class="pid-idl__name">ready;</span>
+                    </li>
                   </ul>
                     <p class="pid-idl__comment">// scene graph</span>
                   <ul class="pid-idl__group">
@@ -838,6 +844,10 @@ will only see a blank <em>blue</em> scene here as result).</li>
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">ready</span></td>
+                    <td class="pid-table__description md md-inline"><p>Ready is truthy after all app initializations are done and before the very first frame will be rendered</p></td>
+                </tr>
                 <tr>
                     <td class="pid-table__name"><span class="pid-attrs__name pid-attrs__name--readonly">scene</span></td>
                     <td class="pid-table__description md md-inline"><p>The <em>root</em> node of your scene graph</p></td>
@@ -1042,11 +1052,18 @@ If unset the url will be calculated from <code>location.href</code></p></td>
                     <td class="pid-table__description md md-inline"><p>Will be called right after app creation time</p></td>
                 </tr>
                 <tr>
+                    <td class="pid-table__name pid-events__name"><span>ready</span></td>
+                    <td class="pid-events__args pid-idl pid-idl__args">
+                        -
+                    </td>
+                    <td class="pid-table__description md md-inline"><p>All initializations are successfully done</p></td>
+                </tr>
+                <tr>
                     <td class="pid-table__name pid-events__name"><span>resize</span></td>
                     <td class="pid-events__args pid-idl pid-idl__args">
                         -
                     </td>
-                    <td class="pid-table__description md md-inline"><p>Canvas resized</p></td>
+                    <td class="pid-table__description md md-inline"><p>Canvas resized (never called before but always after after the <code>ready</code> event)</p></td>
                 </tr>
                 <tr>
                     <td class="pid-table__name pid-events__name"><span>frameBegin</span></td>
