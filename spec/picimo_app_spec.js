@@ -1,23 +1,10 @@
 'use strict';
 
 const Picimo = require('../build/picimo');
+const utils = require('./utils');
 
 const CANVAS_WIDTH  = 400;
 const CANVAS_HEIGHT = 300;
-
-function createHtmlContainer (width, height) {
-
-    let el = document.createElement('div');
-    document.body.appendChild(el);
-
-    el.style.display = 'block';
-    el.style.position = 'absolute';
-    el.style.width = width + 'px';
-    el.style.height = height + 'px';
-
-    return el;
-
-}
 
 describe("Picimo.App", () => {
 
@@ -28,7 +15,7 @@ describe("Picimo.App", () => {
 
     beforeAll((done) => {
 
-        app = new Picimo.App({ appendTo: createHtmlContainer(CANVAS_WIDTH, CANVAS_HEIGHT) })
+        app = new Picimo.App({ appendTo: utils.createHtmlContainer(CANVAS_WIDTH, CANVAS_HEIGHT) })
 
         app.on('ready', () => {
             resizeCallCountBeforeReady = resizeCallCount;
@@ -40,9 +27,7 @@ describe("Picimo.App", () => {
             if (!app.ready) resizeBeforeReady = true;
         });
 
-        app.on('frameEnd', () => {
-            if (app.frameNo === 60) done();
-        });
+        utils.waitUntilFrame(app, 66, done);
 
     });
 

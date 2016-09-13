@@ -2,202 +2,150 @@
 
 import * as utils from '../utils';
 
-/**
- * @class Picimo.render.WebGlContext
- */
+export default class WebGlContext {
 
-export default function WebGlContext ( gl ) {
+    constructor ( gl ) {
 
-    if ( ! gl ) throw new Error( '[new Picimo.render.WebGlContext] gl is undefined!' );
+        if ( ! gl ) throw new Error( '[new Picimo.render.WebGlContext] gl is undefined!' );
 
-    utils.object.definePropertyPublicRO( this, 'gl', gl );
+        utils.object.definePropertyPublicRO( this, 'gl', gl );
 
-    utils.object.definePropertiesPrivateRO( this, {
-        '_boundBuffers' : new Map,
-        '_shaders'      : new Map,
-        '_programs'     : new Map
-    });
+        utils.object.definePropertiesPrivateRO( this, {
+            '_boundBuffers' : new Map,
+            '_shaders'      : new Map,
+            '_programs'     : new Map
+        });
 
-    getExtensions( this );
-    readWebGlParameters( this );
+        fetchExtensions( this );
+        readWebGlParameters( this );
 
-    this.app           = null;
-    this.activeProgram = null;
+        this.app           = null;
+        this.activeProgram = null;
 
-    this.activeTexture( 0 );
-    this._boundTextures = [];
+        this.activeTexture( 0 );
+        this._boundTextures = [];
 
-    for ( var i = 0; i < this.MAX_TEXTURE_IMAGE_UNITS; i++ ) {
+        for ( let i = 0; i < this.MAX_TEXTURE_IMAGE_UNITS; i++ ) {
 
-        this._boundTextures[ i ] = { TEXTURE_2D: null };
+            this._boundTextures[ i ] = { TEXTURE_2D: null };
 
-    }
+        }
 
-    Object.seal( this );
-
-}
-
-/**
- * @method Picimo.render.WebGlContext#activeTexture
- * @param {number} texUnit - texture unit
- */
-
-WebGlContext.prototype.activeTexture = function ( texUnit ) {
-
-    var gl = this.gl;
-    var tex = gl.TEXTURE0 + texUnit;
-
-    if ( this.activeTexUnit !== tex ) {
-
-        this.activeTexUnit = tex;
-        gl.activeTexture( this.activeTexUnit );
+        Object.seal( this );
 
     }
 
-};
+    activeTexture ( texUnit ) {
 
-/**
- * @method Picimo.render.WebGlContext#bindTexture2d
- * @param {number} textureType - gl.TEXTURE_2D or ..
- * @param texture
- */
+        const gl = this.gl;
+        const tex = gl.TEXTURE0 + texUnit;
 
-WebGlContext.prototype.bindTexture2d = function ( texture ) {
+        if ( this.activeTexUnit !== tex ) {
 
-    var gl = this.gl;
-    var boundTextures = this._boundTextures[ this.activeTexUnit - gl.TEXTURE0 ];
-
-    if ( boundTextures.TEXTURE_2D !== texture ) {
-
-        boundTextures.TEXTURE_2D = texture;
-
-        gl.bindTexture( gl.TEXTURE_2D, texture );
-
-    }
-
-};
-
-/**
- * @method Picimo.render.WebGlContext#bindBuffer
- * @param {number} bufferType - gl.ARRAY_BUFFER or gl.ELEMENT_ARRAY_BUFFER
- * @param buffer
- */
-
-WebGlContext.prototype.bindBuffer = function ( bufferType, buffer ) {
-
-    if ( this._boundBuffers.get( bufferType ) !== buffer ) {
-
-        this._boundBuffers.set( bufferType, buffer );
-        this.gl.bindBuffer( bufferType, buffer );
-
-    }
-
-};
-
-/**
- * @method Picimo.render.WebGlContext#bindArrayBuffer
- * @param buffer
- */
-
-WebGlContext.prototype.bindArrayBuffer = function ( buffer ) {
-
-    this.bindBuffer( this.gl.ARRAY_BUFFER, buffer );
-
-};
-
-/**
- * @method Picimo.render.WebGlContext#bindElementArrayBuffer
- * @param buffer
- */
-
-WebGlContext.prototype.bindElementArrayBuffer = function ( buffer ) {
-
-    this.bindBuffer( this.gl.ELEMENT_ARRAY_BUFFER, buffer );
-
-};
-
-/**
- * @method Picimo.render.WebGlContext#glShader
- * @param {Picimo.render.ShaderSource} shader
- * @return {WebGLShader} The shader object or *undefined*
- */
-
-WebGlContext.prototype.glShader = function ( shader ) {
-
-    if ( shader === undefined ) return;
-
-    var glShader = this._shaders.get( shader.uid );
-
-    if ( glShader === undefined ) {
-
-        glShader = shader.compile( this );
-
-        if ( glShader !== undefined ) {
-
-            this._shaders.set( shader.uid, glShader );
+            this.activeTexUnit = tex;
+            gl.activeTexture( this.activeTexUnit );
 
         }
 
     }
 
-    return glShader;
+    bindTexture2d ( texture ) {
 
-};
+        const gl = this.gl;
+        const boundTextures = this._boundTextures[ this.activeTexUnit - gl.TEXTURE0 ];
 
-/**
- * @method Picimo.render.WebGlContext#glProgram
- * @param {Picimo.render.Program} program
- * @return {Picimo.render.WebGlProgram} The program object or *undefined*
- */
+        if ( boundTextures.TEXTURE_2D !== texture ) {
 
-WebGlContext.prototype.glProgram = function ( program ) {
+            boundTextures.TEXTURE_2D = texture;
 
-    if ( program === undefined ) return;
-
-    var glProgram = this._programs.get( program.uid );
-
-    if ( glProgram === undefined ) {
-
-        glProgram = program.linkProgram( this.app );
-
-        if ( glProgram !== undefined ) {
-
-            this._programs.set( program.uid, glProgram );
+            gl.bindTexture( gl.TEXTURE_2D, texture );
 
         }
 
     }
 
-    return glProgram;
+    bindBuffer ( bufferType, buffer ) {
 
-};
+        if ( this._boundBuffers.get( bufferType ) !== buffer ) {
+
+            this._boundBuffers.set( bufferType, buffer );
+            this.gl.bindBuffer( bufferType, buffer );
+
+        }
+
+    }
+
+    bindArrayBuffer ( buffer ) {
+
+        this.bindBuffer( this.gl.ARRAY_BUFFER, buffer );
+
+    }
+
+    bindElementArrayBuffer ( buffer ) {
+
+        this.bindBuffer( this.gl.ELEMENT_ARRAY_BUFFER, buffer );
+
+    }
+
+    glShader ( shader ) {
+
+        if ( ! shader ) return;
+
+        let glShader = this._shaders.get( shader.uid );
+        if ( ! glShader ) {
+
+            glShader = shader.compile( this );
+            if ( glShader ) {
+
+                this._shaders.set( shader.uid, glShader );
+
+            }
+
+        }
+
+        return glShader;
+
+    }
+
+    glProgram ( program ) {
+
+        if ( ! program ) return;
+
+        let glProgram = this._programs.get( program.uid );
+        if ( ! glProgram ) {
+
+            glProgram = program.linkProgram( this.app );
+            if ( glProgram ) {
+
+                this._programs.set( program.uid, glProgram );
+
+            }
+
+        }
+
+        return glProgram;
+
+    }
+
+}  // => WebGlContext
 
 
 
 function readWebGlParameters ( webGlContext ) {
 
-    var gl = webGlContext.gl;
-
+    const gl = webGlContext.gl;
     utils.object.definePropertiesPublicRO( webGlContext, {
 
-        /**
-         * @member {number} Picimo.render.WebGlContext#MAX_TEXTURE_SIZE - gl.MAX_TEXTURE_SIZE
-         */
-        MAX_TEXTURE_SIZE : gl.getParameter( gl.MAX_TEXTURE_SIZE ),
-
-        /**
-         * @member {number} Picimo.render.WebGlContext#MAX_TEXTURE_IMAGE_UNITS - gl.MAX_TEXTURE_IMAGE_UNITS
-         */
+        MAX_TEXTURE_SIZE        : gl.getParameter( gl.MAX_TEXTURE_SIZE ),
         MAX_TEXTURE_IMAGE_UNITS : gl.getParameter( gl.MAX_TEXTURE_IMAGE_UNITS )
 
     });
 
 }
 
-function getExtensions ( webGlContext ) {
+function fetchExtensions ( webGlContext ) {
 
     webGlContext.OES_element_index_uint = webGlContext.gl.getExtension("OES_element_index_uint");
-
     if ( ! webGlContext.OES_element_index_uint ) {
 
         console.error( "WebGL don't support the OES_element_index_uint extension!" );
