@@ -26,14 +26,28 @@ function createPicimoApp (options = {}) {
 }
 
 function waitUntilFrame (app, frameNo, fn) {
-    app.on('frameEnd', () => {
-        if (app.frameNo === frameNo) fn();
+    let listener = app.on('frameEnd', () => {
+        if (app.frameNo === frameNo) {
+            app.off(listener);
+            fn();
+        }
+    });
+}
+
+function waitUntilNextFrame (app, fn) {
+    const frameNo = app.frameNo + 1;
+    let listener = app.on('frameEnd', () => {
+        if (app.frameNo === frameNo) {
+            app.off(listener);
+            fn();
+        }
     });
 }
 
 module.exports = {
     createHtmlContainer,
     createPicimoApp,
-    waitUntilFrame
+    waitUntilFrame,
+    waitUntilNextFrame
 };
 

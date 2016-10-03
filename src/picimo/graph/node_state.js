@@ -2,20 +2,18 @@
 
 import * as utils from '../utils';
 
-/**
- * @class Picimo.graph.NodeState
- * @param {number} [initialValue=0] - The initial state
- */
-export default function NodeState ( initialValue ) {
+export default function NodeState (initialStateValue) {
 
-    this.value = initialValue | 0;
+    if (!(this instanceof NodeState)) {
+        return new NodeState(initialStateValue);
+    }
 
+    this.value = initialStateValue | 0;
     Object.seal( this );
 
 }
 
 /**
- * @method Picimo.graph.NodeState#is
  * @param {number} state
  * @return {boolean}
  * @example
@@ -28,11 +26,12 @@ NodeState.prototype.is = function ( state ) {
 };
 
 NodeState.prototype.isNot = function ( state ) {
+
     return ! this.is(state);
+
 };
 
 /**
- * @method Picimo.graph.NodeState#set
  * @param {number} state
  * @example
  * state.set( NodeState.READY )
@@ -45,9 +44,10 @@ NodeState.prototype.set = function ( state ) {
 
 };
 
+
 NodeState.prototype.toString = function () {
 
-    var states = [];
+    let states = [];
 
     if ( this.is( NodeState.CREATE ) ) states.push( 'CREATE' );
     if ( this.is( NodeState.INIT ) ) states.push( 'INIT' );
@@ -62,39 +62,10 @@ NodeState.prototype.toString = function () {
 
 utils.object.definePropertiesPublicRO( NodeState, {
 
-    /**
-     * @memberof Picimo.graph.NodeState
-     * @constant
-     * @static
-     */
-    CREATE : 1,
-
-    /**
-     * @memberof Picimo.graph.NodeState
-     * @constant
-     * @static
-     */
-    INIT : 2,
-
-    /**
-     * @memberof Picimo.graph.NodeState
-     * @constant
-     * @static
-     */
-    READY : 4,
-
-    /**
-     * @memberof Picimo.graph.NodeState
-     * @constant
-     * @static
-     */
-    ERROR : 8,
-
-    /**
-     * @memberof Picimo.graph.NodeState
-     * @constant
-     * @static
-     */
+    CREATE    : 1,
+    INIT      : 2,
+    READY     : 4,
+    ERROR     : 8,
     DESTROYED : 16
 
 });

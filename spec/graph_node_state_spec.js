@@ -83,5 +83,15 @@ describe("Picimo.graph.NodeState", function () {
 
     });
 
+    it("should create a new instance when called without new", function () {
+
+        let ns = Picimo.graph.NodeState(Picimo.graph.NodeState.READY);
+
+        expect(ns instanceof Picimo.graph.NodeState).toBeTruthy();
+        expect(ns.is(Picimo.graph.NodeState.READY)).toBeTruthy();
+        expect(ns.isNot(Picimo.graph.NodeState.INIT)).toBeTruthy();
+
+    });
+
 });
 

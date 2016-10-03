@@ -27,7 +27,7 @@ describe("Picimo.App", () => {
             if (!app.ready) resizeBeforeReady = true;
         });
 
-        utils.waitUntilFrame(app, 66, done);
+        utils.waitUntilFrame(app, 30, done);
 
     });
 
