@@ -1,7 +1,3 @@
 .tmp
-dist
 node_modules
 npm-debug.log
-package-grunt.json
-vendor/jaguarjs-jsdoc
-esdoc
