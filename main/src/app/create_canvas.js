@@ -12,7 +12,7 @@ export default function ( app, canvas, appendTo ) {
 
     if ( ! app.canvasIsPredefined ) {
 
-        canvas.style.boxSizing   = 'border-box;'
+        canvas.style.boxSizing   = 'border-box';
         canvas.style.margin      = '0';
         canvas.style.padding     = '0';
         canvas.style.border      = '0';

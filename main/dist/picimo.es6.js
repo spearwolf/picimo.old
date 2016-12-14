@@ -8238,18 +8238,19 @@ var glMatrix = {
 	vec4: vec4
 };
 
-// usage:
-//
-//    var foo = {}
-//    makeReadyPromise(foo)
-//
-//    foo.ready         // => false
-//    foo.promise       // pending
-//
-//    foo.promise.then(function (foo) { /* foo is fulfilled */ })
-//
-//    foo.ready = true  // fulfill promise with foo as value
-//
+/**
+ * @example
+ * var foo = {}
+ * makeReadyPromise(foo)
+ *
+ * foo.ready         // => false
+ * foo.promise       // pending
+ *
+ * foo.promise.then(function (foo) { .. })
+ *
+ * foo.ready = true  // fulfill promise with foo as value
+ *
+ */
 
 function makeReadyPromise (obj) {
 
@@ -32305,7 +32306,7 @@ var createCanvas$1 = function ( app, canvas, appendTo ) {
 
     if ( ! app.canvasIsPredefined ) {
 
-        canvas.style.boxSizing   = 'border-box;';
+        canvas.style.boxSizing   = 'border-box';
         canvas.style.margin      = '0';
         canvas.style.padding     = '0';
         canvas.style.border      = '0';
