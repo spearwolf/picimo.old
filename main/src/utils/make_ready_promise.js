@@ -1,17 +1,16 @@
-'use strict';
-
-// usage:
-//
-//    var foo = {}
-//    makeReadyPromise(foo)
-//
-//    foo.ready         // => false
-//    foo.promise       // pending
-//
-//    foo.promise.then(function (foo) { /* foo is fulfilled */ })
-//
-//    foo.ready = true  // fulfill promise with foo as value
-//
+/**
+ * @example
+ * var foo = {}
+ * makeReadyPromise(foo)
+ *
+ * foo.ready         // => false
+ * foo.promise       // pending
+ *
+ * foo.promise.then(function (foo) { .. })
+ *
+ * foo.ready = true  // fulfill promise with foo as value
+ *
+ */
 
 export default function makeReadyPromise (obj) {
 
