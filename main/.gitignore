@@ -1,2 +1,3 @@
 node_modules
 dist/esdoc
+npm-debug.log
