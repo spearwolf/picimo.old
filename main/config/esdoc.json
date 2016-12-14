@@ -1,0 +1,5 @@
+{
+  "source": "./src",
+  "destination": "./dist/esdoc",
+  "styles": ["config/esdoc.css"]
+}

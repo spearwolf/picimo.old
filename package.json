@@ -1,0 +1,25 @@
+{
+  "name": "@spearwolf/picimo",
+  "version": "0.0.1",
+  "description": "picimo repository",
+  "scripts": {
+    "prepublish": "cd main && npm install",
+    "build:main": "cd main && npm run build",
+    "test": "cd main && npm test",
+    "prestart": "npm run build:main",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spearwolf/picimo.git"
+  },
+  "author": "Wolfger Schramm",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/spearwolf/picimo/issues"
+  },
+  "homepage": "https://github.com/spearwolf/picimo",
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
+}

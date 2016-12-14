@@ -1,0 +1,14 @@
+{
+    "presets": [
+        "es2015-rollup",
+        ["env", {
+            "targets": {
+                "browsers": [
+                    "ios_saf >= 9.3"
+                ]
+             },
+             "modules": false,
+             "loose": true
+        }]
+    ]
+}

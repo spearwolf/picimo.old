@@ -1,0 +1,21 @@
+{
+    "presets": [
+        "es2015-rollup",
+        ["env", {
+            "targets": {
+                "browsers": [
+                    "last 2 chrome versions",
+                    "last 2 firefox versions",
+                    "last 2 edge versions",
+                    "safari >= 9.1",
+                    "ios_saf >= 9.3",
+                    "and_chr >= 54",
+                    "opera >= 41",
+                    "ie 11"
+                ]
+             },
+             "modules": false,
+             "loose": true
+        }]
+    ]
+}

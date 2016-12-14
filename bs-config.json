@@ -1,0 +1,14 @@
+{
+    "port": 8000,
+    "open": false,
+    "files": [
+        "main/dist/*.js",
+        "site/**/*.{html,css,js}"
+    ],
+    "server": {
+        "baseDir": "site",
+        "routes": {
+            "/dist": "main/dist"
+        }
+    }
+}
