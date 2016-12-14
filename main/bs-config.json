@@ -1,6 +1,7 @@
 {
     "port": 4000,
     "open": false,
+    "notify": false,
     "files": [
         "dist/*.js",
         "test-visual/**/*"

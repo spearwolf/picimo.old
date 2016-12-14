@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <style>
+        html, body {
+            height: 100vh;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+    </style>
+  </head>
+  <body>
+    <script src="/dist/picimo-chrome-firefox.umd.js"></script>
+    <script>
+        let app = new Picimo.App({ alpha: true });
+        app.scene.setSize(800, 800, 'contain');
+        app.scene.appendPicture('/assets/images/picimo-logo-640x248.png', {
+            sceneFit: 'contain'
+        });
+    </script>
+  </body>
+</html>

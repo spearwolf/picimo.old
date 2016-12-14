@@ -32,6 +32,36 @@
       "misMatchThreshold" : 0.1,
       "onBeforeScript": "onBefore.js",
       "onReadyScript": "onReady.js"
+    },
+    {
+      "label": "picture_contain",
+      "url": "http://localhost:4000/picture/contain.html",
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "selectorExpansion": true,
+      "selectors": [
+        "canvas"
+      ],
+      "readyEvent": null,
+      "delay": 500,
+      "misMatchThreshold" : 0.1,
+      "onBeforeScript": "onBefore.js",
+      "onReadyScript": "onReady.js"
+    },
+    {
+      "label": "picture_cover",
+      "url": "http://localhost:4000/picture/cover.html",
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "selectorExpansion": true,
+      "selectors": [
+        "canvas"
+      ],
+      "readyEvent": null,
+      "delay": 500,
+      "misMatchThreshold" : 0.1,
+      "onBeforeScript": "onBefore.js",
+      "onReadyScript": "onReady.js"
     }
   ],
   "paths": {
