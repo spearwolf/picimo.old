@@ -1,0 +1,18 @@
+{
+    "port": 4000,
+    "open": false,
+    "files": [
+        "dist/*.js",
+        "test-visual/**/*"
+    ],
+    "serveStatic": [{
+        "route": "/assets",
+        "dir": "test-visual/assets"
+    }],
+    "server": {
+        "baseDir": "test-visual",
+        "routes": {
+            "/dist": "dist"
+        }
+    }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "picimo",
+  "viewports": [
+    {
+      "name": "portrait",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "name": "landscape",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "name": "square",
+      "width": 1024,
+      "height": 1024
+    }
+  ],
+  "scenarios": [
+    {
+      "label": "hello_world",
+      "url": "http://localhost:4000/hello_world/index.html",
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "selectorExpansion": true,
+      "selectors": [
+        "#picimo"
+      ],
+      "readyEvent": null,
+      "delay": 1000,
+      "misMatchThreshold" : 0.1,
+      "onBeforeScript": "onBefore.js",
+      "onReadyScript": "onReady.js"
+    }
+  ],
+  "paths": {
+    "bitmaps_reference": "backstop_data/bitmaps_reference",
+    "bitmaps_test": "backstop_data/bitmaps_test",
+    "casper_scripts": "backstop_data/casper_scripts",
+    "html_report": "backstop_data/html_report",
+    "ci_report": "backstop_data/ci_report"
+  },
+  "casperFlags": [],
+  "engine": "slimerjs",
+  "report": ["browser"],
+  "debug": false
+}

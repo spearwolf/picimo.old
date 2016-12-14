@@ -24,8 +24,11 @@
     "build": "run-p build:*",
     "clean": "rm -fr dist/*.js dist/esdoc",
     "esdoc": "rm -fr dist/esdoc && esdoc -c config/esdoc.json",
+    "backstop:test": "backstop test",
+    "backstop:reference": "backstop reference",
     "karma": "karma start config/karma.conf.js",
-    "test": "run-s build:test karma"
+    "test": "run-s build:test karma",
+    "start": "lite-server"
   },
   "main": "dist/picimo.js",
   "jsnext:main": "dist/picimo.es6.js",
@@ -34,6 +37,7 @@
   "devDependencies": {
     "babel-preset-env": "0.0.9",
     "babel-preset-es2015-rollup": "^3.0.0",
+    "backstopjs": "^2.3.5",
     "buble": "^0.14.3",
     "esdoc": "^0.4.8",
     "jasmine": "^2.5.2",
@@ -42,6 +46,7 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.1.0",
     "karma-rollup-plugin": "^0.2.4",
+    "lite-server": "^2.2.2",
     "npm-run-all": "^3.1.2",
     "rollup": "^0.36.4",
     "rollup-plugin-babel": "^2.7.1",
@@ -50,7 +55,8 @@
     "rollup-plugin-json": "^2.0.2",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
-    "rollup-plugin-uglify": "^1.0.1"
+    "rollup-plugin-uglify": "^1.0.1",
+    "slimerjs": "^0.10.2"
   },
   "dependencies": {
     "@spearwolf/eventize": "github:spearwolf/eventize",
