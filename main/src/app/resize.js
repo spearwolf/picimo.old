@@ -1,11 +1,9 @@
-'use strict';
-
 /**
- * @private
+ * @ignore
  */
 export default function () {
 
-    var node, w, h, wPx, hPx;
+    let node, w, h, wPx, hPx;
 
     if ( this.canvasIsPredefined ) {
 

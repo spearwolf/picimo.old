@@ -1,6 +1,4 @@
-'use strict';
-
-import * as utils from '../utils';
+import { definePropertyPrivate, definePropertyPrivateRO } from '../utils/object_utils';
 
 /**
  * @class Picimo.core.VertexObject
@@ -22,11 +20,11 @@ export default function VertexObject ( descriptor, vertexArray ) {
         throw new Error( 'VertexObject.descriptor is null!' );
 
     }
-    utils.object.definePropertyPrivateRO( this, 'descriptor', _descriptor );
+    definePropertyPrivateRO( this, 'descriptor', _descriptor );
 
     /** @member {Picimo.core.VertexArray} Picimo.core.VertexObject#vertexArray - Vertex array. */
     var _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
-    utils.object.definePropertyPrivate( this, 'vertexArray', _vertexArray );
+    definePropertyPrivate( this, 'vertexArray', _vertexArray );
 
     if ( this.descriptor !== this.vertexArray.descriptor && ( this.descriptor.vertexCount !== this.vertexArray.descriptor.vertexCount || this.descriptor.vertexAttrCount !== this.vertexArray.descriptor.vertexAttrCount) ) {
 

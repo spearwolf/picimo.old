@@ -1,52 +1,37 @@
 import _ from 'lodash';
 import { Resource } from '../core';
 
-/**
- * @class Picimo.render.ShaderSource
- * @extends Picimo.core.Resource
- * @param {Picimo.App} app
- * @param {string} shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
- * @param {string} name -
- * @param {string} [source]
- */
-
 export default class ShaderSource extends Resource {
 
-    constructor ( app, shaderType, name, source ) {
-        super( app, 'source' );
+    /**
+     * @param {App} app
+     * @param {string} shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
+     * @param {string} name - name
+     * @param {string} [source] - source
+     */
+    constructor (app, shaderType, name, source) {
+        super(app, 'source');
 
+        /**
+         * @type {string} shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
+         */
         this.shaderType = shaderType;
+
+        /**
+         * @type {string}
+         */
         this.name = name;
+
+        /**
+         * @type {string}
+         */
         this.source = source;
     }
 
     /**
-     * @member {string} Picimo.render.ShaderSource#shaderType - 'VERTEX_SHADER' or 'FRAGMENT_SHADER'
-     */
-    //this.shaderType = shaderType;
-
-    /**
-     * @member {string} Picimo.render.ShaderSource#name
-     */
-    //this.name = name;
-
-    /**
-     * @member {string} Picimo.render.ShaderSource#source - The shader source
-     */
-    //this.source = source;
-
-//}
-
-//ShaderSource.prototype = Object.create( Resource.prototype );
-//ShaderSource.prototype.constructor = ShaderSource;
-
-
-    /**
-     * @method Picimo.render.ShaderSource#compile
-     * @param {Picimo.render.WebGlContext} gl
+     * @param {WebGlContext} glx
      * @return {WebGLShader} - render shader object or *undefined*
      */
-
     compile ( glx ) {
 
         if ( ! this.ready ) return;
@@ -83,20 +68,7 @@ export default class ShaderSource extends Resource {
 
 }
 
-/**
- * @memberof Picimo.render.ShaderSource
- * @constant VERTEX_SHADER
- * @static
- */
-
 ShaderSource.VERTEX_SHADER = 'VERTEX_SHADER';
-
-/**
- * @memberof Picimo.render.ShaderSource
- * @constant FRAGMENT_SHADER
- * @static
- */
-
 ShaderSource.FRAGMENT_SHADER = 'FRAGMENT_SHADER';
 
 

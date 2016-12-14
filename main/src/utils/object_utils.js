@@ -12,8 +12,9 @@
 export function definePropertyPublicRO ( obj, name, value ) {
 
     Object.defineProperty( obj, name, {
-        value     : value,
-        enumerable: true
+        value        : value,
+        configurable : true,
+        enumerable   : true
     });
 
     return obj;
@@ -85,8 +86,9 @@ export function definePropertiesPublicRO ( obj, map ) {
         if ( Object.hasOwnProperty.call( map, key ) ) {
 
             Object.defineProperty( obj, key, {
-                value     : map[ key ],
-                enumerable: true
+                value        : map[ key ],
+                configurable : true,
+                enumerable   : true
             });
 
         }

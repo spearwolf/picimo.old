@@ -1,6 +1,8 @@
 import eventize from '@spearwolf/eventize';
+import Color from 'color-js';
 
-import * as utils from '../utils';
+import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/object_utils';
+import addGlxProperty from '../utils/add_glx_property';
 import * as graph from '../graph';
 import * as render from '../render';
 import * as ui from '../ui';
@@ -16,91 +18,92 @@ import { getUrlDir, getAssetUrl, joinAssetUrl } from './asset_url_helper';
 import { loadTextureAtlas, loadTexture } from './texture_helpers';
 
 
-export default function App ( canvas, options ) {
+export default class App {
 
-    eventize( this );
+    constructor (canvas, options) {
 
-    Object.defineProperty(this, 'ready', { value: false, configurable: true, enumerable: true });
+        eventize(this);
 
-    this.now = window.performance.now() / 1000.0;
+        this.resize = resize;
+        this.renderFrame = renderFrame;
+        this.getAssetUrl = getAssetUrl;
+        this.joinAssetUrl = joinAssetUrl;
+        this.loadTextureAtlas = loadTextureAtlas;
+        this.loadTexture = loadTexture;
 
-    if ( typeof canvas === 'object' && ! ( 'nodeName' in canvas ) ) {
-        options = canvas;
-        canvas  = options.canvas;
-    } else if ( options == null ) {
-        options = {};
-    }
+        if (typeof window !== 'undefined') {  // TODO wrap window?
+            definePropertyPublicRO(this, 'devicePixelRatio', window.devicePixelRatio || 1);
+        }
 
-    createCanvas( this, canvas, options.appendTo );
+        definePropertyPublicRO(this, 'ready', false);
 
-    utils.object.definePropertyPrivateRO(this, 'mouseController', new ui.MouseController(this));
-    this.mouseController.connect(this); // => forward all mouse events to app
+        this.now = window.performance.now() / 1000.0;
 
-    utils.addGlxProperty( this );
+        if ( typeof canvas === 'object' && ! ( 'nodeName' in canvas ) ) {
+            options = canvas;
+            canvas  = options.canvas;
+        } else if ( options == null ) {
+            options = {};
+        }
 
-    utils.object.definePropertyPrivateRO(this, 'glCtxAttrs', {
+        createCanvas( this, canvas, options.appendTo );
 
-        alpha     : ( options.alpha === true ),
-        antialias : ( options.antialias === true )
+        definePropertyPrivateRO(this, 'mouseController', new ui.MouseController(this));
+        this.mouseController.connect(this); // => forward all mouse events to app
 
-    });
+        addGlxProperty( this );
 
-    this.glx = createWebGlContext( this );
+        definePropertyPrivateRO(this, 'glCtxAttrs', {
 
-    this.backgroundColor = new utils.Color( options.bgColor !== undefined ? options.bgColor : ( this.glCtxAttrs.alpha ? 'transparent' : "#000000" ) );
+            alpha     : ( options.alpha === true ),
+            antialias : ( options.antialias === true )
 
-    createShaderManager( this );
+        });
 
-    utils.object.definePropertyPrivateRO( this, 'textureManager', new render.TextureManager(this) );
-    utils.object.definePropertyPrivateRO( this, 'renderer', new render.WebGlRenderer(this) );
+        this.glx = createWebGlContext( this );
 
-    initSpriteFactory( this );
+        this.backgroundColor = new Color( options.bgColor !== undefined ? options.bgColor : ( this.glCtxAttrs.alpha ? 'transparent' : "#000000" ) );
 
-    this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
+        createShaderManager( this );
 
-    this.frameNo = 0;
+        definePropertyPrivateRO( this, 'textureManager', new render.TextureManager(this) );
+        definePropertyPrivateRO( this, 'renderer', new render.WebGlRenderer(this) );
 
-    utils.object.definePropertyPublicRO( this, 'scene', new graph.Scene( this, {
+        initSpriteFactory( this );
 
-        pixelRatio : 1,
-        projection : true,
-        blendMode  : render.cmd.BlendMode.DEFAULT,
+        this.assetBaseUrl = window.PICIMO_ASSET_BASE_URL || options.assetBaseUrl || getUrlDir( ( new URL( window.location.href ) ).origin + "/" );
 
-    } ) );
+        this.frameNo = 0;
 
-    //------------------------------------------------
-    // Enable picimo plugins
-    // to hook into app creation and initialization
-    //------------------------------------------------
+        definePropertyPublicRO( this, 'scene', new graph.Scene( this, {
 
-    let app = App.emitReduce('create', this, options);
+            pixelRatio : 1,
+            projection : true,
+            blendMode  : render.cmd.BlendMode.DEFAULT,
 
-    app.emit('init');
+        } ) );
 
-    app.renderer.onInitGl();
-    app.resize();
+        //------------------------------------------------
+        // Enable picimo plugins
+        // to hook into app creation and initialization
+        //------------------------------------------------
 
-    if (!this.onAnimationFrame) {  // plugins can predefine onAnimationFrame
-        this.onAnimationFrame = app.renderFrame.bind(app);
-    }
+        let app = App.emitReduce('create', this, options);
 
-    requestAnimationFrame(app.onAnimationFrame);
+        app.emit('init');
 
-    return app;
+        app.renderer.onInitGl();
+        app.resize();
 
-}  // => App
+        if (!this.onAnimationFrame) {  // plugins can predefine onAnimationFrame
+            this.onAnimationFrame = app.renderFrame.bind(app);
+        }
 
+        requestAnimationFrame(app.onAnimationFrame);
 
-if (typeof window !== 'undefined') {  // TODO wrap window?
-    utils.object.definePropertyPublicRO( App.prototype, 'devicePixelRatio', window.devicePixelRatio || 1 );
-}
+        return app;
 
-App.prototype.resize = resize;
-App.prototype.renderFrame = renderFrame;
+    }  // => constructor
 
-App.prototype.getAssetUrl = getAssetUrl;
-App.prototype.joinAssetUrl = joinAssetUrl;
-
-App.prototype.loadTextureAtlas = loadTextureAtlas;
-App.prototype.loadTexture = loadTexture;
+}  // => class App
 

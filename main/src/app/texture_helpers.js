@@ -1,6 +1,4 @@
-'use strict';
-
-import * as core from '../core';
+import { PowerOfTwoImage, Texture, TextureAtlas } from '../core';
 
 //-----------------------------------------------------
 // loadTextureAtlas( url ) -> promise<TextureAtlas>
@@ -8,7 +6,7 @@ import * as core from '../core';
 
 export function loadTextureAtlas ( url ) {
 
-    return new core.TextureAtlas( this ).load( url ).promise;
+    return new TextureAtlas( this ).load( url ).promise;
 
 }
 
@@ -21,12 +19,11 @@ export function loadTextureAtlas ( url ) {
 
 export function loadTexture ( url ) {
 
-    var image = new core.PowerOfTwoImage( this ).load( url );
+    var image = new PowerOfTwoImage( this ).load( url );
 
-    var texture = new core.Texture();
+    var texture = new Texture();
     texture.image = image;
 
-    //return image.promise.then(forwardTexture.bind(null, texture));
     return image.promise.then(() => texture);
 
 }

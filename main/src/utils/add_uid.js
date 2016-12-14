@@ -1,5 +1,3 @@
-'use strict';
-
 import { definePropertyPublicRO } from './object_utils';
 
 let UID = 0;

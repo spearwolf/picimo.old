@@ -1,5 +1,3 @@
-'use strict';
-
 // Add the .glx and .gl (alias to glx.gl) properties to an object.
 // Returns the object.
 //
@@ -10,7 +8,6 @@
 // foo.gl     // => glx.gl
 //
 export default function addGlxProperty (obj) {
-
     let _glx;
 
     Object.defineProperties(obj, {
@@ -29,6 +26,4 @@ export default function addGlxProperty (obj) {
     });
 
     return obj;
-
 }
-

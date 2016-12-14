@@ -1,8 +1,8 @@
 /* global HTMLCanvasElement */
 /* global HTMLImageElement */
-'use strict';
-
-import * as utils from '../utils';
+import { definePropertyPublicRO } from '../utils/object_utils';
+import addUid from '../utils/add_uid';
+import makeReadyPromise from '../utils/make_ready_promise';
 import * as math from '../math';
 
 /**
@@ -16,9 +16,9 @@ export default class PowerOfTwoImage {
      */
     constructor (app, image) {
 
-        utils.object.definePropertyPublicRO( this, 'app', app );
-        utils.addUid( this );
-        utils.makeReadyPromise( this );
+        definePropertyPublicRO( this, 'app', app );
+        addUid( this );
+        makeReadyPromise( this );
 
         /**
          * @type {string}

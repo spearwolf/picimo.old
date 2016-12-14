@@ -1,23 +1,21 @@
-'use strict';
-
-import * as utils from '../utils';
-
+import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/object_utils';
+import delegateMethods from '../utils/delegate_methods';
 import { initSprites, defineSprite } from '../sprites';
 
 /**
- * @private
+ * @ignore
  */
 export default function ( app ) {
 
     let spriteFactory = initSprites();
 
-    utils.object.definePropertyPrivateRO( app, 'spriteFactory', spriteFactory );
+    definePropertyPrivateRO( app, 'spriteFactory', spriteFactory );
 
-    utils.object.definePropertyPublicRO( app, 'defineSprite', function (typeName, spriteOptions, spriteProto) {
+    definePropertyPublicRO( app, 'defineSprite', function (typeName, spriteOptions, spriteProto) {
         return defineSprite( typeName, spriteOptions, spriteProto, spriteFactory );
     });
 
-    utils.delegateMethods(spriteFactory, app, {
+    delegateMethods(spriteFactory, app, {
 
         createSprite     : 'createSprite',
         getDescriptor    : 'getSpriteDescriptor',

@@ -1,4 +1,3 @@
-'use strict';
 
 const regExpAbsHttpUrl = new RegExp( '^(https?:)?//', 'i' );
 const regExpAbsUrlPath = new RegExp( '^(https?:)?/', 'i' );

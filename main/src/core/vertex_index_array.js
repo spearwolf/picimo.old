@@ -1,6 +1,4 @@
-'use strict';
-
-import * as utils from '../utils';
+import { definePropertiesPublicRO } from '../utils/object_utils';
 
 export default class VertexIndexArray {
 
@@ -12,7 +10,7 @@ export default class VertexIndexArray {
 
         var size = vertexObjectCount * objectIndexCount;
 
-        utils.object.definePropertiesPublicRO( this, {
+        definePropertiesPublicRO( this, {
 
             /**
              * Number of vertex objects.

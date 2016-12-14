@@ -1,19 +1,18 @@
-'use strict';
-
-import * as utils from '../utils';
-import * as render from '../render';
+import { definePropertyPrivateRO } from '../utils/object_utils';
+import delegateMethods from '../utils/delegate_methods';
 import { DefaultShader } from '../shader';
+import * as render from '../render';
 
 /**
- * @private
+ * @ignore
  */
 export default function ( app ) {
 
     const shaderManager = new render.ShaderManager( app );
 
-    utils.object.definePropertyPrivateRO( app, 'shaderManager', shaderManager );
+    definePropertyPrivateRO( app, 'shaderManager', shaderManager );
 
-    utils.delegateMethods(shaderManager, app, [
+    delegateMethods(shaderManager, app, [
         'loadFragmentShader',
         'loadVertexShader',
         'getVertexShader',

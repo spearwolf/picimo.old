@@ -1,16 +1,14 @@
-'use strict';
-
-import * as utils from '../utils';
+import { definePropertyPublicRO } from '../utils/object_utils';
 
 /**
- * @private
+ * @ignore
  */
 export default function ( app, canvas, appendTo ) {
 
-    utils.object.definePropertyPublicRO( app, 'canvasIsPredefined', canvas !== undefined );
+    definePropertyPublicRO( app, 'canvasIsPredefined', canvas !== undefined );
 
     canvas = app.canvasIsPredefined ? canvas : document.createElement( 'canvas' );
-    utils.object.definePropertyPublicRO( app, 'canvas', canvas );
+    definePropertyPublicRO( app, 'canvas', canvas );
 
     if ( ! app.canvasIsPredefined ) {
 

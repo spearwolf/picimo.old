@@ -1,5 +1,7 @@
 import eventize from '@spearwolf/eventize';
-import * as utils from '../utils';
+import { definePropertyPublicRO } from '../utils/object_utils';
+import addUid from '../utils/add_uid';
+import makeReadyPromise from '../utils/make_ready_promise';
 
 /**
  * @desc
@@ -18,10 +20,9 @@ export default class Resource {
     constructor (app, dataPropAlias) {
 
         eventize(this);
-
-        utils.object.definePropertyPublicRO(this, 'app', app);
-        utils.addUid(this);
-        utils.makeReadyPromise(this);
+        definePropertyPublicRO(this, 'app', app);
+        addUid(this);
+        makeReadyPromise(this);
 
         /**
          * @type {boolean}

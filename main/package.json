@@ -23,7 +23,7 @@
     "build:es6": "rollup --environment FORMAT:es,OUTFILE:dist/picimo.es6.js -c config/rollup.build.js",
     "build": "run-p build:*",
     "clean": "rm -fr dist/*.js dist/esdoc",
-    "esdoc": "esdoc -c config/esdoc.json",
+    "esdoc": "rm -fr dist/esdoc && esdoc -c config/esdoc.json",
     "karma": "karma start config/karma.conf.js",
     "test": "run-s build:test karma"
   },

@@ -1,9 +1,7 @@
-'use strict';
-
 import { WebGlContext } from '../render';
 
 /**
- * @private
+ * @ignore
  */
 export default function ( app ) {
 
@@ -26,7 +24,7 @@ export default function ( app ) {
 
     }
 
-    let ctx = new WebGlContext( gl );
+    const ctx = new WebGlContext( gl );
     ctx.app = app;
 
     return ctx;

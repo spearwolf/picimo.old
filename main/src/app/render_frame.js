@@ -1,7 +1,5 @@
-'use strict';
-
 /**
- * @private
+ * @ignore
  */
 export default function () {
 
