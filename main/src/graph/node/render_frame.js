@@ -1,9 +1,9 @@
-'use strict';
-
-import * as utils from '../../utils';
 import NodeState from '../node_state';
+import { definePropertyPublicRO } from '../../utils/object_utils';
 
-
+/**
+ * @ignore
+ */
 export default function renderFrame () {
 
     if ( ! this.ready ) return;
@@ -24,17 +24,13 @@ export default function renderFrame () {
 
             try {
 
-                /**
+                /*
                  * Is called only if node is *ready* and *display*-able.
-                 * @event Picimo.graph.Node#frame
-                 * @memberof Picimo.graph.Node
                  */
                 this.emit( 'frame' );
 
-                /**
+                /*
                  * Is called just after the *frame* event and before the *frameEnd* event. The *render commands* should be generated here.
-                 * @event Picimo.graph.Node#renderFrame
-                 * @memberof Picimo.graph.Node
                  */
                 this.emit( 'renderFrame' );
 
@@ -56,8 +52,6 @@ export default function renderFrame () {
 
                 /**
                  * Is called after the on *frame* and *renderFrame* events.
-                 * @event Picimo.graph.Node#frameEnd
-                 * @memberof Picimo.graph.Node
                  */
                 this.emit( 'frameEnd' );
 
@@ -75,6 +69,9 @@ export default function renderFrame () {
 }  // --- renderFrame
 
 
+/**
+ * @ignore
+ */
 function onInit (node) {
 
     node.state.set( NodeState.INIT );
@@ -83,10 +80,8 @@ function onInit (node) {
 
     try {
 
-        /**
+        /*
          * This is the first event. Will be called only once and never again.
-         * @event Picimo.graph.Node#init
-         * @memberof Picimo.graph.Node
          */
         node.emit( 'init', makeDoneFunc( initPromises, node ) );
 
@@ -101,9 +96,12 @@ function onInit (node) {
 
 }
 
+/**
+ * @ignore
+ */
 function onInitGl (node) {
 
-    utils.object.definePropertyPublicRO(node, 'initDone', true);
+    definePropertyPublicRO(node, 'initDone', true);
 
     if ( ! node.ready ) return;
 
@@ -111,10 +109,8 @@ function onInitGl (node) {
 
     try {
 
-        /**
+        /*
          * Will be called just after *init*. Should only be used to perform render related tasks.
-         * @event Picimo.graph.Node#initGl
-         * @memberof Picimo.graph.Node
          */
         node.emit( 'initGl', makeDoneFunc( initGlPromises, node ) );
 
@@ -128,9 +124,12 @@ function onInitGl (node) {
     }
 }
 
+/**
+ * @ignore
+ */
 function onInitDone (node) {
 
-    utils.object.definePropertyPublicRO(node, 'initGlDone', true);
+    definePropertyPublicRO(node, 'initGlDone', true);
 
     if ( node.ready ) {
 
@@ -140,6 +139,9 @@ function onInitDone (node) {
 
 }
 
+/**
+ * @ignore
+ */
 function makeDoneFunc (arr) {
 
     return function ( promise ) {
@@ -160,6 +162,9 @@ function makeDoneFunc (arr) {
 
 }
 
+/**
+ * @ignore
+ */
 function onFail (node) {
 
     if ( node.ready ) {

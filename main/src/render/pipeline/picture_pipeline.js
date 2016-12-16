@@ -1,7 +1,7 @@
-import { definePropertiesPrivateRO } from '../../utils/object_utils';
 import ObjectPool from '../../utils/object_pool';
-import { VertexIndexArray } from '../../core';
 import WebGlBuffer from '../web_gl_buffer';
+import { VertexIndexArray } from '../../core';
+import { definePropertiesPrivateRO } from '../../utils/object_utils';
 
 export default class PicturePipeline {
 
@@ -79,6 +79,9 @@ export default class PicturePipeline {
 PicturePipeline.DEFAULT_CAPACITY = 100;
 
 
+/**
+ * @ignore
+ */
 function initBuffers ( pipeline ) {
 
     if ( ! pipeline.webGlBuffer ) {
@@ -98,6 +101,9 @@ function initBuffers ( pipeline ) {
 }
 
 
+/**
+ * @ignore
+ */
 function initRenderCmds ( pipeline ) {
 
     if ( pipeline.renderCmd ) return;

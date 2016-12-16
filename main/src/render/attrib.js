@@ -1,11 +1,9 @@
-'use strict';
-
-import * as utils from '../utils';
 import addShaderValue from './add_shader_value';
+import { definePropertiesPublicRO } from '../utils/object_utils';
 
 export default function Attrib ( program, info ) {
 
-    utils.object.definePropertiesPublicRO( this, {
+    definePropertiesPublicRO( this, {
 
         program  : program,
         info     : info,

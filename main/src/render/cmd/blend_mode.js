@@ -1,9 +1,5 @@
-'use strict';
-
 /**
- * @class Picimo.render.cmd.BlendMode
- * @classdesc
- *   WebGL blend and depth mode state description.
+ * WebGL blend and depth mode state description.
  *
  * @param {boolean} depthTest - Enable or disable depth test.
  * @param {boolean} [depthMask] - Enable or disable depth buffer writes.
@@ -53,34 +49,8 @@ export default function BlendMode ( depthTest, depthMask, depthFunc, blend, blen
 }
 
 /**
- * @member {boolean} Picimo.render.cmd.BlendMode#depthTest
+ * @param {WebGlRenderingContext} gl
  */
-
-/**
- * @member {boolean} Picimo.render.cmd.BlendMode#depthMask
- */
-
-/**
- * @member {string} Picimo.render.cmd.BlendMode#depthFunc
- */
-
-/**
- * @member {boolean} Picimo.render.cmd.BlendMode#blend
- */
-
-/**
- * @member {string} Picimo.render.cmd.BlendMode#blendFuncSrc
- */
-
-/**
- * @member {string} Picimo.render.cmd.BlendMode#blendFuncDst
- */
-
-/**
- * @method Picimo.render.cmd.BlendMode#activate
- * @param {WebGlRenderingContext} gl - gl
- */
-
 BlendMode.prototype.activate = function ( gl ) {
 
     if ( this.depthTest ) {
@@ -120,21 +90,6 @@ BlendMode.prototype.activate = function ( gl ) {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);  // good default
 */
 
-
-
-/**
- * @memberof Picimo.render.cmd.BlendMode
- * @constant DEFAULT
- * @static
- */
-
 BlendMode.DEFAULT = new BlendMode( true, true, 'ALWAYS', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' );
-
-/**
- * @memberof Picimo.render.cmd.BlendMode
- * @constant ISO3D
- * @static
- */
-
 BlendMode.ISO3D = new BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' );
 

@@ -1,6 +1,8 @@
+
 /**
  * @ignore
  */
+
 export default function () {
 
     this.now = window.performance.now() / 1000.0;

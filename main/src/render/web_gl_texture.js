@@ -1,12 +1,7 @@
-'use strict';
-
 /**
- * @class Picimo.render.WebGlTexture
- *
- * @param {Picimo.render.WebGlContext} glx
+ * @param {WebGlContext} glx
  * @param {boolean} [flipY=false]
  * @param {boolean} [repeatable=false]
- *
  */
 
 export default function WebGlTexture ( glx, flipY, repeatable ) {
@@ -25,32 +20,20 @@ export default function WebGlTexture ( glx, flipY, repeatable ) {
 
 }
 
+/**
+ * @ignore
+ */
 function reset ( texture ) {
 
-    texture.glId = 0;
-
+    texture.glId        = 0;
     texture.needsInit   = true;
     texture.needsConf   = true;
-
-    /**
-     * @member {boolean} Picimo.render.WebGlTexture#needsUpload
-     */
-
     texture.needsUpload = true;
-
-    /**
-     * @member {number} Picimo.render.WebGlTexture#texUnit
-     */
-
-    texture.texUnit = -1;
+    texture.texUnit     = -1;
 
 }
 
 Object.defineProperties( WebGlTexture.prototype, {
-
-    /**
-     * @member {boolean} Picimo.render.WebGlTexture#isRepeatable
-     */
 
     isRepeatable: {
 
@@ -75,9 +58,6 @@ Object.defineProperties( WebGlTexture.prototype, {
 
     },
 
-    /**
-     * @member {number} Picimo.render.WebGlTexture#width
-     */
     width: {
 
         get: function () {
@@ -99,9 +79,6 @@ Object.defineProperties( WebGlTexture.prototype, {
 
     },
 
-    /**
-     * @member {number} Picimo.render.WebGlTexture#height
-     */
     height: {
 
         get: function () {
@@ -123,9 +100,6 @@ Object.defineProperties( WebGlTexture.prototype, {
 
     },
 
-    /**
-     * @member {Image} Picimo.render.WebGlTexture#image
-     */
     image: {
 
         get: function () {
@@ -183,10 +157,8 @@ Object.defineProperties( WebGlTexture.prototype, {
 
 
 /**
- * @method Picimo.render.WebGlTexture#bind
  * @return {number} texture unit
  */
-
 WebGlTexture.prototype.bind = function () {
 
     if ( ! this.glId ) initialize( this );
@@ -195,6 +167,9 @@ WebGlTexture.prototype.bind = function () {
 
 };
 
+/**
+ * @ignore
+ */
 function initialize ( texture ) {
 
     if ( texture.needsInit ) {
@@ -206,6 +181,9 @@ function initialize ( texture ) {
 
 }
 
+/**
+ * @ignore
+ */
 function configure ( texture ) {
 
     if ( ! texture.glId ) initialize( texture );
@@ -237,11 +215,8 @@ function configure ( texture ) {
 
 
 /**
- * @method Picimo.render.WebGlTexture#upload
- * @see Picimo.render.WebGlTexture#needsUpload
  * @return self
  */
-
 WebGlTexture.prototype.upload = function () {
 
     configure( this );
@@ -262,10 +237,6 @@ WebGlTexture.prototype.upload = function () {
 
 };
 
-
-/**
- * @method Picimo.render.WebGlTexture#destroy
- */
 
 WebGlTexture.prototype.destroy = function () {
 

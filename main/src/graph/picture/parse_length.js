@@ -1,7 +1,6 @@
-'use strict';
 
 /**
- * @private
+ * @ignore
  */
 export default function (val, percentage, imageWidth, imageHeight, sceneWidth, sceneHeight) {
 

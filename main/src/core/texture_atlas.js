@@ -1,8 +1,6 @@
-'use strict';
-
+import PowerOfTwoImage from './power_of_two_image';
 import Resource from './resource';
 import Texture from './texture';
-import PowerOfTwoImage from './power_of_two_image';
 
 /**
  * Represents a texture atlas definition and holds references to the image, frames and textures.
@@ -84,10 +82,16 @@ export default class TextureAtlas extends Resource {
 } // => class TextureAtlas
 
 
+/**
+ * @ignore
+ */
 function toJson (data) {
     return typeof data === 'string' ? JSON.parse( data ) : data;
 }
 
+/**
+ * @ignore
+ */
 function constructImageUrl (textureAtlas, imageUrl) {
 
     if ( textureAtlas.imageUrl !== undefined ) {
@@ -100,6 +104,9 @@ function constructImageUrl (textureAtlas, imageUrl) {
 
 }
 
+/**
+ * @ignore
+ */
 function parseTextureAtlasDefinition (conf) {
 
     this.texture = new Texture();

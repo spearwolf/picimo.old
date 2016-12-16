@@ -1,5 +1,3 @@
-'use strict';
-
 import SpriteFactory from './sprite_factory';
 
 export default function defineSprite (typeName, options, proto, spriteFactory = SpriteFactory) {

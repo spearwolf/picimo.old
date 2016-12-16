@@ -2,7 +2,6 @@ import Matrix4 from './matrix4';
 export { Matrix4 };
 
 /**
- * @function Picimo.math.maxOf
  * @param {number} a
  * @param {number} b
  * @return {number}
@@ -14,7 +13,6 @@ export function maxOf ( a, b ) {
 }
 
 /**
- * @function Picimo.math.findNextPowerOfTwo
  * @param {number} x
  * @return {number}
  */
@@ -33,7 +31,6 @@ export function findNextPowerOfTwo ( x ) {
 }
 
 /**
- * @function Picimo.math.isPowerOfTwo
  * @param {number} n
  * @return {boolean}
  */

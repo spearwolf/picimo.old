@@ -1,5 +1,3 @@
-'use strict';
-
 const isNumber = (x) => { return typeof x === 'number' };
 
 export default function add (a, b) {

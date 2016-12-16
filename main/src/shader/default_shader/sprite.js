@@ -1,5 +1,3 @@
-'use strict';
-
 import { rotate } from '../fn';
 
 export const VertexShader = [

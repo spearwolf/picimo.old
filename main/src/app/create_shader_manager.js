@@ -1,14 +1,14 @@
-import { definePropertyPrivateRO } from '../utils/object_utils';
 import delegateMethods from '../utils/delegate_methods';
 import { DefaultShader } from '../shader';
-import * as render from '../render';
+import { ShaderManager } from '../render';
+import { definePropertyPrivateRO } from '../utils/object_utils';
 
 /**
  * @ignore
  */
 export default function ( app ) {
 
-    const shaderManager = new render.ShaderManager( app );
+    const shaderManager = new ShaderManager( app );
 
     definePropertyPrivateRO( app, 'shaderManager', shaderManager );
 

@@ -1,7 +1,8 @@
-'use strict';
-
 import parseLength from './parse_length';
 
+/**
+ * @ignore
+ */
 function updateTranslate (picture, tx, ty) {
 
     const scene = picture.parentNode;
@@ -13,7 +14,7 @@ function updateTranslate (picture, tx, ty) {
 }
 
 /**
- * @private
+ * @ignore
  */
 export default function (picture) {
 
@@ -216,5 +217,4 @@ export default function (picture) {
     }
 
 }
-
 

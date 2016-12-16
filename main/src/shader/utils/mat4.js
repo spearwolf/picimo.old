@@ -1,5 +1,3 @@
-'use strict';
-
 import asFloat from './as_float';
 
 export default function mat4 (m00=0, m01=0, m02=0, m03=0,

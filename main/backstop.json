@@ -21,47 +21,32 @@
     {
       "label": "hello_world",
       "url": "http://localhost:4000/hello_world/index.html",
-      "hideSelectors": [],
-      "removeSelectors": [],
-      "selectorExpansion": true,
       "selectors": [
         "#picimo"
       ],
       "readyEvent": null,
       "delay": 1000,
-      "misMatchThreshold" : 0.1,
-      "onBeforeScript": "onBefore.js",
-      "onReadyScript": "onReady.js"
+      "misMatchThreshold" : 0.1
     },
     {
       "label": "picture_contain",
       "url": "http://localhost:4000/picture/contain.html",
-      "hideSelectors": [],
-      "removeSelectors": [],
-      "selectorExpansion": true,
       "selectors": [
         "canvas"
       ],
       "readyEvent": null,
       "delay": 500,
-      "misMatchThreshold" : 0.1,
-      "onBeforeScript": "onBefore.js",
-      "onReadyScript": "onReady.js"
+      "misMatchThreshold" : 0.1
     },
     {
       "label": "picture_cover",
       "url": "http://localhost:4000/picture/cover.html",
-      "hideSelectors": [],
-      "removeSelectors": [],
-      "selectorExpansion": true,
       "selectors": [
         "canvas"
       ],
       "readyEvent": null,
       "delay": 500,
-      "misMatchThreshold" : 0.1,
-      "onBeforeScript": "onBefore.js",
-      "onReadyScript": "onReady.js"
+      "misMatchThreshold" : 0.1
     }
   ],
   "paths": {

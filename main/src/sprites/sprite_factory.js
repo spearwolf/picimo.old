@@ -1,5 +1,3 @@
-'use strict';
-
 import { VertexObjectDescriptor } from '../core';
 
 class SpriteFactory {

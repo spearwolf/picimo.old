@@ -1,6 +1,4 @@
-'use strict';
-
-import * as utils from '../utils';
+import { definePropertyPublicRO, definePropertiesPublicRO, definePropertiesPrivateRO } from '../utils/object_utils';
 
 export default class WebGlContext {
 
@@ -8,9 +6,9 @@ export default class WebGlContext {
 
         if ( ! gl ) throw new Error( '[new Picimo.render.WebGlContext] gl is undefined!' );
 
-        utils.object.definePropertyPublicRO( this, 'gl', gl );
+        definePropertyPublicRO( this, 'gl', gl );
 
-        utils.object.definePropertiesPrivateRO( this, {
+        definePropertiesPrivateRO( this, {
             '_boundBuffers' : new Map,
             '_shaders'      : new Map,
             '_programs'     : new Map
@@ -134,7 +132,7 @@ export default class WebGlContext {
 function readWebGlParameters ( webGlContext ) {
 
     const gl = webGlContext.gl;
-    utils.object.definePropertiesPublicRO( webGlContext, {
+    definePropertiesPublicRO( webGlContext, {
 
         MAX_TEXTURE_SIZE        : gl.getParameter( gl.MAX_TEXTURE_SIZE ),
         MAX_TEXTURE_IMAGE_UNITS : gl.getParameter( gl.MAX_TEXTURE_IMAGE_UNITS )

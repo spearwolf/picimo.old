@@ -1,7 +1,5 @@
-'use strict';
-
-import drawElements from './draw_elements';
 import UniformValueStack from './uniform_value_stack';
+import drawElements from './draw_elements';
 
 export default function renderCommand ( re/*nderer*/, cmd ) {
 
@@ -108,10 +106,6 @@ export default function renderCommand ( re/*nderer*/, cmd ) {
 
             re.program = re.app.glx.glProgram( program );
 
-            //if (re.debugOutFrame) {
-                //console.log('activate program', program);
-            //}
-
         }
 
     }
@@ -123,9 +117,10 @@ export default function renderCommand ( re/*nderer*/, cmd ) {
 
 }
 
+/**
+ * @ignore
+ */
 function _warn () {
-
     console.warn.apply( console, [ '[Picimo.render.WebGlRenderer#renderCommand]'].concat( Array.prototype.slice.apply( arguments ) ) );
-
 }
 

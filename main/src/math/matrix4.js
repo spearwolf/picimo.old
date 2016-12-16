@@ -1,13 +1,13 @@
-import * as utils from '../utils';
+import { mat4 } from 'gl-matrix';
 
-const { mat4 } = utils.glMatrix;
-//const { publicRO } = utils.object.decorator;
+import { definePropertyPublicRO } from '../utils/object_utils';
+
 
 export default class Matrix4 {
 
     constructor () {
         this.serial = 1;
-        utils.object.definePropertyPublicRO(this, 'mat4', mat4.create());
+        definePropertyPublicRO(this, 'mat4', mat4.create());
         Object.seal(this);
     }
 
@@ -120,4 +120,5 @@ export default class Matrix4 {
         ++this.serial;
     }
 
-}  // end of class
+}  // => Matrix4
+

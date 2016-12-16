@@ -4,9 +4,10 @@ const regExpAbsUrlPath = new RegExp( '^(https?:)?/', 'i' );
 const regExpUrlDir     = new RegExp( '^(.*/)[^/]+$', 'i' );
 
 
-//------------------------------------------
-// getUrlDir( url )
-//---------------------------------------
+/**
+ * @param {string} url
+ * @return {string}
+ */
 
 export function getUrlDir ( url ) {
 
@@ -15,9 +16,11 @@ export function getUrlDir ( url ) {
 
 }
 
-//------------------------------------------
-// getAssetUrl( url )
-//---------------------------------------
+
+/**
+ * @param {string} url
+ * @return {string}
+ */
 
 export function getAssetUrl ( url ) {
 
@@ -53,9 +56,12 @@ export function getAssetUrl ( url ) {
 
 }
 
-//------------------------------------------
-// joinAssetUrl( baseUrl, url )
-//---------------------------------------
+
+/**
+ * @param {string} baseUrl
+ * @param {string} url
+ * @return {string}
+ */
 
 export function joinAssetUrl ( baseUrl, url ) {
 

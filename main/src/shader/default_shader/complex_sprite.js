@@ -1,5 +1,3 @@
-'use strict';
-
 import { rotateZ } from '../fn';
 
 /*

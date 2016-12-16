@@ -1,13 +1,9 @@
-'use strict';
-
 import { updateProjection } from './init';
 
-
+/**
+ * @ignore
+ */
 export function onFrame () {
-
-    //if (this.app.renderer.debugOutFrame) {
-        //console.debug('scene.onFrame()');
-    //}
 
     if (this.hasOwnProjection) {
         checkProjectionNeedsUpdate(this);
@@ -19,26 +15,29 @@ export function onFrame () {
 
 }
 
+/**
+ * @ignore
+ */
 export function onFrameEnd () {
-
-    //if (this.app.renderer.debugOutFrame) {
-        //console.debug('scene.onFrameEnd()');
-    //}
 
     this.app.renderer.addRenderCommand(this.renderPostCmd, null);
 
 }
 
+/**
+ * @ignore
+ */
 function createRenderCommand (scene) {
 
     let renderCmd = scene.renderCmd;
-
     renderCmd.uniforms.renderPrio = scene.renderPrio;
-
     scene.app.renderer.addRenderCommand(renderCmd, null);
 
 }
 
+/**
+ * @ignore
+ */
 function checkResize (scene) {
 
     let width      = scene.width;
@@ -56,10 +55,8 @@ function checkResize (scene) {
         uniforms.sceneInfo[1] = scene.height;
         uniforms.sceneInfo[2] = scene.pixelRatio;
 
-        /**
+        /*
          * Announce a scene size ( width, height or pixelRatio ) change.
-         * @event Picimo.graph.Scene#resize
-         * @memberof Picimo.graph.Scene
          * @param {number} width
          * @param {number} height
          * @param {number} pixelRatio
@@ -71,6 +68,9 @@ function checkResize (scene) {
 
 }
 
+/**
+ * @ignore
+ */
 function checkProjectionNeedsUpdate (scene) {
 
     let parent = scene.scene || scene.app;
@@ -90,6 +90,9 @@ function checkProjectionNeedsUpdate (scene) {
         }
 }
 
+/**
+ * @ignore
+ */
 export function onRootFrame () {
 
     let scene = this;

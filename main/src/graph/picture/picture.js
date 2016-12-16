@@ -1,12 +1,11 @@
-'use strict';
-
 import _ from 'lodash';
-import Node from '../node';
-import { PicturePipeline } from '../../render/pipeline';
-import * as core from '../../core';
+
 import DisplayPosition from './display_position';
-import { asNumber } from '../../utils';
+import Node from '../node';
 import updateVertices from './update_vertices';
+import { PicturePipeline } from '../../render/pipeline';
+import { VertexObjectPool } from '../../core';
+import { asNumber } from '../../utils';
 
 const DEFAULT_WEBGL_PROGRAM = 'picimo.sprite';
 const DEFAULT_SPRITE_TYPE   = 'simple';
@@ -144,12 +143,18 @@ export default class Picture extends Node {
 
 }
 
+/**
+ * @ignore
+ */
 function onInitGl (picture) {
 
     if (!picture.pipeline) initPipeline(picture);
 
 }
 
+/**
+ * @ignore
+ */
 function initPipeline (picture) {
 
     // find available picture pipelines
@@ -165,7 +170,7 @@ function initPipeline (picture) {
 
     if (!pipelines.length) {
 
-        let pool = new core.VertexObjectPool(descriptor, PicturePipeline.DEFAULT_CAPACITY);
+        let pool = new VertexObjectPool(descriptor, PicturePipeline.DEFAULT_CAPACITY);
         let pipe = new PicturePipeline(picture.app, pool, texture, program);
         pipelines.push(pipe);
 
@@ -179,6 +184,9 @@ function initPipeline (picture) {
 
 }
 
+/**
+ * @ignore
+ */
 function onRenderFrame ( picture ) {
 
     updateVertices( picture );
@@ -186,6 +194,9 @@ function onRenderFrame ( picture ) {
 
 }
 
+/**
+ * @ignore
+ */
 function initTexture ( picture, texture ) {
 
     picture.texture = null;

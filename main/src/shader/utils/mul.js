@@ -1,4 +1,3 @@
-'use strict';
 
 const isNumber = (x) => { return typeof x === 'number' };
 

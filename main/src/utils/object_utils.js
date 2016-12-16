@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * Define a *read-only* property which is *enumerable* but not *writable* and *configurable*.

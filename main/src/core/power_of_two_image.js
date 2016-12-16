@@ -1,9 +1,9 @@
 /* global HTMLCanvasElement */
 /* global HTMLImageElement */
-import { definePropertyPublicRO } from '../utils/object_utils';
 import addUid from '../utils/add_uid';
 import makeReadyPromise from '../utils/make_ready_promise';
-import * as math from '../math';
+import { definePropertyPublicRO } from '../utils/object_utils';
+import { isPowerOfTwo, findNextPowerOfTwo } from '../math';
 
 /**
  * A power of two image.
@@ -120,9 +120,12 @@ export default class PowerOfTwoImage {
         return this.image ? this.image.height : 0;
     }
 
-}
+}  // => class PowerOfTwoImage
 
 
+/**
+ * @ignore
+ */
 function setDomElement ( image, domElement ) {
 
     image._domElement = domElement;
@@ -131,17 +134,19 @@ function setDomElement ( image, domElement ) {
 
 }
 
-
+/**
+ * @ignore
+ */
 function convertToPowerOfTwo ( image ) {
 
-    if ( math.isPowerOfTwo( image.width ) && math.isPowerOfTwo( image.height ) ) {
+    if ( isPowerOfTwo( image.width ) && isPowerOfTwo( image.height ) ) {
 
         return image;
 
     } else {
 
-        var w = math.findNextPowerOfTwo( image.width );
-        var h = math.findNextPowerOfTwo( image.height );
+        var w = findNextPowerOfTwo( image.width );
+        var h = findNextPowerOfTwo( image.height );
 
         var canvas = document.createElement( 'canvas' );
 

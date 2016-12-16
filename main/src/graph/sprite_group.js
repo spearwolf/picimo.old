@@ -1,24 +1,11 @@
-'use strict';
-
 import Node from './node';
-import * as core from '../core';
 import { SpriteGroupPipeline } from '../render/pipeline';
+import { VertexObjectPool, TextureAtlas } from '../core';
 
 /**
- * @class Picimo.graph.SpriteGroup
- * @extends Picimo.graph.Node
- *
- * @param {Picimo.App} app - The app instance
- * @param {object} [options] - The options
- * @param {Picimo.core.TextureAtlas|Promise} [options.textureAtlas]
- * @param {string} [options.program="picimo.sprite"] - The render/webgl program name
- * @param {number} [options.capacity=1000] - Max sprite capacity
- * @param {string|Picimo.core.VertexObjectDescriptor} [options.sprites='default']
- *
- * @summary
  * Represents a group of sprites.
  *
- * @classdesc
+ * @desc
  * A SpriteGroup renders a group of sprites to the screen.
  * All vertex data will be will be uploaded to the GPU *every frame*.
  * So choose the capacity carefully.
@@ -33,8 +20,14 @@ import { SpriteGroupPipeline } from '../render/pipeline';
  * | Property | `scale=` | no | Either this or *setScale* |
  * | Property | `opacity=` | no | |
  *
+ * @param {Picimo.App} app - The app instance
+ * @param {object} [options] - The options
+ * @param {TextureAtlas|Promise} [options.textureAtlas]
+ * @param {string} [options.program="picimo.sprite"] - The render/webgl program name
+ * @param {number} [options.capacity=1000] - Max sprite capacity
+ * @param {string|VertexObjectDescriptor} [options.sprites='default']
+ *
  */
-
 export default function SpriteGroup ( app, options ) {
 
     if ( options === undefined ) options = {};
@@ -61,9 +54,7 @@ SpriteGroup.prototype.constructor = SpriteGroup;
 
 
 /**
- * @method Picimo.graph.SpriteGroup#createSprite
- *
- * @param {string|Picimo.core.Texture} [texture]
+ * @param {string|Texture} [texture]
  * @param {number} [width]
  * @param {number} [height]
  *
@@ -80,7 +71,6 @@ SpriteGroup.prototype.constructor = SpriteGroup;
  * If no *texture* is given a random texture (from the *textureAtlas*) will be choosen.
  *
  */
-
 SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
 
     var sprite = this.pool.alloc();
@@ -134,8 +124,6 @@ SpriteGroup.prototype.createSprites = function ( arr ) {
 };
 
 /**
- * @method Picimo.graph.SpriteGroup#setDefaultSpriteSize
- *
  * @param {number} width
  * @param {number} height
  *
@@ -147,7 +135,6 @@ SpriteGroup.prototype.createSprites = function ( arr ) {
  * Set the width and height for all new sprites. Note that this won't affect any previously created sprites.
  *
  */
-
 SpriteGroup.prototype.setDefaultSpriteSize = function ( width, height ) {
 
     this.defaultSpriteWidth = width || 0;
@@ -158,9 +145,12 @@ SpriteGroup.prototype.setDefaultSpriteSize = function ( width, height ) {
 };
 
 
+/**
+ * @ignore
+ */
 function initSpritePool ( spriteGroup, descriptor, capacity ) {
 
-    spriteGroup.pool = new core.VertexObjectPool( descriptor, capacity );
+    spriteGroup.pool = new VertexObjectPool( descriptor, capacity );
 
     var newSpritePrototype = spriteGroup.pool.NEW;
 
@@ -172,6 +162,9 @@ function initSpritePool ( spriteGroup, descriptor, capacity ) {
 
 }
 
+/**
+ * @ignore
+ */
 function updateDefaultSpriteSize ( spriteGroup ) {
 
     if ( spriteGroup.hasDefaultSpriteSize ) {
@@ -182,6 +175,9 @@ function updateDefaultSpriteSize ( spriteGroup ) {
 
 }
 
+/**
+ * @ignore
+ */
 function initTextureAtlas ( spriteGroup, textureAtlas ) {
 
     spriteGroup.textureAtlas = null;
@@ -200,6 +196,9 @@ function initTextureAtlas ( spriteGroup, textureAtlas ) {
 
 }
 
+/**
+ * @ignore
+ */
 function onInitGl ( spriteGroup ) {
 
     spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool, spriteGroup.textureAtlas );
@@ -208,6 +207,9 @@ function onInitGl ( spriteGroup ) {
 
 }
 
+/**
+ * @ignore
+ */
 function onRenderFrame ( spriteGroup ) {
 
     spriteGroup.pipeline.render();
@@ -224,7 +226,7 @@ Object.defineProperties( SpriteGroup.prototype, {
 
             this._textureAtlas = ta;
 
-            if ( ta instanceof core.TextureAtlas ) {
+            if ( ta instanceof TextureAtlas ) {
 
                 this.ready = true;
 

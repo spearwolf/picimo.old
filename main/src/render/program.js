@@ -1,13 +1,12 @@
-'use strict';
-
-import * as utils from '../utils';
 import WebGlProgram from './web_gl_program';
+import { addUid } from '../utils';
+import { definePropertiesPublicRO } from '../utils/object_utils';
 
 export default function Program ( name, vertexShaderName, fragmentShaderName ) {
 
-    utils.addUid( this );
+    addUid( this );
 
-    utils.object.definePropertiesPublicRO( this, {
+    definePropertiesPublicRO( this, {
 
         name               : name,
         vertexShaderName   : ( vertexShaderName ? vertexShaderName : name ),

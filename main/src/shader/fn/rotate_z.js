@@ -1,5 +1,3 @@
-'use strict';
-
 import rotate from './rotate';
 
 export default function (funcName = 'rotateZ') {

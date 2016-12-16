@@ -1,27 +1,12 @@
-'use strict';
-
+import Matrix4 from '../../math/matrix4';
 import Node from '../node';
-import * as math from '../../math';
-import { cmd } from '../../render';
-
-import {
-    initTransform,
-    initProjection,
-    initWithoutProjection,
-    initRootScene,
-    updateProjection
-} from './init';
-
+import createFactories from './factories';
+import { UniformValue, BlendMode } from '../../render/cmd';
+import { initProjection, initRootScene, initTransform, initWithoutProjection, updateProjection } from './init';
 import { onFrame, onFrameEnd } from './frame';
 
-import createFactories from './factories';
-
-
 /**
- * @class Picimo.graph.Scene
- * @extends Picimo.graph.Node
- *
- * @classdesc
+ * @desc
  * Allows you to determinate a **blend mode**.
  *
  * Can have a custom **projection** matrix which determinates the **width, height** and **pixelRatio**.
@@ -29,14 +14,14 @@ import createFactories from './factories';
  * Introduces new events such as **onResize** and **onProjectionUpdated**.
  *
  *
- * @param {Picimo.App} app                                 - The app instance
- * @param {Object} [options]                               - The options
- * @param {Picimo.render.cmd.BlendMode} [options.blendMode] - Blend mode
- * @param {number} [options.width]                         - Wanted scene width
- * @param {number} [options.height]                        - Wanted scene height
- * @param {string} [options.sizeFit="contain"]             - *cover* or *contain*
- * @param {number} [options.pixelRatio]                    - Wanted pixel ratio
- * @param {boolean} [options.projection=true]              - Determinates if this scene should have an own projection matrix.
+ * @param {App} app                                 - The app instance
+ * @param {Object} [options]                        - The options
+ * @param {BlendMode} [options.blendMode]           - Blend mode
+ * @param {number} [options.width]                  - Wanted scene width
+ * @param {number} [options.height]                 - Wanted scene height
+ * @param {string} [options.sizeFit="contain"]      - *cover* or *contain*
+ * @param {number} [options.pixelRatio]             - Wanted pixel ratio
+ * @param {boolean} [options.projection=true]       - Determinates if this scene should have an own projection matrix.
  * @param {function} [options.onResize]
  * @param {function} [options.onProjectionUpdated]
  *
@@ -46,9 +31,6 @@ export default function Scene (app, options = {}) {
 
     Node.call(this, app, options);
 
-    /**
-     * @member {string} Picimo.graph.Scene#sizeFit - *cover* or *contain*
-     */
     this._sizeFit = options.sizeFit === 'cover' ? 'cover' : 'contain';
 
     if (options.projection) {
@@ -75,6 +57,9 @@ export default function Scene (app, options = {}) {
         }
     };
 
+    /**
+     * @private
+     */
     this.renderPostCmd = {
         uniforms: {
             viewMatrix: this.renderCmd.uniforms.viewMatrix.restoreCmd,
@@ -82,12 +67,12 @@ export default function Scene (app, options = {}) {
     };
 
     /**
-     * @member {Picimo.render.cmd.BlendMode} Picimo.graph.Scene#blendMode
+     * @type {BlendMode}
      */
     this.blendMode = options.blendMode;
 
     if (this.hasOwnProjection)  {
-        this.renderCmd.uniforms.projectionMatrix = new cmd.UniformValue(true, this.projection);
+        this.renderCmd.uniforms.projectionMatrix = new UniformValue(true, this.projection);
         this.renderPostCmd.uniforms.projectionMatrix = this.renderCmd.uniforms.projectionMatrix.restoreCmd;
     }
 
@@ -113,10 +98,7 @@ createFactories(Scene);
 
 Object.defineProperties( Scene.prototype, {
 
-    /**
-     * @member {Picimo.graph.Scene} Picimo.graph.Scene#scene - The parent scene.
-     */
-
+    // The parent scene
     'scene': {
 
         get: function () {
@@ -174,19 +156,16 @@ Scene.prototype.setBlendMode = function (depthTest, depthMask, depthFunc, blend,
         this.blendMode = undefined;
     } else if (arguments.length === 1 && typeof arguments[0] === 'string') {
         let name = arguments[0].toUpperCase();
-        this.blendMode = cmd.BlendMode[name];
+        this.blendMode = BlendMode[name];
     } else {
-        this.blendMode = new cmd.BlendMode(depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst);
+        this.blendMode = new BlendMode(depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst);
     }
 
     return this.blendMode;
 
 };
 
-
-
 /**
- * @method Picimo.graph.Scene#setSize
  * @param {number} width - Wanted scene width
  * @param {number} height - Wanted scene height
  * @param {string} [sizeFit="contain"] - *cover* or *contain*
@@ -222,7 +201,7 @@ Scene.prototype.setSize = function (width, height, sizeFit) {
 
 Scene.prototype.computeViewMatrix = function (viewMatrix) {
 
-    if (!viewMatrix) viewMatrix = new math.Matrix4();
+    if (!viewMatrix) viewMatrix = new Matrix4();
 
     if (this.hasOwnProjection) {
         viewMatrix.multiply(this.projection, this.transform);

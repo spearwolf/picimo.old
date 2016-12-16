@@ -1,29 +1,22 @@
 import { definePropertyPrivate, definePropertyPrivateRO } from '../utils/object_utils';
 
 /**
- * @class Picimo.core.VertexObject
- * @param {Picimo.core.VertexObjectDescriptor} [descriptor] - Vertex descriptor.
- * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
+ * @param {!VertexObjectDescriptor} [descriptor] - Vertex descriptor
+ * @param {?VertexArray} [vertexArray] - Vertex array
  */
 export default function VertexObject ( descriptor, vertexArray ) {
 
     if ( this.descriptor !== undefined ) return;
 
-    /**
-     * @member {Picimo.core.VertexObjectDescriptor} Picimo.core.VertexObject#descriptor - Vertex object descriptor.
-     * @readonly
-     */
-
-    var _descriptor = descriptor ? descriptor : ( vertexArray ? vertexArray.descriptor : null );
+    let _descriptor = descriptor ? descriptor : ( vertexArray ? vertexArray.descriptor : null );
     if ( ! _descriptor ) {
 
-        throw new Error( 'VertexObject.descriptor is null!' );
+        throw new Error( 'VertexObject#descriptor is null!' );
 
     }
     definePropertyPrivateRO( this, 'descriptor', _descriptor );
 
-    /** @member {Picimo.core.VertexArray} Picimo.core.VertexObject#vertexArray - Vertex array. */
-    var _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
+    let _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
     definePropertyPrivate( this, 'vertexArray', _vertexArray );
 
     if ( this.descriptor !== this.vertexArray.descriptor && ( this.descriptor.vertexCount !== this.vertexArray.descriptor.vertexCount || this.descriptor.vertexAttrCount !== this.vertexArray.descriptor.vertexAttrCount) ) {

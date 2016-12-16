@@ -1,6 +1,4 @@
-'use strict';
-
-import * as utils from '../utils';
+import { definePropertiesPublicRO } from '../utils/object_utils';
 
 export default function NodeState (initialStateValue) {
 
@@ -60,7 +58,7 @@ NodeState.prototype.toString = function () {
 };
 
 
-utils.object.definePropertiesPublicRO( NodeState, {
+definePropertiesPublicRO( NodeState, {
 
     CREATE    : 1,
     INIT      : 2,

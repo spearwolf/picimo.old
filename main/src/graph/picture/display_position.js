@@ -1,5 +1,3 @@
-'use strict';
-
 //---------------------------------------------------------
 //
 // displayPosition: {
@@ -22,7 +20,7 @@ export default class DisplayPosition {
 
         this.picture = picture;
         this.picture.verticesNeedsUpdate = true;
-        
+
         this._top     = opts.top;
         this._bottom  = opts.bottom;
         this._left    = opts.left;

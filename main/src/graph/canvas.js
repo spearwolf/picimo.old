@@ -1,8 +1,9 @@
 import eventize from '@spearwolf/eventize';
+
 import Picture from './picture';
-import * as core from '../core';
-import { isPowerOfTwo, findNextPowerOfTwo } from '../math';
+import { Viewport, Texture } from '../core';
 import { asBoolean } from '../utils';
+import { isPowerOfTwo, findNextPowerOfTwo } from '../math';
 
 export default class Canvas extends Picture {
 
@@ -94,6 +95,9 @@ export default class Canvas extends Picture {
 
 }
 
+/**
+ * @ignore
+ */
 function clearCanvas (canvas) {
     const dim = canvas.dimension;
     const ctx = canvas.ctx;
@@ -105,6 +109,9 @@ function clearCanvas (canvas) {
     }
 }
 
+/**
+ * @ignore
+ */
 function setCanvas (obj, canvas, alpha) {
 
     Object.defineProperties(obj, {
@@ -120,26 +127,32 @@ function setCanvas (obj, canvas, alpha) {
 
 }
 
+/**
+ * @ignore
+ */
 function extractCanvasSize (options) {
 
     if (typeof options.canvasSize === 'number') {
-        return new core.Viewport(0, 0, parseInt(options.canvasSize, 10), parseInt(options.canvasSize, 10));
+        return new Viewport(0, 0, parseInt(options.canvasSize, 10), parseInt(options.canvasSize, 10));
     } else if (Array.isArray(options.canvasSize)) {
-        return new core.Viewport(0, 0, parseInt(options.canvasSize[0], 10), parseInt(options.canvasSize[1], 10));
+        return new Viewport(0, 0, parseInt(options.canvasSize[0], 10), parseInt(options.canvasSize[1], 10));
     } else if (typeof options.canvasSize === 'object') {
-        return new core.Viewport(
+        return new Viewport(
             parseInt(options.canvasSize.x, 10),
             parseInt(options.canvasSize.y, 10),
             parseInt(options.canvasSize.width, 10),
             parseInt(options.canvasSize.height, 10));
     } else if (options.canvas) {
-        return new core.Viewport(0, 0, options.canvas.width, options.canvas.height);
+        return new Viewport(0, 0, options.canvas.width, options.canvas.height);
     } else {
         throw new Error(`Picimo.graph.Canvas panic! couldn't determinate canvas size!`);
     }
 
 }
 
+/**
+ * @ignore
+ */
 function createCanvas (dimension) {
 
     const canvas = document.createElement('canvas');
@@ -151,12 +164,15 @@ function createCanvas (dimension) {
 
 }
 
+/**
+ * @ignore
+ */
 function createTexture (canvas, dimension) {
 
-    let texture = core.Texture.fromCanvas(canvas);
+    let texture = Texture.fromCanvas(canvas);
 
     if (dimension.x || dimension.y || dimension.width !== texture.width || dimension.height !== texture.height) {
-        texture = new core.Texture(texture, dimension.x, dimension.y, dimension.width, dimension.height);
+        texture = new Texture(texture, dimension.x, dimension.y, dimension.width, dimension.height);
     }
 
     return texture;

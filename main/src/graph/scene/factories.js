@@ -1,9 +1,10 @@
-'use strict';
-
-import SpriteGroup from '../sprite_group';
-import Picture from '../picture';
 import Canvas from '../canvas';
+import Picture from '../picture';
+import SpriteGroup from '../sprite_group';
 
+/**
+ * @ignore
+ */
 export default function (Scene) {
 
     Scene.prototype.appendSpriteGroup = function (textureAtlas, options = {}, extension = null) {
@@ -49,6 +50,9 @@ export default function (Scene) {
 
 }
 
+/**
+ * @ignore
+ */
 function appendNode (node, scene, extension) {
 
     scene.appendChild(node);

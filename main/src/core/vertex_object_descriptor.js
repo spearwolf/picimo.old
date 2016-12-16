@@ -1,10 +1,7 @@
-'use strict';
-
-import VertexObject from './vertex_object';
 import VertexArray from './vertex_array';
+import VertexObject from './vertex_object';
 
 /**
- * @class Picimo.core.VertexObjectDescriptor
  * @param {function} vertexObjectConstructor - Vertex object constructor function
  * @param {number} vertexCount - Vertex count
  * @param {number} vertexAttrCount - Vertex attribute count
@@ -156,6 +153,9 @@ export default function VertexObjectDescriptor ( vertexObjectConstructor, vertex
 
 }
 
+/**
+ * @ignore
+ */
 function buildVOConstructor ( constructorFunc ) {
     if (typeof constructorFunc === 'function') {
         if (!constructorFunc.name) {
@@ -172,9 +172,8 @@ function buildVOConstructor ( constructorFunc ) {
 
 
 /**
- * @method Picimo.core.VertexObjectDescriptor#createVertexArray
  * @param {number} [size=1]
- * @return {Picimo.core.VertexArray}
+ * @return {VertexArray}
  */
 VertexObjectDescriptor.prototype.createVertexArray = function ( size ) {
 
@@ -183,10 +182,9 @@ VertexObjectDescriptor.prototype.createVertexArray = function ( size ) {
 };
 
 /**
- * Create a new vertex object.
- * @method Picimo.core.VertexObjectDescriptor#create
- * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
- * @return {Picimo.core.VertexObject}
+ * Create a new {@link VertexObject}.
+ * @param {VertexArray} [vertexArray] - Vertex array
+ * @return {VertexObject}
  */
 VertexObjectDescriptor.prototype.create = function ( vertexArray ) {
 
@@ -203,6 +201,12 @@ VertexObjectDescriptor.prototype.create = function ( vertexArray ) {
 
 };
 
+
+/**
+ * @param {string} name
+ * @param {number} [size=1]
+ * @return {boolean}
+ */
 VertexObjectDescriptor.prototype.hasAttribute = function ( name, size ) {
 
     var attr = this.attr[ name ];
@@ -214,10 +218,8 @@ VertexObjectDescriptor.prototype.hasAttribute = function ( name, size ) {
 Object.defineProperties( VertexObjectDescriptor.prototype, {
 
     /**
-     * @member {Object} Picimo.core.VertexObjectDescriptor#proto - The prototype object of the vertex object. You should add your own properties and methods here.
-     * @readonly
+     * The prototype object of the vertex object. You should add your own properties and methods here.
      */
-
     'proto': {
         get: function () {
 
@@ -234,6 +236,9 @@ Object.defineProperties( VertexObjectDescriptor.prototype, {
 // VertexObjectAttrDescriptor
 // =========================================
 
+/**
+ * @ignore
+ */
 function VertexObjectAttrDescriptor ( name, size, offset, uniform, attrNames ) {
 
     this.name      = name;
@@ -246,6 +251,9 @@ function VertexObjectAttrDescriptor ( name, size, offset, uniform, attrNames ) {
 
 }
 
+/**
+ * @ignore
+ */
 VertexObjectAttrDescriptor.prototype.getAttrPostfix = function ( name, index ) {
 
     if ( this.attrNames ) {
@@ -264,6 +272,9 @@ VertexObjectAttrDescriptor.prototype.getAttrPostfix = function ( name, index ) {
 
 };
 
+/**
+ * @ignore
+ */
 VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, descriptor ) {
 
     var i, j;
@@ -362,6 +373,9 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
 
 };
 
+/**
+ * @ignore
+ */
 function get_vNf_u ( offset ) {
 
     return function ( attrIndex ) {
@@ -372,6 +386,9 @@ function get_vNf_u ( offset ) {
 
 }
 
+/**
+ * @ignore
+ */
 function set_vNf_u ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
@@ -388,13 +405,18 @@ function set_vNf_u ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     };
 }
 
-
+/**
+ * @ignore
+ */
 function get_v1f_u ( offset ) {
     return function () {
         return this.vertexArray.vertices[ offset ];
     };
 }
 
+/**
+ * @ignore
+ */
 function set_vNf_v ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
@@ -411,6 +433,9 @@ function set_vNf_v ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     };
 }
 
+/**
+ * @ignore
+ */
 function set_v1f_u ( vertexCount, vertexAttrCount, offset ) {
     return function ( value ) {
 
@@ -425,7 +450,9 @@ function set_v1f_u ( vertexCount, vertexAttrCount, offset ) {
     };
 }
 
-
+/**
+ * @ignore
+ */
 function camelize ( name ) {
     return name[ 0 ].toUpperCase() + name.substr( 1 );
 }

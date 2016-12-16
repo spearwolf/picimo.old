@@ -1,5 +1,3 @@
-'use strict';
-
 import NodeState from '../node_state';
 
 // ---------------------------------------------------------------------
@@ -11,6 +9,10 @@ import NodeState from '../node_state';
 //      and this functions returns a *falsy* value.
 //
 // ---------------------------------------------------------------------
+
+/**
+ * @private
+ */
 
 export default function defineReady (obj, initialReady) {
 

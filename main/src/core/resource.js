@@ -1,7 +1,7 @@
-import eventize from '@spearwolf/eventize';
-import { definePropertyPublicRO } from '../utils/object_utils';
 import addUid from '../utils/add_uid';
+import eventize from '@spearwolf/eventize';
 import makeReadyPromise from '../utils/make_ready_promise';
+import { definePropertyPublicRO } from '../utils/object_utils';
 
 /**
  * @desc
@@ -14,7 +14,7 @@ import makeReadyPromise from '../utils/make_ready_promise';
 export default class Resource {
 
     /**
-     * @param {App} app - the app instance
+     * @param {!App} app - the app instance
      * @param {string} [dataPropAlias] - name alias of the data property
      */
     constructor (app, dataPropAlias) {

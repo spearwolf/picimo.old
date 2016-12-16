@@ -1,7 +1,5 @@
-'use strict';
-
-import Uniform from './uniform';
 import Attrib  from './attrib';
+import Uniform from './uniform';
 
 export default function WebGlProgram ( program, glProgram, glx ) {
 
@@ -29,6 +27,9 @@ WebGlProgram.prototype.use = function () {
 };
 
 
+/**
+ * @ignore
+ */
 function setupUniformsAndAttributes ( glProgram ) {
 
     var gl = glProgram.glx.gl;

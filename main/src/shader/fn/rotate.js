@@ -1,5 +1,3 @@
-'use strict';
-
 import { ret, mat4, mul, sub, add } from '../utils';
 
 export default function (funcName = 'rotate', x = 0.0, y = 0.0, z = 1.0) {

@@ -1,7 +1,5 @@
-'use strict';
 
 /**
- * @class Picimo.core.Texture
  * @example
  * let c = document.createElement("canvas");
  * let t = new Picimo.core.Texture.fromCanvas(c);
@@ -12,6 +10,7 @@
  * t.width    // => 100
  *
  */
+
 export default class Texture {
 
     /**
@@ -292,5 +291,5 @@ export default class Texture {
 
     }
 
-}
+}  // => class Texture
 

@@ -1,46 +1,24 @@
-'use strict';
-
-import * as utils from '../utils';
+import { definePropertiesPublicRO } from '../utils/object_utils';
 
 /**
- * @class Picimo.core.VertexObjectPool
- * @param {Picimo.core.VertexObjectDescriptor} descriptor - Vertex object descriptor.
- * @param {number} capacity - Maximum number of vertex objects.
- * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
+ * @param {VertexObjectDescriptor} descriptor - Vertex object descriptor
+ * @param {number} capacity - Maximum number of vertex objects
+ * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array
  */
 
 export default function VertexObjectPool ( descriptor, capacity, vertexArray ) {
 
-    utils.object.definePropertiesPublicRO( this, {
+    definePropertiesPublicRO( this, {
 
-        /**
-         * @member {Picimo.core.VertexObjectDescriptor} Picimo.core.VertexObjectPool#descriptor - Vertex object descriptor.
-         * @readonly
-         */
         'descriptor' : descriptor,
 
-        /**
-         * @member {number} Picimo.core.VertexObjectPool#capacity - Maximum number of vertex objects.
-         * @readonly
-         */
+        // Maximum number of vertex objects
         'capacity' : capacity,
 
-        /**
-         * @member {Picimo.core.VertexArray} Picimo.core.VertexObjectPool#vertexArray - Vertex array.
-         * @readonly
-         */
         'vertexArray' : ( vertexArray != null ? vertexArray : descriptor.createVertexArray( capacity ) ),
 
-        /**
-         * @member {Picimo.core.VertexObject} Picimo.core.VertexObjectPool#ZERO - The *zero* vertex object.
-         * @readonly
-         */
         'ZERO' : descriptor.create(),
 
-        /**
-         * @member {Picimo.core.VertexObject} Picimo.core.VertexObjectPool#NEW - The *new* vertex object.
-         * @readonly
-         */
         'NEW' : descriptor.create()
 
     });
@@ -51,10 +29,7 @@ export default function VertexObjectPool ( descriptor, capacity, vertexArray ) {
 
 Object.defineProperties( VertexObjectPool.prototype, {
 
-    /**
-     * @member {number} Picimo.core.VertexObjectPool#usedCount - Number of in-use vertex objects.
-     * @readonly
-     */
+    // Number of in-use vertex objects
     'usedCount': {
 
         get: function () {
@@ -67,10 +42,7 @@ Object.defineProperties( VertexObjectPool.prototype, {
 
     },
 
-    /**
-     * @member {number} Picimo.core.VertexObjectPool#availableCount - Number of free and unused vertex objects.
-     * @readonly
-     */
+    // Number of free and unused vertex objects
     'availableCount': {
 
         get: function () {
@@ -87,9 +59,8 @@ Object.defineProperties( VertexObjectPool.prototype, {
 
 
 /**
- * @method Picimo.core.VertexObjectPool#alloc
- * @throws Will throw an error if capacity reached and no vertex object is available.
- * @return {Picimo.core.VertexObject}
+ * @throws throw error when capacity reached and no vertex object is available.
+ * @return {VertexObject}
  */
 
 VertexObjectPool.prototype.alloc = function () {
@@ -112,8 +83,7 @@ VertexObjectPool.prototype.alloc = function () {
 
 
 /**
- * @method Picimo.core.VertexObjectPool#free
- * @param {Picimo.core.VertexObject} vo - The vertex object
+ * @param {VertexObject} vo - The vertex object
  */
 
 VertexObjectPool.prototype.free = function ( vo ) {
@@ -145,6 +115,9 @@ VertexObjectPool.prototype.free = function ( vo ) {
 };
 
 
+/**
+ * @ignore
+ */
 function createVertexObjects ( pool ) {
 
     pool.availableVOs = [];

@@ -1,8 +1,9 @@
 import { PowerOfTwoImage, Texture, TextureAtlas } from '../core';
 
-//-----------------------------------------------------
-// loadTextureAtlas( url ) -> promise<TextureAtlas>
-//--------------------------------------------------------
+/**
+ * @param {string} url
+ * @return {Promise<TextureAtlas>}
+ */
 
 export function loadTextureAtlas ( url ) {
 
@@ -11,11 +12,12 @@ export function loadTextureAtlas ( url ) {
 }
 
 
-//-----------------------------------------------------
-// loadTexture( url ) -> promise<Texture>
-//
-// Load an image and create a texture from image data
-//--------------------------------------------------------
+/**
+ * Load an image and create a _texture_ from the image bitmap data.
+ *
+ * @param {string} url
+ * @return {Promise<Texture>}
+ */
 
 export function loadTexture ( url ) {
 
@@ -27,6 +29,7 @@ export function loadTexture ( url ) {
     return image.promise.then(() => texture);
 
 }
+
 
 //function forwardTexture ( texture, image ) {
 

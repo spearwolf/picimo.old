@@ -1,8 +1,6 @@
-'use strict';
-
-import * as utils from '../utils';
-import ShaderSource from './shader_source';
 import Program from './program';
+import ShaderSource from './shader_source';
+import { definePropertiesPrivateRO } from '../utils/object_utils';
 
 //===================================================================
 //
@@ -12,7 +10,7 @@ import Program from './program';
 
 export default function ShaderManager ( app ) {
 
-    utils.object.definePropertiesPrivateRO( this, {
+    definePropertiesPrivateRO( this, {
 
         app : app,
 

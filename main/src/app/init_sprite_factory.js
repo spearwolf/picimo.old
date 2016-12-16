@@ -1,5 +1,5 @@
-import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/object_utils';
 import delegateMethods from '../utils/delegate_methods';
+import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/object_utils';
 import { initSprites, defineSprite } from '../sprites';
 
 /**
@@ -12,7 +12,9 @@ export default function ( app ) {
     definePropertyPrivateRO( app, 'spriteFactory', spriteFactory );
 
     definePropertyPublicRO( app, 'defineSprite', function (typeName, spriteOptions, spriteProto) {
+
         return defineSprite( typeName, spriteOptions, spriteProto, spriteFactory );
+
     });
 
     delegateMethods(spriteFactory, app, {

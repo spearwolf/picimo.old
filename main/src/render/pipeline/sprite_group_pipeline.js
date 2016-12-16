@@ -1,6 +1,6 @@
-import * as utils from '../../utils';
-import { VertexIndexArray } from '../../core';
 import WebGlBuffer from '../web_gl_buffer';
+import { VertexIndexArray } from '../../core';
+import { definePropertiesPrivateRO } from '../../utils/object_utils';
 
 // TODO - buffer update strategy ( all-at-once, blocks, ..? )
 
@@ -13,7 +13,7 @@ export default class SpriteGroupPipeline {
         this.webGlIndexBuffer = null;
         this.renderCmd        = null;
 
-        utils.object.definePropertiesPrivateRO(this, {
+        definePropertiesPrivateRO(this, {
 
             app     : app,
             program : program,
@@ -33,27 +33,22 @@ export default class SpriteGroupPipeline {
 
     render () {
 
-        //if (this.app.renderer.debugOutFrame) {
-            //console.debug('spriteGroupPipeline.render()');
-        //}
-
         this.app.renderer.addRenderCommand(this.renderCmd, this);
 
     }
 
     finish () {
 
-        //if (this.app.renderer.debugOutFrame) {
-            //console.debug('spriteGroupPipeline.finish()');
-        //}
-
         this.webGlBuffer.bufferSubData();  // TODO always upload the complete vertex buffer - is this a good idea?
 
     }
 
-}  // => end of class
+}  // => SpriteGroupPipeline
 
 
+/**
+ * @ignore
+ */
 function initBuffers ( pipeline ) {
 
     if ( ! pipeline.webGlBuffer ) {
@@ -73,6 +68,9 @@ function initBuffers ( pipeline ) {
 }
 
 
+/**
+ * @ignore
+ */
 function initRenderCmds ( pipeline ) {
 
     if ( ! pipeline.renderCmd ) {

@@ -1,6 +1,8 @@
+
 /**
  * @ignore
  */
+
 export default function () {
 
     let node, w, h, wPx, hPx;

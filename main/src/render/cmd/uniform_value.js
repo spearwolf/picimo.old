@@ -1,17 +1,11 @@
-'use strict';
-
-import * as utils from '../../utils';
-
-/**
- * @class Picimo.render.cmd.UniformValue
- *
- */
+import { addUid } from '../../utils';
+import { definePropertiesPublicRO } from '../../utils/object_utils';
 
 export default function UniformValue ( isRestorable, value ) {
 
-    utils.addUid(this);
+    addUid(this);
 
-    utils.object.definePropertiesPublicRO(this, {
+    definePropertiesPublicRO(this, {
 
         isRestorable      : !! isRestorable,
         isUniformValueCmd : true,
@@ -38,12 +32,8 @@ export default function UniformValue ( isRestorable, value ) {
 /**
  * This method gets called from the renderer to set the new uniform value.
  *
- * @method Picimo.render.cmd.UniformValue#getValue
- *
  * @param currentValue - The current uniform value.
- *
  * @returns The new uniform value or if the value is null return the current value.
- *
  */
 
 UniformValue.prototype.getValue = function ( currentValue ) {
@@ -60,12 +50,8 @@ UniformValue.prototype.getValue = function ( currentValue ) {
 /**
  * Set the uniform value.
  *
- * @method Picimo.render.cmd.UniformValue#setValue
- *
  * @param value - The uniform value or a function which returns the value.
- *
  * @returns self
- *
  */
 
 UniformValue.prototype.setValue = function ( value ) {

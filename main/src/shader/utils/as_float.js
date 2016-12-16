@@ -1,4 +1,3 @@
-'use strict';
 
 export default function (number) {
     let str = (number+'').trim();

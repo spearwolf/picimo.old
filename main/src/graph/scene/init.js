@@ -1,17 +1,20 @@
+import Matrix4 from '../../math/matrix4';
+import UniformValue from '../../render/cmd/uniform_value';
 import eventize from '@spearwolf/eventize';
-import * as utils from '../../utils';
-import * as math from '../../math';
-import { cmd } from '../../render';
+import { definePropertiesPublicRO } from '../../utils/object_utils';
 import { onRootFrame } from './frame';
 
+/**
+ * @ignore
+ */
 export function initTransform (scene) {  // --- {{{
 
     // Every scene has a transformation matrix !
 
-    scene.transform = new math.Matrix4();
+    scene.transform = new Matrix4();
 
-    scene.viewMatrixUniform = new cmd.UniformValue(true,
-        _computeViewMatrix.bind(null, scene, new math.Matrix4()) );
+    scene.viewMatrixUniform = new UniformValue(true,
+        _computeViewMatrix.bind(null, scene, new Matrix4()) );
 
     if (scene.hasOwnProjection) {
 
@@ -26,6 +29,9 @@ export function initTransform (scene) {  // --- {{{
 
 }
 
+/**
+ * @ignore
+ */
 function _computeViewMatrix (scene, viewMatrix, current) {
     if (!current || scene.hasOwnProjection) {
         scene.computeViewMatrix(viewMatrix);
@@ -37,31 +43,20 @@ function _computeViewMatrix (scene, viewMatrix, current) {
 
 // --- initTransform }}}
 
+/**
+ * @ignore
+ */
 export function initWithoutProjection (scene) {  // --- {{{
 
-    utils.object.definePropertiesPublicRO(scene, {
+    definePropertiesPublicRO(scene, {
 
-        /**
-         * @member {Picimo.math.Matrix4} Picimo.graph.Scene#projection
-         * @readonly
-         */
         projection: null,
-
-        /**
-         * @member {boolean} Picimo.graph.Scene#hasOwnProjection
-         * @readonly
-         */
         hasOwnProjection: false,
-
         projectionNeedsUpdate: false
 
     });
 
     Object.defineProperties(scene, {
-
-        /**
-         * @member {number} Picimo.graph.Scene#width
-         */
 
         'width' : { get: function () {
 
@@ -70,10 +65,6 @@ export function initWithoutProjection (scene) {  // --- {{{
 
         }, enumerable: true },
 
-        /**
-         * @member {number} Picimo.graph.Scene#height
-         */
-
         'height' : { get: function () {
 
             var parent = this.scene;
@@ -81,21 +72,12 @@ export function initWithoutProjection (scene) {  // --- {{{
 
         }, enumerable: true },
 
-        /**
-         * @member {number} Picimo.graph.Scene#pixelRatio
-         */
-
         'pixelRatio' : { get: function () {
 
             var parent = this.scene;
             return parent ? parent.pixelRatio : this.app.devicePixelRatio;
 
         }, enumerable: true },
-
-        /**
-         * @member {number} Picimo.graph.Scene#devicePixelRatio
-         * @readonly
-         */
 
         'devicePixelRatio' : { get: function () {
 
@@ -110,6 +92,9 @@ export function initWithoutProjection (scene) {  // --- {{{
 
 // --- initWithoutProjection }}}
 
+/**
+ * @ignore
+ */
 export function initRootScene (scene) {  // --- {{{
 
     scene.rootRenderCmd = {
@@ -130,11 +115,14 @@ export function initRootScene (scene) {  // --- {{{
 
 // --- initRootScene }}}
 
+/**
+ * @ignore
+ */
 export function initProjection (scene, options) {  // --- {{{
 
-    utils.object.definePropertiesPublicRO(scene, {
+    definePropertiesPublicRO(scene, {
 
-        projection       : new math.Matrix4(),
+        projection       : new Matrix4(),
         hasOwnProjection : true
 
     });
@@ -289,6 +277,9 @@ export function initProjection (scene, options) {  // --- {{{
 
 // --- initProjection }}}
 
+/**
+ * @ignore
+ */
 export function updateProjection (scene) {  // --- {{{
 
     if ( ! scene.hasOwnProjection || ! scene.projectionNeedsUpdate ) return;
@@ -357,13 +348,10 @@ export function updateProjection (scene) {  // --- {{{
 
     scene.projection.ortho( scene.width, scene.height );
 
-    /**
+    /*
      * Announce a projection matrix change.
-     * @event Picimo.graph.Scene#projectionUpdated
-     * @memberof Picimo.graph.Scene
-     * @param {Picimo.math.Matrix4} projection - The changed projection matrix.
+     * @param {Matrix4} projection - The changed projection matrix.
      */
-
     scene.emit( "projectionUpdated", scene.projection );
 
 }

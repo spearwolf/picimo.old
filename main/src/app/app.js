@@ -1,19 +1,18 @@
-import eventize from '@spearwolf/eventize';
 import Color from 'color-js';
+import eventize from '@spearwolf/eventize';
 
-import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/object_utils';
+import BlendMode from '../render/cmd/blend_mode';
 import addGlxProperty from '../utils/add_glx_property';
-import * as graph from '../graph';
-import * as render from '../render';
-import * as ui from '../ui';
-
-import resize from './resize';
-import renderFrame from './render_frame';
-import createWebGlContext from './create_web_gl_context';
 import createCanvas from './create_canvas';
-import initSpriteFactory from './init_sprite_factory';
 import createShaderManager from './create_shader_manager';
-
+import createWebGlContext from './create_web_gl_context';
+import initSpriteFactory from './init_sprite_factory';
+import renderFrame from './render_frame';
+import resize from './resize';
+import { MouseController } from '../ui';
+import { Scene } from '../graph';
+import { TextureManager, WebGlRenderer } from '../render';
+import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/object_utils';
 import { getUrlDir, getAssetUrl, joinAssetUrl } from './asset_url_helper';
 import { loadTextureAtlas, loadTexture } from './texture_helpers';
 
@@ -24,11 +23,34 @@ export default class App {
 
         eventize(this);
 
+        /**
+         * @private
+         */
         this.resize = resize;
+
+        /**
+         * @private
+         */
         this.renderFrame = renderFrame;
+
+        /**
+         * {@link src/app/asset_url_helper.js~getAssetUrl}
+         */
         this.getAssetUrl = getAssetUrl;
+
+        /**
+         * {@link src/app/asset_url_helper.js~joinAssetUrl}
+         */
         this.joinAssetUrl = joinAssetUrl;
+
+        /**
+         * {@link src/app/texture_helpers.js~loadTextureAtlas}
+         */
         this.loadTextureAtlas = loadTextureAtlas;
+
+        /**
+         * {@link src/app/texture_helpers.js~loadTexture}
+         */
         this.loadTexture = loadTexture;
 
         if (typeof window !== 'undefined') {  // TODO wrap window?
@@ -37,6 +59,9 @@ export default class App {
 
         definePropertyPublicRO(this, 'ready', false);
 
+        /**
+         * @type {float}
+         */
         this.now = window.performance.now() / 1000.0;
 
         if ( typeof canvas === 'object' && ! ( 'nodeName' in canvas ) ) {
@@ -46,12 +71,12 @@ export default class App {
             options = {};
         }
 
-        createCanvas( this, canvas, options.appendTo );
+        createCanvas(this, canvas, options.appendTo);
 
-        definePropertyPrivateRO(this, 'mouseController', new ui.MouseController(this));
+        definePropertyPrivateRO(this, 'mouseController', new MouseController(this));
         this.mouseController.connect(this); // => forward all mouse events to app
 
-        addGlxProperty( this );
+        addGlxProperty(this);
 
         definePropertyPrivateRO(this, 'glCtxAttrs', {
 
@@ -66,8 +91,8 @@ export default class App {
 
         createShaderManager( this );
 
-        definePropertyPrivateRO( this, 'textureManager', new render.TextureManager(this) );
-        definePropertyPrivateRO( this, 'renderer', new render.WebGlRenderer(this) );
+        definePropertyPrivateRO( this, 'textureManager', new TextureManager(this) );
+        definePropertyPrivateRO( this, 'renderer', new WebGlRenderer(this) );
 
         initSpriteFactory( this );
 
@@ -75,11 +100,11 @@ export default class App {
 
         this.frameNo = 0;
 
-        definePropertyPublicRO( this, 'scene', new graph.Scene( this, {
+        definePropertyPublicRO( this, 'scene', new Scene( this, {
 
             pixelRatio : 1,
             projection : true,
-            blendMode  : render.cmd.BlendMode.DEFAULT,
+            blendMode  : BlendMode.DEFAULT,
 
         } ) );
 

@@ -1,12 +1,8 @@
 import _ from 'lodash';
-import { definePropertyPublicRO } from '../utils/object_utils';
 import Queue from '../utils/queue';
-import { BlendMode } from './cmd';
 import renderCommand from './web_gl_renderer/render_command';
-
-/**
- * @class Picimo.render.WebGlRenderer
- */
+import { BlendMode } from './cmd';
+import { definePropertyPublicRO } from '../utils/object_utils';
 
 export default function WebGlRenderer ( app ) {
 
@@ -21,6 +17,9 @@ export default function WebGlRenderer ( app ) {
 
 }
 
+/**
+ * @ignore
+ */
 function initialize ( renderer ) {  // {{{
 
     renderer.cmdQueue = new Queue;
@@ -42,6 +41,10 @@ function initialize ( renderer ) {  // {{{
 
 }
 // }}}
+
+/**
+ * @ignore
+ */
 function initializePipelines ( renderer ) {  // {{{
 
     // TODO
@@ -78,6 +81,9 @@ WebGlRenderer.prototype.onStartFrame = function () {
 
 };
 
+/**
+ * @ignore
+ */
 function resetWebGlState ( renderer ) {  // {{{
 
     var gl = renderer.app.gl;
@@ -88,6 +94,9 @@ function resetWebGlState ( renderer ) {  // {{{
 
 }
 // }}}
+/**
+ * @ignore
+ */
 function resetInternalRenderState ( renderer ) {  // {{{
 
     renderer.cmdQueue.clear();
@@ -123,13 +132,10 @@ WebGlRenderer.prototype.onEndFrame = function () {
 
 
 /**
- * @method Picimo.render.WebGlRenderer#addPipeline
  * @param {string} name
  * @param {object} pipeline
  * @return pipeline
- *
  */
-
 WebGlRenderer.prototype.addPipeline = function ( name, pipeline ) {
 
     if ( name && ! pipeline ) {
@@ -147,17 +153,10 @@ WebGlRenderer.prototype.addPipeline = function ( name, pipeline ) {
 };
 
 /**
- * @method Picimo.render.WebGlRenderer#activatePipeline
  * @param pipeline
  * @return self
- *
  */
-
 WebGlRenderer.prototype.activatePipeline = function ( pipeline ) {
-
-    //if (this.debugOutFrame) {
-        //console.debug('renderer: activate pipeline=', pipeline, 'current=', this.currentPipeline);
-    //}
 
     if ( pipeline !== this.currentPipeline ) {
 
@@ -171,12 +170,9 @@ WebGlRenderer.prototype.activatePipeline = function ( pipeline ) {
 };
 
 /**
- * @method Picimo.render.WebGlRenderer#addRenderCommand
  * @param cmd
  * @param [pipeline] - activate pipeline before
- *
  */
-
 WebGlRenderer.prototype.addRenderCommand = function ( cmd, pipeline ) {
 
     if ( pipeline !== undefined ) {
@@ -208,6 +204,9 @@ WebGlRenderer.prototype.dumpCommandQueue = function () {
 };
 
 
+/**
+ * @ignore
+ */
 function renderAll ( renderer ) {  // {{{
 
     callPipelines( renderer, "finish" );
@@ -230,6 +229,9 @@ function renderAll ( renderer ) {  // {{{
 
 }
 // }}}
+/**
+ * @ignore
+ */
 function renderCommandQueue ( renderer ) {  // {{{
 
     var renderCmd = renderer._renderCmd;
@@ -242,6 +244,9 @@ function renderCommandQueue ( renderer ) {  // {{{
 
 }
 // }}}
+/**
+ * @ignore
+ */
 function logCommandQueueToConsole ( renderer ) {  // {{{
 
     renderer.cmdQueue.forEach( function ( cmd ) {
@@ -256,6 +261,9 @@ function logCommandQueueToConsole ( renderer ) {  // {{{
 
 }
 // }}}
+/**
+ * @ignore
+ */
 function callPipelines ( renderer, funcName ) {  // {{{
 
     var i;
@@ -273,7 +281,6 @@ function callPipelines ( renderer, funcName ) {  // {{{
 
 }
 // }}}
-
 
 //function _warn () {
     //console.warn.apply( console, [ '[Picimo.render.WebGlRenderer]'].concat( Array.prototype.slice.apply( arguments ) ) );

@@ -1579,6 +1579,131 @@ if(typeof module !== 'undefined') {
 });
 
 /**
+ * WebGL blend and depth mode state description.
+ *
+ * @param {boolean} depthTest - Enable or disable depth test.
+ * @param {boolean} [depthMask] - Enable or disable depth buffer writes.
+ * @param {string} [depthFunc] - Set the depth function.
+ * @param {boolean} blend - Enable or disable blending.
+ * @param {string} [blendFuncSrc] - Set the source blend function.
+ * @param {string} [blendFuncDst] - Set the destination blend function.
+ *
+ * @example
+ * // default settings
+ * new Picimo.render.cmd.BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' )
+ *
+ * @example
+ * // disable both
+ * new Picimo.render.cmd.BlendMode( false, false )
+ *
+ */
+
+function BlendMode ( depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst ) {
+
+    this.depthTest = !! depthTest;
+
+    if ( this.depthTest ) {
+
+        this.depthMask = depthMask;
+        this.depthFunc = depthFunc;
+
+    } else {
+
+        blend        = depthMask;
+        blendFuncSrc = depthFunc;
+        blendFuncDst = blend;
+
+    }
+
+    this.blend = !! blend;
+
+    if ( this.blend ) {
+
+        this.blendFuncSrc = blendFuncSrc;
+        this.blendFuncDst = blendFuncDst;
+
+    }
+
+    Object.freeze( this );
+
+}
+
+/**
+ * @param {WebGlRenderingContext} gl
+ */
+BlendMode.prototype.activate = function ( gl ) {
+
+    if ( this.depthTest ) {
+
+        gl.enable( gl.DEPTH_TEST );
+        gl.depthMask( this.depthMask );
+        gl.depthFunc( gl[ this.depthFunc ] );
+
+    } else {
+
+        gl.disable( gl.DEPTH_TEST );
+
+    }
+
+    if ( this.blend ) {
+
+        gl.enable( gl.BLEND );
+        gl.blendFunc( gl[ this.blendFuncSrc ], gl[ this.blendFuncDst ] );
+
+    } else {
+
+        gl.disable( gl.BLEND );
+
+    }
+
+};
+
+
+/*
+    // good default settings
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthMask(true);       // enable writing into the depth buffer
+    //gl.depthFunc(gl.ALWAYS);  // sprites blending
+    gl.depthFunc(gl.LEQUAL);  // iso3d
+
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);  // good default
+*/
+
+BlendMode.DEFAULT = new BlendMode( true, true, 'ALWAYS', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' );
+BlendMode.ISO3D = new BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' );
+
+// Add the .glx and .gl (alias to glx.gl) properties to an object.
+// Returns the object.
+//
+// foo = {}
+// addGlxProperty(glx)
+//
+// foo.glx    // => glx
+// foo.gl     // => glx.gl
+//
+function addGlxProperty (obj) {
+    let _glx;
+
+    Object.defineProperties(obj, {
+        glx: {
+            set: function (glx) {
+                _glx = glx;
+                Object.defineProperty(this, 'gl', {
+                    value: ( typeof glx === 'object' ? glx.gl : undefined ),
+                    configurable: true
+                });
+            },
+            get: function () {
+                return _glx;
+            },
+        }
+    });
+
+    return obj;
+}
+
+/**
  * Define a *read-only* property which is *enumerable* but not *writable* and *configurable*.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
@@ -1719,35 +1844,383 @@ var object_utils = Object.freeze({
 	definePropertiesPrivateRO: definePropertiesPrivateRO
 });
 
-// Add the .glx and .gl (alias to glx.gl) properties to an object.
-// Returns the object.
-//
-// foo = {}
-// addGlxProperty(glx)
-//
-// foo.glx    // => glx
-// foo.gl     // => glx.gl
-//
-function addGlxProperty (obj) {
-    let _glx;
+/**
+ * @ignore
+ */
+var createCanvas = function ( app, canvas, appendTo ) {
 
-    Object.defineProperties(obj, {
-        glx: {
-            set: function (glx) {
-                _glx = glx;
-                Object.defineProperty(this, 'gl', {
-                    value: ( typeof glx === 'object' ? glx.gl : undefined ),
-                    configurable: true
-                });
-            },
-            get: function () {
-                return _glx;
-            },
-        }
-    });
+    definePropertyPublicRO( app, 'canvasIsPredefined', canvas !== undefined );
 
-    return obj;
+    canvas = app.canvasIsPredefined ? canvas : document.createElement( 'canvas' );
+    definePropertyPublicRO( app, 'canvas', canvas );
+
+    if ( ! app.canvasIsPredefined ) {
+
+        canvas.style.boxSizing   = 'border-box';
+        canvas.style.margin      = '0';
+        canvas.style.padding     = '0';
+        canvas.style.border      = '0';
+        canvas.style.position    = 'absolute';
+        canvas.style.top         = '0';
+        canvas.style.left        = '0';
+        canvas.style.bottom      = '0';
+        canvas.style.right       = '0';
+        canvas.style.touchAction = 'none';
+        setUserSelectStyle(canvas);
+
+        let parentNode;
+        let containerNode;
+
+        containerNode = document.createElement('div');
+
+        containerNode.style.position    = 'relative';
+        containerNode.style.boxSizing   = 'border-box;';
+        containerNode.style.margin      = '0';
+        containerNode.style.padding     = '0';
+        containerNode.style.border      = '0';
+        containerNode.style.overflow    = 'hidden';
+        containerNode.style.width       = '100%';
+        containerNode.style.height      = '100%';
+        containerNode.style.touchAction = 'none';
+        setUserSelectStyle(containerNode);
+
+        containerNode.appendChild( canvas );
+
+        parentNode = appendTo || document.body;
+        parentNode.appendChild( containerNode );
+
+    }
+
+};
+
+function setUserSelectStyle (element, value = 'none') {
+
+    if ('userSelect' in element.style) {
+        element.style.userSelect = value;
+    } else {
+        if ('webkitUserSelect' in element.style) element.style.webkitUserSelect = value;
+        if ('mozUserSelect' in element.style) element.style.mozUserSelect = value;
+        if ('msUserSelect' in element.style) element.style.msUserSelect = value;
+    }
+
 }
+
+function delegateMethods (srcObj, target, methodName) {
+
+    function delegate_method (failIfNotAFunction, key, newKey) {
+
+        let method = srcObj[key];
+
+        if (!newKey) newKey = key;
+
+        if (typeof method === 'function') {
+            if (target[newKey] == null) {
+                target[newKey] = method.bind(srcObj);
+            } else {
+                throw new Error(`delegateMethods() panic! could not override property ${newKey}`);
+            }
+        } else if (failIfNotAFunction) {
+            throw new Error(`delegateMethods() panic! ${key} is not a function!`);
+        }
+
+    }
+
+    if (Array.isArray(methodName)) {
+        methodName.forEach(function (key) {
+            delegate_method(true, key, key);
+        });
+    } else if (typeof methodName === 'string') {
+        delegate_method(true, methodName);
+    } else if (typeof methodName === 'object') {
+        Object.keys(methodName).forEach(function (key) {
+            delegate_method(true, key, methodName[key]);
+        });
+    } else {
+        for (let key in srcObj) {
+            delegate_method(false, key);
+        }
+    }
+
+}
+
+var asFloat = function (number) {
+    let str = (number+'').trim();
+    if (str.match(/^[0-9]+$/)) {
+        return str + '.0';
+    }
+    return str;
+};
+
+function mat4 (m00=0, m01=0, m02=0, m03=0,
+                              m10=0, m11=0, m12=0, m13=0,
+                              m20=0, m21=0, m22=0, m23=0,
+                              m30=0, m31=0, m32=0, m33=1, as = asFloat) {
+
+    const toStr = as || function (x) { return x+'' };
+
+    return `mat4(${toStr(m00)}, ${toStr(m01)}, ${toStr(m02)}, ${toStr(m03)}, ${toStr(m10)}, ${toStr(m11)}, ${toStr(m12)}, ${toStr(m13)}, ${toStr(m20)}, ${toStr(m21)}, ${toStr(m22)}, ${toStr(m23)}, ${toStr(m30)}, ${toStr(m31)}, ${toStr(m32)}, ${toStr(m33)})`;
+
+}
+
+const isNumber = (x) => { return typeof x === 'number' };
+
+function mul (a, b) {
+
+    if (isNumber(a) && isNumber(b)) {
+
+        return a * b;
+
+    } else if (isNumber(a)) {
+
+        switch (a) {
+            case 0:
+                return 0;
+            case 1:
+                return b;
+            default:
+                return `${a} * ${b}`;
+        }
+
+    } else if (isNumber(b)) {
+
+        switch (b) {
+            case 0:
+                return 0;
+            case 1:
+                return a;
+            default:
+                return `${a} * ${b}`;
+        }
+
+    } else {
+        return `${a} * ${b}`;
+    }
+
+}
+
+const isNumber$1 = (x) => { return typeof x === 'number' };
+
+function add (a, b) {
+
+    if (isNumber$1(a) && isNumber$1(b)) {
+
+        return a + b;
+
+    } else if (isNumber$1(a)) {
+
+        switch (a) {
+            case 0:
+                return b;
+            default:
+                return `${a} + ${b}`;
+        }
+
+    } else if (isNumber$1(b)) {
+
+        switch (b) {
+            case 0:
+                return a;
+            default:
+                return `${a} + ${b}`;
+        }
+
+    } else {
+        return `${a} + ${b}`;
+    }
+
+}
+
+const isNumber$2 = (x) => { return typeof x === 'number' };
+
+function sub (a, b) {
+
+    if (isNumber$2(a) && isNumber$2(b)) {
+
+        return a - b;
+
+    } else if (isNumber$2(a)) {
+
+        switch (a) {
+            case 0:
+                return `-${b}`;
+            default:
+                return `${a} - ${b}`;
+        }
+
+    } else if (isNumber$2(b)) {
+
+        switch (b) {
+            case 0:
+                return a;
+            default:
+                return `${a} - ${b}`;
+        }
+
+    } else {
+        return `${a} - ${b}`;
+    }
+
+}
+
+function ret (res) {
+
+    return `return ${res};`;
+
+}
+
+var rotate = function (funcName = 'rotate', x = 0.0, y = 0.0, z = 1.0) {
+    return [
+
+        `mat4 ${funcName}(float angle) {`,
+
+        'float s = sin(angle);',
+        'float c = cos(angle);',
+        'float oc = 1.0 - c;',
+
+        ret(
+            mat4(
+                add( mul('oc', x*x), 'c' ),         sub( mul('oc', x*y), mul(z, 's') ), add( mul('oc', z*x), mul(y, 's') ), 0,
+                add( mul('oc', x*y), mul(z, 's') ), add( mul('oc', y*y), 'c' ),         sub( mul('oc', y*z), mul(x, 's') ), 0,
+                sub( mul('oc', z*x), mul(y, 's') ), add( mul('oc', y*z), mul(x, 's') ), add( mul('oc', z*z), 'c' )
+            )
+        ),
+
+        '}',
+
+    ];
+};
+
+var rotateZ = function (funcName = 'rotateZ') {
+    return rotate(funcName, 0, 0, 1);
+};
+
+    //return [
+
+        //`mat4 ${funcName}(float angle)`,
+        //'{',
+        //'    float s = sin(angle);',
+        //'    float c = cos(angle);',
+        //'    float oc = 1.0 - c;',
+        //'    return mat4(c, -s, 0.0, 0.0, s, c, 0.0, 0.0, 0.0, 0.0, oc + c, 0.0, 0.0, 0.0, 0.0, 1.0);',
+        //'}',
+
+    //];
+
+/*
+
+[ (xw, yh), (w, h) ], [ (sx, sy), (x, y) ], [ (s, t), (rot, tex) ], [ (r, g), (b, a) ]
+
+(16 attrs per vertex)
+
+pos: x, y -> ( xw * w * sx + x, yh * h * sy + y )
+size: w, h
+scale: sx, sy
+tex-coords: s, t
+color+opacity: r, g, b, a
+
+*/
+const VertexShader = [
+
+    'attribute vec2 xwyh;',        // wx -> x, yh -> y
+    'attribute vec2 size;',        // w -> size.x, h -> size.y
+    'attribute vec2 scale;',       // sx -> size.x, sy -> size.y
+    'attribute vec2 pos;',         // pos.x, pos.y
+    'attribute vec2 rot_texUnit;',
+
+    'attribute vec2 texCoords;',   // s -> texCoords.x, t -> texCoords.y
+    'attribute vec4 color;',
+
+    'uniform mat4 viewMatrix;',
+    'uniform float renderPrio;',
+
+    'varying vec2 v_texCoords;',
+    'varying vec2 v_texUnit;',
+    'varying vec4 v_color;',
+
+    rotateZ(),
+
+    'void main(void)',
+    '{',
+    '    mat4 rotationMatrix = rotateZ(rot_texUnit.x);',
+    '    vec2 pos2d = xwyh * size * scale;',
+
+    '    gl_Position = viewMatrix * ((rotationMatrix * vec4( pos2d, renderPrio, 1.0 )) + vec4(pos.xy, 0.0, 1.0));',
+
+    '    v_texCoords = texCoords;',
+    '    v_texUnit = vec2(rot_texUnit.y, 0);',
+    '    v_color = color;',
+    '}',
+
+];
+
+const FragmentShader = [
+
+    'precision mediump float;',
+
+    'varying vec2 v_texCoords;',
+    'varying vec2 v_texUnit;',
+    'varying vec4 v_color;',
+
+    'uniform sampler2D tex;',
+    /*uniform sampler2D tex0;*/
+    /*uniform sampler2D tex1;*/
+    /*uniform sampler2D tex2;*/
+    /*uniform sampler2D tex3;*/
+
+    'void main(void)',
+    '{',
+    '    vec4 texColor;',
+
+    '    texColor = texture2D(tex, v_texCoords);',
+    //'    texColor.x = texColor.x + 0.5;',
+    //'    texColor.w = texColor.w + 0.5;',
+         /*if      ( v_texUnit.x == 0.0 ) { tex = texture2D(tex0, v_texCoords); }*/
+         /*else if ( v_texUnit.x == 1.0 ) { tex = texture2D(tex1, v_texCoords); }*/
+         /*else if ( v_texUnit.x == 2.0 ) { tex = texture2D(tex2, v_texCoords); }*/
+         /*else if ( v_texUnit.x == 3.0 ) { tex = texture2D(tex3, v_texCoords); }*/
+
+    '    gl_FragColor = v_color * texColor;',
+    '}',
+
+];
+
+const VertexShader$1 = [
+`
+    attribute vec2 pos2d;
+    attribute float posZ;
+    attribute vec2 uv;
+    attribute vec2 translate;
+    attribute float rotate;
+    attribute float scale;
+    attribute float opacity;
+
+    uniform mat4 viewMatrix;
+
+    varying vec4 vTextureCoordScaleOpacity;`,
+
+    rotate('rotateZ', 0.0, 0.0, 1.0),
+`
+    void main(void)
+    {
+        mat4 rotationMatrix = rotateZ(rotate);
+        gl_Position = viewMatrix * ((rotationMatrix * (vec4(scale, scale, scale, 1.0) * vec4(pos2d.xy, posZ, 1.0))) + vec4(translate.xy, 0.0, 0.0));
+        vTextureCoordScaleOpacity = vec4(uv.xy, opacity, 0.0);
+    }
+`
+];
+
+const FragmentShader$1 = [
+`
+    precision mediump float;
+
+    varying vec4 vTextureCoordScaleOpacity;
+    uniform sampler2D tex;
+
+    void main(void) {
+        gl_FragColor = vTextureCoordScaleOpacity.z * texture2D(tex, vec2(vTextureCoordScaleOpacity.s, vTextureCoordScaleOpacity.t));
+    }
+`
+];
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
 
@@ -3500,7 +3973,7 @@ var glMatrix$6 = common;
  * @class 4x4 Matrix
  * @name mat4
  */
-var mat4$1 = {
+var mat4$2 = {
   scalar: {},
   SIMD: {},
 };
@@ -3510,7 +3983,7 @@ var mat4$1 = {
  *
  * @returns {mat4} a new 4x4 matrix
  */
-mat4$1.create = function() {
+mat4$2.create = function() {
     var out = new glMatrix$6.ARRAY_TYPE(16);
     out[0] = 1;
     out[1] = 0;
@@ -3537,7 +4010,7 @@ mat4$1.create = function() {
  * @param {mat4} a matrix to clone
  * @returns {mat4} a new 4x4 matrix
  */
-mat4$1.clone = function(a) {
+mat4$2.clone = function(a) {
     var out = new glMatrix$6.ARRAY_TYPE(16);
     out[0] = a[0];
     out[1] = a[1];
@@ -3565,7 +4038,7 @@ mat4$1.clone = function(a) {
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.copy = function(out, a) {
+mat4$2.copy = function(out, a) {
     out[0] = a[0];
     out[1] = a[1];
     out[2] = a[2];
@@ -3606,7 +4079,7 @@ mat4$1.copy = function(out, a) {
  * @param {Number} m33 Component in column 3, row 3 position (index 15)
  * @returns {mat4} A new mat4
  */
-mat4$1.fromValues = function(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33) {
+mat4$2.fromValues = function(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33) {
     var out = new glMatrix$6.ARRAY_TYPE(16);
     out[0] = m00;
     out[1] = m01;
@@ -3649,7 +4122,7 @@ mat4$1.fromValues = function(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m
  * @param {Number} m33 Component in column 3, row 3 position (index 15)
  * @returns {mat4} out
  */
-mat4$1.set = function(out, m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33) {
+mat4$2.set = function(out, m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33) {
     out[0] = m00;
     out[1] = m01;
     out[2] = m02;
@@ -3676,7 +4149,7 @@ mat4$1.set = function(out, m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22
  * @param {mat4} out the receiving matrix
  * @returns {mat4} out
  */
-mat4$1.identity = function(out) {
+mat4$2.identity = function(out) {
     out[0] = 1;
     out[1] = 0;
     out[2] = 0;
@@ -3703,7 +4176,7 @@ mat4$1.identity = function(out) {
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.scalar.transpose = function(out, a) {
+mat4$2.scalar.transpose = function(out, a) {
     // If we are transposing ourselves we can skip a few steps but have to cache some values
     if (out === a) {
         var a01 = a[1], a02 = a[2], a03 = a[3],
@@ -3751,7 +4224,7 @@ mat4$1.scalar.transpose = function(out, a) {
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.SIMD.transpose = function(out, a) {
+mat4$2.SIMD.transpose = function(out, a) {
     var a0, a1, a2, a3,
         tmp01, tmp23,
         out0, out1, out2, out3;
@@ -3785,7 +4258,7 @@ mat4$1.SIMD.transpose = function(out, a) {
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.transpose = glMatrix$6.USE_SIMD ? mat4$1.SIMD.transpose : mat4$1.scalar.transpose;
+mat4$2.transpose = glMatrix$6.USE_SIMD ? mat4$2.SIMD.transpose : mat4$2.scalar.transpose;
 
 /**
  * Inverts a mat4 not using SIMD
@@ -3794,7 +4267,7 @@ mat4$1.transpose = glMatrix$6.USE_SIMD ? mat4$1.SIMD.transpose : mat4$1.scalar.t
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.scalar.invert = function(out, a) {
+mat4$2.scalar.invert = function(out, a) {
     var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3],
         a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7],
         a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11],
@@ -3848,7 +4321,7 @@ mat4$1.scalar.invert = function(out, a) {
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.SIMD.invert = function(out, a) {
+mat4$2.SIMD.invert = function(out, a) {
   var row0, row1, row2, row3,
       tmp1,
       minor0, minor1, minor2, minor3,
@@ -3948,7 +4421,7 @@ mat4$1.SIMD.invert = function(out, a) {
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.invert = glMatrix$6.USE_SIMD ? mat4$1.SIMD.invert : mat4$1.scalar.invert;
+mat4$2.invert = glMatrix$6.USE_SIMD ? mat4$2.SIMD.invert : mat4$2.scalar.invert;
 
 /**
  * Calculates the adjugate of a mat4 not using SIMD
@@ -3957,7 +4430,7 @@ mat4$1.invert = glMatrix$6.USE_SIMD ? mat4$1.SIMD.invert : mat4$1.scalar.invert;
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.scalar.adjoint = function(out, a) {
+mat4$2.scalar.adjoint = function(out, a) {
     var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3],
         a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7],
         a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11],
@@ -3989,7 +4462,7 @@ mat4$1.scalar.adjoint = function(out, a) {
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
-mat4$1.SIMD.adjoint = function(out, a) {
+mat4$2.SIMD.adjoint = function(out, a) {
   var a0, a1, a2, a3;
   var row0, row1, row2, row3;
   var tmp1;
@@ -4077,7 +4550,7 @@ mat4$1.SIMD.adjoint = function(out, a) {
  * @param {mat4} a the source matrix
  * @returns {mat4} out
  */
- mat4$1.adjoint = glMatrix$6.USE_SIMD ? mat4$1.SIMD.adjoint : mat4$1.scalar.adjoint;
+ mat4$2.adjoint = glMatrix$6.USE_SIMD ? mat4$2.SIMD.adjoint : mat4$2.scalar.adjoint;
 
 /**
  * Calculates the determinant of a mat4
@@ -4085,7 +4558,7 @@ mat4$1.SIMD.adjoint = function(out, a) {
  * @param {mat4} a the source matrix
  * @returns {Number} determinant of a
  */
-mat4$1.determinant = function (a) {
+mat4$2.determinant = function (a) {
     var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3],
         a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7],
         a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11],
@@ -4116,7 +4589,7 @@ mat4$1.determinant = function (a) {
  * @param {mat4} b the second operand, must be a Float32Array
  * @returns {mat4} out
  */
-mat4$1.SIMD.multiply = function (out, a, b) {
+mat4$2.SIMD.multiply = function (out, a, b) {
     var a0 = SIMD.Float32x4.load(a, 0);
     var a1 = SIMD.Float32x4.load(a, 4);
     var a2 = SIMD.Float32x4.load(a, 8);
@@ -4173,7 +4646,7 @@ mat4$1.SIMD.multiply = function (out, a, b) {
  * @param {mat4} b the second operand
  * @returns {mat4} out
  */
-mat4$1.scalar.multiply = function (out, a, b) {
+mat4$2.scalar.multiply = function (out, a, b) {
     var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3],
         a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7],
         a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11],
@@ -4214,13 +4687,13 @@ mat4$1.scalar.multiply = function (out, a, b) {
  * @param {mat4} b the second operand
  * @returns {mat4} out
  */
-mat4$1.multiply = glMatrix$6.USE_SIMD ? mat4$1.SIMD.multiply : mat4$1.scalar.multiply;
+mat4$2.multiply = glMatrix$6.USE_SIMD ? mat4$2.SIMD.multiply : mat4$2.scalar.multiply;
 
 /**
  * Alias for {@link mat4.multiply}
  * @function
  */
-mat4$1.mul = mat4$1.multiply;
+mat4$2.mul = mat4$2.multiply;
 
 /**
  * Translate a mat4 by the given vector not using SIMD
@@ -4230,7 +4703,7 @@ mat4$1.mul = mat4$1.multiply;
  * @param {vec3} v vector to translate by
  * @returns {mat4} out
  */
-mat4$1.scalar.translate = function (out, a, v) {
+mat4$2.scalar.translate = function (out, a, v) {
     var x = v[0], y = v[1], z = v[2],
         a00, a01, a02, a03,
         a10, a11, a12, a13,
@@ -4267,7 +4740,7 @@ mat4$1.scalar.translate = function (out, a, v) {
  * @param {vec3} v vector to translate by
  * @returns {mat4} out
  */
-mat4$1.SIMD.translate = function (out, a, v) {
+mat4$2.SIMD.translate = function (out, a, v) {
     var a0 = SIMD.Float32x4.load(a, 0),
         a1 = SIMD.Float32x4.load(a, 4),
         a2 = SIMD.Float32x4.load(a, 8),
@@ -4298,7 +4771,7 @@ mat4$1.SIMD.translate = function (out, a, v) {
  * @param {vec3} v vector to translate by
  * @returns {mat4} out
  */
-mat4$1.translate = glMatrix$6.USE_SIMD ? mat4$1.SIMD.translate : mat4$1.scalar.translate;
+mat4$2.translate = glMatrix$6.USE_SIMD ? mat4$2.SIMD.translate : mat4$2.scalar.translate;
 
 /**
  * Scales the mat4 by the dimensions in the given vec3 not using vectorization
@@ -4308,7 +4781,7 @@ mat4$1.translate = glMatrix$6.USE_SIMD ? mat4$1.SIMD.translate : mat4$1.scalar.t
  * @param {vec3} v the vec3 to scale the matrix by
  * @returns {mat4} out
  **/
-mat4$1.scalar.scale = function(out, a, v) {
+mat4$2.scalar.scale = function(out, a, v) {
     var x = v[0], y = v[1], z = v[2];
 
     out[0] = a[0] * x;
@@ -4338,7 +4811,7 @@ mat4$1.scalar.scale = function(out, a, v) {
  * @param {vec3} v the vec3 to scale the matrix by
  * @returns {mat4} out
  **/
-mat4$1.SIMD.scale = function(out, a, v) {
+mat4$2.SIMD.scale = function(out, a, v) {
     var a0, a1, a2;
     var vec = SIMD.Float32x4(v[0], v[1], v[2], 0);
 
@@ -4369,7 +4842,7 @@ mat4$1.SIMD.scale = function(out, a, v) {
  * @param {vec3} v the vec3 to scale the matrix by
  * @returns {mat4} out
  */
-mat4$1.scale = glMatrix$6.USE_SIMD ? mat4$1.SIMD.scale : mat4$1.scalar.scale;
+mat4$2.scale = glMatrix$6.USE_SIMD ? mat4$2.SIMD.scale : mat4$2.scalar.scale;
 
 /**
  * Rotates a mat4 by the given angle around the given axis
@@ -4380,7 +4853,7 @@ mat4$1.scale = glMatrix$6.USE_SIMD ? mat4$1.SIMD.scale : mat4$1.scalar.scale;
  * @param {vec3} axis the axis to rotate around
  * @returns {mat4} out
  */
-mat4$1.rotate = function (out, a, rad, axis) {
+mat4$2.rotate = function (out, a, rad, axis) {
     var x = axis[0], y = axis[1], z = axis[2],
         len = Math.sqrt(x * x + y * y + z * z),
         s, c, t,
@@ -4442,7 +4915,7 @@ mat4$1.rotate = function (out, a, rad, axis) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.scalar.rotateX = function (out, a, rad) {
+mat4$2.scalar.rotateX = function (out, a, rad) {
     var s = Math.sin(rad),
         c = Math.cos(rad),
         a10 = a[4],
@@ -4485,7 +4958,7 @@ mat4$1.scalar.rotateX = function (out, a, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.SIMD.rotateX = function (out, a, rad) {
+mat4$2.SIMD.rotateX = function (out, a, rad) {
     var s = SIMD.Float32x4.splat(Math.sin(rad)),
         c = SIMD.Float32x4.splat(Math.cos(rad));
 
@@ -4518,7 +4991,7 @@ mat4$1.SIMD.rotateX = function (out, a, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.rotateX = glMatrix$6.USE_SIMD ? mat4$1.SIMD.rotateX : mat4$1.scalar.rotateX;
+mat4$2.rotateX = glMatrix$6.USE_SIMD ? mat4$2.SIMD.rotateX : mat4$2.scalar.rotateX;
 
 /**
  * Rotates a matrix by the given angle around the Y axis not using SIMD
@@ -4528,7 +5001,7 @@ mat4$1.rotateX = glMatrix$6.USE_SIMD ? mat4$1.SIMD.rotateX : mat4$1.scalar.rotat
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.scalar.rotateY = function (out, a, rad) {
+mat4$2.scalar.rotateY = function (out, a, rad) {
     var s = Math.sin(rad),
         c = Math.cos(rad),
         a00 = a[0],
@@ -4571,7 +5044,7 @@ mat4$1.scalar.rotateY = function (out, a, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.SIMD.rotateY = function (out, a, rad) {
+mat4$2.SIMD.rotateY = function (out, a, rad) {
     var s = SIMD.Float32x4.splat(Math.sin(rad)),
         c = SIMD.Float32x4.splat(Math.cos(rad));
 
@@ -4604,7 +5077,7 @@ mat4$1.SIMD.rotateY = function (out, a, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
- mat4$1.rotateY = glMatrix$6.USE_SIMD ? mat4$1.SIMD.rotateY : mat4$1.scalar.rotateY;
+ mat4$2.rotateY = glMatrix$6.USE_SIMD ? mat4$2.SIMD.rotateY : mat4$2.scalar.rotateY;
 
 /**
  * Rotates a matrix by the given angle around the Z axis not using SIMD
@@ -4614,7 +5087,7 @@ mat4$1.SIMD.rotateY = function (out, a, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.scalar.rotateZ = function (out, a, rad) {
+mat4$2.scalar.rotateZ = function (out, a, rad) {
     var s = Math.sin(rad),
         c = Math.cos(rad),
         a00 = a[0],
@@ -4657,7 +5130,7 @@ mat4$1.scalar.rotateZ = function (out, a, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.SIMD.rotateZ = function (out, a, rad) {
+mat4$2.SIMD.rotateZ = function (out, a, rad) {
     var s = SIMD.Float32x4.splat(Math.sin(rad)),
         c = SIMD.Float32x4.splat(Math.cos(rad));
 
@@ -4690,7 +5163,7 @@ mat4$1.SIMD.rotateZ = function (out, a, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
- mat4$1.rotateZ = glMatrix$6.USE_SIMD ? mat4$1.SIMD.rotateZ : mat4$1.scalar.rotateZ;
+ mat4$2.rotateZ = glMatrix$6.USE_SIMD ? mat4$2.SIMD.rotateZ : mat4$2.scalar.rotateZ;
 
 /**
  * Creates a matrix from a vector translation
@@ -4703,7 +5176,7 @@ mat4$1.SIMD.rotateZ = function (out, a, rad) {
  * @param {vec3} v Translation vector
  * @returns {mat4} out
  */
-mat4$1.fromTranslation = function(out, v) {
+mat4$2.fromTranslation = function(out, v) {
     out[0] = 1;
     out[1] = 0;
     out[2] = 0;
@@ -4734,7 +5207,7 @@ mat4$1.fromTranslation = function(out, v) {
  * @param {vec3} v Scaling vector
  * @returns {mat4} out
  */
-mat4$1.fromScaling = function(out, v) {
+mat4$2.fromScaling = function(out, v) {
     out[0] = v[0];
     out[1] = 0;
     out[2] = 0;
@@ -4766,7 +5239,7 @@ mat4$1.fromScaling = function(out, v) {
  * @param {vec3} axis the axis to rotate around
  * @returns {mat4} out
  */
-mat4$1.fromRotation = function(out, rad, axis) {
+mat4$2.fromRotation = function(out, rad, axis) {
     var x = axis[0], y = axis[1], z = axis[2],
         len = Math.sqrt(x * x + y * y + z * z),
         s, c, t;
@@ -4813,7 +5286,7 @@ mat4$1.fromRotation = function(out, rad, axis) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.fromXRotation = function(out, rad) {
+mat4$2.fromXRotation = function(out, rad) {
     var s = Math.sin(rad),
         c = Math.cos(rad);
 
@@ -4848,7 +5321,7 @@ mat4$1.fromXRotation = function(out, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.fromYRotation = function(out, rad) {
+mat4$2.fromYRotation = function(out, rad) {
     var s = Math.sin(rad),
         c = Math.cos(rad);
 
@@ -4883,7 +5356,7 @@ mat4$1.fromYRotation = function(out, rad) {
  * @param {Number} rad the angle to rotate the matrix by
  * @returns {mat4} out
  */
-mat4$1.fromZRotation = function(out, rad) {
+mat4$2.fromZRotation = function(out, rad) {
     var s = Math.sin(rad),
         c = Math.cos(rad);
 
@@ -4922,7 +5395,7 @@ mat4$1.fromZRotation = function(out, rad) {
  * @param {vec3} v Translation vector
  * @returns {mat4} out
  */
-mat4$1.fromRotationTranslation = function (out, q, v) {
+mat4$2.fromRotationTranslation = function (out, q, v) {
     // Quaternion math
     var x = q[0], y = q[1], z = q[2], w = q[3],
         x2 = x + x,
@@ -4968,7 +5441,7 @@ mat4$1.fromRotationTranslation = function (out, q, v) {
  * @param  {mat4} mat Matrix to be decomposed (input)
  * @return {vec3} out
  */
-mat4$1.getTranslation = function (out, mat) {
+mat4$2.getTranslation = function (out, mat) {
   out[0] = mat[12];
   out[1] = mat[13];
   out[2] = mat[14];
@@ -4985,7 +5458,7 @@ mat4$1.getTranslation = function (out, mat) {
  * @param {mat4} mat Matrix to be decomposed (input)
  * @return {quat} out
  */
-mat4$1.getRotation = function (out, mat) {
+mat4$2.getRotation = function (out, mat) {
   // Algorithm taken from http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
   var trace = mat[0] + mat[5] + mat[10];
   var S = 0;
@@ -5036,7 +5509,7 @@ mat4$1.getRotation = function (out, mat) {
  * @param {vec3} s Scaling vector
  * @returns {mat4} out
  */
-mat4$1.fromRotationTranslationScale = function (out, q, v, s) {
+mat4$2.fromRotationTranslationScale = function (out, q, v, s) {
     // Quaternion math
     var x = q[0], y = q[1], z = q[2], w = q[3],
         x2 = x + x,
@@ -5096,7 +5569,7 @@ mat4$1.fromRotationTranslationScale = function (out, q, v, s) {
  * @param {vec3} o The origin vector around which to scale and rotate
  * @returns {mat4} out
  */
-mat4$1.fromRotationTranslationScaleOrigin = function (out, q, v, s, o) {
+mat4$2.fromRotationTranslationScaleOrigin = function (out, q, v, s, o) {
   // Quaternion math
   var x = q[0], y = q[1], z = q[2], w = q[3],
       x2 = x + x,
@@ -5149,7 +5622,7 @@ mat4$1.fromRotationTranslationScaleOrigin = function (out, q, v, s, o) {
  *
  * @returns {mat4} out
  */
-mat4$1.fromQuat = function (out, q) {
+mat4$2.fromQuat = function (out, q) {
     var x = q[0], y = q[1], z = q[2], w = q[3],
         x2 = x + x,
         y2 = y + y,
@@ -5200,7 +5673,7 @@ mat4$1.fromQuat = function (out, q) {
  * @param {Number} far Far bound of the frustum
  * @returns {mat4} out
  */
-mat4$1.frustum = function (out, left, right, bottom, top, near, far) {
+mat4$2.frustum = function (out, left, right, bottom, top, near, far) {
     var rl = 1 / (right - left),
         tb = 1 / (top - bottom),
         nf = 1 / (near - far);
@@ -5233,7 +5706,7 @@ mat4$1.frustum = function (out, left, right, bottom, top, near, far) {
  * @param {number} far Far bound of the frustum
  * @returns {mat4} out
  */
-mat4$1.perspective = function (out, fovy, aspect, near, far) {
+mat4$2.perspective = function (out, fovy, aspect, near, far) {
     var f = 1.0 / Math.tan(fovy / 2),
         nf = 1 / (near - far);
     out[0] = f / aspect;
@@ -5266,7 +5739,7 @@ mat4$1.perspective = function (out, fovy, aspect, near, far) {
  * @param {number} far Far bound of the frustum
  * @returns {mat4} out
  */
-mat4$1.perspectiveFromFieldOfView = function (out, fov, near, far) {
+mat4$2.perspectiveFromFieldOfView = function (out, fov, near, far) {
     var upTan = Math.tan(fov.upDegrees * Math.PI/180.0),
         downTan = Math.tan(fov.downDegrees * Math.PI/180.0),
         leftTan = Math.tan(fov.leftDegrees * Math.PI/180.0),
@@ -5305,7 +5778,7 @@ mat4$1.perspectiveFromFieldOfView = function (out, fov, near, far) {
  * @param {number} far Far bound of the frustum
  * @returns {mat4} out
  */
-mat4$1.ortho = function (out, left, right, bottom, top, near, far) {
+mat4$2.ortho = function (out, left, right, bottom, top, near, far) {
     var lr = 1 / (left - right),
         bt = 1 / (bottom - top),
         nf = 1 / (near - far);
@@ -5337,7 +5810,7 @@ mat4$1.ortho = function (out, left, right, bottom, top, near, far) {
  * @param {vec3} up vec3 pointing up
  * @returns {mat4} out
  */
-mat4$1.lookAt = function (out, eye, center, up) {
+mat4$2.lookAt = function (out, eye, center, up) {
     var x0, x1, x2, y0, y1, y2, z0, z1, z2, len,
         eyex = eye[0],
         eyey = eye[1],
@@ -5352,7 +5825,7 @@ mat4$1.lookAt = function (out, eye, center, up) {
     if (Math.abs(eyex - centerx) < glMatrix$6.EPSILON &&
         Math.abs(eyey - centery) < glMatrix$6.EPSILON &&
         Math.abs(eyez - centerz) < glMatrix$6.EPSILON) {
-        return mat4$1.identity(out);
+        return mat4$2.identity(out);
     }
 
     z0 = eyex - centerx;
@@ -5421,7 +5894,7 @@ mat4$1.lookAt = function (out, eye, center, up) {
  * @param {mat4} mat matrix to represent as a string
  * @returns {String} string representation of the matrix
  */
-mat4$1.str = function (a) {
+mat4$2.str = function (a) {
     return 'mat4(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ', ' +
                     a[4] + ', ' + a[5] + ', ' + a[6] + ', ' + a[7] + ', ' +
                     a[8] + ', ' + a[9] + ', ' + a[10] + ', ' + a[11] + ', ' +
@@ -5434,7 +5907,7 @@ mat4$1.str = function (a) {
  * @param {mat4} a the matrix to calculate Frobenius norm of
  * @returns {Number} Frobenius norm
  */
-mat4$1.frob = function (a) {
+mat4$2.frob = function (a) {
     return(Math.sqrt(Math.pow(a[0], 2) + Math.pow(a[1], 2) + Math.pow(a[2], 2) + Math.pow(a[3], 2) + Math.pow(a[4], 2) + Math.pow(a[5], 2) + Math.pow(a[6], 2) + Math.pow(a[7], 2) + Math.pow(a[8], 2) + Math.pow(a[9], 2) + Math.pow(a[10], 2) + Math.pow(a[11], 2) + Math.pow(a[12], 2) + Math.pow(a[13], 2) + Math.pow(a[14], 2) + Math.pow(a[15], 2) ))
 };
 
@@ -5446,7 +5919,7 @@ mat4$1.frob = function (a) {
  * @param {mat4} b the second operand
  * @returns {mat4} out
  */
-mat4$1.add = function(out, a, b) {
+mat4$2.add = function(out, a, b) {
     out[0] = a[0] + b[0];
     out[1] = a[1] + b[1];
     out[2] = a[2] + b[2];
@@ -5474,7 +5947,7 @@ mat4$1.add = function(out, a, b) {
  * @param {mat4} b the second operand
  * @returns {mat4} out
  */
-mat4$1.subtract = function(out, a, b) {
+mat4$2.subtract = function(out, a, b) {
     out[0] = a[0] - b[0];
     out[1] = a[1] - b[1];
     out[2] = a[2] - b[2];
@@ -5498,7 +5971,7 @@ mat4$1.subtract = function(out, a, b) {
  * Alias for {@link mat4.subtract}
  * @function
  */
-mat4$1.sub = mat4$1.subtract;
+mat4$2.sub = mat4$2.subtract;
 
 /**
  * Multiply each element of the matrix by a scalar.
@@ -5508,7 +5981,7 @@ mat4$1.sub = mat4$1.subtract;
  * @param {Number} b amount to scale the matrix's elements by
  * @returns {mat4} out
  */
-mat4$1.multiplyScalar = function(out, a, b) {
+mat4$2.multiplyScalar = function(out, a, b) {
     out[0] = a[0] * b;
     out[1] = a[1] * b;
     out[2] = a[2] * b;
@@ -5537,7 +6010,7 @@ mat4$1.multiplyScalar = function(out, a, b) {
  * @param {Number} scale the amount to scale b's elements by before adding
  * @returns {mat4} out
  */
-mat4$1.multiplyScalarAndAdd = function(out, a, b, scale) {
+mat4$2.multiplyScalarAndAdd = function(out, a, b, scale) {
     out[0] = a[0] + (b[0] * scale);
     out[1] = a[1] + (b[1] * scale);
     out[2] = a[2] + (b[2] * scale);
@@ -5564,7 +6037,7 @@ mat4$1.multiplyScalarAndAdd = function(out, a, b, scale) {
  * @param {mat4} b The second matrix.
  * @returns {Boolean} True if the matrices are equal, false otherwise.
  */
-mat4$1.exactEquals = function (a, b) {
+mat4$2.exactEquals = function (a, b) {
     return a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3] && 
            a[4] === b[4] && a[5] === b[5] && a[6] === b[6] && a[7] === b[7] && 
            a[8] === b[8] && a[9] === b[9] && a[10] === b[10] && a[11] === b[11] &&
@@ -5578,7 +6051,7 @@ mat4$1.exactEquals = function (a, b) {
  * @param {mat4} b The second matrix.
  * @returns {Boolean} True if the matrices are equal, false otherwise.
  */
-mat4$1.equals = function (a, b) {
+mat4$2.equals = function (a, b) {
     var a0  = a[0],  a1  = a[1],  a2  = a[2],  a3  = a[3],
         a4  = a[4],  a5  = a[5],  a6  = a[6],  a7  = a[7], 
         a8  = a[8],  a9  = a[9],  a10 = a[10], a11 = a[11], 
@@ -5609,7 +6082,7 @@ mat4$1.equals = function (a, b) {
 
 
 
-var mat4_1 = mat4$1;
+var mat4_1 = mat4$2;
 
 /* Copyright (c) 2015, Brandon Jones, Colin MacKenzie IV.
 
@@ -8220,7 +8693,7 @@ var glMatrix_1 = common;
 var mat2 = mat2_1;
 var mat2d = mat2d_1;
 var mat3 = mat3_1;
-var mat4 = mat4_1;
+var mat4$1 = mat4_1;
 var quat = quat_1;
 var vec2 = vec2_1;
 var vec3 = vec3_1;
@@ -8231,7 +8704,7 @@ var glMatrix = {
 	mat2: mat2,
 	mat2d: mat2d,
 	mat3: mat3,
-	mat4: mat4,
+	mat4: mat4$1,
 	quat: quat,
 	vec2: vec2,
 	vec3: vec3,
@@ -8312,44 +8785,6 @@ function addUid ( obj ) {
 
 }
 
-function delegateMethods (srcObj, target, methodName) {
-
-    function delegate_method (failIfNotAFunction, key, newKey) {
-
-        let method = srcObj[key];
-
-        if (!newKey) newKey = key;
-
-        if (typeof method === 'function') {
-            if (target[newKey] == null) {
-                target[newKey] = method.bind(srcObj);
-            } else {
-                throw new Error(`delegateMethods() panic! could not override property ${newKey}`);
-            }
-        } else if (failIfNotAFunction) {
-            throw new Error(`delegateMethods() panic! ${key} is not a function!`);
-        }
-
-    }
-
-    if (Array.isArray(methodName)) {
-        methodName.forEach(function (key) {
-            delegate_method(true, key, key);
-        });
-    } else if (typeof methodName === 'string') {
-        delegate_method(true, methodName);
-    } else if (typeof methodName === 'object') {
-        Object.keys(methodName).forEach(function (key) {
-            delegate_method(true, key, methodName[key]);
-        });
-    } else {
-        for (let key in srcObj) {
-            delegate_method(false, key);
-        }
-    }
-
-}
-
 function asNumber (arg, defVal) {
     return Number(isNaN(arg) ? (isNaN(defVal) ? 0 : defVal) : arg);
 }
@@ -8370,7 +8805,7 @@ function asString (arg, defVal) {
 
 
 
-var index$1 = Object.freeze({
+var index$2 = Object.freeze({
 	glMatrix: glMatrix,
 	Color: color,
 	object: object_utils,
@@ -8382,846 +8817,6 @@ var index$1 = Object.freeze({
 	asBoolean: asBoolean,
 	asString: asString
 });
-
-function NodeState (initialStateValue) {
-
-    if (!(this instanceof NodeState)) {
-        return new NodeState(initialStateValue);
-    }
-
-    this.value = initialStateValue | 0;
-    Object.seal( this );
-
-}
-
-/**
- * @param {number} state
- * @return {boolean}
- * @example
- * state.is( NodeState.CREATE | NodeState.INIT )
- */
-NodeState.prototype.is = function ( state ) {
-
-    return ( this.value & ( state | 0 ) ) > 0; //=== state;
-
-};
-
-NodeState.prototype.isNot = function ( state ) {
-
-    return ! this.is(state);
-
-};
-
-/**
- * @param {number} state
- * @example
- * state.set( NodeState.READY )
- * @return *self*
- */
-NodeState.prototype.set = function ( state ) {
-
-    this.value = state | 0;
-    return this;
-
-};
-
-
-NodeState.prototype.toString = function () {
-
-    let states = [];
-
-    if ( this.is( NodeState.CREATE ) ) states.push( 'CREATE' );
-    if ( this.is( NodeState.INIT ) ) states.push( 'INIT' );
-    if ( this.is( NodeState.READY ) ) states.push( 'READY' );
-    if ( this.is( NodeState.ERROR ) ) states.push( 'ERROR' );
-    if ( this.is( NodeState.DESTROYED ) ) states.push( 'DESTROYED' );
-
-    return "[" + states.join( "," ) + "]";
-
-};
-
-
-definePropertiesPublicRO( NodeState, {
-
-    CREATE    : 1,
-    INIT      : 2,
-    READY     : 4,
-    ERROR     : 8,
-    DESTROYED : 16
-
-});
-
-
-Object.freeze( NodeState );
-
-// ---------------------------------------------------------------------
-//
-//  A node is *not* ready when ..
-//    - `ready = false`
-//    - the node state is set to *destroyed* or *error*
-//    - a *ready function* is defined by `readyFunc = function () {}`
-//      and this functions returns a *falsy* value.
-//
-// ---------------------------------------------------------------------
-
-function defineReady (obj, initialReady) {
-
-    let _ready = !! initialReady;
-    let _readyFunc = null;
-
-    Object.defineProperty(obj, 'readyFunc', {
-        get: function () {
-            return _readyFunc;
-        },
-        set: function (readyFunc) {
-            if (readyFunc === false) {
-                _readyFunc = () => false;
-            } else if (readyFunc === true) {
-                _readyFunc = null;
-            } else if (typeof readyFunc === 'function') {
-                _readyFunc = readyFunc;
-            } else {
-                _readyFunc = null;
-            }
-        }
-    });
-
-    Object.defineProperty(obj, 'ready', {
-        get: function () {
-            return _ready && this.state.isNot(NodeState.ERROR|NodeState.DESTROYED) && (_readyFunc === null || !! _readyFunc());
-        },
-        set: function (ready) {
-            _ready = !! ready;
-        }
-    });
-
-}
-
-const DEFAULT_RENDER_PRIO = 0;
-
-function defineRenderPrio (obj, initialRenderPrio) {
-
-    var _renderPrio = asNumber(initialRenderPrio, DEFAULT_RENDER_PRIO);
-
-    Object.defineProperty(obj, 'renderPrio', {
-        get: function () {
-            return _renderPrio;
-        },
-        set: function (renderPrio) {
-            let prio = asNumber(renderPrio, DEFAULT_RENDER_PRIO);
-            if (prio !== _renderPrio) {
-                _renderPrio = prio;
-                if (this.parentNode) {
-                    this.parentNode.emit("childrenUpdated");
-                }
-            }
-        },
-        enumerable: true
-    });
-
-}
-
-function renderFrame () {
-
-    if ( ! this.ready ) return;
-
-    if (this.state.is( NodeState.DESTROYED )) return;
-
-    if (this.state.is( NodeState.CREATE )) {
-
-        onInit(this); // create -> initialize
-
-    }
-
-    if (this.state.is( NodeState.READY )) {
-
-        // initialize -> ready to render
-
-        if (this.display) {
-
-            try {
-
-                /**
-                 * Is called only if node is *ready* and *display*-able.
-                 * @event Picimo.graph.Node#frame
-                 * @memberof Picimo.graph.Node
-                 */
-                this.emit( 'frame' );
-
-                /**
-                 * Is called just after the *frame* event and before the *frameEnd* event. The *render commands* should be generated here.
-                 * @event Picimo.graph.Node#renderFrame
-                 * @memberof Picimo.graph.Node
-                 */
-                this.emit( 'renderFrame' );
-
-            } catch (err) {
-
-                console.error( '[frame,renderFrame]', err );
-                this.ready = false;
-                return;
-
-            }
-
-            for (var i = 0; i < this.children.length; ++i) {
-
-                this.children[i].renderFrame();
-
-            }
-
-            try {
-
-                /**
-                 * Is called after the on *frame* and *renderFrame* events.
-                 * @event Picimo.graph.Node#frameEnd
-                 * @memberof Picimo.graph.Node
-                 */
-                this.emit( 'frameEnd' );
-
-            } catch (err) {
-
-                console.error( '[frameEnd]', err );
-                this.ready = false;
-
-            }
-
-        }
-
-    }
-
-}  // --- renderFrame
-
-
-function onInit (node) {
-
-    node.state.set( NodeState.INIT );
-
-    var initPromises = [];
-
-    try {
-
-        /**
-         * This is the first event. Will be called only once and never again.
-         * @event Picimo.graph.Node#init
-         * @memberof Picimo.graph.Node
-         */
-        node.emit( 'init', makeDoneFunc( initPromises, node ) );
-
-        Promise.all( initPromises ).then( onInitGl.bind( node, node ), onFail.bind( node, node ) );
-
-    } catch ( err ) {
-
-        console.error( '[init]', err );
-        this.ready = false;
-
-    }
-
-}
-
-function onInitGl (node) {
-
-    definePropertyPublicRO(node, 'initDone', true);
-
-    if ( ! node.ready ) return;
-
-    var initGlPromises = [];
-
-    try {
-
-        /**
-         * Will be called just after *init*. Should only be used to perform render related tasks.
-         * @event Picimo.graph.Node#initGl
-         * @memberof Picimo.graph.Node
-         */
-        node.emit( 'initGl', makeDoneFunc( initGlPromises, node ) );
-
-        Promise.all( initGlPromises ).then( onInitDone.bind( node, node ), onFail.bind( node, node ) );
-
-    } catch ( err ) {
-
-        console.error( '[initGl]', err );
-        this.ready = false;
-
-    }
-}
-
-function onInitDone (node) {
-
-    definePropertyPublicRO(node, 'initGlDone', true);
-
-    if ( node.ready ) {
-
-        node.state.set( NodeState.READY );
-
-    }
-
-}
-
-function makeDoneFunc (arr) {
-
-    return function ( promise ) {
-
-        if ( promise ) {
-
-            if ( typeof promise === 'function' ) {
-
-                promise = new Promise( promise );
-
-            }
-
-            arr.push( promise );
-
-        }
-
-    };
-
-}
-
-function onFail (node) {
-
-    if ( node.ready ) {
-
-        node.state.set( NodeState.ERROR );
-
-    }
-
-}
-
-function destroy () {
-
-    if ( this.state.is( NodeState.DESTROYED ) ) return;
-
-
-    for ( var i = 0; i < this.children.length; ++i ) {
-
-        this.children[ i ].destroy();
-
-    }
-
-
-    if ( this.initGlDone ) {
-
-        try {
-
-            /**
-             * Is only called if the *init* event successfully resolved. *Even if the *initGl* event failed*.
-             * Is called before the *destroy* event.
-             * @event Picimo.graph.Node#destroyGl
-             * @memberof Picimo.graph.Node
-             */
-            this.emit( 'destroyGl' );
-
-        } catch ( err ) {
-
-            console.error( '[destroyGl]', err );
-
-        }
-
-    }
-
-    if ( this.initDone ) {
-
-        try {
-
-            /**
-             * Is only called if the *init* event successfully resolved and just after the *destroyGl* event.
-             * @event Picimo.graph.Node#destroy
-             * @memberof Picimo.graph.Node
-             */
-            this.emit( 'destroy' );
-
-        } catch ( err ) {
-
-            console.error( '[destroy]', err );
-
-        }
-
-    }
-
-
-    this.state.set( NodeState.DESTROYED );
-
-
-    if (this.parentNode) {
-        this.parentNode.removeChild(this);
-    }
-
-}
-
-function Node (app, options = {}) {
-
-    if ( ! app ) {
-        throw new Error('[Picimo.graph.Node] app should not be undefined!');
-    }
-
-    definePropertyPublicRO(this, 'app', app);
-
-    this.name = asString(options.name);
-
-    this.state = new NodeState(NodeState.CREATE);
-    this.display = asBoolean(options.display, true);
-    defineReady(this, options.ready !== false);
-
-    Object.defineProperties(this, {
-        initDone: {
-            value        : false,
-            configurable : true,
-            enumerable   : true
-        },
-        initGlDone: {
-            value        : false,
-            configurable : true,
-            enumerable   : true
-        }
-    });
-
-    defineRenderPrio(this, options.renderPrio);
-
-    setParentNode(this, options.parentNode);
-    this.children = [];
-
-    eventize_1$1(this);
-
-    this.on('childrenUpdated', eventize_1$1.PRIO_MAX, sortChildrenByRenderPrio);
-
-    this.connect( options, {
-
-        'onInit'            : 'init',
-        'onInitGl'          : 'initGl',
-        'onFrame'           : 'frame',
-        'onRenderFrame'     : 'renderFrame',
-        'onFrameEnd'        : 'frameEnd',
-        'onDestroyGl'       : 'destroyGl',
-        'onDestroy'         : 'destroy',
-        'onChildrenUpdated' : 'childrenUpdated',
-
-    });
-
-}
-
-function setParentNode (node, parent) {
-    Object.defineProperty(node, 'parentNode', {
-        value: ( parent instanceof Node ? parent : null ),
-        configurable: true
-    });
-}
-
-function sortChildrenByRenderPrio () {
-    this.children = this.children.sort(sortByRenderPrio);
-}
-
-function sortByRenderPrio (a, b) {
-    return -a.renderPrio - ( -b.renderPrio );
-}
-
-
-// ----------------------------------------------------------
-//
-// node.isRootNode -> *boolean*
-//
-// ----------------------------------------------------------
-
-Object.defineProperties( Node.prototype, {
-
-    'isRootNode': {
-
-        get: function () { return ! this.parentNode; },
-        enumerable: true
-
-    },
-
-});
-
-Node.prototype.renderFrame = renderFrame;  // => render_frame.js
-Node.prototype.destroy = destroy;  // => destroy.js
-
-// ----------------------------------------------------------
-//
-// node.appendChild( node ) -> node
-//
-// PUBLISH EVENTS
-// - childrenUpdated
-//
-// ----------------------------------------------------------
-
-Node.prototype.appendChild = function (node) {
-
-    if (this.children.indexOf(node) !== -1) return node;
-
-    this.children.push(node);
-
-    setParentNode(node, this);
-
-    this.emit('childrenUpdated');
-
-    return node;
-
-};
-
-// ----------------------------------------------------------
-//
-// node.removeChild( node ) -> node
-//
-// PUBLISH EVENTS
-// - childrenUpdated
-//
-// ----------------------------------------------------------
-
-Node.prototype.removeChild = function (node) {
-
-    var idx = this.children.indexOf(node);
-
-    if (idx === -1) return node;
-
-    this.children.splice(idx, 1);
-
-    setParentNode(node, null);
-
-    this.emit('childrenUpdated');
-
-    return node;
-
-};
-
-// ----------------------------------------------------------
-//
-// node.findNode( str ) -> node?
-//
-// ----------------------------------------------------------
-
-Node.prototype.findNode = function (name) {
-
-    if (!name) return;
-    if (this.name === name) return this;
-
-    let node, i, len;
-
-    for (i = 0, len = this.children.length; i < len; ++i ) {
-
-        node = this.children[i].findNode(name);
-        if (node) {
-            return node;
-        }
-
-    }
-
-};
-
-const { mat4: mat4$2 } = glMatrix;
-//const { publicRO } = utils.object.decorator;
-
-class Matrix4 {
-
-    constructor () {
-        this.serial = 1;
-        definePropertyPublicRO(this, 'mat4', mat4$2.create());
-        Object.seal(this);
-    }
-
-    identity () {
-        mat4$2.identity(this.mat4);
-        ++this.serial;
-    }
-
-    ortho (width, height, zRange) {
-        let hw = width >> 1;
-        let hh = height >> 1;
-        let hz = ( zRange ? zRange : Math.pow(2, 14) ) >> 1;
-
-        mat4$2.ortho( this.mat4, -hw, hw, -hh, hh, -hz, hz );
-        ++this.serial;
-    }
-
-    translate (x, y, z=0) {
-        mat4$2.translate(this.mat4, this.mat4, [x, y, z]);
-        ++this.serial;
-    }
-
-    scale (x, y, z=1) {
-        mat4$2.scale(this.mat4, this.mat4, [x, y, z]);
-        ++this.serial;
-    }
-
-    rotateX (deg) {
-        mat4$2.rotateX(this.mat4, this.mat4, deg * Math.PI / 180.0);
-        ++this.serial;
-    }
-
-    rotateY (deg) {
-        mat4$2.rotateY(this.mat4, this.mat4, deg * Math.PI / 180.0);
-        ++this.serial;
-    }
-
-    rotateZ (deg) {
-        mat4$2.rotateZ(this.mat4, this.mat4, deg * Math.PI / 180.0);
-        ++this.serial;
-    }
-
-    multiply (a, b) {
-        mat4$2.multiply(this.mat4, a.mat4, b.mat4);
-        ++this.serial;
-    }
-
-    copy (src) {
-        mat4$2.copy(this.mat4, src.mat4);
-        ++this.serial;
-    }
-
-    clone () {
-        let dolly = new Matrix4();
-        dolly.copy(this);
-        return dolly;
-    }
-
-    get x () {
-        return this.mat4[12];
-    }
-
-    set x (val) {
-        this.mat4[12] = val;
-        ++this.serial;
-    }
-
-    get y () {
-        return this.mat4[13];
-    }
-
-    set y (val) {
-        this.mat4[13] = val;
-        ++this.serial;
-    }
-
-    get z () {
-        return this.mat4[14];
-    }
-
-    set z (val) {
-        this.mat4[14] = val;
-        ++this.serial;
-    }
-
-    get sx () {
-        return this.mat4[0];
-    }
-
-    set sx (val) {
-        this.mat4[0] = val;
-        ++this.serial;
-    }
-
-    get sy () {
-        return this.mat4[5];
-    }
-
-    set sy (val) {
-        this.mat4[5] = val;
-        ++this.serial;
-    }
-
-    get sz () {
-        return this.mat4[10];
-    }
-
-    set sz (val) {
-        this.mat4[10] = val;
-        ++this.serial;
-    }
-
-}  // end of class
-
-/**
- * @function Picimo.math.maxOf
- * @param {number} a
- * @param {number} b
- * @return {number}
- */
-function maxOf ( a, b ) {
-
-    return a > b ? a : b;
-
-}
-
-/**
- * @function Picimo.math.findNextPowerOfTwo
- * @param {number} x
- * @return {number}
- */
-function findNextPowerOfTwo ( x ) {
-
-    var p = 1;
-
-    while ( x > p ) {
-
-        p <<= 1;
-
-    }
-
-    return p;
-
-}
-
-/**
- * @function Picimo.math.isPowerOfTwo
- * @param {number} n
- * @return {boolean}
- */
-function isPowerOfTwo ( n ) {
-
-    return n !== 0 && ( n & ( n - 1 ) ) === 0;
-
-}
-
-
-
-var index$2 = Object.freeze({
-	Matrix4: Matrix4,
-	maxOf: maxOf,
-	findNextPowerOfTwo: findNextPowerOfTwo,
-	isPowerOfTwo: isPowerOfTwo
-});
-
-/**
- * @class Picimo.render.cmd.BlendMode
- * @classdesc
- *   WebGL blend and depth mode state description.
- *
- * @param {boolean} depthTest - Enable or disable depth test.
- * @param {boolean} [depthMask] - Enable or disable depth buffer writes.
- * @param {string} [depthFunc] - Set the depth function.
- * @param {boolean} blend - Enable or disable blending.
- * @param {string} [blendFuncSrc] - Set the source blend function.
- * @param {string} [blendFuncDst] - Set the destination blend function.
- *
- * @example
- * // default settings
- * new Picimo.render.cmd.BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' )
- *
- * @example
- * // disable both
- * new Picimo.render.cmd.BlendMode( false, false )
- *
- */
-
-function BlendMode ( depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst ) {
-
-    this.depthTest = !! depthTest;
-
-    if ( this.depthTest ) {
-
-        this.depthMask = depthMask;
-        this.depthFunc = depthFunc;
-
-    } else {
-
-        blend        = depthMask;
-        blendFuncSrc = depthFunc;
-        blendFuncDst = blend;
-
-    }
-
-    this.blend = !! blend;
-
-    if ( this.blend ) {
-
-        this.blendFuncSrc = blendFuncSrc;
-        this.blendFuncDst = blendFuncDst;
-
-    }
-
-    Object.freeze( this );
-
-}
-
-/**
- * @member {boolean} Picimo.render.cmd.BlendMode#depthTest
- */
-
-/**
- * @member {boolean} Picimo.render.cmd.BlendMode#depthMask
- */
-
-/**
- * @member {string} Picimo.render.cmd.BlendMode#depthFunc
- */
-
-/**
- * @member {boolean} Picimo.render.cmd.BlendMode#blend
- */
-
-/**
- * @member {string} Picimo.render.cmd.BlendMode#blendFuncSrc
- */
-
-/**
- * @member {string} Picimo.render.cmd.BlendMode#blendFuncDst
- */
-
-/**
- * @method Picimo.render.cmd.BlendMode#activate
- * @param {WebGlRenderingContext} gl - gl
- */
-
-BlendMode.prototype.activate = function ( gl ) {
-
-    if ( this.depthTest ) {
-
-        gl.enable( gl.DEPTH_TEST );
-        gl.depthMask( this.depthMask );
-        gl.depthFunc( gl[ this.depthFunc ] );
-
-    } else {
-
-        gl.disable( gl.DEPTH_TEST );
-
-    }
-
-    if ( this.blend ) {
-
-        gl.enable( gl.BLEND );
-        gl.blendFunc( gl[ this.blendFuncSrc ], gl[ this.blendFuncDst ] );
-
-    } else {
-
-        gl.disable( gl.BLEND );
-
-    }
-
-};
-
-
-/*
-    // good default settings
-    gl.enable(gl.DEPTH_TEST);
-    gl.depthMask(true);       // enable writing into the depth buffer
-    //gl.depthFunc(gl.ALWAYS);  // sprites blending
-    gl.depthFunc(gl.LEQUAL);  // iso3d
-
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);  // good default
-*/
-
-
-
-/**
- * @memberof Picimo.render.cmd.BlendMode
- * @constant DEFAULT
- * @static
- */
-
-BlendMode.DEFAULT = new BlendMode( true, true, 'ALWAYS', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' );
-
-/**
- * @memberof Picimo.render.cmd.BlendMode
- * @constant ISO3D
- * @static
- */
-
-BlendMode.ISO3D = new BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' );
-
-/**
- * @class Picimo.render.cmd.UniformValue
- *
- */
 
 function UniformValue ( isRestorable, value ) {
 
@@ -9254,12 +8849,8 @@ function UniformValue ( isRestorable, value ) {
 /**
  * This method gets called from the renderer to set the new uniform value.
  *
- * @method Picimo.render.cmd.UniformValue#getValue
- *
  * @param currentValue - The current uniform value.
- *
  * @returns The new uniform value or if the value is null return the current value.
- *
  */
 
 UniformValue.prototype.getValue = function ( currentValue ) {
@@ -9276,12 +8867,8 @@ UniformValue.prototype.getValue = function ( currentValue ) {
 /**
  * Set the uniform value.
  *
- * @method Picimo.render.cmd.UniformValue#setValue
- *
  * @param value - The uniform value or a function which returns the value.
- *
  * @returns self
- *
  */
 
 UniformValue.prototype.setValue = function ( value ) {
@@ -9294,7 +8881,7 @@ UniformValue.prototype.setValue = function ( value ) {
 
 
 
-var index$4 = Object.freeze({
+var index$1 = Object.freeze({
 	BlendMode: BlendMode,
 	UniformValue: UniformValue
 });
@@ -9341,6 +8928,36 @@ function addShaderValue ( obj ) {
     return obj;
 
 }
+
+function Attrib ( program, info ) {
+
+    definePropertiesPublicRO( this, {
+
+        program  : program,
+        info     : info,
+        location : program.glx.gl.getAttribLocation( program.glProgram, info.name )
+
+    });
+
+    program.glx.gl.enableVertexAttribArray( this.location );  // TODO understand why this is important and validate that this is the best location to call it
+
+    addShaderValue( this );
+
+    Object.seal( this );
+
+}
+
+Attrib.prototype.upload = function () {  //} gl ) {
+
+    if ( ! this.valueChanged ) return;
+
+    let val = this.value;
+
+    val.buffer.bindBuffer().vertexAttribPointer( this.location, val.size, val.stride, val.offset );
+
+    this.valueChanged = false;
+
+};
 
 function Uniform ( program, info ) {
 
@@ -9443,36 +9060,6 @@ Uniform.prototype.upload = function ( gl ) {
 
 };
 
-function Attrib ( program, info ) {
-
-    definePropertiesPublicRO( this, {
-
-        program  : program,
-        info     : info,
-        location : program.glx.gl.getAttribLocation( program.glProgram, info.name )
-
-    });
-
-    program.glx.gl.enableVertexAttribArray( this.location );  // TODO understand why this is important and validate that this is the best location to call it
-
-    addShaderValue( this );
-
-    Object.seal( this );
-
-}
-
-Attrib.prototype.upload = function () {  //} gl ) {
-
-    if ( ! this.valueChanged ) return;
-
-    let val = this.value;
-
-    val.buffer.bindBuffer().vertexAttribPointer( this.location, val.size, val.stride, val.offset );
-
-    this.valueChanged = false;
-
-};
-
 function WebGlProgram ( program, glProgram, glx ) {
 
     this.program   = program;
@@ -9499,6 +9086,9 @@ WebGlProgram.prototype.use = function () {
 };
 
 
+/**
+ * @ignore
+ */
 function setupUniformsAndAttributes ( glProgram ) {
 
     var gl = glProgram.glx.gl;
@@ -26923,6 +26513,173 @@ class Viewport extends AABB2 {
 
 }
 
+class Matrix4 {
+
+    constructor () {
+        this.serial = 1;
+        definePropertyPublicRO(this, 'mat4', mat4$1.create());
+        Object.seal(this);
+    }
+
+    identity () {
+        mat4$1.identity(this.mat4);
+        ++this.serial;
+    }
+
+    ortho (width, height, zRange) {
+        let hw = width >> 1;
+        let hh = height >> 1;
+        let hz = ( zRange ? zRange : Math.pow(2, 14) ) >> 1;
+
+        mat4$1.ortho( this.mat4, -hw, hw, -hh, hh, -hz, hz );
+        ++this.serial;
+    }
+
+    translate (x, y, z=0) {
+        mat4$1.translate(this.mat4, this.mat4, [x, y, z]);
+        ++this.serial;
+    }
+
+    scale (x, y, z=1) {
+        mat4$1.scale(this.mat4, this.mat4, [x, y, z]);
+        ++this.serial;
+    }
+
+    rotateX (deg) {
+        mat4$1.rotateX(this.mat4, this.mat4, deg * Math.PI / 180.0);
+        ++this.serial;
+    }
+
+    rotateY (deg) {
+        mat4$1.rotateY(this.mat4, this.mat4, deg * Math.PI / 180.0);
+        ++this.serial;
+    }
+
+    rotateZ (deg) {
+        mat4$1.rotateZ(this.mat4, this.mat4, deg * Math.PI / 180.0);
+        ++this.serial;
+    }
+
+    multiply (a, b) {
+        mat4$1.multiply(this.mat4, a.mat4, b.mat4);
+        ++this.serial;
+    }
+
+    copy (src) {
+        mat4$1.copy(this.mat4, src.mat4);
+        ++this.serial;
+    }
+
+    clone () {
+        let dolly = new Matrix4();
+        dolly.copy(this);
+        return dolly;
+    }
+
+    get x () {
+        return this.mat4[12];
+    }
+
+    set x (val) {
+        this.mat4[12] = val;
+        ++this.serial;
+    }
+
+    get y () {
+        return this.mat4[13];
+    }
+
+    set y (val) {
+        this.mat4[13] = val;
+        ++this.serial;
+    }
+
+    get z () {
+        return this.mat4[14];
+    }
+
+    set z (val) {
+        this.mat4[14] = val;
+        ++this.serial;
+    }
+
+    get sx () {
+        return this.mat4[0];
+    }
+
+    set sx (val) {
+        this.mat4[0] = val;
+        ++this.serial;
+    }
+
+    get sy () {
+        return this.mat4[5];
+    }
+
+    set sy (val) {
+        this.mat4[5] = val;
+        ++this.serial;
+    }
+
+    get sz () {
+        return this.mat4[10];
+    }
+
+    set sz (val) {
+        this.mat4[10] = val;
+        ++this.serial;
+    }
+
+}  // => Matrix4
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
+ */
+function maxOf ( a, b ) {
+
+    return a > b ? a : b;
+
+}
+
+/**
+ * @param {number} x
+ * @return {number}
+ */
+function findNextPowerOfTwo ( x ) {
+
+    var p = 1;
+
+    while ( x > p ) {
+
+        p <<= 1;
+
+    }
+
+    return p;
+
+}
+
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+function isPowerOfTwo ( n ) {
+
+    return n !== 0 && ( n & ( n - 1 ) ) === 0;
+
+}
+
+
+
+var index$4 = Object.freeze({
+	Matrix4: Matrix4,
+	maxOf: maxOf,
+	findNextPowerOfTwo: findNextPowerOfTwo,
+	isPowerOfTwo: isPowerOfTwo
+});
+
 /* global HTMLCanvasElement */
 /* global HTMLImageElement */
 /**
@@ -27040,9 +26797,12 @@ class PowerOfTwoImage {
         return this.image ? this.image.height : 0;
     }
 
-}
+}  // => class PowerOfTwoImage
 
 
+/**
+ * @ignore
+ */
 function setDomElement ( image, domElement ) {
 
     image._domElement = domElement;
@@ -27051,7 +26811,9 @@ function setDomElement ( image, domElement ) {
 
 }
 
-
+/**
+ * @ignore
+ */
 function convertToPowerOfTwo ( image ) {
 
     if ( isPowerOfTwo( image.width ) && isPowerOfTwo( image.height ) ) {
@@ -27087,7 +26849,7 @@ function convertToPowerOfTwo ( image ) {
 class Resource {
 
     /**
-     * @param {App} app - the app instance
+     * @param {!App} app - the app instance
      * @param {string} [dataPropAlias] - name alias of the data property
      */
     constructor (app, dataPropAlias) {
@@ -27187,7 +26949,6 @@ class Resource {
 } // => class Resource
 
 /**
- * @class Picimo.core.Texture
  * @example
  * let c = document.createElement("canvas");
  * let t = new Picimo.core.Texture.fromCanvas(c);
@@ -27198,6 +26959,7 @@ class Resource {
  * t.width    // => 100
  *
  */
+
 class Texture {
 
     /**
@@ -27478,7 +27240,7 @@ class Texture {
 
     }
 
-}
+}  // => class Texture
 
 /**
  * Represents a texture atlas definition and holds references to the image, frames and textures.
@@ -27560,10 +27322,16 @@ class TextureAtlas extends Resource {
 } // => class TextureAtlas
 
 
+/**
+ * @ignore
+ */
 function toJson (data) {
     return typeof data === 'string' ? JSON.parse( data ) : data;
 }
 
+/**
+ * @ignore
+ */
 function constructImageUrl (textureAtlas, imageUrl) {
 
     if ( textureAtlas.imageUrl !== undefined ) {
@@ -27576,6 +27344,9 @@ function constructImageUrl (textureAtlas, imageUrl) {
 
 }
 
+/**
+ * @ignore
+ */
 function parseTextureAtlasDefinition (conf) {
 
     this.texture = new Texture();
@@ -27745,29 +27516,22 @@ class VertexIndexArray {
 } // => class VertexIndexArray
 
 /**
- * @class Picimo.core.VertexObject
- * @param {Picimo.core.VertexObjectDescriptor} [descriptor] - Vertex descriptor.
- * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
+ * @param {!VertexObjectDescriptor} [descriptor] - Vertex descriptor
+ * @param {?VertexArray} [vertexArray] - Vertex array
  */
 function VertexObject ( descriptor, vertexArray ) {
 
     if ( this.descriptor !== undefined ) return;
 
-    /**
-     * @member {Picimo.core.VertexObjectDescriptor} Picimo.core.VertexObject#descriptor - Vertex object descriptor.
-     * @readonly
-     */
-
-    var _descriptor = descriptor ? descriptor : ( vertexArray ? vertexArray.descriptor : null );
+    let _descriptor = descriptor ? descriptor : ( vertexArray ? vertexArray.descriptor : null );
     if ( ! _descriptor ) {
 
-        throw new Error( 'VertexObject.descriptor is null!' );
+        throw new Error( 'VertexObject#descriptor is null!' );
 
     }
     definePropertyPrivateRO( this, 'descriptor', _descriptor );
 
-    /** @member {Picimo.core.VertexArray} Picimo.core.VertexObject#vertexArray - Vertex array. */
-    var _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
+    let _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
     definePropertyPrivate( this, 'vertexArray', _vertexArray );
 
     if ( this.descriptor !== this.vertexArray.descriptor && ( this.descriptor.vertexCount !== this.vertexArray.descriptor.vertexCount || this.descriptor.vertexAttrCount !== this.vertexArray.descriptor.vertexAttrCount) ) {
@@ -27791,7 +27555,6 @@ Object.defineProperties( VertexObject.prototype, {
 });
 
 /**
- * @class Picimo.core.VertexObjectDescriptor
  * @param {function} vertexObjectConstructor - Vertex object constructor function
  * @param {number} vertexCount - Vertex count
  * @param {number} vertexAttrCount - Vertex attribute count
@@ -27943,6 +27706,9 @@ function VertexObjectDescriptor ( vertexObjectConstructor, vertexCount, vertexAt
 
 }
 
+/**
+ * @ignore
+ */
 function buildVOConstructor ( constructorFunc ) {
     if (typeof constructorFunc === 'function') {
         if (!constructorFunc.name) {
@@ -27959,9 +27725,8 @@ function buildVOConstructor ( constructorFunc ) {
 
 
 /**
- * @method Picimo.core.VertexObjectDescriptor#createVertexArray
  * @param {number} [size=1]
- * @return {Picimo.core.VertexArray}
+ * @return {VertexArray}
  */
 VertexObjectDescriptor.prototype.createVertexArray = function ( size ) {
 
@@ -27970,10 +27735,9 @@ VertexObjectDescriptor.prototype.createVertexArray = function ( size ) {
 };
 
 /**
- * Create a new vertex object.
- * @method Picimo.core.VertexObjectDescriptor#create
- * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
- * @return {Picimo.core.VertexObject}
+ * Create a new {@link VertexObject}.
+ * @param {VertexArray} [vertexArray] - Vertex array
+ * @return {VertexObject}
  */
 VertexObjectDescriptor.prototype.create = function ( vertexArray ) {
 
@@ -27990,6 +27754,12 @@ VertexObjectDescriptor.prototype.create = function ( vertexArray ) {
 
 };
 
+
+/**
+ * @param {string} name
+ * @param {number} [size=1]
+ * @return {boolean}
+ */
 VertexObjectDescriptor.prototype.hasAttribute = function ( name, size ) {
 
     var attr = this.attr[ name ];
@@ -28001,10 +27771,8 @@ VertexObjectDescriptor.prototype.hasAttribute = function ( name, size ) {
 Object.defineProperties( VertexObjectDescriptor.prototype, {
 
     /**
-     * @member {Object} Picimo.core.VertexObjectDescriptor#proto - The prototype object of the vertex object. You should add your own properties and methods here.
-     * @readonly
+     * The prototype object of the vertex object. You should add your own properties and methods here.
      */
-
     'proto': {
         get: function () {
 
@@ -28021,6 +27789,9 @@ Object.defineProperties( VertexObjectDescriptor.prototype, {
 // VertexObjectAttrDescriptor
 // =========================================
 
+/**
+ * @ignore
+ */
 function VertexObjectAttrDescriptor ( name, size, offset, uniform, attrNames ) {
 
     this.name      = name;
@@ -28033,6 +27804,9 @@ function VertexObjectAttrDescriptor ( name, size, offset, uniform, attrNames ) {
 
 }
 
+/**
+ * @ignore
+ */
 VertexObjectAttrDescriptor.prototype.getAttrPostfix = function ( name, index ) {
 
     if ( this.attrNames ) {
@@ -28051,6 +27825,9 @@ VertexObjectAttrDescriptor.prototype.getAttrPostfix = function ( name, index ) {
 
 };
 
+/**
+ * @ignore
+ */
 VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, descriptor ) {
 
     var i, j;
@@ -28149,6 +27926,9 @@ VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, de
 
 };
 
+/**
+ * @ignore
+ */
 function get_vNf_u ( offset ) {
 
     return function ( attrIndex ) {
@@ -28159,6 +27939,9 @@ function get_vNf_u ( offset ) {
 
 }
 
+/**
+ * @ignore
+ */
 function set_vNf_u ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
@@ -28175,13 +27958,18 @@ function set_vNf_u ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     };
 }
 
-
+/**
+ * @ignore
+ */
 function get_v1f_u ( offset ) {
     return function () {
         return this.vertexArray.vertices[ offset ];
     };
 }
 
+/**
+ * @ignore
+ */
 function set_vNf_v ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
@@ -28198,6 +27986,9 @@ function set_vNf_v ( vectorLength, vertexCount, vertexAttrCount, offset ) {
     };
 }
 
+/**
+ * @ignore
+ */
 function set_v1f_u ( vertexCount, vertexAttrCount, offset ) {
     return function ( value ) {
 
@@ -28212,50 +28003,32 @@ function set_v1f_u ( vertexCount, vertexAttrCount, offset ) {
     };
 }
 
-
+/**
+ * @ignore
+ */
 function camelize ( name ) {
     return name[ 0 ].toUpperCase() + name.substr( 1 );
 }
 
 /**
- * @class Picimo.core.VertexObjectPool
- * @param {Picimo.core.VertexObjectDescriptor} descriptor - Vertex object descriptor.
- * @param {number} capacity - Maximum number of vertex objects.
- * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array.
+ * @param {VertexObjectDescriptor} descriptor - Vertex object descriptor
+ * @param {number} capacity - Maximum number of vertex objects
+ * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array
  */
 
 function VertexObjectPool ( descriptor, capacity, vertexArray ) {
 
     definePropertiesPublicRO( this, {
 
-        /**
-         * @member {Picimo.core.VertexObjectDescriptor} Picimo.core.VertexObjectPool#descriptor - Vertex object descriptor.
-         * @readonly
-         */
         'descriptor' : descriptor,
 
-        /**
-         * @member {number} Picimo.core.VertexObjectPool#capacity - Maximum number of vertex objects.
-         * @readonly
-         */
+        // Maximum number of vertex objects
         'capacity' : capacity,
 
-        /**
-         * @member {Picimo.core.VertexArray} Picimo.core.VertexObjectPool#vertexArray - Vertex array.
-         * @readonly
-         */
         'vertexArray' : ( vertexArray != null ? vertexArray : descriptor.createVertexArray( capacity ) ),
 
-        /**
-         * @member {Picimo.core.VertexObject} Picimo.core.VertexObjectPool#ZERO - The *zero* vertex object.
-         * @readonly
-         */
         'ZERO' : descriptor.create(),
 
-        /**
-         * @member {Picimo.core.VertexObject} Picimo.core.VertexObjectPool#NEW - The *new* vertex object.
-         * @readonly
-         */
         'NEW' : descriptor.create()
 
     });
@@ -28266,10 +28039,7 @@ function VertexObjectPool ( descriptor, capacity, vertexArray ) {
 
 Object.defineProperties( VertexObjectPool.prototype, {
 
-    /**
-     * @member {number} Picimo.core.VertexObjectPool#usedCount - Number of in-use vertex objects.
-     * @readonly
-     */
+    // Number of in-use vertex objects
     'usedCount': {
 
         get: function () {
@@ -28282,10 +28052,7 @@ Object.defineProperties( VertexObjectPool.prototype, {
 
     },
 
-    /**
-     * @member {number} Picimo.core.VertexObjectPool#availableCount - Number of free and unused vertex objects.
-     * @readonly
-     */
+    // Number of free and unused vertex objects
     'availableCount': {
 
         get: function () {
@@ -28302,9 +28069,8 @@ Object.defineProperties( VertexObjectPool.prototype, {
 
 
 /**
- * @method Picimo.core.VertexObjectPool#alloc
- * @throws Will throw an error if capacity reached and no vertex object is available.
- * @return {Picimo.core.VertexObject}
+ * @throws throw error when capacity reached and no vertex object is available.
+ * @return {VertexObject}
  */
 
 VertexObjectPool.prototype.alloc = function () {
@@ -28327,8 +28093,7 @@ VertexObjectPool.prototype.alloc = function () {
 
 
 /**
- * @method Picimo.core.VertexObjectPool#free
- * @param {Picimo.core.VertexObject} vo - The vertex object
+ * @param {VertexObject} vo - The vertex object
  */
 
 VertexObjectPool.prototype.free = function ( vo ) {
@@ -28360,6 +28125,9 @@ VertexObjectPool.prototype.free = function ( vo ) {
 };
 
 
+/**
+ * @ignore
+ */
 function createVertexObjects ( pool ) {
 
     pool.availableVOs = [];
@@ -28384,7 +28152,7 @@ function createVertexObjects ( pool ) {
 
 
 
-var index$5 = Object.freeze({
+var index$3 = Object.freeze({
 	AABB2: AABB2,
 	Viewport: Viewport,
 	PowerOfTwoImage: PowerOfTwoImage,
@@ -28646,12 +28414,9 @@ ShaderManager.prototype.getFragmentShader = function ( name ) {
 };
 
 /**
- * @class Picimo.render.WebGlTexture
- *
- * @param {Picimo.render.WebGlContext} glx
+ * @param {WebGlContext} glx
  * @param {boolean} [flipY=false]
  * @param {boolean} [repeatable=false]
- *
  */
 
 function WebGlTexture ( glx, flipY, repeatable ) {
@@ -28670,32 +28435,20 @@ function WebGlTexture ( glx, flipY, repeatable ) {
 
 }
 
+/**
+ * @ignore
+ */
 function reset ( texture ) {
 
-    texture.glId = 0;
-
+    texture.glId        = 0;
     texture.needsInit   = true;
     texture.needsConf   = true;
-
-    /**
-     * @member {boolean} Picimo.render.WebGlTexture#needsUpload
-     */
-
     texture.needsUpload = true;
-
-    /**
-     * @member {number} Picimo.render.WebGlTexture#texUnit
-     */
-
-    texture.texUnit = -1;
+    texture.texUnit     = -1;
 
 }
 
 Object.defineProperties( WebGlTexture.prototype, {
-
-    /**
-     * @member {boolean} Picimo.render.WebGlTexture#isRepeatable
-     */
 
     isRepeatable: {
 
@@ -28720,9 +28473,6 @@ Object.defineProperties( WebGlTexture.prototype, {
 
     },
 
-    /**
-     * @member {number} Picimo.render.WebGlTexture#width
-     */
     width: {
 
         get: function () {
@@ -28744,9 +28494,6 @@ Object.defineProperties( WebGlTexture.prototype, {
 
     },
 
-    /**
-     * @member {number} Picimo.render.WebGlTexture#height
-     */
     height: {
 
         get: function () {
@@ -28768,9 +28515,6 @@ Object.defineProperties( WebGlTexture.prototype, {
 
     },
 
-    /**
-     * @member {Image} Picimo.render.WebGlTexture#image
-     */
     image: {
 
         get: function () {
@@ -28828,10 +28572,8 @@ Object.defineProperties( WebGlTexture.prototype, {
 
 
 /**
- * @method Picimo.render.WebGlTexture#bind
  * @return {number} texture unit
  */
-
 WebGlTexture.prototype.bind = function () {
 
     if ( ! this.glId ) initialize( this );
@@ -28840,6 +28582,9 @@ WebGlTexture.prototype.bind = function () {
 
 };
 
+/**
+ * @ignore
+ */
 function initialize ( texture ) {
 
     if ( texture.needsInit ) {
@@ -28851,6 +28596,9 @@ function initialize ( texture ) {
 
 }
 
+/**
+ * @ignore
+ */
 function configure ( texture ) {
 
     if ( ! texture.glId ) initialize( texture );
@@ -28882,11 +28630,8 @@ function configure ( texture ) {
 
 
 /**
- * @method Picimo.render.WebGlTexture#upload
- * @see Picimo.render.WebGlTexture#needsUpload
  * @return self
  */
-
 WebGlTexture.prototype.upload = function () {
 
     configure( this );
@@ -28908,10 +28653,6 @@ WebGlTexture.prototype.upload = function () {
 };
 
 
-/**
- * @method Picimo.render.WebGlTexture#destroy
- */
-
 WebGlTexture.prototype.destroy = function () {
 
     reset( this );
@@ -28923,30 +28664,32 @@ WebGlTexture.prototype.destroy = function () {
 
 class TextureManager {
 
+    /**
+     * @param {App} app - app
+     */
+
     constructor ( app ) {
 
         definePropertyPublicRO( this, 'app', app );
 
-        const MAX_TEXTURE_IMAGE_UNITS = app.glx.MAX_TEXTURE_IMAGE_UNITS;
+        const { MAX_TEXTURE_IMAGE_UNITS } = app.glx;
 
         definePropertiesPrivateRO( this, {
 
-            _textureCache  : new Map,                               // image -> texture
-            _boundTextures : new Array(MAX_TEXTURE_IMAGE_UNITS)     // [ texUnit ] -> image
+            textureCache  : new Map,                               // image -> texture
+            boundTextures : new Array(MAX_TEXTURE_IMAGE_UNITS)     // [ texUnit ] -> image
 
         });
 
-        for ( let i = 0; i < MAX_TEXTURE_IMAGE_UNITS; i++ ) {
+        for ( let i = 0; i < MAX_TEXTURE_IMAGE_UNITS; ++i ) {
 
-            this._boundTextures[ i ] = null;
+            this.boundTextures[ i ] = null;
 
         }
 
-        //this._lastBoundTexUnit = 0;
-        definePropertyPrivate( this, '_lastBoundTexUnit', 0);
+        definePropertyPrivate( this, 'lastBoundTexUnit', 0);
 
     }
-
 
     /**
      * Bind a *texture* to a *texture unit*.
@@ -28955,38 +28698,38 @@ class TextureManager {
 
     bindWebGlTexture ( glTexture ) {
 
-        let texUnit = this._boundTextures.indexOf( glTexture );
+        let texUnit = this.boundTextures.indexOf( glTexture );
 
         if ( texUnit < 0 ) {
 
             // texture is unbound
             // find a free texture unit ..
 
-            for ( let i = 0; i < this._boundTextures.length; i++ ) {
+            for ( let i = 0; i < this.boundTextures.length; ++i ) {
 
-                if ( ! this._boundTextures[ i ] ) {
+                if ( ! this.boundTextures[ i ] ) {
 
                     texUnit = i;
-                    this._boundTextures[ i ] = glTexture;
+                    this.boundTextures[ i ] = glTexture;
                     break;
 
                 }
 
             }
 
-            const glx = this.app.glx;
+            const { glx } = this.app;
 
             if ( texUnit < 0 ) {
 
                 // no free texture found
                 // so we choose the lru texture unit
 
-                texUnit = this._lastBoundTexUnit;
+                texUnit = this.lastBoundTexUnit;
 
-                let prevGlTex = this._boundTextures[ texUnit ];
+                let prevGlTex = this.boundTextures[ texUnit ];
                 if ( prevGlTex ) prevGlTex.texUnit = -1;
 
-                this._lastBoundTexUnit = ( this._lastBoundTexUnit + 1 ) % glx.MAX_TEXTURE_IMAGE_UNITS;
+                this.lastBoundTexUnit = ( this.lastBoundTexUnit + 1 ) % glx.MAX_TEXTURE_IMAGE_UNITS;
 
             }
 
@@ -29002,10 +28745,10 @@ class TextureManager {
     }
 
     /**
-     * Find or create **Picimo.render.WebGlTexture** from **Picimo.core.Texture** or **Picimo.core.TextureAtlas** or *everything* which has an **image** property.
+     * Find or create a **WebGlTexture** from **Texture** or **TextureAtlas** or *everything* which has an **image** property.
      * The *image* from the **image** property should have an **uid** property otherwise the *image object* itself will be used as cache key.
      * @param {Object} texture
-     * @return {Picimo.render.WebGlTexture} render texture
+     * @return {WebGlTexture} render texture
      */
 
     findOrCreateWebGlTexture ( texture ) {
@@ -29014,14 +28757,14 @@ class TextureManager {
         const image = tex.image.domElement ? tex.image.domElement : tex.image;
         const uid   = tex.image.uid ? tex.image.uid : image;
 
-        let glTex = this._textureCache.get( uid );
+        let glTex = this.textureCache.get( uid );
 
         if ( ! glTex ) {
 
             glTex = new WebGlTexture( this.app.glx );
             glTex.image = image;
 
-            this._textureCache.set( uid, glTex );
+            this.textureCache.set( uid, glTex );
 
         }
 
@@ -29272,6 +29015,60 @@ class Queue {
 
 }  // => end of class
 
+class UniformValueStack {
+
+    constructor () {
+
+        this.value = null;
+        this.commands = [];
+
+    }
+
+    exec ( cmd ) {
+
+        var value;
+
+        if ( cmd == null ) return;
+
+        if ( cmd.isUniformValueCmd ) {
+
+            value = cmd.getValue( this.value );
+
+            if ( cmd.isRestorable ) {
+
+                cmd.prevValue = this.value;
+                this.commands.push( cmd );
+
+            }
+
+        } else if ( cmd.isUniformValueRestoreCmd ) {
+
+            for ( var i = 0; i < this.commands.length; i++ ) {
+
+                if ( this.commands[ i ].uid === cmd.uid ) {
+
+                    value = this.commands[ i ].prevValue;
+                    this.commands.splice( i, this.commands.length - i );
+                    break;
+
+                }
+
+            }
+
+            if ( value === undefined ) value = this.value;
+
+        } else {
+
+            value = cmd;
+
+        }
+
+        this.value = value;
+
+    }
+
+}
+
 function drawElements ( re/*nderer*/, draw ) {
 
     var gl = re.app.gl;
@@ -29396,64 +29193,6 @@ function drawElements ( re/*nderer*/, draw ) {
 
 }
 
-class UniformValueStack {
-
-    constructor () {
-
-        this.value = null;
-        this.commands = [];
-
-    }
-
-    exec ( cmd ) {
-
-        var value;
-
-        if ( cmd == null ) return;
-
-        if ( cmd.isUniformValueCmd ) {
-
-            value = cmd.getValue( this.value );
-
-            if ( cmd.isRestorable ) {
-
-                cmd.prevValue = this.value;
-                this.commands.push( cmd );
-
-            }
-
-        } else if ( cmd.isUniformValueRestoreCmd ) {
-
-            for ( var i = 0; i < this.commands.length; i++ ) {
-
-                if ( this.commands[ i ].uid === cmd.uid ) {
-
-                    value = this.commands[ i ].prevValue;
-                    this.commands.splice( i, this.commands.length - i );
-                    break;
-
-                }
-
-            }
-
-            if ( value === undefined ) value = this.value;
-
-        } else {
-
-            value = cmd;
-
-        }
-
-        //if (re && re.debugOutFrame) {
-            //console.debug('UniformValueStack exec cmd=', cmd, 'value=', value);
-        //}
-
-        this.value = value;
-
-    }
-
-}
-
 function renderCommand ( re/*nderer*/, cmd ) {
 
     // blend-mode
@@ -29559,10 +29298,6 @@ function renderCommand ( re/*nderer*/, cmd ) {
 
             re.program = re.app.glx.glProgram( program );
 
-            //if (re.debugOutFrame) {
-                //console.log('activate program', program);
-            //}
-
         }
 
     }
@@ -29574,15 +29309,12 @@ function renderCommand ( re/*nderer*/, cmd ) {
 
 }
 
-function _warn () {
-
-    console.warn.apply( console, [ '[Picimo.render.WebGlRenderer#renderCommand]'].concat( Array.prototype.slice.apply( arguments ) ) );
-
-}
-
 /**
- * @class Picimo.render.WebGlRenderer
+ * @ignore
  */
+function _warn () {
+    console.warn.apply( console, [ '[Picimo.render.WebGlRenderer#renderCommand]'].concat( Array.prototype.slice.apply( arguments ) ) );
+}
 
 function WebGlRenderer ( app ) {
 
@@ -29597,6 +29329,9 @@ function WebGlRenderer ( app ) {
 
 }
 
+/**
+ * @ignore
+ */
 function initialize$1 ( renderer ) {  // {{{
 
     renderer.cmdQueue = new Queue;
@@ -29618,6 +29353,10 @@ function initialize$1 ( renderer ) {  // {{{
 
 }
 // }}}
+
+/**
+ * @ignore
+ */
 function initializePipelines ( renderer ) {  // {{{
 
     // TODO
@@ -29654,6 +29393,9 @@ WebGlRenderer.prototype.onStartFrame = function () {
 
 };
 
+/**
+ * @ignore
+ */
 function resetWebGlState ( renderer ) {  // {{{
 
     var gl = renderer.app.gl;
@@ -29664,6 +29406,9 @@ function resetWebGlState ( renderer ) {  // {{{
 
 }
 // }}}
+/**
+ * @ignore
+ */
 function resetInternalRenderState ( renderer ) {  // {{{
 
     renderer.cmdQueue.clear();
@@ -29699,13 +29444,10 @@ WebGlRenderer.prototype.onEndFrame = function () {
 
 
 /**
- * @method Picimo.render.WebGlRenderer#addPipeline
  * @param {string} name
  * @param {object} pipeline
  * @return pipeline
- *
  */
-
 WebGlRenderer.prototype.addPipeline = function ( name, pipeline ) {
 
     if ( name && ! pipeline ) {
@@ -29723,17 +29465,10 @@ WebGlRenderer.prototype.addPipeline = function ( name, pipeline ) {
 };
 
 /**
- * @method Picimo.render.WebGlRenderer#activatePipeline
  * @param pipeline
  * @return self
- *
  */
-
 WebGlRenderer.prototype.activatePipeline = function ( pipeline ) {
-
-    //if (this.debugOutFrame) {
-        //console.debug('renderer: activate pipeline=', pipeline, 'current=', this.currentPipeline);
-    //}
 
     if ( pipeline !== this.currentPipeline ) {
 
@@ -29747,12 +29482,9 @@ WebGlRenderer.prototype.activatePipeline = function ( pipeline ) {
 };
 
 /**
- * @method Picimo.render.WebGlRenderer#addRenderCommand
  * @param cmd
  * @param [pipeline] - activate pipeline before
- *
  */
-
 WebGlRenderer.prototype.addRenderCommand = function ( cmd, pipeline ) {
 
     if ( pipeline !== undefined ) {
@@ -29784,6 +29516,9 @@ WebGlRenderer.prototype.dumpCommandQueue = function () {
 };
 
 
+/**
+ * @ignore
+ */
 function renderAll ( renderer ) {  // {{{
 
     callPipelines( renderer, "finish" );
@@ -29806,6 +29541,9 @@ function renderAll ( renderer ) {  // {{{
 
 }
 // }}}
+/**
+ * @ignore
+ */
 function renderCommandQueue ( renderer ) {  // {{{
 
     var renderCmd = renderer._renderCmd;
@@ -29818,6 +29556,9 @@ function renderCommandQueue ( renderer ) {  // {{{
 
 }
 // }}}
+/**
+ * @ignore
+ */
 function logCommandQueueToConsole ( renderer ) {  // {{{
 
     renderer.cmdQueue.forEach( function ( cmd ) {
@@ -29832,6 +29573,9 @@ function logCommandQueueToConsole ( renderer ) {  // {{{
 
 }
 // }}}
+/**
+ * @ignore
+ */
 function callPipelines ( renderer, funcName ) {  // {{{
 
     var i;
@@ -29850,14 +29594,11 @@ function callPipelines ( renderer, funcName ) {  // {{{
 }
 // }}}
 
-
 //function _warn () {
     //console.warn.apply( console, [ '[Picimo.render.WebGlRenderer]'].concat( Array.prototype.slice.apply( arguments ) ) );
 //}
 
 /**
- * @class Picimo.render.WebGlBuffer
- * @description
  * An object-orientated wrapper for the WebGL buffer api.
  *
  * @param {Picimo.render.WebGlContext} glx
@@ -29890,7 +29631,6 @@ function WebGlBuffer ( glx, options ) {
 }
 
 /**
- * @method Picimo.render.WebGlBuffer#bindBuffer
  * @return self
  */
 
@@ -29902,7 +29642,6 @@ WebGlBuffer.prototype.bindBuffer = function () {
 };
 
 /**
- * @method Picimo.render.WebGlBuffer#bufferData
  * @param arr
  * @return self
  */
@@ -29920,7 +29659,6 @@ WebGlBuffer.prototype.bufferData = function ( arr ) {
 };
 
 /**
- * @method Picimo.render.WebGlBuffer#bufferSubData
  * @param arr
  * @param {number} count
  * @param {number} [offset]
@@ -29948,7 +29686,6 @@ WebGlBuffer.prototype.bufferSubData = function ( arr, count, offset ) {
 };
 
 /**
- * @method Picimo.render.WebGlBuffer#vertexAttribPointer
  * @param pointer
  * @param itemSize
  * @param stride
@@ -29973,7 +29710,6 @@ WebGlBuffer.prototype.vertexAttribPointer = function ( pointer, itemSize, stride
 };
 
 /**
- * @method Picimo.render.WebGlBuffer#drawElements
  * @param elemType
  * @param numItems
  * @param offset
@@ -29987,9 +29723,6 @@ WebGlBuffer.prototype.drawElements = function ( elemType, numItems, offset ) {
 
 };
 
-/**
- * @method Picimo.render.WebGlBuffer#destroy
- */
 
 WebGlBuffer.prototype.destroy = function () {
 
@@ -30010,10 +29743,9 @@ WebGlBuffer.prototype.destroy = function () {
 
 /**
  * Returns a new WebGlBuffer.
- * @memberof Picimo.render.WebGlBuffer
- * @method fromVertexArray
- * @param {Picimo.render.WebGlContext} glx
- * @param {Picimo.core.VertexArrayDescriptor} descriptor
+ *
+ * @param {WebGlContext} glx
+ * @param {VertexArrayDescriptor} descriptor
  * @param {Object} options
  * @static
  */
@@ -30044,7 +29776,6 @@ WebGlBuffer.fromVertexArray = function ( glx, descriptor, options ) {
 
 /**
  * Returns a new WebGlBuffer.
- * @memberof Picimo.render.WebGlBuffer
  * @method fromVertexIndexArray
  * @param {Picimo.render.WebGlContext} glx
  * @param {Picimo.core.VertexIndexArray} vertexIndexArray
@@ -30073,8 +29804,8 @@ WebGlBuffer.fromVertexIndexArray = function ( glx, vertexIndexArray ) {
 
 
 
-var index$3 = Object.freeze({
-	cmd: index$4,
+var index = Object.freeze({
+	cmd: index$1,
 	Program: Program,
 	ShaderSource: ShaderSource,
 	ShaderManager: ShaderManager,
@@ -30086,1036 +29817,1134 @@ var index$3 = Object.freeze({
 	WebGlBuffer: WebGlBuffer
 });
 
-function onFrame () {
+/**
+ * @ignore
+ */
+var createShaderManager = function ( app ) {
 
-    //if (this.app.renderer.debugOutFrame) {
-        //console.debug('scene.onFrame()');
-    //}
+    const shaderManager = new ShaderManager( app );
 
-    if (this.hasOwnProjection) {
-        checkProjectionNeedsUpdate(this);
-        updateProjection(this);
-    }
+    definePropertyPrivateRO( app, 'shaderManager', shaderManager );
 
-    checkResize(this);
-    createRenderCommand(this);
+    delegateMethods(shaderManager, app, [
+        'loadFragmentShader',
+        'loadVertexShader',
+        'getVertexShader',
+        'getFragmentShader',
+        'getProgram'
+    ]);
 
-}
+    app.addProgram = function () {
+        shaderManager.addProgram.apply(shaderManager, arguments);
+        return app;
+    };
 
-function onFrameEnd () {
+    app.defineVertexShader = function () {
+        shaderManager.defineVertexShader.apply(shaderManager, arguments);
+        return app;
+    };
 
-    //if (this.app.renderer.debugOutFrame) {
-        //console.debug('scene.onFrameEnd()');
-    //}
+    app.defineFragmentShader = function () {
+        shaderManager.defineFragmentShader.apply(shaderManager, arguments);
+        return app;
+    };
 
-    this.app.renderer.addRenderCommand(this.renderPostCmd, null);
+    const complexSpriteShaderName = 'picimo.complexSprite';
+    app.defineVertexShader(complexSpriteShaderName, VertexShader);
+    app.defineFragmentShader(complexSpriteShaderName, FragmentShader);
+    app.addProgram(complexSpriteShaderName, complexSpriteShaderName, complexSpriteShaderName);
 
-}
+    const spriteShaderName = 'picimo.sprite';
+    app.defineVertexShader(spriteShaderName, VertexShader$1);
+    app.defineFragmentShader(spriteShaderName, FragmentShader$1);
+    app.addProgram(spriteShaderName, spriteShaderName, spriteShaderName);
 
-function createRenderCommand (scene) {
+};
 
-    let renderCmd = scene.renderCmd;
+/**
+ * @ignore
+ */
+var createWebGlContext = function ( app ) {
 
-    renderCmd.uniforms.renderPrio = scene.renderPrio;
+    let gl;
 
-    scene.app.renderer.addRenderCommand(renderCmd, null);
+    try {
 
-}
+        gl = app.canvas.getContext( "webgl", app.glCtxAttrs ) ||
+             app.canvas.getContext( "experimental-webgl", app.glCtxAttrs );
 
-function checkResize (scene) {
+    } catch ( err ) {
 
-    let width      = scene.width;
-    let height     = scene.height;
-    let pixelRatio = scene.pixelRatio;
-    let uniforms   = scene.renderCmd.uniforms;
-
-    if (width !== scene.prevWidth || height !== scene.prevHeight || pixelRatio !== scene.prevPixelRatio) {
-
-        scene.prevWidth      = width;
-        scene.prevHeight     = height;
-        scene.prevPixelRatio = pixelRatio;
-
-        uniforms.sceneInfo[0] = scene.width;
-        uniforms.sceneInfo[1] = scene.height;
-        uniforms.sceneInfo[2] = scene.pixelRatio;
-
-        /**
-         * Announce a scene size ( width, height or pixelRatio ) change.
-         * @event Picimo.graph.Scene#resize
-         * @memberof Picimo.graph.Scene
-         * @param {number} width
-         * @param {number} height
-         * @param {number} pixelRatio
-         */
-
-        scene.emit('resize', width, height, pixelRatio);
+        console.error( err );
 
     }
 
-}
+    if ( ! gl ) {
 
-function checkProjectionNeedsUpdate (scene) {
+        throw new Error( "Could not initialize the WebGL context!" );
 
-    let parent = scene.scene || scene.app;
+    }
 
-    if (   parent.width !== scene.parentResolution.width
-        || parent.height !== scene.parentResolution.height
-        || parent.pixelRatio !== scene.parentResolution.pixelRatio
-        || parent.devicePixelRatio !== scene.parentResolution.devicePixelRatio ) {
+    const ctx = new WebGlContext( gl );
+    ctx.app = app;
 
-            scene.parentResolution.width = scene.parentResolution.width;
-            scene.parentResolution.height = scene.parentResolution.height;
-            scene.parentResolution.pixelRatio = scene.parentResolution.pixelRatio;
-            scene.parentResolution.devicePixelRatio = scene.parentResolution.devicePixelRatio;
+    return ctx;
 
-            scene.projectionNeedsUpdate = true;
+};
 
+class SpriteFactory {
+
+    constructor ( parentFactory = null ) {
+
+        this.registry = new Map;
+        this.parentFactory = parentFactory;
+
+    }
+
+    createDescriptor (name, ...args) {
+
+        if (this.getDescriptor(name)) {
+            throw new Error(`oops.. VertexObjectDescriptor '${name}' already exists!`);
         }
+
+        let vod = new VertexObjectDescriptor(...args);
+        this.registry.set(name, vod);
+
+        return vod;
+
+    }
+
+    getDescriptor (descriptor = 'default') {
+        if (descriptor instanceof VertexObjectDescriptor) {
+            return descriptor;
+        } else {
+            let vod = this.registry.get(descriptor);
+            if (!vod && this.parentFactory) {
+                return this.parentFactory.getDescriptor(descriptor);
+            } else {
+                return vod;
+            }
+        }
+    }
+
+    createSprite (descriptor, ...args) {
+        let vod = this.getDescriptor(descriptor);
+        if (vod) {
+            return vod.create(...args);
+        }
+    }
+
+    createSubFactory () {
+        return new SpriteFactory(this);
+    }
+
 }
 
-function onRootFrame () {
+var SpriteFactory$1 = (function () {
 
-    let scene = this;
-    let uniforms = scene.rootRenderCmd.uniforms;
-    let app = scene.app;
+    return new SpriteFactory;
 
-    uniforms.iGlobalTime    = app.now;
-    uniforms.iFrameNo       = app.frameNo;
-    uniforms.iResolution[0] = app.width;
-    uniforms.iResolution[1] = app.height;
+})();
 
-    app.renderer.addRenderCommand(scene.rootRenderCmd);
+function defineSprite (typeName, options, proto, spriteFactory = SpriteFactory$1) {
+
+    let descriptor = spriteFactory.createDescriptor(typeName, options.constructor, options.vertexCount, options.vertexAttrCount, options.attributes, options.aliases);
+
+    if (proto) {
+        Object.assign(descriptor.proto, proto);
+    }
+
+    return descriptor;
 
 }
 
-function initTransform (scene) {  // --- {{{
+var defaultSprite = function ( spriteFactory ) {
 
-    // Every scene has a transformation matrix !
+    let descriptor = spriteFactory.getDescriptor('default');
+    if (descriptor) return descriptor;
 
-    scene.transform = new Matrix4();
+    descriptor = spriteFactory.createDescriptor( 'default',
 
-    scene.viewMatrixUniform = new UniformValue(true,
-        _computeViewMatrix.bind(null, scene, new Matrix4()) );
+        function () {
 
-    if (scene.hasOwnProjection) {
+            this.setAnchor( 0, 0 );  // anchor
+            this.setRgb( 1, 1, 1 );
 
-        scene.on("init", eventize_1$1.PRIO_A, function () {
+        },
 
-            this.projectionNeedsUpdate = true;
-            updateProjection(this);
+        4, 16,
+
+        [
+            { name: 'xwyh',      size: 2, attrNames: [ 'xw', 'yh' ] },
+            { name: 'size',      size: 2, attrNames: [ 'width', 'height' ], uniform: true },
+            { name: 'scale',     size: 2, attrNames: [ 'sx', 'sy' ], uniform: true },
+            { name: 'pos',       size: 2, attrNames: [ 'x', 'y' ], uniform: true },
+            { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
+            { name: 'rotate',    size: 1, uniform: true },
+            { name: 'texUnit',   size: 1, uniform: true },
+            { name: 'rgb',       size: 3, attrNames: [ 'r', 'g', 'b' ], uniform: true },
+            { name: 'opacity',   size: 1, uniform: true },
+
+        ], {
+            // both are referenced by our shader
+
+            'rot_texUnit' : { size: 2, offset: 10, uniform: true },
+            'color'       : { size: 4, offset: 12, uniform: true },
 
         });
 
+
+    descriptor.proto.setAnchor = function ( x, y ) {
+
+        this.setXwyh( -0.5 - x, 0.5 - y, 0.5 - x, 0.5 - y, 0.5 - x, -0.5 - y, -0.5 - x, -0.5 - y );
+
+    };
+
+    return descriptor;
+
+};
+
+var attachSpriteHelpers = function ( proto ) {
+
+    /**
+     * @param {Picimo.core.Viewport} viewport - viewport
+     * @param {number} textureWidth - texture width
+     * @param {number} textureHeight - texture height
+     * @param {number} [repeat] - texture repeat factor
+     */
+
+    proto.setTexCoordsByViewport = function ( viewport, textureWidth, textureHeight, repeat ) {
+
+        var x0 = viewport.x === 0 ? 0 : ( viewport.x / textureWidth );
+        var x1 = ( viewport.x + viewport.width ) / textureWidth;
+        var y0 = 1 - ( ( viewport.y + viewport.height ) / textureHeight );
+        var y1 = viewport.y === 0 ? 1 : 1 - ( viewport.y / textureHeight );
+
+        if ( repeat !== undefined ) {
+
+            x0 *= repeat;
+            x1 *= repeat;
+            y0 *= repeat;
+            y1 *= repeat;
+
+        }
+
+        this.setTexCoords(
+            x0, y0,
+            x1, y0,
+            x1, y1,
+            x0, y1 );
+
+    };
+
+
+    /**
+     * @method Picimo.sprites.Sprite#setSize
+     * @param {number} width - width
+     * @param {number} height - height
+     */
+
+    proto.setSize = function ( width, height ) {
+
+        var half_width  = width  * 0.5;
+        var half_height = ( height == null ? width : height ) * 0.5;
+
+        this.setPos2d(
+                -half_width,  half_height,
+                 half_width,  half_height,
+                 half_width, -half_height,
+                -half_width, -half_height
+                );
+
+    };
+
+    /**
+     * @member {number} Picimo.Sprite#rotateDegree - rotation in degree
+     */
+
+    Object.defineProperty( proto, 'rotateDegree', {
+
+        get: function () {
+            return this.rotate * 180.0 / Math.PI;
+        },
+
+        set: function ( degree ) {
+            this.rotate = degree * ( Math.PI / 180.0 );
+        },
+
+        enumerable: true
+
+    });
+
+    /**
+     * @member {number} Picimo.Sprite#z - z value
+     */
+
+    Object.defineProperty( proto, 'z', {
+
+        get: function () {
+            return this.z0;
+        },
+
+        set: function ( z ) {
+            this.z0 = z;
+            this.z1 = z;
+            this.z2 = z;
+            this.z3 = z;
+        },
+
+        enumerable: true
+
+    });
+
+};
+
+var simpleSprite = function ( spriteFactory ) {
+
+    let descriptor = spriteFactory.getDescriptor('simple');
+    if (descriptor) return descriptor;
+
+    descriptor = spriteFactory.createDescriptor( 'simple',
+
+        null,
+
+        4,  // vertices
+        12, // attrs per vertex
+
+        // ## sprite features
+        //
+        // +-+-+-+-+ +-+-+-+-+ +-+-+-+-+
+        // |0|1|2|3| |4|5|6|7| |8|9|A|B|
+        // +-+-+-+-+ +-+-+-+-+ +-+-+-+-+
+        //
+        // |o-o-o|                       (3) position: x,y,z
+        //       |o|                     (1) rotate
+        //           |o-o|               (2) tex-coords: s, t
+        //               |o-o|           (3) translate: tx, ty
+        //                     |o|       (1) scale
+        //                       |o|     (1) opacity
+        //
+
+        [
+
+            { name: 'position', size: 3, attrNames: [ 'x', 'y', 'z' ] },
+            { name: 'rotate', size: 1, uniform: true },
+            { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
+            { name: 'translate', size: 2, uniform: true, attrNames: [ 'tx', 'ty' ] },
+            { name: 'scale', size: 1, uniform: true },
+            { name: 'opacity', size: 1, uniform: true }
+
+        ],
+
+        {
+            pos2d: { size: 2, offset: 0 },
+            posZ:  { size: 1, offset: 2, uniform: true },
+            uv:    'texCoords'
+
+        }
+
+    );
+
+    attachSpriteHelpers( descriptor.proto );
+
+    return descriptor;
+
+};
+
+var initSprites = function () {
+
+    defaultSprite(SpriteFactory$1);
+    simpleSprite(SpriteFactory$1);
+
+    return SpriteFactory$1.createSubFactory();
+
+};
+
+/**
+ * @ignore
+ */
+var initSpriteFactory = function ( app ) {
+
+    let spriteFactory = initSprites();
+
+    definePropertyPrivateRO( app, 'spriteFactory', spriteFactory );
+
+    definePropertyPublicRO( app, 'defineSprite', function (typeName, spriteOptions, spriteProto) {
+
+        return defineSprite( typeName, spriteOptions, spriteProto, spriteFactory );
+
+    });
+
+    delegateMethods(spriteFactory, app, {
+
+        createSprite     : 'createSprite',
+        getDescriptor    : 'getSpriteDescriptor',
+
+    });
+
+};
+
+/**
+ * @ignore
+ */
+
+var renderFrame = function () {
+
+    this.now = window.performance.now() / 1000.0;
+    ++this.frameNo;
+    this.frameTime = this.frameLastTime == null ? 0.0 : this.frameLastTime - this.now;
+    this.frameLastTime = this.now;
+
+    this.resize();
+
+    if (!this.ready) {
+        Object.defineProperty(this, 'ready', { value: true, configurable: true, enumerable: true });
+        this.emit('ready');
+        this.emit('resize');
     }
 
-}
+    this.emit('frameBegin');
 
-function _computeViewMatrix (scene, viewMatrix, current) {
-    if (!current || scene.hasOwnProjection) {
-        scene.computeViewMatrix(viewMatrix);
+    this.renderer.onStartFrame();
+
+    this.emit('frame');
+
+    if (this.scene) {
+        this.scene.renderFrame();
+    }
+
+    this.emit('renderFrame');
+
+    this.renderer.onEndFrame();
+
+    this.emit('frameEnd');
+
+    requestAnimationFrame(this.onAnimationFrame);
+
+};
+
+/**
+ * @ignore
+ */
+
+var resize = function () {
+
+    let node, w, h, wPx, hPx;
+
+    if ( this.canvasIsPredefined ) {
+
+        node = this.canvas;
+
+        w = Math.round( this.canvas.clientWidth * this.devicePixelRatio );
+        h = Math.round( this.canvas.clientHeight * this.devicePixelRatio );
+
     } else {
-        viewMatrix.multiply(current, scene.transform);
+
+        node = this.canvas.parentNode.parentNode;
+
+        wPx = node.clientWidth;
+        hPx = node.clientHeight;
+
+        w = Math.round( wPx * this.devicePixelRatio );
+        h = Math.round( hPx * this.devicePixelRatio );
+
+        this.canvas.style.width  = `${wPx}px`;
+        this.canvas.style.height = `${hPx}px`;
+
     }
-    return viewMatrix;
+
+    if ( this.canvas.width !== w || this.canvas.height !== h ) {
+
+        this.canvas.width  = w;
+        this.canvas.height = h;
+
+    }
+
+    if ( this.width !== w || this.height !== h ) {
+
+        //--------------------------------------------------
+        // this is the real/physical/device pixel dimension
+        //-------------------------------------------------
+
+        this.width = w;
+        this.height = h;
+
+        if ( this.renderer ) {
+
+            this.renderer.onResize();
+
+        }
+
+        if (this.ready) this.emit('resize');
+
+    }
+
+};
+
+const MOUSE_BTN_LEFT   = 0;
+const MOUSE_BTN_MIDDLE = 1;
+const MOUSE_BTN_RIGHT  = 2;
+
+class MouseController {
+
+    constructor (picimo) {
+
+        this.picimo = picimo;
+
+        this.mouseBtnDown = [false, false, false];
+        this.mouseBtnMove = [false, false, false];
+        this.isDrag = false;
+
+        registerMouseListeners(this);
+
+        eventize_1$1(this);
+
+    }
+
+    mouseDown (event) {
+        this.mouseBtnDown[event.button] = true;
+        this.mouseBtnMove[event.button] = false;
+    }
+
+    mouseMove (event) {
+
+        this.mouseBtnMove[MOUSE_BTN_LEFT] = this.mouseBtnDown[MOUSE_BTN_LEFT];
+        this.mouseBtnMove[MOUSE_BTN_MIDDLE] = this.mouseBtnDown[MOUSE_BTN_MIDDLE];
+        this.mouseBtnMove[MOUSE_BTN_RIGHT] = this.mouseBtnDown[MOUSE_BTN_RIGHT];
+
+        this.isDrag = this.isSomeBtnDown;
+
+        const dpr = this.picimo.devicePixelRatio;
+        const moveEvent = movement(event, this.isDrag, dpr);
+
+        this.emit('mouseMove', moveEvent, this);
+
+        if (this.mouseBtnDown[MOUSE_BTN_LEFT]) this.emit('mouseDragLeft', moveEvent, this);
+        if (this.mouseBtnDown[MOUSE_BTN_MIDDLE]) this.emit('mouseDragMiddle', moveEvent, this);
+        if (this.mouseBtnDown[MOUSE_BTN_RIGHT]) this.emit('mouseDragRight', moveEvent, this);
+
+    }
+
+    mouseUp (event) {
+
+        let btn = event.button;
+        this.mouseBtnDown[btn] = false;
+
+        this.isDrag = this.isSomeBtnDown;
+
+        if (this.mouseBtnMove[btn]) {
+            this.mouseBtnMove[btn] = false;
+        } else {
+            if (btn === MOUSE_BTN_LEFT) this.emit('mouseClickLeft', event, this);
+            if (btn === MOUSE_BTN_MIDDLE) this.emit('mouseClickMiddle', event, this);
+            if (btn === MOUSE_BTN_RIGHT) this.emit('mouseClickRight', event, this);
+        }
+
+    }
+
+    mouseWheel (event) {
+        this.emit('mouseWheel', event.wheelDeltaX, event.wheelDeltaY, this);
+    }
+
+    get isBtnLeftDown () {
+        return this.mouseBtnDown[MOUSE_BTN_LEFT];
+    }
+
+    get isBtnMiddleDown () {
+        return this.mouseBtnDown[MOUSE_BTN_MIDDLE];
+    }
+
+    get isBtnRightDown () {
+        return this.mouseBtnDown[MOUSE_BTN_RIGHT];
+    }
+
+    get isSomeBtnDown () {
+        return (this.mouseBtnDown[MOUSE_BTN_LEFT] ||
+                this.mouseBtnDown[MOUSE_BTN_MIDDLE] ||
+                this.mouseBtnDown[MOUSE_BTN_RIGHT]);
+    }
+
 }
 
-// --- initTransform }}}
+function movement (event, isDrag, devicePixelRatio) {
 
-function initWithoutProjection (scene) {  // --- {{{
+    return {
+        isDrag     : isDrag,
+        translateX :  event.movementX * devicePixelRatio,
+        translateY : -event.movementY * devicePixelRatio,
+    };
 
-    definePropertiesPublicRO(scene, {
+}
 
-        /**
-         * @member {Picimo.math.Matrix4} Picimo.graph.Scene#projection
-         * @readonly
-         */
-        projection: null,
+function registerMouseListeners (controller) {
 
-        /**
-         * @member {boolean} Picimo.graph.Scene#hasOwnProjection
-         * @readonly
-         */
-        hasOwnProjection: false,
+    // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
+    // http://www.w3schools.com/jsref/dom_obj_event.asp
 
-        projectionNeedsUpdate: false
+    controller.picimo.canvas.addEventListener('contextmenu', preventDefault, false);
+    controller.picimo.canvas.addEventListener('mousedown', controller.mouseDown.bind(controller), false);
 
+    document.addEventListener('mousemove', controller.mouseMove.bind(controller), false);
+    document.addEventListener('mouseup', controller.mouseUp.bind(controller), false);
+    document.addEventListener('mousewheel', controller.mouseWheel.bind(controller), false);
+
+}
+
+function preventDefault (event) {
+    event.preventDefault();
+    return false;
+}
+
+function NodeState (initialStateValue) {
+
+    if (!(this instanceof NodeState)) {
+        return new NodeState(initialStateValue);
+    }
+
+    this.value = initialStateValue | 0;
+    Object.seal( this );
+
+}
+
+/**
+ * @param {number} state
+ * @return {boolean}
+ * @example
+ * state.is( NodeState.CREATE | NodeState.INIT )
+ */
+NodeState.prototype.is = function ( state ) {
+
+    return ( this.value & ( state | 0 ) ) > 0; //=== state;
+
+};
+
+NodeState.prototype.isNot = function ( state ) {
+
+    return ! this.is(state);
+
+};
+
+/**
+ * @param {number} state
+ * @example
+ * state.set( NodeState.READY )
+ * @return *self*
+ */
+NodeState.prototype.set = function ( state ) {
+
+    this.value = state | 0;
+    return this;
+
+};
+
+
+NodeState.prototype.toString = function () {
+
+    let states = [];
+
+    if ( this.is( NodeState.CREATE ) ) states.push( 'CREATE' );
+    if ( this.is( NodeState.INIT ) ) states.push( 'INIT' );
+    if ( this.is( NodeState.READY ) ) states.push( 'READY' );
+    if ( this.is( NodeState.ERROR ) ) states.push( 'ERROR' );
+    if ( this.is( NodeState.DESTROYED ) ) states.push( 'DESTROYED' );
+
+    return "[" + states.join( "," ) + "]";
+
+};
+
+
+definePropertiesPublicRO( NodeState, {
+
+    CREATE    : 1,
+    INIT      : 2,
+    READY     : 4,
+    ERROR     : 8,
+    DESTROYED : 16
+
+});
+
+
+Object.freeze( NodeState );
+
+// ---------------------------------------------------------------------
+//
+//  A node is *not* ready when ..
+//    - `ready = false`
+//    - the node state is set to *destroyed* or *error*
+//    - a *ready function* is defined by `readyFunc = function () {}`
+//      and this functions returns a *falsy* value.
+//
+// ---------------------------------------------------------------------
+
+/**
+ * @private
+ */
+
+function defineReady (obj, initialReady) {
+
+    let _ready = !! initialReady;
+    let _readyFunc = null;
+
+    Object.defineProperty(obj, 'readyFunc', {
+        get: function () {
+            return _readyFunc;
+        },
+        set: function (readyFunc) {
+            if (readyFunc === false) {
+                _readyFunc = () => false;
+            } else if (readyFunc === true) {
+                _readyFunc = null;
+            } else if (typeof readyFunc === 'function') {
+                _readyFunc = readyFunc;
+            } else {
+                _readyFunc = null;
+            }
+        }
     });
 
-    Object.defineProperties(scene, {
-
-        /**
-         * @member {number} Picimo.graph.Scene#width
-         */
-
-        'width' : { get: function () {
-
-            var parent = this.scene;
-            return parent ? parent.width : this.app.width;
-
-        }, enumerable: true },
-
-        /**
-         * @member {number} Picimo.graph.Scene#height
-         */
-
-        'height' : { get: function () {
-
-            var parent = this.scene;
-            return parent ? parent.height : this.app.height;
-
-        }, enumerable: true },
-
-        /**
-         * @member {number} Picimo.graph.Scene#pixelRatio
-         */
-
-        'pixelRatio' : { get: function () {
-
-            var parent = this.scene;
-            return parent ? parent.pixelRatio : this.app.devicePixelRatio;
-
-        }, enumerable: true },
-
-        /**
-         * @member {number} Picimo.graph.Scene#devicePixelRatio
-         * @readonly
-         */
-
-        'devicePixelRatio' : { get: function () {
-
-            var parent = this.scene;
-            return parent ? parent.devicePixelRatio : this.app.devicePixelRatio;
-
-        }, enumerable: true },
-
+    Object.defineProperty(obj, 'ready', {
+        get: function () {
+            return _ready && this.state.isNot(NodeState.ERROR|NodeState.DESTROYED) && (_readyFunc === null || !! _readyFunc());
+        },
+        set: function (ready) {
+            _ready = !! ready;
+        }
     });
 
 }
 
-// --- initWithoutProjection }}}
+const DEFAULT_RENDER_PRIO = 0;
 
-function initRootScene (scene) {  // --- {{{
+function defineRenderPrio (obj, initialRenderPrio) {
 
-    scene.rootRenderCmd = {
+    var _renderPrio = asNumber(initialRenderPrio, DEFAULT_RENDER_PRIO);
 
-        uniforms: {
+    Object.defineProperty(obj, 'renderPrio', {
+        get: function () {
+            return _renderPrio;
+        },
+        set: function (renderPrio) {
+            let prio = asNumber(renderPrio, DEFAULT_RENDER_PRIO);
+            if (prio !== _renderPrio) {
+                _renderPrio = prio;
+                if (this.parentNode) {
+                    this.parentNode.emit("childrenUpdated");
+                }
+            }
+        },
+        enumerable: true
+    });
 
-            iGlobalTime : 0,
-            iFrameNo    : 0,
-            iResolution : [0, 0],
+}
+
+function destroy () {
+
+    if ( this.state.is( NodeState.DESTROYED ) ) return;
+
+    for ( var i = 0; i < this.children.length; ++i ) {
+
+        this.children[ i ].destroy();
+
+    }
+
+    if ( this.initGlDone ) {
+
+        try {
+
+            /*
+             * Is only called if the *init* event successfully resolved. *Even if the *initGl* event failed*.
+             * Is called before the *destroy* event.
+             */
+            this.emit( 'destroyGl' );
+
+        } catch ( err ) {
+
+            console.error( '[destroyGl]', err );
+
+        }
+
+    }
+
+    if ( this.initDone ) {
+
+        try {
+
+            /*
+             * Is only called if the *init* event successfully resolved and just after the *destroyGl* event.
+             */
+            this.emit( 'destroy' );
+
+        } catch ( err ) {
+
+            console.error( '[destroy]', err );
+
+        }
+
+    }
+
+
+    this.state.set( NodeState.DESTROYED );
+
+
+    if (this.parentNode) {
+        this.parentNode.removeChild(this);
+    }
+
+}
+
+/**
+ * @ignore
+ */
+function renderFrame$1 () {
+
+    if ( ! this.ready ) return;
+
+    if (this.state.is( NodeState.DESTROYED )) return;
+
+    if (this.state.is( NodeState.CREATE )) {
+
+        onInit(this); // create -> initialize
+
+    }
+
+    if (this.state.is( NodeState.READY )) {
+
+        // initialize -> ready to render
+
+        if (this.display) {
+
+            try {
+
+                /*
+                 * Is called only if node is *ready* and *display*-able.
+                 */
+                this.emit( 'frame' );
+
+                /*
+                 * Is called just after the *frame* event and before the *frameEnd* event. The *render commands* should be generated here.
+                 */
+                this.emit( 'renderFrame' );
+
+            } catch (err) {
+
+                console.error( '[frame,renderFrame]', err );
+                this.ready = false;
+                return;
+
+            }
+
+            for (var i = 0; i < this.children.length; ++i) {
+
+                this.children[i].renderFrame();
+
+            }
+
+            try {
+
+                /**
+                 * Is called after the on *frame* and *renderFrame* events.
+                 */
+                this.emit( 'frameEnd' );
+
+            } catch (err) {
+
+                console.error( '[frameEnd]', err );
+                this.ready = false;
+
+            }
+
+        }
+
+    }
+
+}  // --- renderFrame
+
+
+/**
+ * @ignore
+ */
+function onInit (node) {
+
+    node.state.set( NodeState.INIT );
+
+    var initPromises = [];
+
+    try {
+
+        /*
+         * This is the first event. Will be called only once and never again.
+         */
+        node.emit( 'init', makeDoneFunc( initPromises, node ) );
+
+        Promise.all( initPromises ).then( onInitGl.bind( node, node ), onFail.bind( node, node ) );
+
+    } catch ( err ) {
+
+        console.error( '[init]', err );
+        this.ready = false;
+
+    }
+
+}
+
+/**
+ * @ignore
+ */
+function onInitGl (node) {
+
+    definePropertyPublicRO(node, 'initDone', true);
+
+    if ( ! node.ready ) return;
+
+    var initGlPromises = [];
+
+    try {
+
+        /*
+         * Will be called just after *init*. Should only be used to perform render related tasks.
+         */
+        node.emit( 'initGl', makeDoneFunc( initGlPromises, node ) );
+
+        Promise.all( initGlPromises ).then( onInitDone.bind( node, node ), onFail.bind( node, node ) );
+
+    } catch ( err ) {
+
+        console.error( '[initGl]', err );
+        this.ready = false;
+
+    }
+}
+
+/**
+ * @ignore
+ */
+function onInitDone (node) {
+
+    definePropertyPublicRO(node, 'initGlDone', true);
+
+    if ( node.ready ) {
+
+        node.state.set( NodeState.READY );
+
+    }
+
+}
+
+/**
+ * @ignore
+ */
+function makeDoneFunc (arr) {
+
+    return function ( promise ) {
+
+        if ( promise ) {
+
+            if ( typeof promise === 'function' ) {
+
+                promise = new Promise( promise );
+
+            }
+
+            arr.push( promise );
 
         }
 
     };
 
-    scene.on("frame", onRootFrame);
+}
+
+/**
+ * @ignore
+ */
+function onFail (node) {
+
+    if ( node.ready ) {
+
+        node.state.set( NodeState.ERROR );
+
+    }
 
 }
 
-// --- initRootScene }}}
+function Node (app, options = {}) {
 
-function initProjection (scene, options) {  // --- {{{
+    if ( ! app ) {
+        throw new Error('[Picimo.graph.Node] app should not be undefined!');
+    }
 
-    definePropertiesPublicRO(scene, {
+    definePropertyPublicRO(this, 'app', app);
 
-        projection       : new Matrix4(),
-        hasOwnProjection : true
+    this.name = asString(options.name);
 
+    this.state = new NodeState(NodeState.CREATE);
+    this.display = asBoolean(options.display, true);
+    defineReady(this, options.ready !== false);
+
+    Object.defineProperties(this, {
+        initDone: {
+            value        : false,
+            configurable : true,
+            enumerable   : true
+        },
+        initGlDone: {
+            value        : false,
+            configurable : true,
+            enumerable   : true
+        }
     });
 
-    scene.projectionNeedsUpdate = true;
+    defineRenderPrio(this, options.renderPrio);
 
-    scene._desiredPixelRatio = options.pixelRatio ? parseFloat( options.pixelRatio ) : ( scene.isRootNode ? 1 : 0 );
-    scene._desiredWidth      = options.width ? parseFloat( options.width ) : 0;
-    scene._desiredHeight     = options.height ? parseFloat( options.height ) : 0;
+    setParentNode(this, options.parentNode);
+    this.children = [];
 
-    Object.defineProperties( scene, {
+    eventize_1$1(this);
 
-        'width': {
+    this.on('childrenUpdated', eventize_1$1.PRIO_MAX, sortChildrenByRenderPrio);
 
-            get: function () {
+    this.connect( options, {
 
-                return this._computedWidth ? this._computedWidth : this._desiredWidth;
-
-            },
-
-            set: function ( w ) {
-
-                var desiredWidth = parseFloat( w );
-
-                if ( this._desiredWidth !== desiredWidth ) {
-
-                    this._desiredWidth = desiredWidth;
-
-                    if ( desiredWidth ) this._desiredPixelRatio = 0;
-
-                    this.projectionNeedsUpdate = true;
-
-                }
-
-            },
-
-            enumerable: true
-
-        },
-
-        'height': {
-
-            get: function () {
-
-                return this._computedHeight ? this._computedHeight : this._desiredHeight;
-
-            },
-
-            set: function ( h ) {
-
-                var desiredHeight = parseFloat( h );
-
-                if ( this._desiredHeight !== desiredHeight ) {
-
-                    this._desiredHeight = desiredHeight;
-
-                    if ( desiredHeight ) this._desiredPixelRatio = 0;
-
-                    this.projectionNeedsUpdate = true;
-
-                }
-
-            },
-
-            enumerable: true
-
-        },
-
-        'pixelRatio': {
-
-            get: function () {
-
-                if ( this._computedPixelRatio ) {
-
-                    return this._computedPixelRatio;
-
-                } else if ( this._desiredPixelRatio ) {
-
-                    return this._desiredPixelRatio;
-
-                }
-
-                var parent = this.scene;
-
-                if ( parent ) {
-
-                    return parent.pixelRatio;
-
-                }
-
-                return 0;
-
-            },
-
-            set: function ( ratio ) {
-
-                var desiredPixelRatio = parseFloat( ratio );
-
-                if ( this._desiredPixelRatio !== desiredPixelRatio ) {
-
-                    this._desiredPixelRatio = desiredPixelRatio;
-
-                    if ( desiredPixelRatio ) {
-
-                        this._computedPixelRatio = 0;
-                        this._desiredWidth       = 0;
-                        this._desiredHeight      = 0;
-
-                    }
-
-                    this.projectionNeedsUpdate = true;
-
-                }
-
-            },
-
-            enumerable: true
-
-        },
-
-        'sizeFit': {
-
-            get: function () {
-
-                return this._sizeFit;
-
-            },
-
-            set: function ( variety ) {
-
-                var sizeFit = variety === 'cover' ? 'cover' : 'contain';
-
-                if ( this._sizeFit !== sizeFit ) {
-
-                    this._sizeFit = sizeFit;
-                    this.projectionNeedsUpdate = true;
-
-                }
-
-            },
-
-            enumerable: true
-
-        },
-
-
-    });
-
-    updateProjection(scene);
-
-}
-
-// --- initProjection }}}
-
-function updateProjection (scene) {  // --- {{{
-
-    if ( ! scene.hasOwnProjection || ! scene.projectionNeedsUpdate ) return;
-
-    var factor;
-
-    if ( scene._desiredWidth || scene._desiredHeight ) {
-
-        var appRatio   = scene.app.height / scene.app.width;            // <1 : landscape, >1 : portrait
-        var sceneRatio = scene._desiredHeight / scene._desiredWidth;
-        var isCover    = scene._desiredWidth && scene._desiredHeight && scene.sizeFit === 'cover';
-
-        if ( ( ! scene._desiredWidth && scene._desiredHeight ) || appRatio < sceneRatio ) {
-
-            scene._computedWidth  = ( scene._desiredHeight / scene.app.height ) * scene.app.width;
-            scene._computedHeight = scene._desiredHeight;
-
-            if ( isCover ) {
-
-                factor = scene._desiredWidth / scene._computedWidth;
-
-                scene._computedWidth  *= factor;
-                scene._computedHeight *= factor;
-
-            }
-
-        } else if ( ( scene._desiredWidth && ! scene._desiredHeight ) || appRatio > sceneRatio ) {
-
-            scene._computedWidth  = scene._desiredWidth;
-            scene._computedHeight = ( scene._desiredWidth / scene.app.width ) * scene.app.height;
-
-            if ( isCover ) {
-
-                factor = scene._desiredHeight / scene._computedHeight;
-
-                scene._computedWidth  *= factor;
-                scene._computedHeight *= factor;
-
-            }
-
-        } else {
-
-            scene._computedWidth  = scene._desiredWidth;
-            scene._computedHeight = scene._desiredHeight;
-
-        }
-
-        scene._computedPixelRatio = ( scene.app.width / scene._computedWidth ) / scene.app.devicePixelRatio;
-
-
-    } else if ( scene._desiredPixelRatio ) {
-
-        var parentScene = scene.scene;
-        var master      = parentScene ? parentScene : scene.app;
-        var ratio       = parentScene ? parentScene.pixelRatio : scene.app.devicePixelRatio;
-
-        factor = scene._desiredPixelRatio * ratio;
-
-        scene._computedWidth  = master.width  / factor;
-        scene._computedHeight = master.height / factor;
-
-    }
-
-    scene.devicePixelRatio = scene.app.width / scene._computedWidth;
-    scene.projectionNeedsUpdate = false;
-
-    scene.projection.ortho( scene.width, scene.height );
-
-    /**
-     * Announce a projection matrix change.
-     * @event Picimo.graph.Scene#projectionUpdated
-     * @memberof Picimo.graph.Scene
-     * @param {Picimo.math.Matrix4} projection - The changed projection matrix.
-     */
-
-    scene.emit( "projectionUpdated", scene.projection );
-
-}
-
-// --- updateProjection }}}
-
-class ObjectPool {
-
-    constructor (factoryFunc) {
-        this.objects = [];
-        this.inUseCount = 0;
-        this.setFactory(factoryFunc);
-    }
-
-    setFactory (func) {
-        this.factory = func ? func : function () { return {} };
-    }
-
-    create () {
-        let obj;
-
-        if (this.inUseCount < this.objects.length) {
-            obj = this.objects[this.inUseCount];
-        } else {
-            obj = this.factory();
-            this.objects.push(obj);
-        }
-
-        ++this.inUseCount;
-
-        return obj;
-    }
-
-    releaseAll () {
-        this.inUseCount = 0;
-    }
-
-    destroyAll () {
-        this.inUseCount = 0;
-        this.objects.length = 0;
-    }
-
-}
-
-class PicturePipeline {
-
-    constructor (app, pool, texture, program) {
-
-        this.indexArray       = null;
-        this.webGlBuffer      = null;
-        this.webGlIndexBuffer = null;
-        this.renderCmd        = null;
-
-        definePropertiesPrivateRO( this, {
-            app     : app,
-            pool    : pool,
-            texture : texture,
-            program : program,
-        });
-
-        // TODO init pool.NEW ?
-
-        this.reset();
-
-        Object.seal( this );
-
-    }
-
-    get webGlTexture () {
-        return this.app.textureManager.findOrCreateWebGlTexture( this.texture );
-    }
-
-    onInitGl () {
-        initBuffers(this);
-        initRenderCmds(this);
-    }
-
-    reset () {
-        this.currentSpriteCount = 0;
-        this.currentSpriteOffset = 0;
-        this.totalSpritesCount = 0;
-        if (this.renderCmd) this.renderCmd.releaseAll();
-    }
-
-    flush () {
-        if (this.currentSpriteCount) {
-
-            let cmd = this.renderCmd.create();
-
-            cmd.drawElements.count = this.currentSpriteCount;
-            cmd.drawElements.offset = this.currentSpriteOffset;
-
-            this.app.renderer.addRenderCommand(cmd, this);
-
-            this.currentSpriteOffset += this.currentSpriteCount;
-            this.currentSpriteCount = 0;
-        }
-    }
-
-    render (sprite) {
-        this.app.renderer.activatePipeline(this);
-
-        this.pool.vertexArray.copy(sprite, this.totalSpritesCount);
-
-        ++this.currentSpriteCount;
-        ++this.totalSpritesCount;
-    }
-
-    finish () {
-        if (this.totalSpritesCount) {
-            this.flush();
-            this.webGlBuffer.bufferSubData(null, this.totalSpritesCount * this.pool.descriptor.vertexAttrCount * this.pool.descriptor.vertexCount);
-        }
-    }
-
-}
-
-PicturePipeline.DEFAULT_CAPACITY = 100;
-
-
-function initBuffers ( pipeline ) {
-
-    if ( ! pipeline.webGlBuffer ) {
-
-        pipeline.webGlBuffer = WebGlBuffer.fromVertexArray( pipeline.app.glx, pipeline.pool.descriptor, {
-
-            drawType    : pipeline.app.gl.DYNAMIC_DRAW,  // TODO chosse vertex buffer type (static,dynamic or stream?)
-            vertexArray : pipeline.pool.vertexArray
-
-        });
-
-        pipeline.indexArray = VertexIndexArray.Generate( pipeline.pool.capacity, [ 0, 1, 2, 0, 2, 3 ] );
-        pipeline.webGlIndexBuffer = WebGlBuffer.fromVertexIndexArray( pipeline.app.glx, pipeline.indexArray );
-
-    }
-
-}
-
-
-function initRenderCmds ( pipeline ) {
-
-    if ( pipeline.renderCmd ) return;
-
-    pipeline.renderCmd = new ObjectPool(() => {
-
-        var obj = {
-
-            program: pipeline.program,
-            uniforms: {
-                tex: pipeline.webGlTexture
-            },
-            attributes: {},
-            drawElements: {
-                buffer: pipeline.webGlIndexBuffer,
-                elementType: pipeline.app.gl.TRIANGLES,
-                count: 0,
-                offset: 0
-            }
-
-        };
-
-        var name, attr = pipeline.pool.descriptor.attr;
-
-        for ( name in attr) {
-
-            if ( attr.hasOwnProperty( name ) ) {
-
-                obj.attributes[ name ] = {
-                    offset : attr[ name ].offset,
-                    size   : attr[ name ].size,
-                    stride : pipeline.pool.descriptor.vertexAttrCount,
-                    buffer : pipeline.webGlBuffer,
-                };
-
-            }
-
-        }
-
-        Object.seal( obj );
-
-        return obj;
+        'onInit'            : 'init',
+        'onInitGl'          : 'initGl',
+        'onFrame'           : 'frame',
+        'onRenderFrame'     : 'renderFrame',
+        'onFrameEnd'        : 'frameEnd',
+        'onDestroyGl'       : 'destroyGl',
+        'onDestroy'         : 'destroy',
+        'onChildrenUpdated' : 'childrenUpdated',
 
     });
 
 }
 
-// TODO - buffer update strategy ( all-at-once, blocks, ..? )
-
-class SpriteGroupPipeline {
-
-    constructor (app, program, pool, texture) {
-
-        this.indexArray       = null;
-        this.webGlBuffer      = null;
-        this.webGlIndexBuffer = null;
-        this.renderCmd        = null;
-
-        definePropertiesPrivateRO(this, {
-
-            app     : app,
-            program : program,
-            pool    : pool,
-            texture : texture,
-
-        });
-
-        Object.seal( this );
-
-    }
-
-    onInitGl () {
-        initBuffers$1(this);
-        initRenderCmds$1(this);
-    }
-
-    render () {
-
-        //if (this.app.renderer.debugOutFrame) {
-            //console.debug('spriteGroupPipeline.render()');
-        //}
-
-        this.app.renderer.addRenderCommand(this.renderCmd, this);
-
-    }
-
-    finish () {
-
-        //if (this.app.renderer.debugOutFrame) {
-            //console.debug('spriteGroupPipeline.finish()');
-        //}
-
-        this.webGlBuffer.bufferSubData();  // TODO always upload the complete vertex buffer - is this a good idea?
-
-    }
-
-}  // => end of class
-
-
-function initBuffers$1 ( pipeline ) {
-
-    if ( ! pipeline.webGlBuffer ) {
-
-        pipeline.webGlBuffer = WebGlBuffer.fromVertexArray( pipeline.app.glx, pipeline.pool.descriptor, {
-
-            drawType    : pipeline.app.gl.DYNAMIC_DRAW,  // TODO chosse vertex buffer type (static,dynamic or stream?)
-            vertexArray : pipeline.pool.vertexArray
-
-        });
-
-        pipeline.indexArray = VertexIndexArray.Generate( pipeline.pool.capacity, [ 0, 1, 2, 0, 2, 3 ] );
-        pipeline.webGlIndexBuffer = WebGlBuffer.fromVertexIndexArray( pipeline.app.glx, pipeline.indexArray );
-
-    }
-
+/**
+ * @ignore
+ */
+function setParentNode (node, parent) {
+    Object.defineProperty(node, 'parentNode', {
+        value: ( parent instanceof Node ? parent : null ),
+        configurable: true
+    });
 }
-
-
-function initRenderCmds$1 ( pipeline ) {
-
-    if ( ! pipeline.renderCmd ) {
-
-        pipeline.renderCmd = {
-
-            program: pipeline.program,
-            uniforms: {
-                tex: pipeline.app.textureManager.findOrCreateWebGlTexture( pipeline.texture )
-            },
-            attributes: {},
-            drawElements: {
-                buffer: pipeline.webGlIndexBuffer,
-                elementType: pipeline.app.gl.TRIANGLES
-            }
-
-        };
-
-        var name, attr = pipeline.pool.descriptor.attr;
-
-        for ( name in attr) {
-
-            if ( attr.hasOwnProperty( name ) ) {
-
-                pipeline.renderCmd.attributes[ name ] = {
-                    offset : attr[ name ].offset,
-                    size   : attr[ name ].size,
-                    stride : pipeline.pool.descriptor.vertexAttrCount,
-                    buffer : pipeline.webGlBuffer,
-                };
-
-            }
-
-        }
-
-        Object.seal( pipeline.renderCmd );
-
-    }
-
-}
-
-
-//function reset ( pipeline ) {
-
-    //pipeline.currentSpriteCount  = 0;
-    //pipeline.currentSpriteOffset = 0;
-    //pipeline.totalSpritesCount   = 0;
-    //pipeline.texture             = null;
-    //pipeline.currentProgram      = null;
-
-    //if ( pipeline.renderCmdObj ) pipeline.renderCmdObj.releaseAll();
-
-//}
 
 /**
- * @class Picimo.graph.SpriteGroup
- * @extends Picimo.graph.Node
- *
- * @param {Picimo.App} app - The app instance
- * @param {object} [options] - The options
- * @param {Picimo.core.TextureAtlas|Promise} [options.textureAtlas]
- * @param {string} [options.program="picimo.sprite"] - The render/webgl program name
- * @param {number} [options.capacity=1000] - Max sprite capacity
- * @param {string|Picimo.core.VertexObjectDescriptor} [options.sprites='default']
- *
- * @summary
- * Represents a group of sprites.
- *
- * @classdesc
- * A SpriteGroup renders a group of sprites to the screen.
- * All vertex data will be will be uploaded to the GPU *every frame*.
- * So choose the capacity carefully.
- *
- * A SpriteGroup expects that a sprite instance (which is described by the *sprites* option) has the following properties and methods:
- *
- * | Type | Definition | Required | Comment |
- * |------|------------|----------|---------|
- * | Method | `setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)` | yes | |
- * | Method | `setSize(w, h)` | yes | |
- * | Method | `setScale(sx, sy)` | no | Either this or *scale* |
- * | Property | `scale=` | no | Either this or *setScale* |
- * | Property | `opacity=` | no | |
- *
+ * @ignore
  */
-
-function SpriteGroup ( app, options ) {
-
-    if ( options === undefined ) options = {};
-
-    Node.call( this, app, options );
-
-    initTextureAtlas( this, options.textureAtlas );
-
-    this.program             = options.program || 'picimo.sprite';
-    this.spriteDescriptor    = app.spriteFactory.getDescriptor(options.sprites || 'default');
-    this.pipeline            = null;
-    this.defaultSpriteWidth  = options.defaultWidth || 0;
-    this.defaultSpriteHeight = options.defaultHeight || options.defaultWidth;
-
-    initSpritePool( this, this.spriteDescriptor, options.capacity || 1000 );
-
-    this.on( "initGl", onInitGl$1.bind( this, this ) );
-    this.on( "renderFrame", onRenderFrame.bind( this, this ) );
-
+function sortChildrenByRenderPrio () {
+    this.children = this.children.sort(sortByRenderPrio);
 }
-
-SpriteGroup.prototype = Object.create( Node.prototype );
-SpriteGroup.prototype.constructor = SpriteGroup;
-
 
 /**
- * @method Picimo.graph.SpriteGroup#createSprite
- *
- * @param {string|Picimo.core.Texture} [texture]
- * @param {number} [width]
- * @param {number} [height]
- *
- * @returns {Picimo.sprites.Sprite} sprite
- *
- * @throws  If pool capacity is reached an error will be thrown.
- *
- * @description
- * Returns a sprite from the internal sprite pool. If pool capacity is reached an error will be thrown.
- *
- * If no *width* or *height* given the size will be read out from the texture.
- * Otherwise when you previously called `setDefaultSpriteSize(w, h)` the default width and height will be used.
- *
- * If no *texture* is given a random texture (from the *textureAtlas*) will be choosen.
- *
+ * @ignore
  */
-
-SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
-
-    var sprite = this.pool.alloc();
-
-    var tex = typeof texture === 'string'
-        ? this.textureAtlas.getTexture( texture )
-        : ( texture == null
-            ? this.textureAtlas.getRandomTexture()
-            : texture );
-
-    tex.setTexCoords( sprite );
-
-    if ( width === undefined ) {
-
-        if ( this.hasDefaultSpriteSize || ! tex ) {
-
-            return sprite;
-
-        }
-
-        width = tex.width;
-        height = tex.height;
-
-    } else {
-
-        if ( height === undefined ) height = width;
-
-    }
-
-    sprite.setSize( width, height );
-
-    return sprite;
-
-};
-
-SpriteGroup.prototype.createSprites = function ( arr ) {
-
-    const len = arr.length;
-    if (len && !(len % 3)) {
-
-        let i = 0;
-        while (i < len) {
-            this.createSprite(arr[i]).setTranslate(arr[i+1], arr[i+2]);
-            i += 3;
-        }
-
-    } else {
-        console.error('SpriteGroup.createSprites(): wrong array size: ', len, arr);
-    }
-
-};
-
-/**
- * @method Picimo.graph.SpriteGroup#setDefaultSpriteSize
- *
- * @param {number} width
- * @param {number} height
- *
- * @returns {Picimo.graph.SpriteGroup} *self*
- *
- * @see Picimo.graph.SpriteGroup#createSprite
- *
- * @description
- * Set the width and height for all new sprites. Note that this won't affect any previously created sprites.
- *
- */
-
-SpriteGroup.prototype.setDefaultSpriteSize = function ( width, height ) {
-
-    this.defaultSpriteWidth = width || 0;
-    this.defaultSpriteHeight = height || width;
-
-    updateDefaultSpriteSize( this );
-
-};
-
-
-function initSpritePool ( spriteGroup, descriptor, capacity ) {
-
-    spriteGroup.pool = new VertexObjectPool( descriptor, capacity );
-
-    var newSpritePrototype = spriteGroup.pool.NEW;
-
-    if ( descriptor.hasAttribute( 'scale', 1 ) ) newSpritePrototype.scale = 1;
-    else if ( descriptor.hasAttribute( 'scale', 2 ) ) newSpritePrototype.setScale( 1, 1 );
-    if ( descriptor.hasAttribute( 'opacity' ) ) newSpritePrototype.opacity = 1;
-
-    updateDefaultSpriteSize( spriteGroup );
-
+function sortByRenderPrio (a, b) {
+    return -a.renderPrio - ( -b.renderPrio );
 }
 
-function updateDefaultSpriteSize ( spriteGroup ) {
 
-    if ( spriteGroup.hasDefaultSpriteSize ) {
+// ----------------------------------------------------------
+//
+// node.isRootNode -> *boolean*
+//
+// ----------------------------------------------------------
 
-        spriteGroup.pool.NEW.setSize( spriteGroup.defaultSpriteWidth, spriteGroup.defaultSpriteHeight );
+Object.defineProperties( Node.prototype, {
 
-    }
+    'isRootNode': {
 
-}
-
-function initTextureAtlas ( spriteGroup, textureAtlas ) {
-
-    spriteGroup.textureAtlas = null;
-    spriteGroup.readyFunc = false;
-
-    Promise.resolve( textureAtlas )
-
-        .then( function ( atlas ) {
-
-                spriteGroup.textureAtlas = atlas;
-                return atlas.promise;
-
-            })
-        .then ( function ( atlas ) { return atlas.texture.image.promise })
-        .then ( function () { spriteGroup.readyFunc = true; });
-
-}
-
-function onInitGl$1 ( spriteGroup ) {
-
-    spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool, spriteGroup.textureAtlas );
-    spriteGroup.pipeline.onInitGl();
-    spriteGroup.app.renderer.addPipeline( spriteGroup.pipeline );
-
-}
-
-function onRenderFrame ( spriteGroup ) {
-
-    spriteGroup.pipeline.render();
-
-}
-
-Object.defineProperties( SpriteGroup.prototype, {
-
-    "textureAtlas": {
-
-        get: function () { return this._textureAtlas; },
-
-        set: function ( ta ) {
-
-            this._textureAtlas = ta;
-
-            if ( ta instanceof TextureAtlas ) {
-
-                this.ready = true;
-
-            } else {
-
-                this.ready = false;
-
-                if ( ta && ta.then ) {
-
-                    var self = this;
-
-                    ta.then( function ( ta_ ) {
-
-                        self.textureAtlas = ta_;
-
-                    });
-
-                }
-
-            }
-
-        }
+        get: function () { return ! this.parentNode; },
+        enumerable: true
 
     },
 
-    'hasDefaultSpriteSize': {
+});
 
-        get: function () {
+/**
+ * {@link src/graph/node/render_frame.js~renderFrame}
+ */
+Node.prototype.renderFrame = renderFrame$1;
 
-            return this.defaultSpriteWidth > 0 && this.defaultSpriteHeight > 0;
+/**
+ * {@link src/graph/node/destroy.js~destroy}
+ */
+Node.prototype.destroy = destroy;
 
+
+// ----------------------------------------------------------
+//
+// PUBLISH EVENTS
+// - childrenUpdated
+//
+// ----------------------------------------------------------
+
+/**
+ * @param {Node} node
+ * @return {Node} node
+ */
+Node.prototype.appendChild = function (node) {
+
+    if (this.children.indexOf(node) !== -1) return node;
+
+    this.children.push(node);
+
+    setParentNode(node, this);
+
+    this.emit('childrenUpdated');
+
+    return node;
+
+};
+
+
+// ----------------------------------------------------------
+//
+// PUBLISH EVENTS
+// - childrenUpdated
+//
+// ----------------------------------------------------------
+
+/**
+ * @param {Node} node
+ * @return {Node} node
+ */
+Node.prototype.removeChild = function (node) {
+
+    var idx = this.children.indexOf(node);
+
+    if (idx === -1) return node;
+
+    this.children.splice(idx, 1);
+
+    setParentNode(node, null);
+
+    this.emit('childrenUpdated');
+
+    return node;
+
+};
+
+
+/**
+ * @param {string} name
+ * @return {Node} node
+ */
+Node.prototype.findNode = function (name) {
+
+    if (!name) return;
+    if (this.name === name) return this;
+
+    let node, i, len;
+
+    for (i = 0, len = this.children.length; i < len; ++i ) {
+
+        node = this.children[i].findNode(name);
+        if (node) {
+            return node;
         }
 
     }
 
-});
+};
 
 //---------------------------------------------------------
 //
@@ -31139,7 +30968,7 @@ class DisplayPosition {
 
         this.picture = picture;
         this.picture.verticesNeedsUpdate = true;
-        
+
         this._top     = opts.top;
         this._bottom  = opts.bottom;
         this._left    = opts.left;
@@ -31177,7 +31006,7 @@ class DisplayPosition {
 }
 
 /**
- * @private
+ * @ignore
  */
 var parseLength = function (val, percentage, imageWidth, imageHeight, sceneWidth, sceneHeight) {
 
@@ -31200,6 +31029,9 @@ var parseLength = function (val, percentage, imageWidth, imageHeight, sceneWidth
 
 };
 
+/**
+ * @ignore
+ */
 function updateTranslate (picture, tx, ty) {
 
     const scene = picture.parentNode;
@@ -31211,7 +31043,7 @@ function updateTranslate (picture, tx, ty) {
 }
 
 /**
- * @private
+ * @ignore
  */
 var updateVertices = function (picture) {
 
@@ -31415,6 +31247,315 @@ var updateVertices = function (picture) {
 
 };
 
+class ObjectPool {
+
+    constructor (factoryFunc) {
+        this.objects = [];
+        this.inUseCount = 0;
+        this.setFactory(factoryFunc);
+    }
+
+    setFactory (func) {
+        this.factory = func ? func : function () { return {} };
+    }
+
+    create () {
+        let obj;
+
+        if (this.inUseCount < this.objects.length) {
+            obj = this.objects[this.inUseCount];
+        } else {
+            obj = this.factory();
+            this.objects.push(obj);
+        }
+
+        ++this.inUseCount;
+
+        return obj;
+    }
+
+    releaseAll () {
+        this.inUseCount = 0;
+    }
+
+    destroyAll () {
+        this.inUseCount = 0;
+        this.objects.length = 0;
+    }
+
+}
+
+class PicturePipeline {
+
+    constructor (app, pool, texture, program) {
+
+        this.indexArray       = null;
+        this.webGlBuffer      = null;
+        this.webGlIndexBuffer = null;
+        this.renderCmd        = null;
+
+        definePropertiesPrivateRO( this, {
+            app     : app,
+            pool    : pool,
+            texture : texture,
+            program : program,
+        });
+
+        // TODO init pool.NEW ?
+
+        this.reset();
+
+        Object.seal( this );
+
+    }
+
+    get webGlTexture () {
+        return this.app.textureManager.findOrCreateWebGlTexture( this.texture );
+    }
+
+    onInitGl () {
+        initBuffers(this);
+        initRenderCmds(this);
+    }
+
+    reset () {
+        this.currentSpriteCount = 0;
+        this.currentSpriteOffset = 0;
+        this.totalSpritesCount = 0;
+        if (this.renderCmd) this.renderCmd.releaseAll();
+    }
+
+    flush () {
+        if (this.currentSpriteCount) {
+
+            let cmd = this.renderCmd.create();
+
+            cmd.drawElements.count = this.currentSpriteCount;
+            cmd.drawElements.offset = this.currentSpriteOffset;
+
+            this.app.renderer.addRenderCommand(cmd, this);
+
+            this.currentSpriteOffset += this.currentSpriteCount;
+            this.currentSpriteCount = 0;
+        }
+    }
+
+    render (sprite) {
+        this.app.renderer.activatePipeline(this);
+
+        this.pool.vertexArray.copy(sprite, this.totalSpritesCount);
+
+        ++this.currentSpriteCount;
+        ++this.totalSpritesCount;
+    }
+
+    finish () {
+        if (this.totalSpritesCount) {
+            this.flush();
+            this.webGlBuffer.bufferSubData(null, this.totalSpritesCount * this.pool.descriptor.vertexAttrCount * this.pool.descriptor.vertexCount);
+        }
+    }
+
+}
+
+PicturePipeline.DEFAULT_CAPACITY = 100;
+
+
+/**
+ * @ignore
+ */
+function initBuffers ( pipeline ) {
+
+    if ( ! pipeline.webGlBuffer ) {
+
+        pipeline.webGlBuffer = WebGlBuffer.fromVertexArray( pipeline.app.glx, pipeline.pool.descriptor, {
+
+            drawType    : pipeline.app.gl.DYNAMIC_DRAW,  // TODO chosse vertex buffer type (static,dynamic or stream?)
+            vertexArray : pipeline.pool.vertexArray
+
+        });
+
+        pipeline.indexArray = VertexIndexArray.Generate( pipeline.pool.capacity, [ 0, 1, 2, 0, 2, 3 ] );
+        pipeline.webGlIndexBuffer = WebGlBuffer.fromVertexIndexArray( pipeline.app.glx, pipeline.indexArray );
+
+    }
+
+}
+
+
+/**
+ * @ignore
+ */
+function initRenderCmds ( pipeline ) {
+
+    if ( pipeline.renderCmd ) return;
+
+    pipeline.renderCmd = new ObjectPool(() => {
+
+        var obj = {
+
+            program: pipeline.program,
+            uniforms: {
+                tex: pipeline.webGlTexture
+            },
+            attributes: {},
+            drawElements: {
+                buffer: pipeline.webGlIndexBuffer,
+                elementType: pipeline.app.gl.TRIANGLES,
+                count: 0,
+                offset: 0
+            }
+
+        };
+
+        var name, attr = pipeline.pool.descriptor.attr;
+
+        for ( name in attr) {
+
+            if ( attr.hasOwnProperty( name ) ) {
+
+                obj.attributes[ name ] = {
+                    offset : attr[ name ].offset,
+                    size   : attr[ name ].size,
+                    stride : pipeline.pool.descriptor.vertexAttrCount,
+                    buffer : pipeline.webGlBuffer,
+                };
+
+            }
+
+        }
+
+        Object.seal( obj );
+
+        return obj;
+
+    });
+
+}
+
+// TODO - buffer update strategy ( all-at-once, blocks, ..? )
+
+class SpriteGroupPipeline {
+
+    constructor (app, program, pool, texture) {
+
+        this.indexArray       = null;
+        this.webGlBuffer      = null;
+        this.webGlIndexBuffer = null;
+        this.renderCmd        = null;
+
+        definePropertiesPrivateRO(this, {
+
+            app     : app,
+            program : program,
+            pool    : pool,
+            texture : texture,
+
+        });
+
+        Object.seal( this );
+
+    }
+
+    onInitGl () {
+        initBuffers$1(this);
+        initRenderCmds$1(this);
+    }
+
+    render () {
+
+        this.app.renderer.addRenderCommand(this.renderCmd, this);
+
+    }
+
+    finish () {
+
+        this.webGlBuffer.bufferSubData();  // TODO always upload the complete vertex buffer - is this a good idea?
+
+    }
+
+}  // => SpriteGroupPipeline
+
+
+/**
+ * @ignore
+ */
+function initBuffers$1 ( pipeline ) {
+
+    if ( ! pipeline.webGlBuffer ) {
+
+        pipeline.webGlBuffer = WebGlBuffer.fromVertexArray( pipeline.app.glx, pipeline.pool.descriptor, {
+
+            drawType    : pipeline.app.gl.DYNAMIC_DRAW,  // TODO chosse vertex buffer type (static,dynamic or stream?)
+            vertexArray : pipeline.pool.vertexArray
+
+        });
+
+        pipeline.indexArray = VertexIndexArray.Generate( pipeline.pool.capacity, [ 0, 1, 2, 0, 2, 3 ] );
+        pipeline.webGlIndexBuffer = WebGlBuffer.fromVertexIndexArray( pipeline.app.glx, pipeline.indexArray );
+
+    }
+
+}
+
+
+/**
+ * @ignore
+ */
+function initRenderCmds$1 ( pipeline ) {
+
+    if ( ! pipeline.renderCmd ) {
+
+        pipeline.renderCmd = {
+
+            program: pipeline.program,
+            uniforms: {
+                tex: pipeline.app.textureManager.findOrCreateWebGlTexture( pipeline.texture )
+            },
+            attributes: {},
+            drawElements: {
+                buffer: pipeline.webGlIndexBuffer,
+                elementType: pipeline.app.gl.TRIANGLES
+            }
+
+        };
+
+        var name, attr = pipeline.pool.descriptor.attr;
+
+        for ( name in attr) {
+
+            if ( attr.hasOwnProperty( name ) ) {
+
+                pipeline.renderCmd.attributes[ name ] = {
+                    offset : attr[ name ].offset,
+                    size   : attr[ name ].size,
+                    stride : pipeline.pool.descriptor.vertexAttrCount,
+                    buffer : pipeline.webGlBuffer,
+                };
+
+            }
+
+        }
+
+        Object.seal( pipeline.renderCmd );
+
+    }
+
+}
+
+
+//function reset ( pipeline ) {
+
+    //pipeline.currentSpriteCount  = 0;
+    //pipeline.currentSpriteOffset = 0;
+    //pipeline.totalSpritesCount   = 0;
+    //pipeline.texture             = null;
+    //pipeline.currentProgram      = null;
+
+    //if ( pipeline.renderCmdObj ) pipeline.renderCmdObj.releaseAll();
+
+//}
+
 const DEFAULT_WEBGL_PROGRAM = 'picimo.sprite';
 const DEFAULT_SPRITE_TYPE   = 'simple';
 const DEFAULT_SCENE_FIT     = 'contain';
@@ -31450,8 +31591,8 @@ class Picture$1 extends Node {
 
         }
 
-        this.on('initGl', onInitGl$2.bind(this, this));
-        this.on('renderFrame', onRenderFrame$1.bind(this, this));
+        this.on('initGl', onInitGl$1.bind(this, this));
+        this.on('renderFrame', onRenderFrame.bind(this, this));
         this.parentNode.on('resize', () => { this.verticesNeedsUpdate = true; });
 
     }
@@ -31551,12 +31692,18 @@ class Picture$1 extends Node {
 
 }
 
-function onInitGl$2 (picture) {
+/**
+ * @ignore
+ */
+function onInitGl$1 (picture) {
 
     if (!picture.pipeline) initPipeline(picture);
 
 }
 
+/**
+ * @ignore
+ */
 function initPipeline (picture) {
 
     // find available picture pipelines
@@ -31586,13 +31733,19 @@ function initPipeline (picture) {
 
 }
 
-function onRenderFrame$1 ( picture ) {
+/**
+ * @ignore
+ */
+function onRenderFrame ( picture ) {
 
     updateVertices( picture );
     picture.pipeline.render( picture.sprite );
 
 }
 
+/**
+ * @ignore
+ */
 function initTexture ( picture, texture ) {
 
     picture.texture = null;
@@ -31634,7 +31787,7 @@ class Canvas extends Picture$1 {
                 throw new Error(`Picimo.graph.Canvas panic: width and height of predefined canvas needs to be power of two! but is [${canvas.width}, ${canvas.height}]`);
             }
         } else {
-            canvas = createCanvas(dimension);
+            canvas = createCanvas$1(dimension);
         }
 
         const texture = createTexture(canvas, dimension);
@@ -31698,6 +31851,9 @@ class Canvas extends Picture$1 {
 
 }
 
+/**
+ * @ignore
+ */
 function clearCanvas (canvas) {
     const dim = canvas.dimension;
     const ctx = canvas.ctx;
@@ -31709,6 +31865,9 @@ function clearCanvas (canvas) {
     }
 }
 
+/**
+ * @ignore
+ */
 function setCanvas (obj, canvas, alpha) {
 
     Object.defineProperties(obj, {
@@ -31724,6 +31883,9 @@ function setCanvas (obj, canvas, alpha) {
 
 }
 
+/**
+ * @ignore
+ */
 function extractCanvasSize (options) {
 
     if (typeof options.canvasSize === 'number') {
@@ -31744,7 +31906,10 @@ function extractCanvasSize (options) {
 
 }
 
-function createCanvas (dimension) {
+/**
+ * @ignore
+ */
+function createCanvas$1 (dimension) {
 
     const canvas = document.createElement('canvas');
 
@@ -31755,6 +31920,9 @@ function createCanvas (dimension) {
 
 }
 
+/**
+ * @ignore
+ */
 function createTexture (canvas, dimension) {
 
     let texture = Texture.fromCanvas(canvas);
@@ -31767,6 +31935,271 @@ function createTexture (canvas, dimension) {
 
 }
 
+/**
+ * Represents a group of sprites.
+ *
+ * @desc
+ * A SpriteGroup renders a group of sprites to the screen.
+ * All vertex data will be will be uploaded to the GPU *every frame*.
+ * So choose the capacity carefully.
+ *
+ * A SpriteGroup expects that a sprite instance (which is described by the *sprites* option) has the following properties and methods:
+ *
+ * | Type | Definition | Required | Comment |
+ * |------|------------|----------|---------|
+ * | Method | `setTexCoords(x0, y0, x1, y1, x2, y2, x3, y3)` | yes | |
+ * | Method | `setSize(w, h)` | yes | |
+ * | Method | `setScale(sx, sy)` | no | Either this or *scale* |
+ * | Property | `scale=` | no | Either this or *setScale* |
+ * | Property | `opacity=` | no | |
+ *
+ * @param {Picimo.App} app - The app instance
+ * @param {object} [options] - The options
+ * @param {TextureAtlas|Promise} [options.textureAtlas]
+ * @param {string} [options.program="picimo.sprite"] - The render/webgl program name
+ * @param {number} [options.capacity=1000] - Max sprite capacity
+ * @param {string|VertexObjectDescriptor} [options.sprites='default']
+ *
+ */
+function SpriteGroup ( app, options ) {
+
+    if ( options === undefined ) options = {};
+
+    Node.call( this, app, options );
+
+    initTextureAtlas( this, options.textureAtlas );
+
+    this.program             = options.program || 'picimo.sprite';
+    this.spriteDescriptor    = app.spriteFactory.getDescriptor(options.sprites || 'default');
+    this.pipeline            = null;
+    this.defaultSpriteWidth  = options.defaultWidth || 0;
+    this.defaultSpriteHeight = options.defaultHeight || options.defaultWidth;
+
+    initSpritePool( this, this.spriteDescriptor, options.capacity || 1000 );
+
+    this.on( "initGl", onInitGl$2.bind( this, this ) );
+    this.on( "renderFrame", onRenderFrame$1.bind( this, this ) );
+
+}
+
+SpriteGroup.prototype = Object.create( Node.prototype );
+SpriteGroup.prototype.constructor = SpriteGroup;
+
+
+/**
+ * @param {string|Texture} [texture]
+ * @param {number} [width]
+ * @param {number} [height]
+ *
+ * @returns {Picimo.sprites.Sprite} sprite
+ *
+ * @throws  If pool capacity is reached an error will be thrown.
+ *
+ * @description
+ * Returns a sprite from the internal sprite pool. If pool capacity is reached an error will be thrown.
+ *
+ * If no *width* or *height* given the size will be read out from the texture.
+ * Otherwise when you previously called `setDefaultSpriteSize(w, h)` the default width and height will be used.
+ *
+ * If no *texture* is given a random texture (from the *textureAtlas*) will be choosen.
+ *
+ */
+SpriteGroup.prototype.createSprite = function ( texture, width, height ) {
+
+    var sprite = this.pool.alloc();
+
+    var tex = typeof texture === 'string'
+        ? this.textureAtlas.getTexture( texture )
+        : ( texture == null
+            ? this.textureAtlas.getRandomTexture()
+            : texture );
+
+    tex.setTexCoords( sprite );
+
+    if ( width === undefined ) {
+
+        if ( this.hasDefaultSpriteSize || ! tex ) {
+
+            return sprite;
+
+        }
+
+        width = tex.width;
+        height = tex.height;
+
+    } else {
+
+        if ( height === undefined ) height = width;
+
+    }
+
+    sprite.setSize( width, height );
+
+    return sprite;
+
+};
+
+SpriteGroup.prototype.createSprites = function ( arr ) {
+
+    const len = arr.length;
+    if (len && !(len % 3)) {
+
+        let i = 0;
+        while (i < len) {
+            this.createSprite(arr[i]).setTranslate(arr[i+1], arr[i+2]);
+            i += 3;
+        }
+
+    } else {
+        console.error('SpriteGroup.createSprites(): wrong array size: ', len, arr);
+    }
+
+};
+
+/**
+ * @param {number} width
+ * @param {number} height
+ *
+ * @returns {Picimo.graph.SpriteGroup} *self*
+ *
+ * @see Picimo.graph.SpriteGroup#createSprite
+ *
+ * @description
+ * Set the width and height for all new sprites. Note that this won't affect any previously created sprites.
+ *
+ */
+SpriteGroup.prototype.setDefaultSpriteSize = function ( width, height ) {
+
+    this.defaultSpriteWidth = width || 0;
+    this.defaultSpriteHeight = height || width;
+
+    updateDefaultSpriteSize( this );
+
+};
+
+
+/**
+ * @ignore
+ */
+function initSpritePool ( spriteGroup, descriptor, capacity ) {
+
+    spriteGroup.pool = new VertexObjectPool( descriptor, capacity );
+
+    var newSpritePrototype = spriteGroup.pool.NEW;
+
+    if ( descriptor.hasAttribute( 'scale', 1 ) ) newSpritePrototype.scale = 1;
+    else if ( descriptor.hasAttribute( 'scale', 2 ) ) newSpritePrototype.setScale( 1, 1 );
+    if ( descriptor.hasAttribute( 'opacity' ) ) newSpritePrototype.opacity = 1;
+
+    updateDefaultSpriteSize( spriteGroup );
+
+}
+
+/**
+ * @ignore
+ */
+function updateDefaultSpriteSize ( spriteGroup ) {
+
+    if ( spriteGroup.hasDefaultSpriteSize ) {
+
+        spriteGroup.pool.NEW.setSize( spriteGroup.defaultSpriteWidth, spriteGroup.defaultSpriteHeight );
+
+    }
+
+}
+
+/**
+ * @ignore
+ */
+function initTextureAtlas ( spriteGroup, textureAtlas ) {
+
+    spriteGroup.textureAtlas = null;
+    spriteGroup.readyFunc = false;
+
+    Promise.resolve( textureAtlas )
+
+        .then( function ( atlas ) {
+
+                spriteGroup.textureAtlas = atlas;
+                return atlas.promise;
+
+            })
+        .then ( function ( atlas ) { return atlas.texture.image.promise })
+        .then ( function () { spriteGroup.readyFunc = true; });
+
+}
+
+/**
+ * @ignore
+ */
+function onInitGl$2 ( spriteGroup ) {
+
+    spriteGroup.pipeline = new SpriteGroupPipeline( spriteGroup.app, spriteGroup.program, spriteGroup.pool, spriteGroup.textureAtlas );
+    spriteGroup.pipeline.onInitGl();
+    spriteGroup.app.renderer.addPipeline( spriteGroup.pipeline );
+
+}
+
+/**
+ * @ignore
+ */
+function onRenderFrame$1 ( spriteGroup ) {
+
+    spriteGroup.pipeline.render();
+
+}
+
+Object.defineProperties( SpriteGroup.prototype, {
+
+    "textureAtlas": {
+
+        get: function () { return this._textureAtlas; },
+
+        set: function ( ta ) {
+
+            this._textureAtlas = ta;
+
+            if ( ta instanceof TextureAtlas ) {
+
+                this.ready = true;
+
+            } else {
+
+                this.ready = false;
+
+                if ( ta && ta.then ) {
+
+                    var self = this;
+
+                    ta.then( function ( ta_ ) {
+
+                        self.textureAtlas = ta_;
+
+                    });
+
+                }
+
+            }
+
+        }
+
+    },
+
+    'hasDefaultSpriteSize': {
+
+        get: function () {
+
+            return this.defaultSpriteWidth > 0 && this.defaultSpriteHeight > 0;
+
+        }
+
+    }
+
+});
+
+/**
+ * @ignore
+ */
 var createFactories = function (Scene) {
 
     Scene.prototype.appendSpriteGroup = function (textureAtlas, options = {}, extension = null) {
@@ -31812,6 +32245,9 @@ var createFactories = function (Scene) {
 
 };
 
+/**
+ * @ignore
+ */
 function appendNode (node, scene, extension) {
 
     scene.appendChild(node);
@@ -31823,10 +32259,469 @@ function appendNode (node, scene, extension) {
 }
 
 /**
- * @class Picimo.graph.Scene
- * @extends Picimo.graph.Node
- *
- * @classdesc
+ * @ignore
+ */
+function onFrame () {
+
+    if (this.hasOwnProjection) {
+        checkProjectionNeedsUpdate(this);
+        updateProjection(this);
+    }
+
+    checkResize(this);
+    createRenderCommand(this);
+
+}
+
+/**
+ * @ignore
+ */
+function onFrameEnd () {
+
+    this.app.renderer.addRenderCommand(this.renderPostCmd, null);
+
+}
+
+/**
+ * @ignore
+ */
+function createRenderCommand (scene) {
+
+    let renderCmd = scene.renderCmd;
+    renderCmd.uniforms.renderPrio = scene.renderPrio;
+    scene.app.renderer.addRenderCommand(renderCmd, null);
+
+}
+
+/**
+ * @ignore
+ */
+function checkResize (scene) {
+
+    let width      = scene.width;
+    let height     = scene.height;
+    let pixelRatio = scene.pixelRatio;
+    let uniforms   = scene.renderCmd.uniforms;
+
+    if (width !== scene.prevWidth || height !== scene.prevHeight || pixelRatio !== scene.prevPixelRatio) {
+
+        scene.prevWidth      = width;
+        scene.prevHeight     = height;
+        scene.prevPixelRatio = pixelRatio;
+
+        uniforms.sceneInfo[0] = scene.width;
+        uniforms.sceneInfo[1] = scene.height;
+        uniforms.sceneInfo[2] = scene.pixelRatio;
+
+        /*
+         * Announce a scene size ( width, height or pixelRatio ) change.
+         * @param {number} width
+         * @param {number} height
+         * @param {number} pixelRatio
+         */
+
+        scene.emit('resize', width, height, pixelRatio);
+
+    }
+
+}
+
+/**
+ * @ignore
+ */
+function checkProjectionNeedsUpdate (scene) {
+
+    let parent = scene.scene || scene.app;
+
+    if (   parent.width !== scene.parentResolution.width
+        || parent.height !== scene.parentResolution.height
+        || parent.pixelRatio !== scene.parentResolution.pixelRatio
+        || parent.devicePixelRatio !== scene.parentResolution.devicePixelRatio ) {
+
+            scene.parentResolution.width = scene.parentResolution.width;
+            scene.parentResolution.height = scene.parentResolution.height;
+            scene.parentResolution.pixelRatio = scene.parentResolution.pixelRatio;
+            scene.parentResolution.devicePixelRatio = scene.parentResolution.devicePixelRatio;
+
+            scene.projectionNeedsUpdate = true;
+
+        }
+}
+
+/**
+ * @ignore
+ */
+function onRootFrame () {
+
+    let scene = this;
+    let uniforms = scene.rootRenderCmd.uniforms;
+    let app = scene.app;
+
+    uniforms.iGlobalTime    = app.now;
+    uniforms.iFrameNo       = app.frameNo;
+    uniforms.iResolution[0] = app.width;
+    uniforms.iResolution[1] = app.height;
+
+    app.renderer.addRenderCommand(scene.rootRenderCmd);
+
+}
+
+/**
+ * @ignore
+ */
+function initTransform (scene) {  // --- {{{
+
+    // Every scene has a transformation matrix !
+
+    scene.transform = new Matrix4();
+
+    scene.viewMatrixUniform = new UniformValue(true,
+        _computeViewMatrix.bind(null, scene, new Matrix4()) );
+
+    if (scene.hasOwnProjection) {
+
+        scene.on("init", eventize_1$1.PRIO_A, function () {
+
+            this.projectionNeedsUpdate = true;
+            updateProjection(this);
+
+        });
+
+    }
+
+}
+
+/**
+ * @ignore
+ */
+function _computeViewMatrix (scene, viewMatrix, current) {
+    if (!current || scene.hasOwnProjection) {
+        scene.computeViewMatrix(viewMatrix);
+    } else {
+        viewMatrix.multiply(current, scene.transform);
+    }
+    return viewMatrix;
+}
+
+// --- initTransform }}}
+
+/**
+ * @ignore
+ */
+function initWithoutProjection (scene) {  // --- {{{
+
+    definePropertiesPublicRO(scene, {
+
+        projection: null,
+        hasOwnProjection: false,
+        projectionNeedsUpdate: false
+
+    });
+
+    Object.defineProperties(scene, {
+
+        'width' : { get: function () {
+
+            var parent = this.scene;
+            return parent ? parent.width : this.app.width;
+
+        }, enumerable: true },
+
+        'height' : { get: function () {
+
+            var parent = this.scene;
+            return parent ? parent.height : this.app.height;
+
+        }, enumerable: true },
+
+        'pixelRatio' : { get: function () {
+
+            var parent = this.scene;
+            return parent ? parent.pixelRatio : this.app.devicePixelRatio;
+
+        }, enumerable: true },
+
+        'devicePixelRatio' : { get: function () {
+
+            var parent = this.scene;
+            return parent ? parent.devicePixelRatio : this.app.devicePixelRatio;
+
+        }, enumerable: true },
+
+    });
+
+}
+
+// --- initWithoutProjection }}}
+
+/**
+ * @ignore
+ */
+function initRootScene (scene) {  // --- {{{
+
+    scene.rootRenderCmd = {
+
+        uniforms: {
+
+            iGlobalTime : 0,
+            iFrameNo    : 0,
+            iResolution : [0, 0],
+
+        }
+
+    };
+
+    scene.on("frame", onRootFrame);
+
+}
+
+// --- initRootScene }}}
+
+/**
+ * @ignore
+ */
+function initProjection (scene, options) {  // --- {{{
+
+    definePropertiesPublicRO(scene, {
+
+        projection       : new Matrix4(),
+        hasOwnProjection : true
+
+    });
+
+    scene.projectionNeedsUpdate = true;
+
+    scene._desiredPixelRatio = options.pixelRatio ? parseFloat( options.pixelRatio ) : ( scene.isRootNode ? 1 : 0 );
+    scene._desiredWidth      = options.width ? parseFloat( options.width ) : 0;
+    scene._desiredHeight     = options.height ? parseFloat( options.height ) : 0;
+
+    Object.defineProperties( scene, {
+
+        'width': {
+
+            get: function () {
+
+                return this._computedWidth ? this._computedWidth : this._desiredWidth;
+
+            },
+
+            set: function ( w ) {
+
+                var desiredWidth = parseFloat( w );
+
+                if ( this._desiredWidth !== desiredWidth ) {
+
+                    this._desiredWidth = desiredWidth;
+
+                    if ( desiredWidth ) this._desiredPixelRatio = 0;
+
+                    this.projectionNeedsUpdate = true;
+
+                }
+
+            },
+
+            enumerable: true
+
+        },
+
+        'height': {
+
+            get: function () {
+
+                return this._computedHeight ? this._computedHeight : this._desiredHeight;
+
+            },
+
+            set: function ( h ) {
+
+                var desiredHeight = parseFloat( h );
+
+                if ( this._desiredHeight !== desiredHeight ) {
+
+                    this._desiredHeight = desiredHeight;
+
+                    if ( desiredHeight ) this._desiredPixelRatio = 0;
+
+                    this.projectionNeedsUpdate = true;
+
+                }
+
+            },
+
+            enumerable: true
+
+        },
+
+        'pixelRatio': {
+
+            get: function () {
+
+                if ( this._computedPixelRatio ) {
+
+                    return this._computedPixelRatio;
+
+                } else if ( this._desiredPixelRatio ) {
+
+                    return this._desiredPixelRatio;
+
+                }
+
+                var parent = this.scene;
+
+                if ( parent ) {
+
+                    return parent.pixelRatio;
+
+                }
+
+                return 0;
+
+            },
+
+            set: function ( ratio ) {
+
+                var desiredPixelRatio = parseFloat( ratio );
+
+                if ( this._desiredPixelRatio !== desiredPixelRatio ) {
+
+                    this._desiredPixelRatio = desiredPixelRatio;
+
+                    if ( desiredPixelRatio ) {
+
+                        this._computedPixelRatio = 0;
+                        this._desiredWidth       = 0;
+                        this._desiredHeight      = 0;
+
+                    }
+
+                    this.projectionNeedsUpdate = true;
+
+                }
+
+            },
+
+            enumerable: true
+
+        },
+
+        'sizeFit': {
+
+            get: function () {
+
+                return this._sizeFit;
+
+            },
+
+            set: function ( variety ) {
+
+                var sizeFit = variety === 'cover' ? 'cover' : 'contain';
+
+                if ( this._sizeFit !== sizeFit ) {
+
+                    this._sizeFit = sizeFit;
+                    this.projectionNeedsUpdate = true;
+
+                }
+
+            },
+
+            enumerable: true
+
+        },
+
+
+    });
+
+    updateProjection(scene);
+
+}
+
+// --- initProjection }}}
+
+/**
+ * @ignore
+ */
+function updateProjection (scene) {  // --- {{{
+
+    if ( ! scene.hasOwnProjection || ! scene.projectionNeedsUpdate ) return;
+
+    var factor;
+
+    if ( scene._desiredWidth || scene._desiredHeight ) {
+
+        var appRatio   = scene.app.height / scene.app.width;            // <1 : landscape, >1 : portrait
+        var sceneRatio = scene._desiredHeight / scene._desiredWidth;
+        var isCover    = scene._desiredWidth && scene._desiredHeight && scene.sizeFit === 'cover';
+
+        if ( ( ! scene._desiredWidth && scene._desiredHeight ) || appRatio < sceneRatio ) {
+
+            scene._computedWidth  = ( scene._desiredHeight / scene.app.height ) * scene.app.width;
+            scene._computedHeight = scene._desiredHeight;
+
+            if ( isCover ) {
+
+                factor = scene._desiredWidth / scene._computedWidth;
+
+                scene._computedWidth  *= factor;
+                scene._computedHeight *= factor;
+
+            }
+
+        } else if ( ( scene._desiredWidth && ! scene._desiredHeight ) || appRatio > sceneRatio ) {
+
+            scene._computedWidth  = scene._desiredWidth;
+            scene._computedHeight = ( scene._desiredWidth / scene.app.width ) * scene.app.height;
+
+            if ( isCover ) {
+
+                factor = scene._desiredHeight / scene._computedHeight;
+
+                scene._computedWidth  *= factor;
+                scene._computedHeight *= factor;
+
+            }
+
+        } else {
+
+            scene._computedWidth  = scene._desiredWidth;
+            scene._computedHeight = scene._desiredHeight;
+
+        }
+
+        scene._computedPixelRatio = ( scene.app.width / scene._computedWidth ) / scene.app.devicePixelRatio;
+
+
+    } else if ( scene._desiredPixelRatio ) {
+
+        var parentScene = scene.scene;
+        var master      = parentScene ? parentScene : scene.app;
+        var ratio       = parentScene ? parentScene.pixelRatio : scene.app.devicePixelRatio;
+
+        factor = scene._desiredPixelRatio * ratio;
+
+        scene._computedWidth  = master.width  / factor;
+        scene._computedHeight = master.height / factor;
+
+    }
+
+    scene.devicePixelRatio = scene.app.width / scene._computedWidth;
+    scene.projectionNeedsUpdate = false;
+
+    scene.projection.ortho( scene.width, scene.height );
+
+    /*
+     * Announce a projection matrix change.
+     * @param {Matrix4} projection - The changed projection matrix.
+     */
+    scene.emit( "projectionUpdated", scene.projection );
+
+}
+
+// --- updateProjection }}}
+
+/**
+ * @desc
  * Allows you to determinate a **blend mode**.
  *
  * Can have a custom **projection** matrix which determinates the **width, height** and **pixelRatio**.
@@ -31834,14 +32729,14 @@ function appendNode (node, scene, extension) {
  * Introduces new events such as **onResize** and **onProjectionUpdated**.
  *
  *
- * @param {Picimo.App} app                                 - The app instance
- * @param {Object} [options]                               - The options
- * @param {Picimo.render.cmd.BlendMode} [options.blendMode] - Blend mode
- * @param {number} [options.width]                         - Wanted scene width
- * @param {number} [options.height]                        - Wanted scene height
- * @param {string} [options.sizeFit="contain"]             - *cover* or *contain*
- * @param {number} [options.pixelRatio]                    - Wanted pixel ratio
- * @param {boolean} [options.projection=true]              - Determinates if this scene should have an own projection matrix.
+ * @param {App} app                                 - The app instance
+ * @param {Object} [options]                        - The options
+ * @param {BlendMode} [options.blendMode]           - Blend mode
+ * @param {number} [options.width]                  - Wanted scene width
+ * @param {number} [options.height]                 - Wanted scene height
+ * @param {string} [options.sizeFit="contain"]      - *cover* or *contain*
+ * @param {number} [options.pixelRatio]             - Wanted pixel ratio
+ * @param {boolean} [options.projection=true]       - Determinates if this scene should have an own projection matrix.
  * @param {function} [options.onResize]
  * @param {function} [options.onProjectionUpdated]
  *
@@ -31851,9 +32746,6 @@ function Scene (app, options = {}) {
 
     Node.call(this, app, options);
 
-    /**
-     * @member {string} Picimo.graph.Scene#sizeFit - *cover* or *contain*
-     */
     this._sizeFit = options.sizeFit === 'cover' ? 'cover' : 'contain';
 
     if (options.projection) {
@@ -31880,6 +32772,9 @@ function Scene (app, options = {}) {
         }
     };
 
+    /**
+     * @private
+     */
     this.renderPostCmd = {
         uniforms: {
             viewMatrix: this.renderCmd.uniforms.viewMatrix.restoreCmd,
@@ -31887,7 +32782,7 @@ function Scene (app, options = {}) {
     };
 
     /**
-     * @member {Picimo.render.cmd.BlendMode} Picimo.graph.Scene#blendMode
+     * @type {BlendMode}
      */
     this.blendMode = options.blendMode;
 
@@ -31918,10 +32813,7 @@ createFactories(Scene);
 
 Object.defineProperties( Scene.prototype, {
 
-    /**
-     * @member {Picimo.graph.Scene} Picimo.graph.Scene#scene - The parent scene.
-     */
-
+    // The parent scene
     'scene': {
 
         get: function () {
@@ -31988,10 +32880,7 @@ Scene.prototype.setBlendMode = function (depthTest, depthMask, depthFunc, blend,
 
 };
 
-
-
 /**
- * @method Picimo.graph.Scene#setSize
  * @param {number} width - Wanted scene width
  * @param {number} height - Wanted scene height
  * @param {string} [sizeFit="contain"] - *cover* or *contain*
@@ -32046,7 +32935,7 @@ Scene.prototype.computeViewMatrix = function (viewMatrix) {
 
 
 
-var index = Object.freeze({
+var index$5 = Object.freeze({
 	Node: Node,
 	NodeState: NodeState,
 	Scene: Scene,
@@ -32054,929 +32943,15 @@ var index = Object.freeze({
 	SpriteGroup: SpriteGroup
 });
 
-const MOUSE_BTN_LEFT   = 0;
-const MOUSE_BTN_MIDDLE = 1;
-const MOUSE_BTN_RIGHT  = 2;
-
-class MouseController {
-
-    constructor (picimo) {
-
-        this.picimo = picimo;
-
-        this.mouseBtnDown = [false, false, false];
-        this.mouseBtnMove = [false, false, false];
-        this.isDrag = false;
-
-        registerMouseListeners(this);
-
-        eventize_1$1(this);
-
-    }
-
-    mouseDown (event) {
-        this.mouseBtnDown[event.button] = true;
-        this.mouseBtnMove[event.button] = false;
-    }
-
-    mouseMove (event) {
-
-        this.mouseBtnMove[MOUSE_BTN_LEFT] = this.mouseBtnDown[MOUSE_BTN_LEFT];
-        this.mouseBtnMove[MOUSE_BTN_MIDDLE] = this.mouseBtnDown[MOUSE_BTN_MIDDLE];
-        this.mouseBtnMove[MOUSE_BTN_RIGHT] = this.mouseBtnDown[MOUSE_BTN_RIGHT];
-
-        this.isDrag = this.isSomeBtnDown;
-
-        const dpr = this.picimo.devicePixelRatio;
-        const moveEvent = movement(event, this.isDrag, dpr);
-
-        this.emit('mouseMove', moveEvent, this);
-
-        if (this.mouseBtnDown[MOUSE_BTN_LEFT]) this.emit('mouseDragLeft', moveEvent, this);
-        if (this.mouseBtnDown[MOUSE_BTN_MIDDLE]) this.emit('mouseDragMiddle', moveEvent, this);
-        if (this.mouseBtnDown[MOUSE_BTN_RIGHT]) this.emit('mouseDragRight', moveEvent, this);
-
-    }
-
-    mouseUp (event) {
-
-        let btn = event.button;
-        this.mouseBtnDown[btn] = false;
-
-        this.isDrag = this.isSomeBtnDown;
-
-        if (this.mouseBtnMove[btn]) {
-            this.mouseBtnMove[btn] = false;
-        } else {
-            if (btn === MOUSE_BTN_LEFT) this.emit('mouseClickLeft', event, this);
-            if (btn === MOUSE_BTN_MIDDLE) this.emit('mouseClickMiddle', event, this);
-            if (btn === MOUSE_BTN_RIGHT) this.emit('mouseClickRight', event, this);
-        }
-
-    }
-
-    mouseWheel (event) {
-        this.emit('mouseWheel', event.wheelDeltaX, event.wheelDeltaY, this);
-    }
-
-    get isBtnLeftDown () {
-        return this.mouseBtnDown[MOUSE_BTN_LEFT];
-    }
-
-    get isBtnMiddleDown () {
-        return this.mouseBtnDown[MOUSE_BTN_MIDDLE];
-    }
-
-    get isBtnRightDown () {
-        return this.mouseBtnDown[MOUSE_BTN_RIGHT];
-    }
-
-    get isSomeBtnDown () {
-        return (this.mouseBtnDown[MOUSE_BTN_LEFT] ||
-                this.mouseBtnDown[MOUSE_BTN_MIDDLE] ||
-                this.mouseBtnDown[MOUSE_BTN_RIGHT]);
-    }
-
-}
-
-function movement (event, isDrag, devicePixelRatio) {
-
-    return {
-        isDrag     : isDrag,
-        translateX :  event.movementX * devicePixelRatio,
-        translateY : -event.movementY * devicePixelRatio,
-    };
-
-}
-
-function registerMouseListeners (controller) {
-
-    // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
-    // http://www.w3schools.com/jsref/dom_obj_event.asp
-
-    controller.picimo.canvas.addEventListener('contextmenu', preventDefault, false);
-    controller.picimo.canvas.addEventListener('mousedown', controller.mouseDown.bind(controller), false);
-
-    document.addEventListener('mousemove', controller.mouseMove.bind(controller), false);
-    document.addEventListener('mouseup', controller.mouseUp.bind(controller), false);
-    document.addEventListener('mousewheel', controller.mouseWheel.bind(controller), false);
-
-}
-
-function preventDefault (event) {
-    event.preventDefault();
-    return false;
-}
-
-/**
- * @ignore
- */
-var resize = function () {
-
-    let node, w, h, wPx, hPx;
-
-    if ( this.canvasIsPredefined ) {
-
-        node = this.canvas;
-
-        w = Math.round( this.canvas.clientWidth * this.devicePixelRatio );
-        h = Math.round( this.canvas.clientHeight * this.devicePixelRatio );
-
-    } else {
-
-        node = this.canvas.parentNode.parentNode;
-
-        wPx = node.clientWidth;
-        hPx = node.clientHeight;
-
-        w = Math.round( wPx * this.devicePixelRatio );
-        h = Math.round( hPx * this.devicePixelRatio );
-
-        this.canvas.style.width  = `${wPx}px`;
-        this.canvas.style.height = `${hPx}px`;
-
-    }
-
-    if ( this.canvas.width !== w || this.canvas.height !== h ) {
-
-        this.canvas.width  = w;
-        this.canvas.height = h;
-
-    }
-
-    if ( this.width !== w || this.height !== h ) {
-
-        //--------------------------------------------------
-        // this is the real/physical/device pixel dimension
-        //-------------------------------------------------
-
-        this.width = w;
-        this.height = h;
-
-        if ( this.renderer ) {
-
-            this.renderer.onResize();
-
-        }
-
-        if (this.ready) this.emit('resize');
-
-    }
-
-};
-
-/**
- * @ignore
- */
-var renderFrame$1 = function () {
-
-    this.now = window.performance.now() / 1000.0;
-    ++this.frameNo;
-    this.frameTime = this.frameLastTime == null ? 0.0 : this.frameLastTime - this.now;
-    this.frameLastTime = this.now;
-
-    this.resize();
-
-    if (!this.ready) {
-        Object.defineProperty(this, 'ready', { value: true, configurable: true, enumerable: true });
-        this.emit('ready');
-        this.emit('resize');
-    }
-
-    this.emit('frameBegin');
-
-    this.renderer.onStartFrame();
-
-    this.emit('frame');
-
-    if (this.scene) {
-        this.scene.renderFrame();
-    }
-
-    this.emit('renderFrame');
-
-    this.renderer.onEndFrame();
-
-    this.emit('frameEnd');
-
-    requestAnimationFrame(this.onAnimationFrame);
-
-};
-
-/**
- * @ignore
- */
-var createWebGlContext = function ( app ) {
-
-    let gl;
-
-    try {
-
-        gl = app.canvas.getContext( "webgl", app.glCtxAttrs ) ||
-             app.canvas.getContext( "experimental-webgl", app.glCtxAttrs );
-
-    } catch ( err ) {
-
-        console.error( err );
-
-    }
-
-    if ( ! gl ) {
-
-        throw new Error( "Could not initialize the WebGL context!" );
-
-    }
-
-    const ctx = new WebGlContext( gl );
-    ctx.app = app;
-
-    return ctx;
-
-};
-
-/**
- * @ignore
- */
-var createCanvas$1 = function ( app, canvas, appendTo ) {
-
-    definePropertyPublicRO( app, 'canvasIsPredefined', canvas !== undefined );
-
-    canvas = app.canvasIsPredefined ? canvas : document.createElement( 'canvas' );
-    definePropertyPublicRO( app, 'canvas', canvas );
-
-    if ( ! app.canvasIsPredefined ) {
-
-        canvas.style.boxSizing   = 'border-box';
-        canvas.style.margin      = '0';
-        canvas.style.padding     = '0';
-        canvas.style.border      = '0';
-        canvas.style.position    = 'absolute';
-        canvas.style.top         = '0';
-        canvas.style.left        = '0';
-        canvas.style.bottom      = '0';
-        canvas.style.right       = '0';
-        canvas.style.touchAction = 'none';
-        setUserSelectStyle(canvas);
-
-        let parentNode;
-        let containerNode;
-
-        containerNode = document.createElement('div');
-
-        containerNode.style.position    = 'relative';
-        containerNode.style.boxSizing   = 'border-box;';
-        containerNode.style.margin      = '0';
-        containerNode.style.padding     = '0';
-        containerNode.style.border      = '0';
-        containerNode.style.overflow    = 'hidden';
-        containerNode.style.width       = '100%';
-        containerNode.style.height      = '100%';
-        containerNode.style.touchAction = 'none';
-        setUserSelectStyle(containerNode);
-
-        containerNode.appendChild( canvas );
-
-        parentNode = appendTo || document.body;
-        parentNode.appendChild( containerNode );
-
-    }
-
-};
-
-function setUserSelectStyle (element, value = 'none') {
-
-    if ('userSelect' in element.style) {
-        element.style.userSelect = value;
-    } else {
-        if ('webkitUserSelect' in element.style) element.style.webkitUserSelect = value;
-        if ('mozUserSelect' in element.style) element.style.mozUserSelect = value;
-        if ('msUserSelect' in element.style) element.style.msUserSelect = value;
-    }
-
-}
-
-class SpriteFactory {
-
-    constructor ( parentFactory = null ) {
-
-        this.registry = new Map;
-        this.parentFactory = parentFactory;
-
-    }
-
-    createDescriptor (name, ...args) {
-
-        if (this.getDescriptor(name)) {
-            throw new Error(`oops.. VertexObjectDescriptor '${name}' already exists!`);
-        }
-
-        let vod = new VertexObjectDescriptor(...args);
-        this.registry.set(name, vod);
-
-        return vod;
-
-    }
-
-    getDescriptor (descriptor = 'default') {
-        if (descriptor instanceof VertexObjectDescriptor) {
-            return descriptor;
-        } else {
-            let vod = this.registry.get(descriptor);
-            if (!vod && this.parentFactory) {
-                return this.parentFactory.getDescriptor(descriptor);
-            } else {
-                return vod;
-            }
-        }
-    }
-
-    createSprite (descriptor, ...args) {
-        let vod = this.getDescriptor(descriptor);
-        if (vod) {
-            return vod.create(...args);
-        }
-    }
-
-    createSubFactory () {
-        return new SpriteFactory(this);
-    }
-
-}
-
-var SpriteFactory$1 = (function () {
-
-    return new SpriteFactory;
-
-})();
-
-function defineSprite (typeName, options, proto, spriteFactory = SpriteFactory$1) {
-
-    let descriptor = spriteFactory.createDescriptor(typeName, options.constructor, options.vertexCount, options.vertexAttrCount, options.attributes, options.aliases);
-
-    if (proto) {
-        Object.assign(descriptor.proto, proto);
-    }
-
-    return descriptor;
-
-}
-
-var defaultSprite = function ( spriteFactory ) {
-
-    let descriptor = spriteFactory.getDescriptor('default');
-    if (descriptor) return descriptor;
-
-    descriptor = spriteFactory.createDescriptor( 'default',
-
-        function () {
-
-            this.setAnchor( 0, 0 );  // anchor
-            this.setRgb( 1, 1, 1 );
-
-        },
-
-        4, 16,
-
-        [
-            { name: 'xwyh',      size: 2, attrNames: [ 'xw', 'yh' ] },
-            { name: 'size',      size: 2, attrNames: [ 'width', 'height' ], uniform: true },
-            { name: 'scale',     size: 2, attrNames: [ 'sx', 'sy' ], uniform: true },
-            { name: 'pos',       size: 2, attrNames: [ 'x', 'y' ], uniform: true },
-            { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
-            { name: 'rotate',    size: 1, uniform: true },
-            { name: 'texUnit',   size: 1, uniform: true },
-            { name: 'rgb',       size: 3, attrNames: [ 'r', 'g', 'b' ], uniform: true },
-            { name: 'opacity',   size: 1, uniform: true },
-
-        ], {
-            // both are referenced by our shader
-
-            'rot_texUnit' : { size: 2, offset: 10, uniform: true },
-            'color'       : { size: 4, offset: 12, uniform: true },
-
-        });
-
-
-    descriptor.proto.setAnchor = function ( x, y ) {
-
-        this.setXwyh( -0.5 - x, 0.5 - y, 0.5 - x, 0.5 - y, 0.5 - x, -0.5 - y, -0.5 - x, -0.5 - y );
-
-    };
-
-    return descriptor;
-
-};
-
-var attachSpriteHelpers = function ( proto ) {
-
-    /**
-     * @method Picimo.sprites.Sprite#setTexCoordsByViewport
-     * @param {Picimo.core.Viewport} viewport - viewport
-     * @param {number} textureWidth - texture width
-     * @param {number} textureHeight - texture height
-     * @param {number} [repeat] - texture repeat factor
-     */
-
-    proto.setTexCoordsByViewport = function ( viewport, textureWidth, textureHeight, repeat ) {
-
-        var x0 = viewport.x === 0 ? 0 : ( viewport.x / textureWidth );
-        var x1 = ( viewport.x + viewport.width ) / textureWidth;
-        var y0 = 1 - ( ( viewport.y + viewport.height ) / textureHeight );
-        var y1 = viewport.y === 0 ? 1 : 1 - ( viewport.y / textureHeight );
-
-        if ( repeat !== undefined ) {
-
-            x0 *= repeat;
-            x1 *= repeat;
-            y0 *= repeat;
-            y1 *= repeat;
-
-        }
-
-        this.setTexCoords(
-            x0, y0,
-            x1, y0,
-            x1, y1,
-            x0, y1 );
-
-    };
-
-
-    /**
-     * @method Picimo.sprites.Sprite#setSize
-     * @param {number} width - width
-     * @param {number} height - height
-     */
-
-    proto.setSize = function ( width, height ) {
-
-        var half_width  = width  * 0.5;
-        var half_height = ( height == null ? width : height ) * 0.5;
-
-        this.setPos2d(
-                -half_width,  half_height,
-                 half_width,  half_height,
-                 half_width, -half_height,
-                -half_width, -half_height
-                );
-
-    };
-
-    /**
-     * @member {number} Picimo.Sprite#rotateDegree - rotation in degree
-     */
-
-    Object.defineProperty( proto, 'rotateDegree', {
-
-        get: function () {
-            return this.rotate * 180.0 / Math.PI;
-        },
-
-        set: function ( degree ) {
-            this.rotate = degree * ( Math.PI / 180.0 );
-        },
-
-        enumerable: true
-
-    });
-
-    /**
-     * @member {number} Picimo.Sprite#z - z value
-     */
-
-    Object.defineProperty( proto, 'z', {
-
-        get: function () {
-            return this.z0;
-        },
-
-        set: function ( z ) {
-            this.z0 = z;
-            this.z1 = z;
-            this.z2 = z;
-            this.z3 = z;
-        },
-
-        enumerable: true
-
-    });
-
-};
-
-var simpleSprite = function ( spriteFactory ) {
-
-    let descriptor = spriteFactory.getDescriptor('simple');
-    if (descriptor) return descriptor;
-
-    descriptor = spriteFactory.createDescriptor( 'simple',
-
-        null,
-
-        4,  // vertices
-        12, // attrs per vertex
-
-        // ## sprite features
-        //
-        // +-+-+-+-+ +-+-+-+-+ +-+-+-+-+
-        // |0|1|2|3| |4|5|6|7| |8|9|A|B|
-        // +-+-+-+-+ +-+-+-+-+ +-+-+-+-+
-        //
-        // |o-o-o|                       (3) position: x,y,z
-        //       |o|                     (1) rotate
-        //           |o-o|               (2) tex-coords: s, t
-        //               |o-o|           (3) translate: tx, ty
-        //                     |o|       (1) scale
-        //                       |o|     (1) opacity
-        //
-
-        [
-
-            { name: 'position', size: 3, attrNames: [ 'x', 'y', 'z' ] },
-            { name: 'rotate', size: 1, uniform: true },
-            { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
-            { name: 'translate', size: 2, uniform: true, attrNames: [ 'tx', 'ty' ] },
-            { name: 'scale', size: 1, uniform: true },
-            { name: 'opacity', size: 1, uniform: true }
-
-        ],
-
-        {
-            pos2d: { size: 2, offset: 0 },
-            posZ:  { size: 1, offset: 2, uniform: true },
-            uv:    'texCoords'
-
-        }
-
-    );
-
-    attachSpriteHelpers( descriptor.proto );
-
-    return descriptor;
-
-};
-
-var initSprites = function () {
-
-    defaultSprite(SpriteFactory$1);
-    simpleSprite(SpriteFactory$1);
-
-    return SpriteFactory$1.createSubFactory();
-
-};
-
-/**
- * @ignore
- */
-var initSpriteFactory = function ( app ) {
-
-    let spriteFactory = initSprites();
-
-    definePropertyPrivateRO( app, 'spriteFactory', spriteFactory );
-
-    definePropertyPublicRO( app, 'defineSprite', function (typeName, spriteOptions, spriteProto) {
-        return defineSprite( typeName, spriteOptions, spriteProto, spriteFactory );
-    });
-
-    delegateMethods(spriteFactory, app, {
-
-        createSprite     : 'createSprite',
-        getDescriptor    : 'getSpriteDescriptor',
-
-    });
-
-};
-
-var asFloat = function (number) {
-    let str = (number+'').trim();
-    if (str.match(/^[0-9]+$/)) {
-        return str + '.0';
-    }
-    return str;
-};
-
-function mat4$3 (m00=0, m01=0, m02=0, m03=0,
-                              m10=0, m11=0, m12=0, m13=0,
-                              m20=0, m21=0, m22=0, m23=0,
-                              m30=0, m31=0, m32=0, m33=1, as = asFloat) {
-
-    const toStr = as || function (x) { return x+'' };
-
-    return `mat4(${toStr(m00)}, ${toStr(m01)}, ${toStr(m02)}, ${toStr(m03)}, ${toStr(m10)}, ${toStr(m11)}, ${toStr(m12)}, ${toStr(m13)}, ${toStr(m20)}, ${toStr(m21)}, ${toStr(m22)}, ${toStr(m23)}, ${toStr(m30)}, ${toStr(m31)}, ${toStr(m32)}, ${toStr(m33)})`;
-
-}
-
-const isNumber = (x) => { return typeof x === 'number' };
-
-function mul (a, b) {
-
-    if (isNumber(a) && isNumber(b)) {
-
-        return a * b;
-
-    } else if (isNumber(a)) {
-
-        switch (a) {
-            case 0:
-                return 0;
-            case 1:
-                return b;
-            default:
-                return `${a} * ${b}`;
-        }
-
-    } else if (isNumber(b)) {
-
-        switch (b) {
-            case 0:
-                return 0;
-            case 1:
-                return a;
-            default:
-                return `${a} * ${b}`;
-        }
-
-    } else {
-        return `${a} * ${b}`;
-    }
-
-}
-
-const isNumber$1 = (x) => { return typeof x === 'number' };
-
-function add (a, b) {
-
-    if (isNumber$1(a) && isNumber$1(b)) {
-
-        return a + b;
-
-    } else if (isNumber$1(a)) {
-
-        switch (a) {
-            case 0:
-                return b;
-            default:
-                return `${a} + ${b}`;
-        }
-
-    } else if (isNumber$1(b)) {
-
-        switch (b) {
-            case 0:
-                return a;
-            default:
-                return `${a} + ${b}`;
-        }
-
-    } else {
-        return `${a} + ${b}`;
-    }
-
-}
-
-const isNumber$2 = (x) => { return typeof x === 'number' };
-
-function sub (a, b) {
-
-    if (isNumber$2(a) && isNumber$2(b)) {
-
-        return a - b;
-
-    } else if (isNumber$2(a)) {
-
-        switch (a) {
-            case 0:
-                return `-${b}`;
-            default:
-                return `${a} - ${b}`;
-        }
-
-    } else if (isNumber$2(b)) {
-
-        switch (b) {
-            case 0:
-                return a;
-            default:
-                return `${a} - ${b}`;
-        }
-
-    } else {
-        return `${a} - ${b}`;
-    }
-
-}
-
-function ret (res) {
-
-    return `return ${res};`;
-
-}
-
-var rotate = function (funcName = 'rotate', x = 0.0, y = 0.0, z = 1.0) {
-    return [
-
-        `mat4 ${funcName}(float angle) {`,
-
-        'float s = sin(angle);',
-        'float c = cos(angle);',
-        'float oc = 1.0 - c;',
-
-        ret(
-            mat4$3(
-                add( mul('oc', x*x), 'c' ),         sub( mul('oc', x*y), mul(z, 's') ), add( mul('oc', z*x), mul(y, 's') ), 0,
-                add( mul('oc', x*y), mul(z, 's') ), add( mul('oc', y*y), 'c' ),         sub( mul('oc', y*z), mul(x, 's') ), 0,
-                sub( mul('oc', z*x), mul(y, 's') ), add( mul('oc', y*z), mul(x, 's') ), add( mul('oc', z*z), 'c' )
-            )
-        ),
-
-        '}',
-
-    ];
-};
-
-var rotateZ = function (funcName = 'rotateZ') {
-    return rotate(funcName, 0, 0, 1);
-};
-
-    //return [
-
-        //`mat4 ${funcName}(float angle)`,
-        //'{',
-        //'    float s = sin(angle);',
-        //'    float c = cos(angle);',
-        //'    float oc = 1.0 - c;',
-        //'    return mat4(c, -s, 0.0, 0.0, s, c, 0.0, 0.0, 0.0, 0.0, oc + c, 0.0, 0.0, 0.0, 0.0, 1.0);',
-        //'}',
-
-    //];
-
-/*
-
-[ (xw, yh), (w, h) ], [ (sx, sy), (x, y) ], [ (s, t), (rot, tex) ], [ (r, g), (b, a) ]
-
-(16 attrs per vertex)
-
-pos: x, y -> ( xw * w * sx + x, yh * h * sy + y )
-size: w, h
-scale: sx, sy
-tex-coords: s, t
-color+opacity: r, g, b, a
-
-*/
-const VertexShader = [
-
-    'attribute vec2 xwyh;',        // wx -> x, yh -> y
-    'attribute vec2 size;',        // w -> size.x, h -> size.y
-    'attribute vec2 scale;',       // sx -> size.x, sy -> size.y
-    'attribute vec2 pos;',         // pos.x, pos.y
-    'attribute vec2 rot_texUnit;',
-
-    'attribute vec2 texCoords;',   // s -> texCoords.x, t -> texCoords.y
-    'attribute vec4 color;',
-
-    'uniform mat4 viewMatrix;',
-    'uniform float renderPrio;',
-
-    'varying vec2 v_texCoords;',
-    'varying vec2 v_texUnit;',
-    'varying vec4 v_color;',
-
-    rotateZ(),
-
-    'void main(void)',
-    '{',
-    '    mat4 rotationMatrix = rotateZ(rot_texUnit.x);',
-    '    vec2 pos2d = xwyh * size * scale;',
-
-    '    gl_Position = viewMatrix * ((rotationMatrix * vec4( pos2d, renderPrio, 1.0 )) + vec4(pos.xy, 0.0, 1.0));',
-
-    '    v_texCoords = texCoords;',
-    '    v_texUnit = vec2(rot_texUnit.y, 0);',
-    '    v_color = color;',
-    '}',
-
-];
-
-const FragmentShader = [
-
-    'precision mediump float;',
-
-    'varying vec2 v_texCoords;',
-    'varying vec2 v_texUnit;',
-    'varying vec4 v_color;',
-
-    'uniform sampler2D tex;',
-    /*uniform sampler2D tex0;*/
-    /*uniform sampler2D tex1;*/
-    /*uniform sampler2D tex2;*/
-    /*uniform sampler2D tex3;*/
-
-    'void main(void)',
-    '{',
-    '    vec4 texColor;',
-
-    '    texColor = texture2D(tex, v_texCoords);',
-    //'    texColor.x = texColor.x + 0.5;',
-    //'    texColor.w = texColor.w + 0.5;',
-         /*if      ( v_texUnit.x == 0.0 ) { tex = texture2D(tex0, v_texCoords); }*/
-         /*else if ( v_texUnit.x == 1.0 ) { tex = texture2D(tex1, v_texCoords); }*/
-         /*else if ( v_texUnit.x == 2.0 ) { tex = texture2D(tex2, v_texCoords); }*/
-         /*else if ( v_texUnit.x == 3.0 ) { tex = texture2D(tex3, v_texCoords); }*/
-
-    '    gl_FragColor = v_color * texColor;',
-    '}',
-
-];
-
-const VertexShader$1 = [
-`
-    attribute vec2 pos2d;
-    attribute float posZ;
-    attribute vec2 uv;
-    attribute vec2 translate;
-    attribute float rotate;
-    attribute float scale;
-    attribute float opacity;
-
-    uniform mat4 viewMatrix;
-
-    varying vec4 vTextureCoordScaleOpacity;`,
-
-    rotate('rotateZ', 0.0, 0.0, 1.0),
-`
-    void main(void)
-    {
-        mat4 rotationMatrix = rotateZ(rotate);
-        gl_Position = viewMatrix * ((rotationMatrix * (vec4(scale, scale, scale, 1.0) * vec4(pos2d.xy, posZ, 1.0))) + vec4(translate.xy, 0.0, 0.0));
-        vTextureCoordScaleOpacity = vec4(uv.xy, opacity, 0.0);
-    }
-`
-];
-
-const FragmentShader$1 = [
-`
-    precision mediump float;
-
-    varying vec4 vTextureCoordScaleOpacity;
-    uniform sampler2D tex;
-
-    void main(void) {
-        gl_FragColor = vTextureCoordScaleOpacity.z * texture2D(tex, vec2(vTextureCoordScaleOpacity.s, vTextureCoordScaleOpacity.t));
-    }
-`
-];
-
-/**
- * @ignore
- */
-var createShaderManager = function ( app ) {
-
-    const shaderManager = new ShaderManager( app );
-
-    definePropertyPrivateRO( app, 'shaderManager', shaderManager );
-
-    delegateMethods(shaderManager, app, [
-        'loadFragmentShader',
-        'loadVertexShader',
-        'getVertexShader',
-        'getFragmentShader',
-        'getProgram'
-    ]);
-
-    app.addProgram = function () {
-        shaderManager.addProgram.apply(shaderManager, arguments);
-        return app;
-    };
-
-    app.defineVertexShader = function () {
-        shaderManager.defineVertexShader.apply(shaderManager, arguments);
-        return app;
-    };
-
-    app.defineFragmentShader = function () {
-        shaderManager.defineFragmentShader.apply(shaderManager, arguments);
-        return app;
-    };
-
-    const complexSpriteShaderName = 'picimo.complexSprite';
-    app.defineVertexShader(complexSpriteShaderName, VertexShader);
-    app.defineFragmentShader(complexSpriteShaderName, FragmentShader);
-    app.addProgram(complexSpriteShaderName, complexSpriteShaderName, complexSpriteShaderName);
-
-    const spriteShaderName = 'picimo.sprite';
-    app.defineVertexShader(spriteShaderName, VertexShader$1);
-    app.defineFragmentShader(spriteShaderName, FragmentShader$1);
-    app.addProgram(spriteShaderName, spriteShaderName, spriteShaderName);
-
-};
-
 const regExpAbsHttpUrl = new RegExp( '^(https?:)?//', 'i' );
 const regExpAbsUrlPath = new RegExp( '^(https?:)?/', 'i' );
 const regExpUrlDir     = new RegExp( '^(.*/)[^/]+$', 'i' );
 
 
-//------------------------------------------
-// getUrlDir( url )
-//---------------------------------------
+/**
+ * @param {string} url
+ * @return {string}
+ */
 
 function getUrlDir ( url ) {
 
@@ -32985,9 +32960,11 @@ function getUrlDir ( url ) {
 
 }
 
-//------------------------------------------
-// getAssetUrl( url )
-//---------------------------------------
+
+/**
+ * @param {string} url
+ * @return {string}
+ */
 
 function getAssetUrl ( url ) {
 
@@ -33023,9 +33000,12 @@ function getAssetUrl ( url ) {
 
 }
 
-//------------------------------------------
-// joinAssetUrl( baseUrl, url )
-//---------------------------------------
+
+/**
+ * @param {string} baseUrl
+ * @param {string} url
+ * @return {string}
+ */
 
 function joinAssetUrl ( baseUrl, url ) {
 
@@ -33039,9 +33019,10 @@ function joinAssetUrl ( baseUrl, url ) {
 
 }
 
-//-----------------------------------------------------
-// loadTextureAtlas( url ) -> promise<TextureAtlas>
-//--------------------------------------------------------
+/**
+ * @param {string} url
+ * @return {Promise<TextureAtlas>}
+ */
 
 function loadTextureAtlas ( url ) {
 
@@ -33050,11 +33031,12 @@ function loadTextureAtlas ( url ) {
 }
 
 
-//-----------------------------------------------------
-// loadTexture( url ) -> promise<Texture>
-//
-// Load an image and create a texture from image data
-//--------------------------------------------------------
+/**
+ * Load an image and create a _texture_ from the image bitmap data.
+ *
+ * @param {string} url
+ * @return {Promise<Texture>}
+ */
 
 function loadTexture ( url ) {
 
@@ -33066,6 +33048,7 @@ function loadTexture ( url ) {
     return image.promise.then(() => texture);
 
 }
+
 
 //function forwardTexture ( texture, image ) {
 
@@ -33085,11 +33068,34 @@ class App$1 {
 
         eventize_1$1(this);
 
+        /**
+         * @private
+         */
         this.resize = resize;
-        this.renderFrame = renderFrame$1;
+
+        /**
+         * @private
+         */
+        this.renderFrame = renderFrame;
+
+        /**
+         * {@link src/app/asset_url_helper.js~getAssetUrl}
+         */
         this.getAssetUrl = getAssetUrl;
+
+        /**
+         * {@link src/app/asset_url_helper.js~joinAssetUrl}
+         */
         this.joinAssetUrl = joinAssetUrl;
+
+        /**
+         * {@link src/app/texture_helpers.js~loadTextureAtlas}
+         */
         this.loadTextureAtlas = loadTextureAtlas;
+
+        /**
+         * {@link src/app/texture_helpers.js~loadTexture}
+         */
         this.loadTexture = loadTexture;
 
         if (typeof window !== 'undefined') {  // TODO wrap window?
@@ -33098,6 +33104,9 @@ class App$1 {
 
         definePropertyPublicRO(this, 'ready', false);
 
+        /**
+         * @type {float}
+         */
         this.now = window.performance.now() / 1000.0;
 
         if ( typeof canvas === 'object' && ! ( 'nodeName' in canvas ) ) {
@@ -33107,12 +33116,12 @@ class App$1 {
             options = {};
         }
 
-        createCanvas$1( this, canvas, options.appendTo );
+        createCanvas(this, canvas, options.appendTo);
 
         definePropertyPrivateRO(this, 'mouseController', new MouseController(this));
         this.mouseController.connect(this); // => forward all mouse events to app
 
-        addGlxProperty( this );
+        addGlxProperty(this);
 
         definePropertyPrivateRO(this, 'glCtxAttrs', {
 
@@ -33175,4 +33184,4 @@ eventize_1$1(App$1);  // Enable plugins via Picimo.App.on('create', function (ap
 
 const VERSION = "0.0.23";
 
-export { VERSION, App$1 as App, index as graph, index$3 as render, index$1 as utils, index$2 as math, index$5 as core, defineSprite, SpriteFactory$1 as SpriteFactory };
+export { VERSION, App$1 as App, index$5 as graph, index as render, index$2 as utils, index$4 as math, index$3 as core, defineSprite, SpriteFactory$1 as SpriteFactory };

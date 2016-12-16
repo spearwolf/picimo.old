@@ -1,4 +1,3 @@
-'use strict';
 
 export default class UniformValueStack {
 
@@ -47,10 +46,6 @@ export default class UniformValueStack {
             value = cmd;
 
         }
-
-        //if (re && re.debugOutFrame) {
-            //console.debug('UniformValueStack exec cmd=', cmd, 'value=', value);
-        //}
 
         this.value = value;
 

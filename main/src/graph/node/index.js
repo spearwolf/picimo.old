@@ -1,11 +1,12 @@
 import eventize from '@spearwolf/eventize';
-import * as utils from '../../utils';
-import NodeState from '../node_state';
 
+import NodeState from '../node_state';
 import defineReady from './ready';
 import defineRenderPrio from './render_prio';
-import renderFrame from './render_frame';
 import destroy from './destroy';
+import renderFrame from './render_frame';
+import { asString, asBoolean } from '../../utils';
+import { definePropertyPublicRO } from '../../utils/object_utils';
 
 
 export default function Node (app, options = {}) {
@@ -14,12 +15,12 @@ export default function Node (app, options = {}) {
         throw new Error('[Picimo.graph.Node] app should not be undefined!');
     }
 
-    utils.object.definePropertyPublicRO(this, 'app', app);
+    definePropertyPublicRO(this, 'app', app);
 
-    this.name = utils.asString(options.name);
+    this.name = asString(options.name);
 
     this.state = new NodeState(NodeState.CREATE);
-    this.display = utils.asBoolean(options.display, true);
+    this.display = asBoolean(options.display, true);
     defineReady(this, options.ready !== false);
 
     Object.defineProperties(this, {
@@ -59,6 +60,9 @@ export default function Node (app, options = {}) {
 
 }
 
+/**
+ * @ignore
+ */
 function setParentNode (node, parent) {
     Object.defineProperty(node, 'parentNode', {
         value: ( parent instanceof Node ? parent : null ),
@@ -66,10 +70,16 @@ function setParentNode (node, parent) {
     });
 }
 
+/**
+ * @ignore
+ */
 function sortChildrenByRenderPrio () {
     this.children = this.children.sort(sortByRenderPrio);
 }
 
+/**
+ * @ignore
+ */
 function sortByRenderPrio (a, b) {
     return -a.renderPrio - ( -b.renderPrio );
 }
@@ -92,18 +102,28 @@ Object.defineProperties( Node.prototype, {
 
 });
 
-Node.prototype.renderFrame = renderFrame;  // => render_frame.js
-Node.prototype.destroy = destroy;  // => destroy.js
+/**
+ * {@link src/graph/node/render_frame.js~renderFrame}
+ */
+Node.prototype.renderFrame = renderFrame;
+
+/**
+ * {@link src/graph/node/destroy.js~destroy}
+ */
+Node.prototype.destroy = destroy;
+
 
 // ----------------------------------------------------------
-//
-// node.appendChild( node ) -> node
 //
 // PUBLISH EVENTS
 // - childrenUpdated
 //
 // ----------------------------------------------------------
 
+/**
+ * @param {Node} node
+ * @return {Node} node
+ */
 Node.prototype.appendChild = function (node) {
 
     if (this.children.indexOf(node) !== -1) return node;
@@ -118,15 +138,18 @@ Node.prototype.appendChild = function (node) {
 
 };
 
+
 // ----------------------------------------------------------
-//
-// node.removeChild( node ) -> node
 //
 // PUBLISH EVENTS
 // - childrenUpdated
 //
 // ----------------------------------------------------------
 
+/**
+ * @param {Node} node
+ * @return {Node} node
+ */
 Node.prototype.removeChild = function (node) {
 
     var idx = this.children.indexOf(node);
@@ -143,12 +166,11 @@ Node.prototype.removeChild = function (node) {
 
 };
 
-// ----------------------------------------------------------
-//
-// node.findNode( str ) -> node?
-//
-// ----------------------------------------------------------
 
+/**
+ * @param {string} name
+ * @return {Node} node
+ */
 Node.prototype.findNode = function (name) {
 
     if (!name) return;

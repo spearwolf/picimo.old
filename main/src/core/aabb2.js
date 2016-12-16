@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * Represents a 2d axis aligned boundary box.

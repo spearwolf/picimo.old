@@ -1,7 +1,6 @@
 export default function ( proto ) {
 
     /**
-     * @method Picimo.sprites.Sprite#setTexCoordsByViewport
      * @param {Picimo.core.Viewport} viewport - viewport
      * @param {number} textureWidth - texture width
      * @param {number} textureHeight - texture height
