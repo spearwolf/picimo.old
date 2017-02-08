@@ -1,5 +1,3 @@
-/* jshint esversion:6 */
-/* jshint eqnull:true */
 import Matrix4 from '../../utils/matrix4';
 import Node from '../node';
 import createFactories from './factories';
@@ -158,7 +156,7 @@ Scene.prototype.setBlendMode = function (depthTest, depthMask, depthFunc, blend,
     if (arguments.length === 0 || arguments[0] == null) {
         this.blendMode = undefined;
     } else if (arguments.length === 1 && typeof arguments[0] === 'string') {
-        this.blendMode = BlendMode[arguments[0]];
+        this.blendMode = this.app.getBlendMode(arguments[0]);
     } else {
         this.blendMode = new BlendMode(depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst);
     }

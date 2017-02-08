@@ -1,8 +1,8 @@
-/* jshint esversion:6 */
+/* jshint browser:true */
 import Color from 'color-js';
 import eventize from '@spearwolf/eventize';
 
-import BlendMode from '../render/blend_mode';
+import createBlendModes from './create_blend_modes';
 import defineGlxProperty from './define_glx_property';
 import createCanvas from './create_canvas';
 import createShaderManager from './create_shader_manager';
@@ -90,6 +90,7 @@ export default class App {
 
         this.backgroundColor = new Color( options.bgColor !== undefined ? options.bgColor : ( this.glCtxAttrs.alpha ? 'transparent' : "#000000" ) );
 
+        createBlendModes( this );
         createShaderManager( this );
 
         definePropertyPrivateRO( this, 'textureManager', new TextureManager(this) );
@@ -105,7 +106,7 @@ export default class App {
 
             pixelRatio : 1,
             projection : true,
-            blendMode  : BlendMode.get('default'),
+            blendMode  : this.getBlendMode('default'),
 
         } ) );
 

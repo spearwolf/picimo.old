@@ -1,5 +1,5 @@
+/* jshint browser:true */
 /* global Picimo */
-/* global setTimeout */
 
 const app = new Picimo.App({
 

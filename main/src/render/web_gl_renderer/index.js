@@ -1,9 +1,6 @@
-/* jshint esversion:6 */
-/* jshint -W058 */
 import _ from 'lodash';
 import Queue from '../../utils/queue';
 import renderCommand from './render_command';
-import BlendMode from '../blend_mode';
 import { definePropertyPublicRO } from '../../utils/obj_props';
 
 export default class WebGlRenderer {
@@ -183,7 +180,7 @@ function initialize ( renderer ) {  // {{{
     renderer.currentProgram = null;
     renderer.currentPipeline = null;
 
-    renderer.defaultBlendMode = BlendMode.get('default');  // TODO let defaultBlendMode be configurable from outside (eg. Picimo.App)
+    renderer.defaultBlendMode = renderer.app.getBlendMode('default');  // TODO let defaultBlendMode be configurable from outside (eg. Picimo.App)
     renderer.currentBlendMode = null;
 
     renderer.renderToTexture = null;

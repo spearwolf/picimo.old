@@ -1584,9 +1584,6 @@ if (!net.brehaut) { net.brehaut = {}; }
 }
 });
 
-/* jshint esversion:6 */
-/* jshint -W058 */
-
 /**
  * WebGL blend and depth mode state description.
  *
@@ -1606,8 +1603,6 @@ if (!net.brehaut) { net.brehaut = {}; }
  * new Picimo.render.cmd.BlendMode( false, false )
  *
  */
-
-var predefinedModes = new Map();
 
 class BlendMode {
 
@@ -1662,63 +1657,7 @@ class BlendMode {
         }
     }
 
-    static get(name) {
-        return predefinedModes.get(name);
-    }
-
-    static define(name, blendMode) {
-        return predefinedModes.get(name);
-    }
-
 }
-
-/*
-    // good default settings
-    gl.enable(gl.DEPTH_TEST);
-    gl.depthMask(true);       // enable writing into the depth buffer
-    //gl.depthFunc(gl.ALWAYS);  // sprites blending
-    gl.depthFunc(gl.LEQUAL);  // iso3d
-
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);  // good default
-*/
-
-BlendMode.define('default', new BlendMode(true, true, 'ALWAYS', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA'));
-
-//BlendMode.define('iso3d', 
-//new BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' ));
-
-/* jshint esversion:6 */
-
-// Add the .glx and .gl (alias to glx.gl) properties to an object.
-// Returns the object.
-//
-// foo = {}
-// defineGlxProperty(glx)
-//
-// foo.glx    // => glx
-// foo.gl     // => glx.gl
-//
-var defineGlxProperty = function (obj) {
-    var _glx = void 0;
-
-    Object.defineProperties(obj, {
-        glx: {
-            set: function set(glx) {
-                _glx = glx;
-                Object.defineProperty(this, 'gl', {
-                    value: typeof glx === 'object' ? glx.gl : undefined,
-                    configurable: true
-                });
-            },
-            get: function get() {
-                return _glx;
-            }
-        }
-    });
-
-    return obj;
-};
 
 /**
  * Define a *read-only* property which is *enumerable* but not *writable* and *configurable*.
@@ -1838,6 +1777,67 @@ function definePropertiesPrivateRO(obj, map) {
 
     return obj;
 }
+
+var createBlendModes = function (app) {
+
+    definePropertyPrivateRO(app, 'predefinedBlendModes', new Map());
+
+    app.getBlendMode = function (name) {
+        return this.predefinedBlendModes.get(name);
+    };
+
+    app.setBlendMode = function (name, blendMode) {
+        this.predefinedBlendModes.set(name, blendMode);
+    };
+
+    /*
+        // good default settings
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthMask(true);       // enable writing into the depth buffer
+        //gl.depthFunc(gl.ALWAYS);  // sprites blending
+        gl.depthFunc(gl.LEQUAL);  // iso3d
+    
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);  // good default
+    */
+
+    app.setBlendMode('default', new BlendMode(true, true, 'ALWAYS', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA'));
+
+    //app.setBlendMode('iso3d',
+    //new BlendMode( true, true, 'LEQUAL', true, 'SRC_ALPHA', 'ONE_MINUS_SRC_ALPHA' ));
+};
+
+/* jshint esversion:6 */
+
+// Add the .glx and .gl (alias to glx.gl) properties to an object.
+// Returns the object.
+//
+// foo = {}
+// defineGlxProperty(glx)
+//
+// foo.glx    // => glx
+// foo.gl     // => glx.gl
+//
+var defineGlxProperty = function (obj) {
+    var _glx = void 0;
+
+    Object.defineProperties(obj, {
+        glx: {
+            set: function set(glx) {
+                _glx = glx;
+                Object.defineProperty(this, 'gl', {
+                    value: typeof glx === 'object' ? glx.gl : undefined,
+                    configurable: true
+                });
+            },
+            get: function get() {
+                return _glx;
+            }
+        }
+    });
+
+    return obj;
+};
 
 /* jshint esversion:6 */
 /**
@@ -22184,8 +22184,6 @@ function drawElements(re /*nderer*/, draw) {
     draw.buffer.bindBuffer().drawElements(elemType, draw.count, draw.offset);
 }
 
-/* jshint esversion:6 */
-/* jshint eqnull:true */
 function renderCommand(re /*nderer*/, cmd) {
 
     // blend-mode
@@ -22295,8 +22293,6 @@ function _warn() {
     console.warn.apply(console, ['[Picimo.render.WebGlRenderer#renderCommand]'].concat(Array.prototype.slice.apply(arguments)));
 }
 
-/* jshint esversion:6 */
-/* jshint -W058 */
 class WebGlRenderer {
 
     constructor(app) {
@@ -22459,7 +22455,7 @@ function initialize$1(renderer) {
     renderer.currentProgram = null;
     renderer.currentPipeline = null;
 
-    renderer.defaultBlendMode = BlendMode.get('default'); // TODO let defaultBlendMode be configurable from outside (eg. Picimo.App)
+    renderer.defaultBlendMode = renderer.app.getBlendMode('default'); // TODO let defaultBlendMode be configurable from outside (eg. Picimo.App)
     renderer.currentBlendMode = null;
 
     renderer.renderToTexture = null;
@@ -31252,8 +31248,6 @@ function updateProjection(scene) {
 
 // --- updateProjection }}}
 
-/* jshint esversion:6 */
-/* jshint eqnull:true */
 /**
  * @desc
  * Allows you to determinate a **blend mode**.
@@ -31398,7 +31392,7 @@ Scene.prototype.setBlendMode = function (depthTest, depthMask, depthFunc, blend,
     if (arguments.length === 0 || arguments[0] == null) {
         this.blendMode = undefined;
     } else if (arguments.length === 1 && typeof arguments[0] === 'string') {
-        this.blendMode = BlendMode[arguments[0]];
+        this.blendMode = this.app.getBlendMode(arguments[0]);
     } else {
         this.blendMode = new BlendMode(depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst);
     }
@@ -31568,7 +31562,7 @@ function loadTexture(url) {
 
 //}
 
-/* jshint esversion:6 */
+/* jshint browser:true */
 class App$1 {
 
     constructor(canvas, options) {
@@ -31642,6 +31636,7 @@ class App$1 {
 
         this.backgroundColor = new color(options.bgColor !== undefined ? options.bgColor : this.glCtxAttrs.alpha ? 'transparent' : "#000000");
 
+        createBlendModes(this);
         createShaderManager(this);
 
         definePropertyPrivateRO(this, 'textureManager', new TextureManager(this));
@@ -31657,7 +31652,7 @@ class App$1 {
 
             pixelRatio: 1,
             projection: true,
-            blendMode: BlendMode.get('default')
+            blendMode: this.getBlendMode('default')
 
         }));
 
