@@ -1,3 +1,4 @@
+/* jshint node:true */
 var buble = require('rollup-plugin-buble');
 
 module.exports = function (config) {
@@ -8,11 +9,11 @@ module.exports = function (config) {
 
         files: [
             'dist/picimo-chrome-firefox.umd.js',
-            'test/**/*_spec.js',
+            'test/functional/**/*_spec.js',
         ],
 
         preprocessors: {
-            'test/**/*.js': ['rollup']
+            'test/functional/**/*.js': ['rollup']
         },
 
         rollupPreprocessor: {

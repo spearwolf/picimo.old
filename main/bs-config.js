@@ -1,10 +1,11 @@
+/* jshint node:true */
 const fs = require('fs');
 const path = require('path');
 
 const walkSync = (dir, filelist = []) => {
     fs.readdirSync(dir).forEach(file => {
-        filelist = fs.statSync(path.join(dir, file)).isDirectory()
-            ? walkSync(path.join(dir, file), filelist)
+        filelist = fs.statSync(path.join(dir, file)).isDirectory() ?
+            walkSync(path.join(dir, file), filelist)
             : filelist.concat(path.join(dir, file));
     });
     return filelist;
@@ -16,14 +17,14 @@ module.exports = {
     notify: false,
     files: [
         "dist/*.js",
-        "test-visual/**/*"
+        "test/regression/**/*"
     ],
     serveStatic: [{
         "route": "/assets",
-        "dir": "test-visual/assets"
+        "dir": "test/regression/assets"
     }],
     server: {
-        baseDir: "test-visual",
+        baseDir: "test/regression",
         routes: {
             "/dist": "dist"
         }
@@ -31,8 +32,8 @@ module.exports = {
     middleware: function (req, res, next) {
         if (req.url === '/index.html' || req.url === '/') {
             res.writeHead(200, { "Content-type": "text/html" });
-            let files = walkSync(path.join(__dirname, 'test-visual'));
-            files = files.filter(file => file.match(/\.html$/)).map(file => file.replace(/.*test-visual\/(.*)/, '$1'));
+            let files = walkSync(path.join(__dirname, 'test/regression'));
+            files = files.filter(file => file.match(/\.html$/)).map(file => file.replace(/.*test.regression\/(.*)/, '$1'));
             res.end(
                 '<h1 style="font-size: 16px">picimo visual tests</h1>' +
                 '<ul style="list-style-type:none;margin:0 0 0 1em;padding:0">' +

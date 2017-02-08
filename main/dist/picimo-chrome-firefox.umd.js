@@ -1915,10 +1915,10 @@ function delegateMethods(srcObj, target, methodName) {
             if (target[newKey] == null) {
                 target[newKey] = method.bind(srcObj);
             } else {
-                throw new Error(`delegateMethods() panic! could not override property ${ newKey }`);
+                throw new Error(`delegateMethods() panic! could not override property ${newKey}`);
             }
         } else if (failIfNotAFunction) {
-            throw new Error(`delegateMethods() panic! ${ key } is not a function!`);
+            throw new Error(`delegateMethods() panic! ${key} is not a function!`);
         }
     }
 
@@ -1984,7 +1984,7 @@ function mat4() {
                                                             return x + '';
                               };
 
-                              return `mat4(${ toStr(m00) }, ${ toStr(m01) }, ${ toStr(m02) }, ${ toStr(m03) }, ${ toStr(m10) }, ${ toStr(m11) }, ${ toStr(m12) }, ${ toStr(m13) }, ${ toStr(m20) }, ${ toStr(m21) }, ${ toStr(m22) }, ${ toStr(m23) }, ${ toStr(m30) }, ${ toStr(m31) }, ${ toStr(m32) }, ${ toStr(m33) })`;
+                              return `mat4(${toStr(m00)}, ${toStr(m01)}, ${toStr(m02)}, ${toStr(m03)}, ${toStr(m10)}, ${toStr(m11)}, ${toStr(m12)}, ${toStr(m13)}, ${toStr(m20)}, ${toStr(m21)}, ${toStr(m22)}, ${toStr(m23)}, ${toStr(m30)}, ${toStr(m31)}, ${toStr(m32)}, ${toStr(m33)})`;
 }
 
 var isNumber = x => {
@@ -2004,7 +2004,7 @@ function mul(a, b) {
             case 1:
                 return b;
             default:
-                return `${ a } * ${ b }`;
+                return `${a} * ${b}`;
         }
     } else if (isNumber(b)) {
 
@@ -2014,10 +2014,10 @@ function mul(a, b) {
             case 1:
                 return a;
             default:
-                return `${ a } * ${ b }`;
+                return `${a} * ${b}`;
         }
     } else {
-        return `${ a } * ${ b }`;
+        return `${a} * ${b}`;
     }
 }
 
@@ -2036,7 +2036,7 @@ function add(a, b) {
             case 0:
                 return b;
             default:
-                return `${ a } + ${ b }`;
+                return `${a} + ${b}`;
         }
     } else if (isNumber$1(b)) {
 
@@ -2044,10 +2044,10 @@ function add(a, b) {
             case 0:
                 return a;
             default:
-                return `${ a } + ${ b }`;
+                return `${a} + ${b}`;
         }
     } else {
-        return `${ a } + ${ b }`;
+        return `${a} + ${b}`;
     }
 }
 
@@ -2064,9 +2064,9 @@ function sub(a, b) {
 
         switch (a) {
             case 0:
-                return `-${ b }`;
+                return `-${b}`;
             default:
-                return `${ a } - ${ b }`;
+                return `${a} - ${b}`;
         }
     } else if (isNumber$2(b)) {
 
@@ -2074,16 +2074,16 @@ function sub(a, b) {
             case 0:
                 return a;
             default:
-                return `${ a } - ${ b }`;
+                return `${a} - ${b}`;
         }
     } else {
-        return `${ a } - ${ b }`;
+        return `${a} - ${b}`;
     }
 }
 
 function ret(res) {
 
-    return `return ${ res };`;
+    return `return ${res};`;
 }
 
 var rotate = function () {
@@ -2092,7 +2092,7 @@ var rotate = function () {
     var y = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0;
     var z = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1.0;
 
-    return [`mat4 ${ funcName }(float angle) {`, 'float s = sin(angle);', 'float c = cos(angle);', 'float oc = 1.0 - c;', ret(mat4(add(mul('oc', x * x), 'c'), sub(mul('oc', x * y), mul(z, 's')), add(mul('oc', z * x), mul(y, 's')), 0, add(mul('oc', x * y), mul(z, 's')), add(mul('oc', y * y), 'c'), sub(mul('oc', y * z), mul(x, 's')), 0, sub(mul('oc', z * x), mul(y, 's')), add(mul('oc', y * z), mul(x, 's')), add(mul('oc', z * z), 'c'))), '}'];
+    return [`mat4 ${funcName}(float angle) {`, 'float s = sin(angle);', 'float c = cos(angle);', 'float oc = 1.0 - c;', ret(mat4(add(mul('oc', x * x), 'c'), sub(mul('oc', x * y), mul(z, 's')), add(mul('oc', z * x), mul(y, 's')), 0, add(mul('oc', x * y), mul(z, 's')), add(mul('oc', y * y), 'c'), sub(mul('oc', y * z), mul(x, 's')), 0, sub(mul('oc', z * x), mul(y, 's')), add(mul('oc', y * z), mul(x, 's')), add(mul('oc', z * z), 'c'))), '}'];
 };
 
 var rotateZ = function () {
@@ -22528,7 +22528,7 @@ function logCommandQueueToConsole(renderer) {
     renderer.cmdQueue.forEach(function (cmd) {
 
         if ('id' in cmd) {
-            console.debug(`cmd{${ cmd.id }}`, cmd);
+            console.debug(`cmd{${cmd.id}}`, cmd);
         } else {
             console.debug('cmd', cmd);
         }
@@ -22843,7 +22843,7 @@ class SpriteFactory {
     createDescriptor(name) {
 
         if (this.getDescriptor(name)) {
-            throw new Error(`oops.. VertexObjectDescriptor '${ name }' already exists!`);
+            throw new Error(`oops.. VertexObjectDescriptor '${name}' already exists!`);
         }
 
         for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -23143,8 +23143,8 @@ var resize = function () {
         w = Math.round(wPx * this.devicePixelRatio);
         h = Math.round(hPx * this.devicePixelRatio);
 
-        this.canvas.style.width = `${ wPx }px`;
-        this.canvas.style.height = `${ hPx }px`;
+        this.canvas.style.width = `${wPx}px`;
+        this.canvas.style.height = `${hPx}px`;
     }
 
     if (this.canvas.width !== w || this.canvas.height !== h) {
@@ -30321,7 +30321,7 @@ class Canvas extends Picture$1 {
             // <= predefined canvas
             canvas = options.canvas;
             if (!isPowerOfTwo(canvas.width) || !isPowerOfTwo(canvas.height)) {
-                throw new Error(`Picimo.graph.Canvas panic: width and height of predefined canvas needs to be power of two! but is [${ canvas.width }, ${ canvas.height }]`);
+                throw new Error(`Picimo.graph.Canvas panic: width and height of predefined canvas needs to be power of two! but is [${canvas.width}, ${canvas.height}]`);
             }
         } else {
             canvas = createCanvas$1(dimension);
