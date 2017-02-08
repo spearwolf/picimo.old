@@ -1,7 +1,6 @@
+/* jshint esversion:6 */
 import { mat4 } from 'gl-matrix';
-
-import { definePropertyPublicRO } from '../utils/object_utils';
-
+import { definePropertyPublicRO } from './obj_props';
 
 export default class Matrix4 {
 

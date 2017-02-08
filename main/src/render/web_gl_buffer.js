@@ -1,4 +1,5 @@
-import { definePropertiesPrivateRO } from '../utils/object_utils';
+/* jshint esversion:6 */
+import { definePropertiesPrivateRO } from '../utils/obj_props';
 
 /**
  * An object-orientated wrapper for the WebGL buffer api.
@@ -7,200 +8,204 @@ import { definePropertiesPrivateRO } from '../utils/object_utils';
  * @param {Object} options
  */
 
-export default function WebGlBuffer ( glx, options ) {
+export default class WebGlBuffer {
 
-    var gl = glx.gl;
+    constructor ( glx, options ) {
 
-    definePropertiesPrivateRO( this, {
+        const gl = glx.gl;
 
-        glx        : glx,
-        glBuffer   : gl.createBuffer(),
+        definePropertiesPrivateRO( this, {
 
-        drawType   : ( options.drawType || gl.DYNAMIC_DRAW ),
-        bufferType : ( options.bufferType || gl.ARRAY_BUFFER ),
-        itemType   : ( options.itemType || ( this.bufferType === gl.ARRAY_BUFFER ? gl.FLOAT : gl.UNSIGNED_SHORT ) ),
-        arrType    : ( options.arrType || ( this.itemType === gl.FLOAT ? Float32Array : Uint16Array ) ),
+            glx        : glx,
+            glBuffer   : gl.createBuffer(),
 
-        itemSize   : options.itemSize,
+            drawType   : ( options.drawType || gl.DYNAMIC_DRAW ),
+            bufferType : ( options.bufferType || gl.ARRAY_BUFFER ),
+            itemType   : ( options.itemType || ( this.bufferType === gl.ARRAY_BUFFER ? gl.FLOAT : gl.UNSIGNED_SHORT ) ),
+            arrType    : ( options.arrType || ( this.itemType === gl.FLOAT ? Float32Array : Uint16Array ) ),
 
-    });
+            itemSize   : options.itemSize,
 
-    this.numItems   = options.numItems || 0;
-    this.dataArray  = options.dataArray;
+        });
 
-    Object.seal( this );
+        this.numItems   = options.numItems || 0;
+        this.dataArray  = options.dataArray;
 
-}
-
-/**
- * @return self
- */
-
-WebGlBuffer.prototype.bindBuffer = function () {
-
-    this.glx.bindBuffer( this.bufferType, this.glBuffer );
-    return this;
-
-};
-
-/**
- * @param arr
- * @return self
- */
-
-WebGlBuffer.prototype.bufferData = function ( arr ) {
-
-    this.numItems = ( arr.length / this.itemSize ) | 0;
-    this.dataArray = arr instanceof this.arrType ? arr : new this.arrType( arr );
-
-    this.bindBuffer();
-    this.glx.gl.bufferData( this.bufferType, this.dataArray, this.drawType );
-
-    return this;
-
-};
-
-/**
- * @param arr
- * @param {number} count
- * @param {number} [offset]
- * @return self
- */
-
-WebGlBuffer.prototype.bufferSubData = function ( arr, count, offset ) {
-
-    this.bindBuffer();
-
-    if ( ! arr ) arr = this.dataArray;
-
-    if ( typeof count === 'number' ) {
-
-        if ( offset === undefined ) offset = 0;
-
-        arr = new this.arrType( arr.buffer, offset * this.arrType.BYTES_PER_ELEMENT, count );
+        Object.seal( this );
 
     }
 
-    this.glx.gl.bufferSubData( this.bufferType, 0, arr );
+    /**
+     * @return self
+     */
 
-    return this;
+    bindBuffer () {
 
-};
+        this.glx.bindBuffer( this.bufferType, this.glBuffer );
+        return this;
 
-/**
- * @param pointer
- * @param itemSize
- * @param stride
- * @param offset
- * @param normalized
- * @return self
- */
+    }
 
-WebGlBuffer.prototype.vertexAttribPointer = function ( pointer, itemSize, stride, offset, normalized ) {
+    /**
+     * @param arr
+     * @return self
+     */
 
-    var gl = this.glx.gl;
+    bufferData ( arr ) {
 
-    gl.vertexAttribPointer( pointer,
-        ( itemSize || this.itemSize ),
-        this.itemType,
-        ( normalized ? gl.TRUE : gl.FALSE ),
-        ( stride || 0 ) * this.arrType.BYTES_PER_ELEMENT,
-        ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
+        this.numItems = ( arr.length / this.itemSize ) | 0;
+        this.dataArray = arr instanceof this.arrType ? arr : new this.arrType( arr );
 
-    return this;
+        this.bindBuffer();
+        this.glx.gl.bufferData( this.bufferType, this.dataArray, this.drawType );
 
-};
+        return this;
 
-/**
- * @param elemType
- * @param numItems
- * @param offset
- */
+    }
 
-WebGlBuffer.prototype.drawElements = function ( elemType, numItems, offset ) {
+    /**
+     * @param arr
+     * @param {number} count
+     * @param {number} [offset]
+     * @return self
+     */
 
-    var gl = this.glx.gl;
+    bufferSubData ( arr, count, offset ) {
 
-    gl.drawElements( ( elemType || gl.TRIANGLES ), ( numItems || this.numItems ) * this.itemSize, this.itemType, ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
+        this.bindBuffer();
 
-};
+        if ( ! arr ) arr = this.dataArray;
 
+        if ( typeof count === 'number' ) {
 
-WebGlBuffer.prototype.destroy = function () {
+            if ( offset === undefined ) offset = 0;
 
-    if ( this.glx ) {
-
-        if ( this.glBuffer ) {
-
-            this.glx.gl.deleteBuffer( this.glBuffer );
-            this.glBuffer = null;
+            arr = new this.arrType( arr.buffer, offset * this.arrType.BYTES_PER_ELEMENT, count );
 
         }
 
-        this.glx = null;
+        this.glx.gl.bufferSubData( this.bufferType, 0, arr );
+
+        return this;
 
     }
 
-};
+    /**
+     * @param pointer
+     * @param itemSize
+     * @param stride
+     * @param offset
+     * @param normalized
+     * @return self
+     */
 
-/**
- * Returns a new WebGlBuffer.
- *
- * @param {WebGlContext} glx
- * @param {VertexArrayDescriptor} descriptor
- * @param {Object} options
- * @static
- */
+    vertexAttribPointer ( pointer, itemSize, stride, offset, normalized ) {
 
-WebGlBuffer.fromVertexArray = function ( glx, descriptor, options ) {
+        var gl = this.glx.gl;
 
-    var opts = {
+        gl.vertexAttribPointer( pointer,
+            ( itemSize || this.itemSize ),
+            this.itemType,
+            ( normalized ? gl.TRUE : gl.FALSE ),
+            ( stride || 0 ) * this.arrType.BYTES_PER_ELEMENT,
+            ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
 
-        drawType   : ( options && options.drawType ? options.drawType : glx.gl.DYNAMIC_DRAW ),
-        bufferType : glx.gl.ARRAY_BUFFER,
-        itemType   : glx.gl.FLOAT,
-        arrType    : Float32Array,
-        itemSize   : descriptor.vertexAttrCount,
-
-    };
-
-    var buffer = new WebGlBuffer( glx, opts );
-
-    if ( options && options.vertexArray ) {
-
-        buffer.bufferData( options.vertexArray.vertices );
+        return this;
 
     }
 
-    return buffer;
+    /**
+     * @param elemType
+     * @param numItems
+     * @param offset
+     */
 
-};
+    drawElements ( elemType, numItems, offset ) {
 
-/**
- * Returns a new WebGlBuffer.
- * @method fromVertexIndexArray
- * @param {Picimo.render.WebGlContext} glx
- * @param {Picimo.core.VertexIndexArray} vertexIndexArray
- * @static
- */
+        var gl = this.glx.gl;
 
-WebGlBuffer.fromVertexIndexArray = function ( glx, vertexIndexArray ) {
+        gl.drawElements( ( elemType || gl.TRIANGLES ), ( numItems || this.numItems ) * this.itemSize, this.itemType, ( offset || 0 ) * this.arrType.BYTES_PER_ELEMENT );
 
-    var opts = {
+    }
 
-        drawType   : glx.gl.STATIC_DRAW,
-        bufferType : glx.gl.ELEMENT_ARRAY_BUFFER,
-        itemType   : glx.gl.UNSIGNED_SHORT,
-        arrType    : Uint16Array,
-        itemSize   : vertexIndexArray.objectIndexCount,
-        numItems   : vertexIndexArray.vertexObjectCount,
 
-    };
+    destroy () {
 
-    var buffer = new WebGlBuffer( glx, opts );
-    buffer.bufferData( vertexIndexArray.indices );
+        if ( this.glx ) {
 
-    return buffer;
+            if ( this.glBuffer ) {
 
-};
+                this.glx.gl.deleteBuffer( this.glBuffer );
+                this.glBuffer = null;
+
+            }
+
+            this.glx = null;
+
+        }
+
+    }
+
+    /**
+     * Returns a new WebGlBuffer.
+     *
+     * @param {WebGlContext} glx
+     * @param {VertexArrayDescriptor} descriptor
+     * @param {Object} options
+     * @static
+     */
+
+    static fromVertexArray ( glx, descriptor, options ) {
+
+        var opts = {
+
+            drawType   : ( options && options.drawType ? options.drawType : glx.gl.DYNAMIC_DRAW ),
+            bufferType : glx.gl.ARRAY_BUFFER,
+            itemType   : glx.gl.FLOAT,
+            arrType    : Float32Array,
+            itemSize   : descriptor.vertexAttrCount,
+
+        };
+
+        var buffer = new WebGlBuffer( glx, opts );
+
+        if ( options && options.vertexArray ) {
+
+            buffer.bufferData( options.vertexArray.vertices );
+
+        }
+
+        return buffer;
+
+    }
+
+    /**
+     * Returns a new WebGlBuffer.
+     * @method fromVertexIndexArray
+     * @param {Picimo.render.WebGlContext} glx
+     * @param {Picimo.core.VertexIndexArray} vertexIndexArray
+     * @static
+     */
+
+    static fromVertexIndexArray ( glx, vertexIndexArray ) {
+
+        const opts = {
+
+            drawType   : glx.gl.STATIC_DRAW,
+            bufferType : glx.gl.ELEMENT_ARRAY_BUFFER,
+            itemType   : glx.gl.UNSIGNED_SHORT,
+            arrType    : Uint16Array,
+            itemSize   : vertexIndexArray.objectIndexCount,
+            numItems   : vertexIndexArray.vertexObjectCount,
+
+        };
+
+        const buffer = new WebGlBuffer( glx, opts );
+        buffer.bufferData( vertexIndexArray.indices );
+
+        return buffer;
+
+    }
+
+}
 

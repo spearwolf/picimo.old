@@ -1,3 +1,5 @@
+/* jshint esversion:6 */
+/* jshint eqnull:true */
 
 export default function addShaderValue ( obj ) {
 

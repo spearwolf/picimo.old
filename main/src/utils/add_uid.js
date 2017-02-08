@@ -1,10 +1,11 @@
-import { definePropertyPublicRO } from './object_utils';
+/* jshint esversion:6 */
+import { definePropertyPublicRO } from './obj_props';
 
-let UID = 0;
+let g_uid = 0;
 
-export default function addUid ( obj ) {
+export default function ( obj ) {
 
-    definePropertyPublicRO(obj, 'uid', (++UID));
+    definePropertyPublicRO(obj, 'uid', (++g_uid));
 
     return obj;
 

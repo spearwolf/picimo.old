@@ -1,4 +1,5 @@
-import { definePropertiesPublicRO } from '../utils/object_utils';
+/* jshint esversion:6 */
+import { definePropertiesPublicRO } from '../utils/obj_props';
 
 /**
  * @param {VertexObjectDescriptor} descriptor - Vertex object descriptor
@@ -15,7 +16,7 @@ export default function VertexObjectPool ( descriptor, capacity, vertexArray ) {
         // Maximum number of vertex objects
         'capacity' : capacity,
 
-        'vertexArray' : ( vertexArray != null ? vertexArray : descriptor.createVertexArray( capacity ) ),
+        'vertexArray' : ( vertexArray ? vertexArray : descriptor.createVertexArray( capacity ) ),
 
         'ZERO' : descriptor.create(),
 

@@ -1,4 +1,5 @@
-import { definePropertiesPublicRO } from '../utils/object_utils';
+/* jshint esversion:6 */
+import { definePropertiesPublicRO } from '../utils/obj_props';
 
 export default function NodeState (initialStateValue) {
 

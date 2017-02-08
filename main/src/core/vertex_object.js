@@ -1,4 +1,5 @@
-import { definePropertyPrivate, definePropertyPrivateRO } from '../utils/object_utils';
+/* jshint esversion:6 */
+import { definePropertyPrivate, definePropertyPrivateRO } from '../utils/obj_props';
 
 /**
  * @param {!VertexObjectDescriptor} [descriptor] - Vertex descriptor

@@ -1,9 +1,10 @@
+/* jshint esversion:6 */
 import eventize from '@spearwolf/eventize';
 
 import Picture from './picture';
 import { Viewport, Texture } from '../core';
-import { asBoolean } from '../utils';
-import { isPowerOfTwo, findNextPowerOfTwo } from '../math';
+import { asBoolean } from '../utils/as';
+import { isPowerOfTwo, findNextPowerOfTwo } from '../utils/math_helpers';
 
 export default class Canvas extends Picture {
 

@@ -1,7 +1,8 @@
+/* jshint esversion:6 */
 import addUid from '../utils/add_uid';
 import eventize from '@spearwolf/eventize';
 import makeReadyPromise from '../utils/make_ready_promise';
-import { definePropertyPublicRO } from '../utils/object_utils';
+import { definePropertyPublicRO } from '../utils/obj_props';
 
 /**
  * @desc

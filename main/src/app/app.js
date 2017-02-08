@@ -1,8 +1,9 @@
+/* jshint esversion:6 */
 import Color from 'color-js';
 import eventize from '@spearwolf/eventize';
 
-import BlendMode from '../render/cmd/blend_mode';
-import addGlxProperty from '../utils/add_glx_property';
+import BlendMode from '../render/blend_mode';
+import defineGlxProperty from './define_glx_property';
 import createCanvas from './create_canvas';
 import createShaderManager from './create_shader_manager';
 import createWebGlContext from './create_web_gl_context';
@@ -12,7 +13,7 @@ import resize from './resize';
 import { MouseController } from '../ui';
 import { Scene } from '../graph';
 import { TextureManager, WebGlRenderer } from '../render';
-import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/object_utils';
+import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/obj_props';
 import { getUrlDir, getAssetUrl, joinAssetUrl } from './asset_url_helper';
 import { loadTextureAtlas, loadTexture } from './texture_helpers';
 
@@ -76,7 +77,7 @@ export default class App {
         definePropertyPrivateRO(this, 'mouseController', new MouseController(this));
         this.mouseController.connect(this); // => forward all mouse events to app
 
-        addGlxProperty(this);
+        defineGlxProperty(this);
 
         definePropertyPrivateRO(this, 'glCtxAttrs', {
 
@@ -104,7 +105,7 @@ export default class App {
 
             pixelRatio : 1,
             projection : true,
-            blendMode  : BlendMode.DEFAULT,
+            blendMode  : BlendMode.get('default'),
 
         } ) );
 

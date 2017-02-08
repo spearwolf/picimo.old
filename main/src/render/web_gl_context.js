@@ -1,4 +1,10 @@
-import { definePropertyPublicRO, definePropertiesPublicRO, definePropertiesPrivateRO } from '../utils/object_utils';
+/* jshint esversion:6 */
+/* jshint -W058 */
+import {
+    definePropertyPublicRO,
+    definePropertiesPublicRO,
+    definePropertiesPrivateRO
+} from '../utils/obj_props';
 
 export default class WebGlContext {
 

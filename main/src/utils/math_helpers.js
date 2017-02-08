@@ -1,5 +1,4 @@
-import Matrix4 from './matrix4';
-export { Matrix4 };
+/* jshint esversion:6 */
 
 /**
  * @param {number} a

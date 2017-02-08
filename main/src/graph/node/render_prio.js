@@ -1,4 +1,5 @@
-import { asNumber } from '../../utils';
+/* jshint esversion:6 */
+import { asNumber } from '../../utils/as';
 
 const DEFAULT_RENDER_PRIO = 0;
 

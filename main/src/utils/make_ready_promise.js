@@ -1,3 +1,5 @@
+/* jshint esversion:6 */
+
 /**
  * @example
  * var foo = {}
@@ -23,7 +25,7 @@ export default function makeReadyPromise (obj) {
 
         ready: {
 
-            get: function () { return isReady },
+            get: function () { return isReady; },
             set: function ( ready ) {
                 if (!isReady && ready) {            // transition false => true
                     isReady = true;

@@ -1,4 +1,4 @@
-import * as cmd from './cmd';
+/* jshint esversion:6 */
 
 import Program from './program';
 
@@ -13,7 +13,6 @@ import WebGlTexture from './web_gl_texture';
 import WebGlBuffer from './web_gl_buffer';
 
 export {
-    cmd,
     Program,
     ShaderSource,
     ShaderManager,

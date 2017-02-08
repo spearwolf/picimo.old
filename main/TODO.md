@@ -2,7 +2,7 @@
 
 ## Code Refactoring
 
-- [ ] no more generic `import * as ...` imports
+- [o] no more generic `import * as ...` imports
 - [ ] only one class or method per file
 - [ ] for all options/configuration values use transform helpers `utils.asString()`, `utils.asBoolean()`, ..
 - [ ] texture state and events (imageLoaded, textureCreated, firstTimeRender), add to TextureManager
@@ -10,9 +10,9 @@
 - [ ] remove renderer.debugOutFrame - create a dynamic flag/properties for this feature
 - [ ] check/remove all inline TODOs
 - [ ] convert all graph/.. nodes into es6 classes
-- [ ] rename `utils/obj_utils`into `utils/obj_props`
+- [x] rename `utils/obj_utils`into `utils/obj_props`
 - [ ] rework all exceptions/errors and logs plus DEBUG/debug
-- [ ] cleanup utils/index.js
+- [x] cleanup utils/index.js
 
 ## Inline Documentation
 
@@ -24,7 +24,7 @@
 
 ## Tests
 
-- [ ] vertex object description and vertex objects generation
+- [o] vertex object description and vertex objects generation
 - [ ] ready promise / resource
 - [ ] src/graph/picture/ update\_vertices.js + diplay\_position.js
 

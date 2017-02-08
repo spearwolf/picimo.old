@@ -1,4 +1,5 @@
-import { definePropertyPublicRO } from '../utils/object_utils';
+/* jshint esversion:6 */
+import { definePropertyPublicRO } from '../utils/obj_props';
 
 /**
  * @ignore

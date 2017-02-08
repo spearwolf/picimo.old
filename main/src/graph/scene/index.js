@@ -1,7 +1,10 @@
-import Matrix4 from '../../math/matrix4';
+/* jshint esversion:6 */
+/* jshint eqnull:true */
+import Matrix4 from '../../utils/matrix4';
 import Node from '../node';
 import createFactories from './factories';
-import { UniformValue, BlendMode } from '../../render/cmd';
+import UniformValue from '../../render/uniform_value';
+import BlendMode from '../../render/blend_mode';
 import { initProjection, initRootScene, initTransform, initWithoutProjection, updateProjection } from './init';
 import { onFrame, onFrameEnd } from './frame';
 
@@ -155,8 +158,7 @@ Scene.prototype.setBlendMode = function (depthTest, depthMask, depthFunc, blend,
     if (arguments.length === 0 || arguments[0] == null) {
         this.blendMode = undefined;
     } else if (arguments.length === 1 && typeof arguments[0] === 'string') {
-        let name = arguments[0].toUpperCase();
-        this.blendMode = BlendMode[name];
+        this.blendMode = BlendMode[arguments[0]];
     } else {
         this.blendMode = new BlendMode(depthTest, depthMask, depthFunc, blend, blendFuncSrc, blendFuncDst);
     }

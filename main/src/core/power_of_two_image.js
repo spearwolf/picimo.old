@@ -1,9 +1,10 @@
+/* jshint esversion:6 */
 /* global HTMLCanvasElement */
 /* global HTMLImageElement */
 import addUid from '../utils/add_uid';
 import makeReadyPromise from '../utils/make_ready_promise';
-import { definePropertyPublicRO } from '../utils/object_utils';
-import { isPowerOfTwo, findNextPowerOfTwo } from '../math';
+import { definePropertyPublicRO } from '../utils/obj_props';
+import { isPowerOfTwo, findNextPowerOfTwo } from '../utils/math_helpers';
 
 /**
  * A power of two image.

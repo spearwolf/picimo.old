@@ -1,4 +1,5 @@
-import { definePropertyPublicRO } from './object_utils';
+/* jshint esversion:6 */
+import { definePropertyPublicRO } from './obj_props';
 
 /**
  * @desc
@@ -87,5 +88,5 @@ export default class Queue {
         }
     }
 
-}  // => end of class
+}  // => end of class Queue
 

@@ -1,7 +1,9 @@
+/* jshint esversion:6 */
+/* jshint eqnull:true */
 
 export default function delegateMethods (srcObj, target, methodName) {
 
-    function delegate_method (failIfNotAFunction, key, newKey) {
+    function delegate (failIfNotAFunction, key, newKey) {
 
         let method = srcObj[key];
 
@@ -21,17 +23,17 @@ export default function delegateMethods (srcObj, target, methodName) {
 
     if (Array.isArray(methodName)) {
         methodName.forEach(function (key) {
-            delegate_method(true, key, key);
+            delegate(true, key, key);
         });
     } else if (typeof methodName === 'string') {
-        delegate_method(true, methodName);
+        delegate(true, methodName);
     } else if (typeof methodName === 'object') {
         Object.keys(methodName).forEach(function (key) {
-            delegate_method(true, key, methodName[key]);
+            delegate(true, key, methodName[key]);
         });
     } else {
-        for (let key in srcObj) {
-            delegate_method(false, key);
+        for (let key of Object.keys(srcObj)) {
+            delegate(false, key);
         }
     }
 

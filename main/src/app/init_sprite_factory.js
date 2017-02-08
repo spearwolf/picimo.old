@@ -1,5 +1,6 @@
+/* jshint esversion:6 */
 import delegateMethods from '../utils/delegate_methods';
-import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/object_utils';
+import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/obj_props';
 import { initSprites, defineSprite } from '../sprites';
 
 /**

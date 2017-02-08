@@ -1,3 +1,4 @@
+/* jshint esversion:6 */
 /* global Picimo */
 import { createHtmlContainer, waitUntilFrame } from './utils';
 
@@ -13,7 +14,7 @@ describe("Picimo.App", () => {
 
     beforeAll((done) => {
 
-        app = new Picimo.App({ appendTo: createHtmlContainer(CANVAS_WIDTH, CANVAS_HEIGHT) })
+        app = new Picimo.App({ appendTo: createHtmlContainer(CANVAS_WIDTH, CANVAS_HEIGHT) });
 
         app.on('ready', () => {
             resizeCallCountBeforeReady = resizeCallCount;

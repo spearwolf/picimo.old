@@ -1,14 +1,17 @@
-import { definePropertyPublicRO, definePropertiesPrivateRO, definePropertyPrivate } from '../utils/object_utils';
+/* jshint esversion:6 */
+/* jshint -W058 */
+import {
+    definePropertyPublicRO,
+    definePropertiesPrivateRO,
+    definePropertyPrivate
+} from '../utils/obj_props';
+
 import WebGlTexture from './web_gl_texture';
 
 // for some background informations see:
 //      https://www.khronos.org/render/wiki/TextureState
 
 export default class TextureManager {
-
-    /**
-     * @param {App} app - app
-     */
 
     constructor ( app ) {
 

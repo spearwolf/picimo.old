@@ -1,3 +1,4 @@
+/* jshint esversion:6 */
 import eventize from '@spearwolf/eventize';
 
 import NodeState from '../node_state';
@@ -5,8 +6,8 @@ import defineReady from './ready';
 import defineRenderPrio from './render_prio';
 import destroy from './destroy';
 import renderFrame from './render_frame';
-import { asString, asBoolean } from '../../utils';
-import { definePropertyPublicRO } from '../../utils/object_utils';
+import { asString, asBoolean } from '../../utils/as';
+import { definePropertyPublicRO } from '../../utils/obj_props';
 
 
 export default function Node (app, options = {}) {

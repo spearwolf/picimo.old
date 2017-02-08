@@ -1,3 +1,5 @@
+/* jshint esversion:6 */
+/* jshint eqnull:true */
 import UniformValueStack from './uniform_value_stack';
 import drawElements from './draw_elements';
 

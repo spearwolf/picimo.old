@@ -1,6 +1,7 @@
+/* jshint esversion:6 */
 import WebGlBuffer from '../web_gl_buffer';
 import { VertexIndexArray } from '../../core';
-import { definePropertiesPrivateRO } from '../../utils/object_utils';
+import { definePropertiesPrivateRO } from '../../utils/obj_props';
 
 // TODO - buffer update strategy ( all-at-once, blocks, ..? )
 

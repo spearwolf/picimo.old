@@ -1,7 +1,8 @@
-import Matrix4 from '../../math/matrix4';
-import UniformValue from '../../render/cmd/uniform_value';
+/* jshint esversion:6 */
 import eventize from '@spearwolf/eventize';
-import { definePropertiesPublicRO } from '../../utils/object_utils';
+import Matrix4 from '../../utils/matrix4';
+import UniformValue from '../../render/uniform_value';
+import { definePropertiesPublicRO } from '../../utils/obj_props';
 import { onRootFrame } from './frame';
 
 /**

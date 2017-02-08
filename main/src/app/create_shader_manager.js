@@ -1,7 +1,8 @@
+/* jshint esversion:6 */
 import delegateMethods from '../utils/delegate_methods';
 import { DefaultShader } from '../shader';
 import { ShaderManager } from '../render';
-import { definePropertyPrivateRO } from '../utils/object_utils';
+import { definePropertyPrivateRO } from '../utils/obj_props';
 
 /**
  * @ignore
