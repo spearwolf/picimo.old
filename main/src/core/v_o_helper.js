@@ -4,8 +4,7 @@ export function createVO ( obj, descriptor, voArray ) {
 
     // set VODescriptor
     //
-    obj.descriptor = descriptor ? descriptor
-        : ( voArray ? voArray.descriptor : null );
+    obj.descriptor = descriptor || ( voArray ? voArray.descriptor : null );
 
     if ( ! obj.descriptor ) {
 
@@ -15,7 +14,7 @@ export function createVO ( obj, descriptor, voArray ) {
 
     // set VOArray
     //
-    obj.voArray = voArray ? voArray : obj.descriptor.createVertexArray();
+    obj.voArray = voArray || obj.descriptor.createVOArray();
 
     if ( obj.descriptor !== obj.voArray.descriptor &&
         ( obj.descriptor.vertexCount !== obj.voArray.descriptor.vertexCount ||

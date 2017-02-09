@@ -31961,10 +31961,10 @@ var App$1 = function App(canvas, options) {
 eventize_1$1(App$1); // Enable plugins via Picimo.App.on('create', function (app, options))
 
 /* jshint esversion:6 */
-/* global "0.0.24" */
+/* global "0.0.25" */
 /* global false */
 
-var VERSION = "0.0.24";
+var VERSION = "0.0.25";
 
 exports.VERSION = VERSION;
 exports.App = App$1;

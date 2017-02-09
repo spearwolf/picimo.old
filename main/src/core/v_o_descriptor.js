@@ -25,7 +25,7 @@ export default class VertexObjectDescriptor {
      * @param {number} [size=1]
      * @returns {VOArray}
      */
-    createVertexArray ( size = 1 ) {
+    createVOArray ( size = 1 ) {
 
         return new VOArray( this, size );
 

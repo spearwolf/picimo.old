@@ -32273,9 +32273,9 @@ class App$1 {
 eventize_1$1(App$1);  // Enable plugins via Picimo.App.on('create', function (app, options))
 
 /* jshint esversion:6 */
-/* global "0.0.24" */
+/* global "0.0.25" */
 /* global false */
 
-const VERSION = "0.0.24";
+const VERSION = "0.0.25";
 
 export { VERSION, App$1 as App, index$2 as graph, index as render, index$1 as core, defineSprite, SpriteFactory$1 as SpriteFactory };
