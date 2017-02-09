@@ -1,3 +1,5 @@
+/* jshint browser:true */
+/* jshint jasmine:true */
 /* global Picimo */
 
 describe("Picimo.graph.NodeState", function () {

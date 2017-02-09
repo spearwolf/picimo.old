@@ -1,4 +1,5 @@
-/* jshint esversion:6 */
+/* jshint browser:true */
+/* jshint jasmine:true */
 /* global Picimo */
 import { createHtmlContainer, waitUntilFrame } from './utils';
 

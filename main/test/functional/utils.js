@@ -1,4 +1,5 @@
 /* jshint browser:true */
+/* jshint jasmine:true */
 /* global Picimo */
 
 const DEFAULT_CANVAS_WIDTH  = 400;
