@@ -25,7 +25,7 @@ export default class VOArray {
         this.uint16Array = new Uint16Array( this.uint8Array.buffer );
         this.float32Array = new Float32Array( this.uint8Array.buffer );
 
-        Object.seal(this);
+        Object.freeze(this);
 
     }
 

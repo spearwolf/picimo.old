@@ -31683,10 +31683,10 @@ class App$1 {
 eventize_1$1(App$1); // Enable plugins via Picimo.App.on('create', function (app, options))
 
 /* jshint esversion:6 */
-/* global "0.0.25" */
+/* global "0.0.26" */
 /* global true */
 
-var VERSION = "0.0.25" + '-dbg';
+var VERSION = "0.0.26" + '-dbg';
 
 exports.VERSION = VERSION;
 exports.App = App$1;

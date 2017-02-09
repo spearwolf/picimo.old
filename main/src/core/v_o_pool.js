@@ -114,7 +114,9 @@ function createVertexObjects ( pool ) {
         let voArray = pool.voArray.subarray( i );
 
         let vertexObject = pool.descriptor.createVO( voArray );
-        vertexObject.freeVO = pool.free.bind( pool, vertexObject );
+        vertexObject.free = pool.free.bind( pool, vertexObject );
+
+        Object.freeze(vertexObject);
 
         pool.availableVOs.push( vertexObject );
 
