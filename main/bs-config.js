@@ -16,7 +16,7 @@ module.exports = {
     open: false,
     notify: false,
     files: [
-        "dist/*.js",
+        "dist/**/*",
         "test/regression/**/*"
     ],
     serveStatic: [{
@@ -35,9 +35,13 @@ module.exports = {
             let files = walkSync(path.join(__dirname, 'test/regression'));
             files = files.filter(file => file.match(/\.html$/)).map(file => file.replace(/.*test.regression\/(.*)/, '$1'));
             res.end(
-                '<h1 style="font-size: 16px">picimo visual tests</h1>' +
+                '<h1 style="font-size: 16px">generated api docs</h1>' +
                 '<ul style="list-style-type:none;margin:0 0 0 1em;padding:0">' +
-                files.map(f => `<li><a href="${f}">${f}</a></li>`).join('\n') +
+                  '<li><a href="dist/esdoc/index.html">/dist/esdoc/</a></li>' +
+                '</ul>' +
+                '<h1 style="font-size: 16px">picimo visual regression tests</h1>' +
+                '<ul style="list-style-type:none;margin:0 0 0 1em;padding:0">' +
+                files.map(f => `<li><a href="${f}">/${f}</a></li>`).join('\n') +
                 '</ul>');
         } else {
             next();

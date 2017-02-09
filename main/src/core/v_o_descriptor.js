@@ -45,7 +45,8 @@ export default class VertexObjectDescriptor {
 
     /**
      * @param {string} name
-     * @returns {number} size - attribute size
+     * @param {number} size - attribute item count
+     * @returns {boolean}
      */
     hasAttribute ( name, size ) {
 

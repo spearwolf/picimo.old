@@ -2,7 +2,7 @@
     "port": 8000,
     "open": false,
     "files": [
-        "main/dist/*.js",
+        "main/dist/**/*",
         "site/**/*.{html,css,js}"
     ],
     "server": {
