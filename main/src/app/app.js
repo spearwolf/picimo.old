@@ -17,50 +17,58 @@ import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/obj_pr
 import { getUrlDir, getAssetUrl, joinAssetUrl } from './asset_url_helper';
 import { loadTextureAtlas, loadTexture } from './texture_helpers';
 
+/**
+ * @class App
+ *
+ * @param {?HTMLCanvasELement} canvas
+ * @param {Object} [options]
+ *
+ */
 
 export default class App {
 
     constructor (canvas, options) {
 
-        eventize(this);
+        eventize( this );
 
-        /**
-         * @private
-         */
+        /** @private */
         this.resize = resize;
 
-        /**
-         * @private
-         */
+        /** @private */
         this.renderFrame = renderFrame;
 
         /**
-         * {@link src/app/asset_url_helper.js~getAssetUrl}
+         * @function
+         * @param {string} url
+         * @return {string}
          */
         this.getAssetUrl = getAssetUrl;
 
         /**
-         * {@link src/app/asset_url_helper.js~joinAssetUrl}
+         * @function
+         * @param {string} baseUrl
+         * @param {string} url
+         * @return {string}
          */
         this.joinAssetUrl = joinAssetUrl;
 
-        /**
-         * {@link src/app/texture_helpers.js~loadTextureAtlas}
-         */
         this.loadTextureAtlas = loadTextureAtlas;
-
-        /**
-         * {@link src/app/texture_helpers.js~loadTexture}
-         */
         this.loadTexture = loadTexture;
 
         if (typeof window !== 'undefined') {  // TODO wrap window?
             definePropertyPublicRO(this, 'devicePixelRatio', window.devicePixelRatio || 1);
         }
 
+        /**
+         * App *ready* state.
+         * @instance
+         * @type {boolean}
+         */
         definePropertyPublicRO(this, 'ready', false);
 
         /**
+         * App *time* in ms since startup.
+         * @instance
          * @type {float}
          */
         this.now = window.performance.now() / 1000.0;

@@ -5,18 +5,20 @@ import { BYTES_PER_ELEMENT, TYPED_ARRAY_CONSTRUCTOR } from '../utils/typed_array
 /**
  * Vertex Object Array
  *
+ * @class VOArray
+ *
+ * @param {VODescriptor} descriptor - *Vertex object* descriptor
+ * @param {number} capacity - Maximum number of *vertex objects*
+ * @param {?ArrayBuffer|DataView|Float32Array} data
+ *
  * @desc
  * An array of *vertex objects*.
  * Has a maximum capacity and a reference to the *vertex object descriptor*.
  *
  */
+
 export default class VOArray {
 
-    /**
-     * @param {VODescriptor} descriptor - *Vertex object* descriptor
-     * @param {number} capacity - Maximum number of *vertex objects*
-     * @param {?ArrayBuffer|DataView|Float32Array} data
-     */
     constructor (descriptor, capacity, data) {
 
         this.descriptor = descriptor;
@@ -41,14 +43,17 @@ export default class VOArray {
 
     }
 
+    /** @type {ArrayBuffer} */
     get buffer () {
         return this.float32Array.buffer;
     }
 
+    /** @type {ArrayBuffer} */
     get bufferByteOffset () {
         return this.buffer.byteOffset;
     }
 
+    /** @type {ArrayBuffer} */
     get bufferByteLength () {
         return this.buffer.byteLength;
     }

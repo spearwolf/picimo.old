@@ -2,6 +2,7 @@
 /**
  * Define a *read-only* property which is *enumerable* but not *writable* and *configurable*.
  *
+ * @name utils.definePropertyPublicRO
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -24,6 +25,7 @@ export function definePropertyPublicRO ( obj, name, value ) {
 /**
  * Define a property which is NOT *enumerable* and *configurable* BUT *writable*.
  *
+ * @name utils.definePropertyPrivate
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -45,6 +47,7 @@ export function definePropertyPrivate ( obj, name, value ) {
 /**
  * Define a **read-only** property which is NOT *enumerable*, *configurable* and *writable*.
  *
+ * @name utils.definePropertyPrivateRO
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -65,6 +68,7 @@ export function definePropertyPrivateRO ( obj, name, value ) {
 /**
  * Define *read-only* properties which are *enumerable* but not *writable* and *configurable*.
  *
+ * @name utils.definePropertiesPublicRO
  * @example
  * Picimo.utils.object.definePropertiesPublicRO( obj, {
  *     FOO: 'foo',
@@ -101,6 +105,7 @@ export function definePropertiesPublicRO ( obj, map ) {
 /**
  * Define *read-only* properties which are NOT *enumerable*, *writable* or *configurable*.
  *
+ * @name utils.definePropertiesPrivateRO
  * @example
  * Picimo.utils.object.definePropertiesPrivateRO( obj, {
  *     _FOO: 'foo',

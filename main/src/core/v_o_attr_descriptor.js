@@ -1,6 +1,21 @@
 /* jshint esversion:6 */
 import { BYTES_PER_ELEMENT, TYPED_ARRAY_GETTER } from '../utils/typed_array_helpers';
 
+/**
+ * Vertex object *attribute* descriptor.
+ *
+ * @class VOAttrDescriptor
+ *
+ * @param {string} name
+ * @param {string} type
+ * @param {number} size
+ * @param {number} offset
+ * @param {number} byteOffset
+ * @param {boolean} uniform
+ * @param {string[]} [attrNames]
+ *
+ */
+
 export default class VOAttrDescriptor {
 
     constructor ( name, type, size, offset, byteOffset, uniform, attrNames ) {
@@ -28,6 +43,10 @@ export default class VOAttrDescriptor {
 
     }
 
+    /**
+     * Number of attributes per vertex
+     * @type {number}
+     */
     vertexAttrCount (descriptor) {
         return descriptor.bytesPerVertex / this.bytesPerElement;
     }
@@ -182,7 +201,7 @@ export default class VOAttrDescriptor {
 
 }
 
-
+/** @private */
 function getAttrPostfix ( attrDesc, name, index ) {
 
     if ( attrDesc.attrNames ) {
@@ -201,6 +220,7 @@ function getAttrPostfix ( attrDesc, name, index ) {
 
 }
 
+/** @private */
 function get_vNf_u ( getArray, offset ) {
     return function ( attrIndex ) {
 
@@ -209,6 +229,7 @@ function get_vNf_u ( getArray, offset ) {
     };
 }
 
+/** @private */
 function set_vNf_u ( getArray, vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
@@ -225,12 +246,14 @@ function set_vNf_u ( getArray, vectorLength, vertexCount, vertexAttrCount, offse
     };
 }
 
+/** @private */
 function get_v1f_u ( getArray, offset ) {
     return function () {
         return getArray(this.voArray)[ offset ];
     };
 }
 
+/** @private */
 function set_vNf_v ( getArray, vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
@@ -247,6 +270,7 @@ function set_vNf_v ( getArray, vectorLength, vertexCount, vertexAttrCount, offse
     };
 }
 
+/** @private */
 function set_v1f_u ( getArray, vertexCount, vertexAttrCount, offset ) {
     return function ( value ) {
 
@@ -261,6 +285,7 @@ function set_v1f_u ( getArray, vertexCount, vertexAttrCount, offset ) {
     };
 }
 
+/** @private */
 function camelize ( name ) {
     return name[ 0 ].toUpperCase() + name.substr( 1 );
 }

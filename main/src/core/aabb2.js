@@ -1,15 +1,15 @@
 
 /**
  * Represents a 2d axis aligned boundary box.
+ * @class AABB2
+ * @param {number} [x0=0] - x0
+ * @param {number} [x1=0] - x1
+ * @param {number} [y0=0] - y0
+ * @param {number} [y1=0] - y1
  */
+
 export default class AABB2 {
 
-    /**
-     * @param {number} [x0=0] - x0
-     * @param {number} [x1=0] - x1
-     * @param {number} [y0=0] - y0
-     * @param {number} [y1=0] - y1
-     */
     constructor (x0 = 0, x1 = 0, y0 = 0, y1 = 0) {
 
         if (x0 < x1) {
