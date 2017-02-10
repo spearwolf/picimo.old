@@ -46,12 +46,7 @@ describe('VODescriptor with mixed element types', () => {
         assert.equal(descriptor.typedArrays.uint8, true, 'typedArrays.uint8');
         assert.equal(descriptor.typedArrays.uint16, true, 'typedArrays.uint16');
         assert.equal(descriptor.typedArrays.float32, true, 'typedArrays.float32');
-    });
-
-    it('getAnyTypedArray()', () => {
-        const vo = descriptor.createVO();
-        const anyTypedArray = descriptor.getAnyTypedArray(vo.voArray);
-        assert(anyTypedArray.buffer instanceof ArrayBuffer);
+        assert.deepEqual(descriptor.typeList.sort(), ['uint8', 'uint16', 'float32'].sort(), 'typeList');
     });
 
     it('attr.type + byteOffset', () => {

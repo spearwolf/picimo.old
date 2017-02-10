@@ -1,3 +1,7 @@
+/* jshint esversion:6 */
+
+import { BYTES_PER_ELEMENT, TYPED_ARRAY_CONSTRUCTOR } from '../utils/typed_array_helpers';
+
 /**
  * Vertex Object Array
  *
@@ -11,26 +15,42 @@ export default class VOArray {
     /**
      * @param {VODescriptor} descriptor - *Vertex object* descriptor
      * @param {number} capacity - Maximum number of *vertex objects*
-     * @param {?ArrayBuffer|Uint8Array} arrayBuffer - array buffer or uint8 typed array
+     * @param {?ArrayBuffer|DataView|Float32Array} data
      */
-    constructor (descriptor, capacity, arrayBuffer) {
+    constructor (descriptor, capacity, data) {
 
         this.descriptor = descriptor;
         this.capacity = capacity;
 
-        this.uint8Array = arrayBuffer !== undefined ?
-            ( arrayBuffer instanceof Uint8Array ? arrayBuffer : new Uint8Array( arrayBuffer ) ) :
-            new Uint8Array( capacity * descriptor.bytesPerVO );
+        if (data instanceof ArrayBuffer) {
+            this.float32Array = new Float32Array( data );
+        } else if (data instanceof DataView) {
+            this.float32Array = new Float32Array( data.buffer, data.byteOffset, data.byteLength );
+        } else if (data instanceof Float32Array) {
+            this.float32Array = data;
+        } else {
+            this.float32Array = new Float32Array( new ArrayBuffer( capacity * descriptor.bytesPerVO ) );
+        }
 
-        this.uint16Array = new Uint16Array( this.uint8Array.buffer );
-        this.float32Array = new Float32Array( this.uint8Array.buffer );
+        const { buffer, bufferByteOffset, bufferByteLength } = this;
+        descriptor.typeList.filter(type => type !== 'float32').forEach(type => {
+            this[type] = new (TYPED_ARRAY_CONSTRUCTOR[type])( buffer, bufferByteOffset, bufferByteLength / BYTES_PER_ELEMENT[type] );
+        });
 
         Object.freeze(this);
 
     }
 
     get buffer () {
-        return this.descriptor.getAnyTypedArray(this);
+        return this.float32Array.buffer;
+    }
+
+    get bufferByteOffset () {
+        return this.buffer.byteOffset;
+    }
+
+    get bufferByteLength () {
+        return this.buffer.byteLength;
     }
 
     /**
@@ -44,11 +64,11 @@ export default class VOArray {
 
         if ( toOffset === undefined ) {
 
-            offset = toOffset * this.descriptor.bytesPerVO;
+            offset = toOffset * (this.descriptor.bytesPerVO >> 2);
 
         }
 
-        this.uint8Array.set( fromVOArray.uint8Array, offset );
+        this.float32Array.set( fromVOArray.float32Array, offset );
 
     }
 
@@ -65,11 +85,16 @@ export default class VOArray {
      */
     subarray (begin, size = 1) {
 
-        const uint8Array = this.uint8Array.subarray(
-                begin * this.descriptor.bytesPerVO,
-                (begin + size) * this.descriptor.bytesPerVO );
+        //const float32Array = this.float32Array.subarray(
+                //begin * this.descriptor.bytesPerVO,
+                //(begin + size) * this.descriptor.bytesPerVO );
 
-        return new VOArray( this.descriptor, size, uint8Array );
+        //return new VOArray( this.descriptor, size, float32Array );
+
+        return new VOArray( this.descriptor, size,
+            new DataView( this.buffer,
+                (this.bufferByteOffset + (begin * this.descriptor.bytesPerVO)),
+                size * this.descriptor.bytesPerVO ));
 
     }
 

@@ -1,15 +1,7 @@
-
-const TYPED_ARRAY = {
-    float32 : Float32Array,
-    uint8   : Uint8Array,
-    uint16  : Uint16Array,
-};
+/* jshint esversion:6 */
+import { BYTES_PER_ELEMENT, TYPED_ARRAY_GETTER } from '../utils/typed_array_helpers';
 
 export default class VOAttrDescriptor {
-
-    static bytesPerElement (type) {
-        return TYPED_ARRAY[type].BYTES_PER_ELEMENT;
-    }
 
     constructor ( name, type, size, offset, byteOffset, uniform, attrNames ) {
 
@@ -19,7 +11,7 @@ export default class VOAttrDescriptor {
         this.uniform = uniform;
         this.attrNames = attrNames;
 
-        this.bytesPerElement = VOAttrDescriptor.bytesPerElement(this.type);
+        this.bytesPerElement = BYTES_PER_ELEMENT[ this.type ];
         this.bytesPerVertex = this.bytesPerElement * size;
 
         if (typeof byteOffset !== 'number') {
@@ -46,7 +38,7 @@ export default class VOAttrDescriptor {
     static defineProperties ( attrDesc, propertiesObject, descriptor ) {
 
         const { name } = attrDesc;
-        const getArray = arrayGetter(attrDesc.type);
+        const getArray = TYPED_ARRAY_GETTER[attrDesc.type];
         const vertexCount = descriptor.vertexCount;
         const vertexAttrCount = attrDesc.vertexAttrCount(descriptor);
         const offset = attrDesc.byteOffset / attrDesc.bytesPerElement;
@@ -209,21 +201,10 @@ function getAttrPostfix ( attrDesc, name, index ) {
 
 }
 
-function arrayGetter (type) {
-    switch (type) {
-        case 'float32':
-            return (vo) => vo.voArray.float32Array;
-        case 'uint16':
-            return (vo) => vo.voArray.uint16Array;
-        case 'uint8':
-            return (vo) => vo.voArray.uint8Array;
-    }
-}
-
 function get_vNf_u ( getArray, offset ) {
     return function ( attrIndex ) {
 
-        return getArray(this)[ offset + attrIndex ];
+        return getArray(this.voArray)[ offset + attrIndex ];
 
     };
 }
@@ -231,7 +212,7 @@ function get_vNf_u ( getArray, offset ) {
 function set_vNf_u ( getArray, vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
-        const _array = getArray(this);
+        const _array = getArray(this.voArray);
         let i;
         let n;
 
@@ -246,14 +227,14 @@ function set_vNf_u ( getArray, vectorLength, vertexCount, vertexAttrCount, offse
 
 function get_v1f_u ( getArray, offset ) {
     return function () {
-        return getArray(this)[ offset ];
+        return getArray(this.voArray)[ offset ];
     };
 }
 
 function set_vNf_v ( getArray, vectorLength, vertexCount, vertexAttrCount, offset ) {
     return function () {
 
-        const _array = getArray(this);
+        const _array = getArray(this.voArray);
         let i;
         let n;
 
@@ -269,7 +250,7 @@ function set_vNf_v ( getArray, vectorLength, vertexCount, vertexAttrCount, offse
 function set_v1f_u ( getArray, vertexCount, vertexAttrCount, offset ) {
     return function ( value ) {
 
-        const _array = getArray(this);
+        const _array = getArray(this.voArray);
 
         for ( let i = 0; i < vertexCount; ++i ) {
 

@@ -71,12 +71,6 @@ describe('VODescriptor', () => {
         assert.equal(descriptor.typedArrays.float32, true, 'typedArrays.float32');
     });
 
-    it('getAnyTypedArray()', () => {
-        const vo = descriptor.createVO();
-        const anyTypedArray = descriptor.getAnyTypedArray(vo.voArray);
-        assert(anyTypedArray.buffer instanceof ArrayBuffer);
-    });
-
     it('attr.type + byteOffset', () => {
         assert.equal(descriptor.attr.position.type, 'float32', 'position.type');
         assert.equal(descriptor.attr.position.byteOffset, 0, 'position.byteOffset');

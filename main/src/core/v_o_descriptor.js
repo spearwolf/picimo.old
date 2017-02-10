@@ -1,3 +1,5 @@
+/* jshint esversion:6 */
+import { BYTES_PER_ELEMENT } from '../utils/typed_array_helpers';
 import { createVO } from './v_o_helper';
 import VOArray from './v_o_array';
 import VOAttrDescriptor from './v_o_attr_descriptor';
@@ -61,30 +63,25 @@ export default class VertexObjectDescriptor {
 function createTypedArrays (descriptor) {
 
     descriptor.typedArrays = {
-        uint8: false,
-        uint16: false,
-        float32: false
+        float32 : false,
+        int16   : false,
+        int32   : false,
+        int8    : false,
+        uint16  : false,
+        uint32  : false,
+        uint8   : false,
     };
 
     Object.keys(descriptor.attr).forEach(name => {
         descriptor.typedArrays[descriptor.attr[name].type] = true;
     });
 
-    const anyTypedArrayType = Object.keys(descriptor.typedArrays).find(type => descriptor.typedArrays[type]);
-    descriptor.getAnyTypedArray = typedArrayGetter(anyTypedArrayType);
+    Object.freeze(descriptor.typedArrays);
+
+    descriptor.typeList = Object.keys(descriptor.typedArrays).filter(type => descriptor.typedArrays[type]);
 
 }
 
-function typedArrayGetter (type) {
-    switch (type) {
-        case 'float32':
-            return (voArray) => voArray.float32Array;
-        case 'uint16':
-            return (voArray) => voArray.uint16Array;
-        case 'uint8':
-            return (voArray) => voArray.uint8Array;
-    }
-}
 
 function createVOPrototype (descriptor, proto) {
 
@@ -180,7 +177,7 @@ function createAttributes (descriptor, attributes) {
             }
 
             offset += attr.size;
-            byteOffset += VOAttrDescriptor.bytesPerElement(type) * attr.size;
+            byteOffset += BYTES_PER_ELEMENT[ type ] * attr.size;
 
         }
 
