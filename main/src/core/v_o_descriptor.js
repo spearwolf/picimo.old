@@ -132,7 +132,7 @@ function createTypedArrays (descriptor) {
 
     Object.freeze(descriptor.typedArrays);
 
-    descriptor.typeList = Object.keys(descriptor.typedArrays).filter(type => descriptor.typedArrays[type]);
+    descriptor.typeList = Object.keys(descriptor.typedArrays).filter(type => descriptor.typedArrays[type]).sort();
 
 }
 

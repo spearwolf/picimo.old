@@ -1674,6 +1674,7 @@ class BlendMode {
 /**
  * Define a *read-only* property which is *enumerable* but not *writable* and *configurable*.
  *
+ * @name utils.definePropertyPublicRO
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -1694,6 +1695,7 @@ function definePropertyPublicRO(obj, name, value) {
 /**
  * Define a property which is NOT *enumerable* and *configurable* BUT *writable*.
  *
+ * @name utils.definePropertyPrivate
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -1713,6 +1715,7 @@ function definePropertyPrivate(obj, name, value) {
 /**
  * Define a **read-only** property which is NOT *enumerable*, *configurable* and *writable*.
  *
+ * @name utils.definePropertyPrivateRO
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -1731,6 +1734,7 @@ function definePropertyPrivateRO(obj, name, value) {
 /**
  * Define *read-only* properties which are *enumerable* but not *writable* and *configurable*.
  *
+ * @name utils.definePropertiesPublicRO
  * @example
  * Picimo.utils.object.definePropertiesPublicRO( obj, {
  *     FOO: 'foo',
@@ -1764,6 +1768,7 @@ function definePropertiesPublicRO(obj, map) {
 /**
  * Define *read-only* properties which are NOT *enumerable*, *writable* or *configurable*.
  *
+ * @name utils.definePropertiesPrivateRO
  * @example
  * Picimo.utils.object.definePropertiesPrivateRO( obj, {
  *     _FOO: 'foo',
@@ -19568,15 +19573,15 @@ var lodash = createCommonjsModule(function (module, exports) {
 
 /**
  * Represents a 2d axis aligned boundary box.
+ * @class AABB2
+ * @param {number} [x0=0] - x0
+ * @param {number} [x1=0] - x1
+ * @param {number} [y0=0] - y0
+ * @param {number} [y1=0] - y1
  */
+
 class AABB2 {
 
-    /**
-     * @param {number} [x0=0] - x0
-     * @param {number} [x1=0] - x1
-     * @param {number} [y0=0] - y0
-     * @param {number} [y1=0] - y1
-     */
     constructor() {
         var x0 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         var x1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -31495,22 +31500,14 @@ var regExpAbsHttpUrl = new RegExp('^(https?:)?//', 'i');
 var regExpAbsUrlPath = new RegExp('^(https?:)?/', 'i');
 var regExpUrlDir = new RegExp('^(.*/)[^/]+$', 'i');
 
-/**
- * @param {string} url
- * @return {string}
- */
-
+/** @ignore */
 function getUrlDir(url) {
 
     if (url[url.length - 1] === '/') return url;
     return regExpUrlDir.exec(url)[1];
 }
 
-/**
- * @param {string} url
- * @return {string}
- */
-
+/** @ignore */
 function getAssetUrl(url) {
 
     var assetUrl;
@@ -31538,12 +31535,7 @@ function getAssetUrl(url) {
     return assetUrl;
 }
 
-/**
- * @param {string} baseUrl
- * @param {string} url
- * @return {string}
- */
-
+/** @ignore */
 function joinAssetUrl(baseUrl, url) {
 
     if (regExpAbsUrlPath.test(url)) {
@@ -31594,40 +31586,42 @@ function loadTexture(url) {
 //}
 
 /* jshint browser:true */
+/**
+ * @class App
+ *
+ * @param {?HTMLCanvasELement} canvas
+ * @param {Object} [options]
+ *
+ */
+
 class App$1 {
 
     constructor(canvas, options) {
 
         eventize_1$1(this);
 
-        /**
-         * @private
-         */
+        /** @private */
         this.resize = resize;
 
-        /**
-         * @private
-         */
+        /** @private */
         this.renderFrame = renderFrame;
 
         /**
-         * {@link src/app/asset_url_helper.js~getAssetUrl}
+         * @function
+         * @param {string} url
+         * @return {string}
          */
         this.getAssetUrl = getAssetUrl;
 
         /**
-         * {@link src/app/asset_url_helper.js~joinAssetUrl}
+         * @function
+         * @param {string} baseUrl
+         * @param {string} url
+         * @return {string}
          */
         this.joinAssetUrl = joinAssetUrl;
 
-        /**
-         * {@link src/app/texture_helpers.js~loadTextureAtlas}
-         */
         this.loadTextureAtlas = loadTextureAtlas;
-
-        /**
-         * {@link src/app/texture_helpers.js~loadTexture}
-         */
         this.loadTexture = loadTexture;
 
         if (typeof window !== 'undefined') {
@@ -31635,9 +31629,16 @@ class App$1 {
             definePropertyPublicRO(this, 'devicePixelRatio', window.devicePixelRatio || 1);
         }
 
+        /**
+         * App *ready* state.
+         * @instance
+         * @type {boolean}
+         */
         definePropertyPublicRO(this, 'ready', false);
 
         /**
+         * App *time* in ms since startup.
+         * @instance
          * @type {float}
          */
         this.now = window.performance.now() / 1000.0;

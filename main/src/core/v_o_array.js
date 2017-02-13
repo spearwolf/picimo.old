@@ -27,7 +27,7 @@ export default class VOArray {
         if (data instanceof ArrayBuffer) {
             this.float32Array = new Float32Array( data );
         } else if (data instanceof DataView) {
-            this.float32Array = new Float32Array( data.buffer, data.byteOffset, data.byteLength );
+            this.float32Array = new Float32Array( data.buffer, data.byteOffset, data.byteLength / 4 );
         } else if (data instanceof Float32Array) {
             this.float32Array = data;
         } else {
@@ -36,7 +36,7 @@ export default class VOArray {
 
         const { buffer, bufferByteOffset, bufferByteLength } = this;
         descriptor.typeList.filter(type => type !== 'float32').forEach(type => {
-            this[type] = new (TYPED_ARRAY_CONSTRUCTOR[type])( buffer, bufferByteOffset, bufferByteLength / BYTES_PER_ELEMENT[type] );
+            this[`${type}Array`] = new (TYPED_ARRAY_CONSTRUCTOR[type])( buffer, bufferByteOffset, bufferByteLength / BYTES_PER_ELEMENT[type] );
         });
 
         Object.freeze(this);
@@ -50,12 +50,12 @@ export default class VOArray {
 
     /** @type {ArrayBuffer} */
     get bufferByteOffset () {
-        return this.buffer.byteOffset;
+        return this.float32Array.byteOffset;
     }
 
     /** @type {ArrayBuffer} */
     get bufferByteLength () {
-        return this.buffer.byteLength;
+        return this.float32Array.byteLength;
     }
 
     /**
@@ -80,7 +80,7 @@ export default class VOArray {
     /**
      * Create a VOArray *sub* array
      * @desc
-     * This will **not** *copy* the internal vertex data.
+     * This will **not** *copy* the internal vertex data - this will create a new view into the internal buffer.
      * Both (the new VOArray and the current one) will share the
      * same memory buffer.
      *
@@ -89,12 +89,6 @@ export default class VOArray {
      * @return {VOArray}
      */
     subarray (begin, size = 1) {
-
-        //const float32Array = this.float32Array.subarray(
-                //begin * this.descriptor.bytesPerVO,
-                //(begin + size) * this.descriptor.bytesPerVO );
-
-        //return new VOArray( this.descriptor, size, float32Array );
 
         return new VOArray( this.descriptor, size,
             new DataView( this.buffer,
