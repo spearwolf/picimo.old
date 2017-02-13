@@ -48,12 +48,12 @@ export default class VOArray {
         return this.float32Array.buffer;
     }
 
-    /** @type {ArrayBuffer} */
+    /** @type {number} */
     get bufferByteOffset () {
         return this.float32Array.byteOffset;
     }
 
-    /** @type {ArrayBuffer} */
+    /** @type {number} */
     get bufferByteLength () {
         return this.float32Array.byteLength;
     }

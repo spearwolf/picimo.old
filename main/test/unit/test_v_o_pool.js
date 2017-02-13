@@ -42,7 +42,7 @@ describe('VOPool', () => {
         const zero = descriptor.createVO();
         zero.setPosition(666,667,668, 669,670,671, 672,673,674);
 
-        const pool = new VOPool(descriptor, 8, null, zero);
+        const pool = new VOPool(descriptor, { capacity: 8, voZero: zero });
         const floats = new Float32Array(pool.voArray.buffer);
         const vo = [];
 
@@ -127,6 +127,24 @@ describe('VOPool', () => {
             assert.equal(floats[OFFSET+5], 670);
             assert.equal(floats[OFFSET+6], 671);
         });
+
+    });
+
+    describe('new VOPool(max)', () => {
+        const pool = new VOPool(descriptor, { maxAllocVOSize: 10 });
+        const MAX = Math.floor(65536 / 3);
+
+        it('availableCount', () => assert.equal(pool.availableCount, MAX));
+        it('allocatedCount#1', () => assert.equal(pool.allocatedCount, 10));
+
+        it('maxAllocVOSize', () => {
+            const vos = pool.alloc(15);
+            assert.equal(vos.length, 15);
+        });
+
+        it('allocatedCount#2', () => assert.equal(pool.allocatedCount, 20));
+        it('availableCount', () => assert.equal(pool.availableCount, MAX - 15));
+        it('usedCount', () => assert.equal(pool.usedCount, 15));
 
     });
 

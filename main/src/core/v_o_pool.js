@@ -3,22 +3,28 @@ export default class VOPool {
 
     /**
      * @param {VODescriptor} descriptor - vertex object descriptor
-     * @param {number} capacity - Maximum number of *vertex objects*
-     * @param {VOArray} [voArray] - Vertex object array
-     * @param {VertexObject} [voZero] - *vertex object* **prototype**
-     * @param {VertexObject} [voNew] - *vertex object* **prototype**
+     * @param {Object} [options] - Advanved options
+     * @param {number} [options.capacity] - Maximum number of *vertex objects*
+     * @param {VOArray} [options.voArray] - Vertex object array
+     * @param {VertexObject} [options.voZero] - *vertex object* **prototype**
+     * @param {VertexObject} [options.voNew] - *vertex object* **prototype**
+     * @param {VertexObject} [options.maxAllocVOSize] - never allocate more than *maxAllocVOSize* vertex objects at once
      */
 
-    constructor ( descriptor, capacity, voArray, voZero, voNew ) {
+    constructor ( descriptor, options ) {
 
         this.descriptor = descriptor;
-        this.capacity = capacity;
-        this.voArray = voArray || descriptor.createVOArray( capacity );
+        this.capacity = options && options.capacity || this.descriptor.maxIndexedVOPoolSize;
+        this.maxAllocVOSize = options && options.maxAllocVOSize || 0;
 
-        this.voZero = voZero || descriptor.createVO();
-        this.voNew = voNew || descriptor.createVO();
+        this.voArray = options && options.voArray || descriptor.createVOArray( this.capacity );
+        this.voZero = options && options.voZero || descriptor.createVO();
+        this.voNew = options && options.voNew || descriptor.createVO();
 
-        createVertexObjects( this );
+        this.availableVOs = [];
+        this.usedVOs = [];
+
+        createVertexObjects( this, this.maxAllocVOSize );
 
     }
 
@@ -40,22 +46,57 @@ export default class VOPool {
 
     get availableCount () {
 
-        return this.availableVOs.length;
+        return this.capacity - this.usedVOs.length;
 
     }
 
     /**
-     * @throws throw error when capacity reached and no vertex object is available.
-     * @return {VertexObject}
+     * Number of **allocated** *vertex objects*.
+     * @type {number}
      */
 
-    alloc () {
+    get allocatedCount () {
+
+        return this.availableVOs.length + this.usedVOs.length;
+
+    }
+
+    /**
+     * Return **size** *vertex objects*
+     * @return {VertexObject|VertexObject[]}
+     */
+
+    alloc ( size = 1 ) {
+
+        if ( size > 1 ) {
+
+            const arr = [];
+            for ( let i = 0; i < size; ++i ) {
+                const vo = this.alloc( 1 );
+                if (vo !== undefined) {
+                    arr.push(vo);
+                } else {
+                    break;
+                }
+            }
+            return arr;
+
+        }
 
         const vo = this.availableVOs.shift();
 
         if ( vo === undefined ) {
 
-            throw new Error( "VOPool capacity(=" + this.capacity + ") is reached!" );
+            if ( (this.capacity - this.allocatedCount) > 0 ) {
+
+                createVertexObjects( this, this.maxAllocVOSize );
+                return this.alloc();
+
+            } else {
+
+                return;
+
+            }
 
         }
 
@@ -105,11 +146,12 @@ export default class VOPool {
 /**
  * @ignore
  */
-function createVertexObjects ( pool ) {
+function createVertexObjects ( pool, maxAllocSize = 0 ) {
 
-    pool.availableVOs = [];
+    const max = pool.capacity - pool.usedCount - pool.allocatedCount;
+    const len = pool.allocatedCount + ( maxAllocSize > 0 && maxAllocSize < max ? maxAllocSize : max );
 
-    for ( let i = 0; i < pool.capacity; i++ ) {
+    for ( let i = pool.allocatedCount; i < len; i++ ) {
 
         let voArray = pool.voArray.subarray( i );
 
@@ -121,8 +163,6 @@ function createVertexObjects ( pool ) {
         pool.availableVOs.push( vertexObject );
 
     }
-
-    pool.usedVOs = [];
 
 }
 

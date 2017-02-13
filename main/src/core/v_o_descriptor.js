@@ -111,6 +111,20 @@ export default class VODescriptor {
 
     }
 
+    /**
+     * Max number of vertex objects when a vertex buffer is used together
+     * with a indexed element array to draw primitives. the reason for
+     * such a limit is that webgl restricts element array indices
+     * to an uin16 data type.
+     * @type {number}
+     */
+
+    get maxIndexedVOPoolSize () {
+
+        return Math.floor( 65536 / this.vertexCount );
+
+    }
+
 }
 
 
