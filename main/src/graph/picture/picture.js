@@ -5,7 +5,7 @@ import DisplayPosition from './display_position';
 import Node from '../node';
 import updateVertices from './update_vertices';
 import { PicturePipeline } from '../../render/pipeline';
-import { VertexObjectPool } from '../../core';
+import VertexObjectPool from '../../core/vertex_object_pool';
 import { asNumber } from '../../utils/as';
 
 const DEFAULT_WEBGL_PROGRAM = 'picimo.sprite';

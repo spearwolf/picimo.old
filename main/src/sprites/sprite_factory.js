@@ -1,4 +1,4 @@
-import { VertexObjectDescriptor } from '../core';
+import VertexObjectDescriptor from '../core/vertex_object_descriptor';
 
 class SpriteFactory {
 

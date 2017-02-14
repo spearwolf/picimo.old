@@ -1,6 +1,7 @@
 import Node from './node';
 import { SpriteGroupPipeline } from '../render/pipeline';
-import { VertexObjectPool, TextureAtlas } from '../core';
+import VertexObjectPool from '../core/vertex_object_pool';
+import TextureAtlas from '../core/texture_atlas';
 
 /**
  * Represents a group of sprites.

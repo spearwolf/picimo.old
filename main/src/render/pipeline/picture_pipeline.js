@@ -1,7 +1,7 @@
 /* jshint esversion:6 */
 import ObjectPool from '../../utils/object_pool';
 import WebGlBuffer from '../web_gl_buffer';
-import { VertexIndexArray } from '../../core';
+import VertexIndexArray from '../../core/vertex_index_array';
 import { definePropertiesPrivateRO } from '../../utils/obj_props';
 
 export default class PicturePipeline {

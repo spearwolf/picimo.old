@@ -1,6 +1,7 @@
 /* jshint browser:true */
 import Color from 'color-js';
 import eventize from '@spearwolf/eventize';
+import * as jab from '@spearwolf/jab';
 
 import createBlendModes from './create_blend_modes';
 import defineGlxProperty from './define_glx_property';
@@ -17,17 +18,20 @@ import { definePropertyPublicRO, definePropertyPrivateRO } from '../utils/obj_pr
 import { getUrlDir, getAssetUrl, joinAssetUrl } from './asset_url_helper';
 import { loadTextureAtlas, loadTexture } from './texture_helpers';
 
-/**
- * @class App
- *
- * @param {?HTMLCanvasELement} canvas
- * @param {Object} [options]
- *
- */
+export default class App extends jab.App {
 
-export default class App {
+    /**
+     * @param {?HTMLCanvasELement} canvas
+     * @param {Object} [options]
+     */
 
-    constructor (canvas, options) {
+    constructor (canvas, options = {}) {
+
+        super({
+            provider: Object.assign({
+                // TODO define services, components...
+            }, options.provider)
+        });
 
         eventize( this );
 
@@ -141,4 +145,8 @@ export default class App {
     }  // => constructor
 
 }  // => class App
+
+App.Component = jab.App.Component;
+App.Service = jab.App.Service;
+
 

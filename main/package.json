@@ -71,6 +71,7 @@
   },
   "dependencies": {
     "@spearwolf/eventize": "github:spearwolf/eventize",
+    "@spearwolf/jab": "github:spearwolf/jab",
     "color-js": "^1.0.4",
     "gl-matrix": "^2.3.2",
     "lodash": "^4.17.4"

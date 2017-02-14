@@ -1596,6 +1596,363 @@ if (!net.brehaut) {
 }
 });
 
+const COMPONENT = 'component';
+const SERVICE = 'service';
+
+const APP_SERVICE = 'app';
+const PARENT_SERVICE = 'parent';
+
+const AFTER_INITIALIZED = 'afterInitialized';
+
+const COMPONENT_TYPE = Symbol('componentType');
+const INJECT = Symbol('inject');
+const CONSTRUCT = Symbol('construct');
+const PROVIDER = Symbol('provider');
+
+var hasExclamationMark = function (str) {
+    if (typeof str === 'string') {
+        return str[str.length - 1] === '!';
+    }
+    return false;
+};
+
+const plainName = name => name.substring(0, name.length - 1);
+const isExclamizedName = (name) => hasExclamationMark(name) || name === PARENT_SERVICE;
+
+const waitForAndCallFactories = (providers, getFactory, extraOptions) =>
+    providers
+        .map(providerName => {
+            const name = hasExclamationMark(providerName) ? plainName(providerName) : providerName;
+            let factory = getFactory(name);
+            if (typeof factory === 'function') {
+                factory = factory(extraOptions);
+            }
+            return Promise.resolve(factory).then(value => {
+                return {
+                    providerName,
+                    value
+                };
+            });
+        });
+
+function constructEntity (provider, extraProviders) {
+
+    const _provider = provider.provider;
+    let instance;
+
+    if (typeof _provider === 'function') {
+
+        const app = _provider[PROVIDER] || extraProviders ? new App$2({
+            parent: provider.app,
+            provider: [_provider[PROVIDER], extraProviders]
+        }) : provider.app;
+
+        const initializedServices = {};
+
+        const copyFactories = (factories, to) => factories.forEach(factory => {
+            to[factory.providerName] = factory.value;
+        });
+
+        if (_provider[CONSTRUCT]) {
+
+            instance = _provider[CONSTRUCT]
+                .then((constructProviders) => {
+                    return typeof constructProviders === 'function' ? constructProviders() : constructProviders;
+                })
+                .then((constructProviders) => {
+                    let fulfill;
+
+                    const getServiceFactory = name => initializedServices[name] || app.factory(name, SERVICE);
+                    const createInstance = (fn) => Reflect.construct(fn, constructProviders.map(getServiceFactory));
+                    const constructFactories = waitForAndCallFactories(
+                        constructProviders.filter(isExclamizedName),
+                        getServiceFactory);
+
+                    if (constructFactories.length) {
+                        fulfill = Promise.all(constructFactories).then(factories => {
+                            copyFactories(factories, initializedServices);
+                            return createInstance(_provider);
+                        });
+                    } else {
+                        fulfill = createInstance(_provider);
+                    }
+
+                    return fulfill;
+                });
+
+        } else {
+            instance = Promise.resolve(new _provider);
+        }
+
+        if (_provider[INJECT]) {
+
+            instance = Promise.all([instance, _provider[INJECT]])
+                .then(([entity, injectProviders]) => {
+
+                    const initializedComponents = {};
+                    const getComponentFactory = name => initializedComponents[name] || app.factory(name, COMPONENT);
+
+                    let fulfill = entity;
+
+                    if (injectProviders.length) {
+
+                        const injectFactories = waitForAndCallFactories(
+                            injectProviders.filter(name => hasExclamationMark(name) && !initializedComponents[name]),
+                            getComponentFactory,
+                            {[PARENT_SERVICE]: entity});
+
+                        if (injectFactories.length) {
+
+                            fulfill = Promise.all([fulfill, Promise.all(injectFactories)])
+                                .then(([entity, factories]) => {
+                                    copyFactories(factories, initializedComponents);
+                                    return entity;
+                                });
+
+                        }
+
+                        fulfill = fulfill.then(entity => {
+
+                            injectProviders.forEach(providerName => {
+                                const name = hasExclamationMark(providerName) ? plainName(providerName) : providerName;
+                                Object.defineProperty(entity, name, {
+                                    value: getComponentFactory(providerName)
+                                });
+                            });
+
+                            return entity;
+                        });
+
+                    }
+
+                    return fulfill;
+                });
+
+        }
+
+        instance = instance.then(entity => {
+            const fn = entity[AFTER_INITIALIZED];
+            if (typeof fn === 'function') {
+                return Promise.resolve(fn.call(entity)).then(() => entity);
+            } else {
+                return entity;
+            }
+        });
+
+    } else {
+        instance = _provider;
+    }
+
+    return instance;
+
+}
+
+function createFactory (app, name, type) {
+
+    const provider = app.providers.get(name, type);
+
+    switch (type) {
+        case SERVICE:
+            return createServiceFactory(name, provider);
+        case COMPONENT:
+            return createComponentFactory(provider);
+        default:
+            throw new Error(`invalid provider type: ${type}`);
+    }
+
+}
+
+function createServiceFactory (name, provider) {
+    return () => {
+
+        const services = provider.app.services;
+        let instance = services.get(name);
+
+        if (instance === undefined) {
+            instance = constructEntity(provider);
+            services.set(name, instance);
+        }
+
+        return instance;
+    }
+}
+
+function createComponentFactory (provider) {
+    return constructEntity.bind(null, provider);
+}
+
+function annotateProvider (provider, componentType, options) {
+
+    provider[COMPONENT_TYPE] = componentType;
+
+    if (options) {
+
+        if (options.construct != null) {
+            provider[CONSTRUCT] = Promise.resolve(options.construct);
+        }
+
+        if (options.inject != null) {
+            provider[INJECT] = Promise.resolve(options.inject);
+        }
+
+        if (options.provider != null) {
+            provider[PROVIDER] = options.provider;
+        }
+
+    }
+
+    return provider;
+}
+
+class ProviderCollection {
+
+    constructor (app, parent) {
+        this.app = app;
+        this.parent = parent || null;
+        this.providers = new Map;
+    }
+
+    add (name, provider) {
+        let provDef = this.providers.get(name);
+        if (provDef === undefined) {
+            provDef = {};
+            this.providers.set(name, provDef);
+        }
+
+        provDef[provider[COMPONENT_TYPE] || SERVICE] = provider;
+    }
+
+    addProviders (providers) {
+        if (!providers) return;
+        if (Array.isArray(providers)) {
+            providers.forEach(this.addProviders.bind(this));
+        } else if (typeof providers === 'object') {
+            Object.keys(providers).forEach((name) => this.add(name, providers[name]));
+        }
+    }
+
+    get (name, type) {
+
+        const isRoot = this.parent === null;
+        let provider = this.providers.get(name);
+
+        if (!provider) {
+            if (isRoot) {
+                throw new Error(`unknown provider: ${name}`);
+            } else {
+                return this.parent.get(name, type);
+            }
+        }
+
+        provider = provider[type];
+
+        if (!provider) {
+            if (isRoot) {
+                throw new Error(`unknown ${type} provider: ${name}`);
+            } else {
+                return this.parent.get(name, type);
+            }
+        }
+
+        return {
+            app: this.app,
+            provider
+        };
+
+    }
+
+}
+
+class App$2 {
+
+    static Component (provider, options) {
+        if (typeof provider === 'function') {
+            return annotateProvider(provider, COMPONENT, options);
+        } else {
+            throw new Error('Component(..) needs a constructor/function as first parameter!');
+        }
+    }
+
+    static Service (provider, options) {
+        if (typeof provider === 'function') {
+            return annotateProvider(provider, SERVICE, options);
+        } else {
+            throw new Error('Service(..) needs a constructor/function as first parameter!');
+        }
+    }
+
+    constructor (options) {
+        this.services = new Map;
+        this.factories = {
+            [COMPONENT]: new Map,
+            [SERVICE]: new Map
+        };
+        const hasOptions = options != null;
+        this.parent = hasOptions && options.parent ? options.parent : null;
+        this.providers = new ProviderCollection(this, this.parent && this.parent.providers);
+        if (hasOptions) {
+            this.providers.addProviders(options.provider);
+        }
+    }
+
+    /**
+     * @return a promise which resolves to a service instance
+     */
+    service (name) {
+
+        if (name === APP_SERVICE) {
+            return this;
+        }
+
+        return this.factory(name, SERVICE)();
+
+    }
+
+    /**
+     * @return a promise which resolves to a new entity (which is an instance of a component)
+     */
+    createEntity (name, options) {
+
+        return Promise.resolve(this.factory(name, COMPONENT)(options));
+
+    }
+
+    /**
+     * @return a function which returns a promise which resolves itself into a component
+     */
+    factory (name, type = COMPONENT) {
+
+        if (name === APP_SERVICE) {
+            return this;
+        }
+
+        try {
+            return findOrCreateFactory(this, name, type);
+
+        } catch (err) {
+            if (name === PARENT_SERVICE) {
+                return null;
+            }
+            throw err;
+        }
+    }
+
+}
+
+function findOrCreateFactory (app, name, type) {
+
+    const factories = app.factories[type];
+    let factory = factories.get(name);
+
+    if (factory === undefined) {
+        factory = createFactory(app, name, type);
+        factories.set(name, factory);
+    }
+
+    return factory;
+
+}
+
 /**
  * WebGL blend and depth mode state description.
  *
@@ -20564,715 +20921,6 @@ function parseTextureAtlasDefinition(conf) {
   }
 }
 
-class VertexArray {
-
-  /**
-   * @param {VertexObjectDescriptor} descriptor - The vertex descriptor
-   * @param {number} capacity - Maximum number of vertex objects
-   * @param {?Float32Array} vertices
-   */
-  constructor(descriptor, capacity, vertices) {
-
-    /**
-     * @type {VertexObjectDescriptor}
-     */
-    this.descriptor = descriptor;
-
-    /**
-     * @type {number}
-     */
-    this.capacity = capacity;
-
-    /**
-     * The float array buffer
-     * @type {Float32Array}
-     */
-    this.vertices = vertices !== undefined ? vertices : new Float32Array(capacity * descriptor.vertexCount * descriptor.vertexAttrCount);
-  }
-
-  /**
-   * @param {VertexArray} fromVertexArray
-   * @param {number} [toOffset=0] - Vertex object offset
-   */
-  copy(fromVertexArray, toOffset) {
-
-    var offset = 0;
-
-    if (toOffset === undefined) {
-
-      offset = toOffset * this.descriptor.vertexCount * this.descriptor.vertexAttrCount;
-    }
-
-    this.vertices.set(fromVertexArray.vertices, offset);
-  }
-
-  /**
-   * @param {number} begin - Index of first vertex object
-   * @param {number} [size=1]
-   * @return {VertexArray}
-   */
-  subarray(begin, size) {
-
-    if (size === undefined) {
-
-      size = 1;
-    }
-
-    var vertices = this.vertices.subarray(begin * this.descriptor.vertexCount * this.descriptor.vertexAttrCount, (begin + size) * this.descriptor.vertexCount * this.descriptor.vertexAttrCount);
-
-    return new VertexArray(this.descriptor, size, vertices);
-  }
-
-} // => class VertexArray
-
-/* jshint esversion:6 */
-class VertexIndexArray {
-
-  /**
-   * @param {number} vertexObjectCount - Number of vertex objects
-   * @param {number} objectIndexCount - Number of vertex indices per object
-   */
-  constructor(vertexObjectCount, objectIndexCount) {
-
-    var size = vertexObjectCount * objectIndexCount;
-
-    definePropertiesPublicRO(this, {
-
-      /**
-       * Number of vertex objects.
-       */
-      vertexObjectCount: vertexObjectCount,
-
-      /**
-       * Number of vertex indices per object.
-       */
-      objectIndexCount: objectIndexCount,
-
-      /**
-       * Size of array buffer.
-       */
-      size: size,
-
-      /**
-       * The uint index array buffer.
-       * @readonly
-       */
-      indices: new Uint32Array(size)
-
-    });
-  } // => constructor
-
-  /**
-   * @param {number} vertexObjectCount
-   * @param {number[]} indices
-   * @param {number} [objectOffset=0]
-   * @param {number} [stride=4]
-   * @return {VertexIndexArray}
-   * @example
-   * // Create a VertexIndexBuffer for 10 quads where each quad made up of 2x triangles (4x vertices and 6x indices)
-   * var quadIndices = Picimo.core.VertexIndexArray.Generate( 10, [ 0,1,2, 0,2,3 ], 4 );
-   * quadIndices.size                 // => 60
-   * quadIndices.objectIndexCount     // => 6
-   */
-  static Generate(vertexObjectCount, indices, objectOffset, stride) {
-
-    var arr = new VertexIndexArray(vertexObjectCount, indices.length);
-    var i, j;
-
-    if (stride === undefined) stride = 4;
-    if (objectOffset === undefined) objectOffset = 0;
-
-    for (i = 0; i < vertexObjectCount; ++i) {
-
-      for (j = 0; j < indices.length; ++j) {
-
-        arr.indices[i * arr.objectIndexCount + j] = indices[j] + (i + objectOffset) * stride;
-      }
-    }
-
-    return arr;
-  }
-
-} // => class VertexIndexArray
-
-/* jshint esversion:6 */
-/**
- * @param {!VertexObjectDescriptor} [descriptor] - Vertex descriptor
- * @param {?VertexArray} [vertexArray] - Vertex array
- */
-function VertexObject(descriptor, vertexArray) {
-
-    if (this.descriptor !== undefined) return;
-
-    var _descriptor = descriptor ? descriptor : vertexArray ? vertexArray.descriptor : null;
-    if (!_descriptor) {
-
-        throw new Error('VertexObject#descriptor is null!');
-    }
-    definePropertyPrivateRO(this, 'descriptor', _descriptor);
-
-    var _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
-    definePropertyPrivate(this, 'vertexArray', _vertexArray);
-
-    if (this.descriptor !== this.vertexArray.descriptor && (this.descriptor.vertexCount !== this.vertexArray.descriptor.vertexCount || this.descriptor.vertexAttrCount !== this.vertexArray.descriptor.vertexAttrCount)) {
-
-        throw new Error('Incompatible vertex object descriptors!');
-    }
-}
-
-Object.defineProperties(VertexObject.prototype, {
-
-    'vertices': {
-        get: function get() {
-
-            return this.vertexArray.vertices;
-        }
-    }
-
-});
-
-/**
- * @param {function} vertexObjectConstructor - Vertex object constructor function
- * @param {number} vertexCount - Vertex count
- * @param {number} vertexAttrCount - Vertex attribute count
- * @param {Array} attributes - Vertex attribute descriptions
- * @param {Object} [aliases] - Vertex attribute aliases
- * @example
- * var descriptor = new Picimo.core.VertexObjectDescriptor(
- *
- *     null,
- *
- *     4,   // vertexCount
- *     12,  // vertexAttrCount
- *
- *     [    // attributes ..
- *
- *         { name: 'position',  size: 3, attrNames: [ 'x', 'y', 'z' ] },
- *         { name: 'rotate',    size: 1, uniform: true },
- *         { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
- *         { name: 'translate', size: 2, attrNames: [ 'tx', 'ty' ], uniform: true },
- *         { name: 'scale',     size: 1, uniform: true },
- *         { name: 'opacity',   size: 1, uniform: true }
- *
- *     ],
- *
- *     {   // aliases ..
- *
- *         pos2d: { size: 2, offset: 0 },
- *         posZ:  { size: 1, offset: 2, uniform: true },
- *         uv:    'texCoords'
- *
- *     }
- *
- * );
- *
- * vo.proto.numberOfBeast = function () { return 666; };
- *
- *
- * var vo = descriptor.create();
- *
- * vo.setPosition( 1,2,-1, 4,5,-1, 7,8,-1, 10,11,-1 );
- * vo.x2                // => 7
- * vo.y0                // => 2
- * vo.posZ              // => -1
- * vo.posZ = 23;
- * vo.z1                // => 23
- * vo.numberOfBeast()   // => 666
- *
- */
-
-function VertexObjectDescriptor(vertexObjectConstructor, vertexCount, vertexAttrCount, attributes, aliases) {
-
-    this.vertexObjectConstructor = buildVOConstructor(vertexObjectConstructor);
-    this.vertexObjectConstructor.prototype = Object.create(VertexObject.prototype);
-    this.vertexObjectConstructor.prototype.constructor = this.vertexObjectConstructor;
-
-    this.vertexCount = parseInt(vertexCount, 10);
-    this.vertexAttrCount = parseInt(vertexAttrCount, 10);
-
-    // ======= attributes =======
-
-    this.attr = {};
-
-    var offset, attr, i;
-
-    if (Array.isArray(attributes)) {
-
-        offset = 0;
-
-        for (i = 0; i < attributes.length; ++i) {
-
-            attr = attributes[i];
-
-            if (attr.size === undefined) throw new Error('vertex object attribute descriptor has no size property!');
-
-            if (attr.name !== undefined) {
-
-                this.attr[attr.name] = new VertexObjectAttrDescriptor(attr.name, attr.size, offset, !!attr.uniform, attr.attrNames);
-            }
-
-            offset += attr.size;
-        }
-
-        if (offset > this.vertexAttrCount) throw new Error('vertexAttrCount is too small (offset=' + offset + ')');
-    }
-
-    // ======= aliases =======
-
-    var name;
-
-    if (aliases !== undefined) {
-
-        for (name in aliases) {
-
-            if (aliases.hasOwnProperty(name)) {
-
-                attr = aliases[name];
-
-                if (typeof attr === 'string') {
-
-                    attr = this.attr[attr];
-
-                    if (attr !== undefined) {
-
-                        this.attr[name] = attr;
-                    }
-                } else {
-
-                    this.attr[name] = new VertexObjectAttrDescriptor(name, attr.size, attr.offset, !!attr.uniform, attr.attrNames);
-                }
-            }
-        }
-    }
-
-    // ======= propertiesObject =======
-
-    this.propertiesObject = {};
-
-    for (name in this.attr) {
-
-        if (this.attr.hasOwnProperty(name)) {
-
-            attr = this.attr[name];
-
-            attr.defineProperties(name, this.propertiesObject, this);
-        }
-    }
-
-    // ======= vertex object prototype =======
-
-    this.vertexObjectPrototype = Object.create(this.vertexObjectConstructor.prototype, this.propertiesObject);
-
-    // === winterkälte jetzt
-
-    Object.freeze(this.attr);
-    Object.freeze(this);
-}
-
-/**
- * @ignore
- */
-function buildVOConstructor(constructorFunc) {
-    if (typeof constructorFunc === 'function') {
-        if (!constructorFunc.name) {
-            return function CustomVertexObject() {
-                return constructorFunc.call(this);
-            };
-        } else {
-            return constructorFunc;
-        }
-    } else {
-        return function CustomVertexObject() {};
-    }
-}
-
-/**
- * @param {number} [size=1]
- * @return {VertexArray}
- */
-VertexObjectDescriptor.prototype.createVertexArray = function (size) {
-
-    return new VertexArray(this, size === undefined ? 1 : size);
-};
-
-/**
- * Create a new {@link VertexObject}.
- * @param {VertexArray} [vertexArray] - Vertex array
- * @return {VertexObject}
- */
-VertexObjectDescriptor.prototype.create = function (vertexArray) {
-
-    var vo = Object.create(this.vertexObjectPrototype);
-    VertexObject.call(vo, this, vertexArray);
-
-    if (VertexObject !== this.vertexObjectConstructor) {
-
-        this.vertexObjectConstructor.call(vo);
-    }
-
-    return vo;
-};
-
-/**
- * @param {string} name
- * @param {number} [size=1]
- * @return {boolean}
- */
-VertexObjectDescriptor.prototype.hasAttribute = function (name, size) {
-
-    var attr = this.attr[name];
-    return attr && attr.size === (size || 1);
-};
-
-Object.defineProperties(VertexObjectDescriptor.prototype, {
-
-    /**
-     * The prototype object of the vertex object. You should add your own properties and methods here.
-     */
-    'proto': {
-        get: function get() {
-
-            return this.vertexObjectConstructor.prototype;
-        },
-        enumerable: true
-    }
-
-});
-
-// =========================================
-// VertexObjectAttrDescriptor
-// =========================================
-
-/**
- * @ignore
- */
-function VertexObjectAttrDescriptor(name, size, offset, uniform, attrNames) {
-
-    this.name = name;
-    this.size = size;
-    this.offset = offset;
-    this.uniform = uniform;
-    this.attrNames = attrNames;
-
-    Object.freeze(this);
-}
-
-/**
- * @ignore
- */
-VertexObjectAttrDescriptor.prototype.getAttrPostfix = function (name, index) {
-
-    if (this.attrNames) {
-
-        var postfix = this.attrNames[index];
-
-        if (postfix !== undefined) {
-
-            return postfix;
-        }
-    }
-
-    return name + '_' + index;
-};
-
-/**
- * @ignore
- */
-VertexObjectAttrDescriptor.prototype.defineProperties = function (name, obj, descriptor) {
-
-    var i, j;
-
-    if (this.size === 1) {
-
-        if (this.uniform) {
-
-            obj[name] = {
-
-                get: get_v1f_u(this.offset),
-                set: set_v1f_u(descriptor.vertexCount, descriptor.vertexAttrCount, this.offset),
-                enumerable: true
-
-            };
-        } else {
-
-            obj["set" + camelize(name)] = {
-
-                value: set_vNf_v(1, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset),
-                enumerable: true
-
-            };
-
-            for (i = 0; i < descriptor.vertexCount; ++i) {
-
-                obj[name + i] = {
-
-                    get: get_v1f_u(this.offset + i * descriptor.vertexAttrCount),
-                    set: set_vNf_v(1, 1, 0, this.offset + i * descriptor.vertexAttrCount),
-                    enumerable: true
-
-                };
-            }
-        }
-    } else if (this.size >= 2) {
-
-        if (this.uniform) {
-
-            obj["get" + camelize(name)] = {
-
-                value: get_vNf_u(this.offset),
-                enumerable: true
-
-            };
-
-            obj["set" + camelize(name)] = {
-
-                value: set_vNf_u(this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset),
-                enumerable: true
-
-            };
-
-            for (i = 0; i < this.size; ++i) {
-
-                obj[this.getAttrPostfix(name, i)] = {
-
-                    get: get_v1f_u(this.offset + i),
-                    set: set_v1f_u(descriptor.vertexCount, descriptor.vertexAttrCount, this.offset + i),
-                    enumerable: true
-
-                };
-            }
-        } else {
-
-            obj["set" + camelize(name)] = {
-
-                value: set_vNf_v(this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset),
-                enumerable: true
-
-            };
-
-            for (i = 0; i < descriptor.vertexCount; ++i) {
-                for (j = 0; j < this.size; ++j) {
-
-                    obj[this.getAttrPostfix(name, j) + i] = {
-
-                        get: get_v1f_u(this.offset + i * descriptor.vertexAttrCount + j),
-                        set: set_vNf_v(1, 1, 0, this.offset + i * descriptor.vertexAttrCount + j),
-                        enumerable: true
-
-                    };
-                }
-            }
-        }
-    }
-};
-
-/**
- * @ignore
- */
-function get_vNf_u(offset) {
-
-    return function (attrIndex) {
-
-        return this.vertexArray.vertices[offset + attrIndex];
-    };
-}
-
-/**
- * @ignore
- */
-function set_vNf_u(vectorLength, vertexCount, vertexAttrCount, offset) {
-    return function () {
-
-        var _vertices = this.vertexArray.vertices;
-        var i = void 0;
-        var n = void 0;
-
-        for (i = 0; i < vertexCount; ++i) {
-            for (n = 0; n < vectorLength; ++n) {
-                _vertices[i * vertexAttrCount + offset + n] = arguments[n];
-            }
-        }
-    };
-}
-
-/**
- * @ignore
- */
-function get_v1f_u(offset) {
-    return function () {
-        return this.vertexArray.vertices[offset];
-    };
-}
-
-/**
- * @ignore
- */
-function set_vNf_v(vectorLength, vertexCount, vertexAttrCount, offset) {
-    return function () {
-
-        var _vertices = this.vertexArray.vertices;
-        var i = void 0;
-        var n = void 0;
-
-        for (i = 0; i < vertexCount; ++i) {
-            for (n = 0; n < vectorLength; ++n) {
-                _vertices[i * vertexAttrCount + offset + n] = arguments[i * vectorLength + n];
-            }
-        }
-    };
-}
-
-/**
- * @ignore
- */
-function set_v1f_u(vertexCount, vertexAttrCount, offset) {
-    return function (value) {
-
-        var _vertices = this.vertexArray.vertices;
-
-        for (var i = 0; i < vertexCount; ++i) {
-
-            _vertices[i * vertexAttrCount + offset] = value;
-        }
-    };
-}
-
-/**
- * @ignore
- */
-function camelize(name) {
-    return name[0].toUpperCase() + name.substr(1);
-}
-
-/* jshint esversion:6 */
-/**
- * @param {VertexObjectDescriptor} descriptor - Vertex object descriptor
- * @param {number} capacity - Maximum number of vertex objects
- * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array
- */
-
-function VertexObjectPool(descriptor, capacity, vertexArray) {
-
-    definePropertiesPublicRO(this, {
-
-        'descriptor': descriptor,
-
-        // Maximum number of vertex objects
-        'capacity': capacity,
-
-        'vertexArray': vertexArray ? vertexArray : descriptor.createVertexArray(capacity),
-
-        'ZERO': descriptor.create(),
-
-        'NEW': descriptor.create()
-
-    });
-
-    createVertexObjects(this);
-}
-
-Object.defineProperties(VertexObjectPool.prototype, {
-
-    // Number of in-use vertex objects
-    'usedCount': {
-
-        get: function get() {
-
-            return this.usedVOs.length;
-        },
-
-        enumerable: true
-
-    },
-
-    // Number of free and unused vertex objects
-    'availableCount': {
-
-        get: function get() {
-
-            return this.availableVOs.length;
-        },
-
-        enumerable: true
-
-    }
-
-});
-
-/**
- * @throws throw error when capacity reached and no vertex object is available.
- * @return {VertexObject}
- */
-
-VertexObjectPool.prototype.alloc = function () {
-
-    var vo = this.availableVOs.shift();
-
-    if (vo === undefined) {
-
-        throw new Error("VertexObjectPool capacity(=" + this.capacity + ") reached!");
-    }
-
-    this.usedVOs.push(vo);
-
-    vo.vertexArray.copy(this.NEW.vertexArray);
-
-    return vo;
-};
-
-/**
- * @param {VertexObject} vo - The vertex object
- */
-
-VertexObjectPool.prototype.free = function (vo) {
-
-    var idx = this.usedVOs.indexOf(vo);
-
-    if (idx === -1) return;
-
-    var lastIdx = this.usedVOs.length - 1;
-
-    if (idx !== lastIdx) {
-
-        var last = this.usedVOs[lastIdx];
-        vo.vertexArray.copy(last.vertexArray);
-
-        var tmp = last.vertexArray;
-        last.vertexArray = vo.vertexArray;
-        vo.vertexArray = tmp;
-
-        this.usedVOs.splice(idx, 1, last);
-    }
-
-    this.usedVOs.pop();
-    this.availableVOs.unshift(vo);
-
-    vo.vertexArray.copy(this.ZERO.vertexArray);
-};
-
-/**
- * @ignore
- */
-function createVertexObjects(pool) {
-
-    pool.availableVOs = [];
-
-    var vertexArray, vertexObject;
-    var i;
-
-    for (i = 0; i < pool.capacity; i++) {
-
-        vertexArray = pool.vertexArray.subarray(i);
-
-        vertexObject = pool.descriptor.create(vertexArray);
-        vertexObject.destroy = pool.free.bind(pool, vertexObject);
-
-        pool.availableVOs.push(vertexObject);
-    }
-
-    pool.usedVOs = [];
-}
-
 
 
 var index$1 = Object.freeze({
@@ -21281,12 +20929,7 @@ var index$1 = Object.freeze({
 	PowerOfTwoImage: PowerOfTwoImage,
 	Resource: Resource,
 	Texture: Texture,
-	TextureAtlas: TextureAtlas,
-	VertexArray: VertexArray,
-	VertexIndexArray: VertexIndexArray,
-	VertexObject: VertexObject,
-	VertexObjectDescriptor: VertexObjectDescriptor,
-	VertexObjectPool: VertexObjectPool
+	TextureAtlas: TextureAtlas
 });
 
 class ShaderSource extends Resource {
@@ -22866,6 +22509,516 @@ var createWebGlContext = function (app) {
     return ctx;
 };
 
+class VertexArray {
+
+  /**
+   * @param {VertexObjectDescriptor} descriptor - The vertex descriptor
+   * @param {number} capacity - Maximum number of vertex objects
+   * @param {?Float32Array} vertices
+   */
+  constructor(descriptor, capacity, vertices) {
+
+    /**
+     * @type {VertexObjectDescriptor}
+     */
+    this.descriptor = descriptor;
+
+    /**
+     * @type {number}
+     */
+    this.capacity = capacity;
+
+    /**
+     * The float array buffer
+     * @type {Float32Array}
+     */
+    this.vertices = vertices !== undefined ? vertices : new Float32Array(capacity * descriptor.vertexCount * descriptor.vertexAttrCount);
+  }
+
+  /**
+   * @param {VertexArray} fromVertexArray
+   * @param {number} [toOffset=0] - Vertex object offset
+   */
+  copy(fromVertexArray, toOffset) {
+
+    var offset = 0;
+
+    if (toOffset === undefined) {
+
+      offset = toOffset * this.descriptor.vertexCount * this.descriptor.vertexAttrCount;
+    }
+
+    this.vertices.set(fromVertexArray.vertices, offset);
+  }
+
+  /**
+   * @param {number} begin - Index of first vertex object
+   * @param {number} [size=1]
+   * @return {VertexArray}
+   */
+  subarray(begin, size) {
+
+    if (size === undefined) {
+
+      size = 1;
+    }
+
+    var vertices = this.vertices.subarray(begin * this.descriptor.vertexCount * this.descriptor.vertexAttrCount, (begin + size) * this.descriptor.vertexCount * this.descriptor.vertexAttrCount);
+
+    return new VertexArray(this.descriptor, size, vertices);
+  }
+
+} // => class VertexArray
+
+/* jshint esversion:6 */
+/**
+ * @param {!VertexObjectDescriptor} [descriptor] - Vertex descriptor
+ * @param {?VertexArray} [vertexArray] - Vertex array
+ */
+function VertexObject(descriptor, vertexArray) {
+
+    if (this.descriptor !== undefined) return;
+
+    var _descriptor = descriptor ? descriptor : vertexArray ? vertexArray.descriptor : null;
+    if (!_descriptor) {
+
+        throw new Error('VertexObject#descriptor is null!');
+    }
+    definePropertyPrivateRO(this, 'descriptor', _descriptor);
+
+    var _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
+    definePropertyPrivate(this, 'vertexArray', _vertexArray);
+
+    if (this.descriptor !== this.vertexArray.descriptor && (this.descriptor.vertexCount !== this.vertexArray.descriptor.vertexCount || this.descriptor.vertexAttrCount !== this.vertexArray.descriptor.vertexAttrCount)) {
+
+        throw new Error('Incompatible vertex object descriptors!');
+    }
+}
+
+Object.defineProperties(VertexObject.prototype, {
+
+    'vertices': {
+        get: function get() {
+
+            return this.vertexArray.vertices;
+        }
+    }
+
+});
+
+/**
+ * @param {function} vertexObjectConstructor - Vertex object constructor function
+ * @param {number} vertexCount - Vertex count
+ * @param {number} vertexAttrCount - Vertex attribute count
+ * @param {Array} attributes - Vertex attribute descriptions
+ * @param {Object} [aliases] - Vertex attribute aliases
+ * @example
+ * var descriptor = new Picimo.core.VertexObjectDescriptor(
+ *
+ *     null,
+ *
+ *     4,   // vertexCount
+ *     12,  // vertexAttrCount
+ *
+ *     [    // attributes ..
+ *
+ *         { name: 'position',  size: 3, attrNames: [ 'x', 'y', 'z' ] },
+ *         { name: 'rotate',    size: 1, uniform: true },
+ *         { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
+ *         { name: 'translate', size: 2, attrNames: [ 'tx', 'ty' ], uniform: true },
+ *         { name: 'scale',     size: 1, uniform: true },
+ *         { name: 'opacity',   size: 1, uniform: true }
+ *
+ *     ],
+ *
+ *     {   // aliases ..
+ *
+ *         pos2d: { size: 2, offset: 0 },
+ *         posZ:  { size: 1, offset: 2, uniform: true },
+ *         uv:    'texCoords'
+ *
+ *     }
+ *
+ * );
+ *
+ * vo.proto.numberOfBeast = function () { return 666; };
+ *
+ *
+ * var vo = descriptor.create();
+ *
+ * vo.setPosition( 1,2,-1, 4,5,-1, 7,8,-1, 10,11,-1 );
+ * vo.x2                // => 7
+ * vo.y0                // => 2
+ * vo.posZ              // => -1
+ * vo.posZ = 23;
+ * vo.z1                // => 23
+ * vo.numberOfBeast()   // => 666
+ *
+ */
+
+function VertexObjectDescriptor(vertexObjectConstructor, vertexCount, vertexAttrCount, attributes, aliases) {
+
+    this.vertexObjectConstructor = buildVOConstructor(vertexObjectConstructor);
+    this.vertexObjectConstructor.prototype = Object.create(VertexObject.prototype);
+    this.vertexObjectConstructor.prototype.constructor = this.vertexObjectConstructor;
+
+    this.vertexCount = parseInt(vertexCount, 10);
+    this.vertexAttrCount = parseInt(vertexAttrCount, 10);
+
+    // ======= attributes =======
+
+    this.attr = {};
+
+    var offset, attr, i;
+
+    if (Array.isArray(attributes)) {
+
+        offset = 0;
+
+        for (i = 0; i < attributes.length; ++i) {
+
+            attr = attributes[i];
+
+            if (attr.size === undefined) throw new Error('vertex object attribute descriptor has no size property!');
+
+            if (attr.name !== undefined) {
+
+                this.attr[attr.name] = new VertexObjectAttrDescriptor(attr.name, attr.size, offset, !!attr.uniform, attr.attrNames);
+            }
+
+            offset += attr.size;
+        }
+
+        if (offset > this.vertexAttrCount) throw new Error('vertexAttrCount is too small (offset=' + offset + ')');
+    }
+
+    // ======= aliases =======
+
+    var name;
+
+    if (aliases !== undefined) {
+
+        for (name in aliases) {
+
+            if (aliases.hasOwnProperty(name)) {
+
+                attr = aliases[name];
+
+                if (typeof attr === 'string') {
+
+                    attr = this.attr[attr];
+
+                    if (attr !== undefined) {
+
+                        this.attr[name] = attr;
+                    }
+                } else {
+
+                    this.attr[name] = new VertexObjectAttrDescriptor(name, attr.size, attr.offset, !!attr.uniform, attr.attrNames);
+                }
+            }
+        }
+    }
+
+    // ======= propertiesObject =======
+
+    this.propertiesObject = {};
+
+    for (name in this.attr) {
+
+        if (this.attr.hasOwnProperty(name)) {
+
+            attr = this.attr[name];
+
+            attr.defineProperties(name, this.propertiesObject, this);
+        }
+    }
+
+    // ======= vertex object prototype =======
+
+    this.vertexObjectPrototype = Object.create(this.vertexObjectConstructor.prototype, this.propertiesObject);
+
+    // === winterkälte jetzt
+
+    Object.freeze(this.attr);
+    Object.freeze(this);
+}
+
+/**
+ * @ignore
+ */
+function buildVOConstructor(constructorFunc) {
+    if (typeof constructorFunc === 'function') {
+        if (!constructorFunc.name) {
+            return function CustomVertexObject() {
+                return constructorFunc.call(this);
+            };
+        } else {
+            return constructorFunc;
+        }
+    } else {
+        return function CustomVertexObject() {};
+    }
+}
+
+/**
+ * @param {number} [size=1]
+ * @return {VertexArray}
+ */
+VertexObjectDescriptor.prototype.createVertexArray = function (size) {
+
+    return new VertexArray(this, size === undefined ? 1 : size);
+};
+
+/**
+ * Create a new {@link VertexObject}.
+ * @param {VertexArray} [vertexArray] - Vertex array
+ * @return {VertexObject}
+ */
+VertexObjectDescriptor.prototype.create = function (vertexArray) {
+
+    var vo = Object.create(this.vertexObjectPrototype);
+    VertexObject.call(vo, this, vertexArray);
+
+    if (VertexObject !== this.vertexObjectConstructor) {
+
+        this.vertexObjectConstructor.call(vo);
+    }
+
+    return vo;
+};
+
+/**
+ * @param {string} name
+ * @param {number} [size=1]
+ * @return {boolean}
+ */
+VertexObjectDescriptor.prototype.hasAttribute = function (name, size) {
+
+    var attr = this.attr[name];
+    return attr && attr.size === (size || 1);
+};
+
+Object.defineProperties(VertexObjectDescriptor.prototype, {
+
+    /**
+     * The prototype object of the vertex object. You should add your own properties and methods here.
+     */
+    'proto': {
+        get: function get() {
+
+            return this.vertexObjectConstructor.prototype;
+        },
+        enumerable: true
+    }
+
+});
+
+// =========================================
+// VertexObjectAttrDescriptor
+// =========================================
+
+/**
+ * @ignore
+ */
+function VertexObjectAttrDescriptor(name, size, offset, uniform, attrNames) {
+
+    this.name = name;
+    this.size = size;
+    this.offset = offset;
+    this.uniform = uniform;
+    this.attrNames = attrNames;
+
+    Object.freeze(this);
+}
+
+/**
+ * @ignore
+ */
+VertexObjectAttrDescriptor.prototype.getAttrPostfix = function (name, index) {
+
+    if (this.attrNames) {
+
+        var postfix = this.attrNames[index];
+
+        if (postfix !== undefined) {
+
+            return postfix;
+        }
+    }
+
+    return name + '_' + index;
+};
+
+/**
+ * @ignore
+ */
+VertexObjectAttrDescriptor.prototype.defineProperties = function (name, obj, descriptor) {
+
+    var i, j;
+
+    if (this.size === 1) {
+
+        if (this.uniform) {
+
+            obj[name] = {
+
+                get: get_v1f_u(this.offset),
+                set: set_v1f_u(descriptor.vertexCount, descriptor.vertexAttrCount, this.offset),
+                enumerable: true
+
+            };
+        } else {
+
+            obj["set" + camelize(name)] = {
+
+                value: set_vNf_v(1, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset),
+                enumerable: true
+
+            };
+
+            for (i = 0; i < descriptor.vertexCount; ++i) {
+
+                obj[name + i] = {
+
+                    get: get_v1f_u(this.offset + i * descriptor.vertexAttrCount),
+                    set: set_vNf_v(1, 1, 0, this.offset + i * descriptor.vertexAttrCount),
+                    enumerable: true
+
+                };
+            }
+        }
+    } else if (this.size >= 2) {
+
+        if (this.uniform) {
+
+            obj["get" + camelize(name)] = {
+
+                value: get_vNf_u(this.offset),
+                enumerable: true
+
+            };
+
+            obj["set" + camelize(name)] = {
+
+                value: set_vNf_u(this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset),
+                enumerable: true
+
+            };
+
+            for (i = 0; i < this.size; ++i) {
+
+                obj[this.getAttrPostfix(name, i)] = {
+
+                    get: get_v1f_u(this.offset + i),
+                    set: set_v1f_u(descriptor.vertexCount, descriptor.vertexAttrCount, this.offset + i),
+                    enumerable: true
+
+                };
+            }
+        } else {
+
+            obj["set" + camelize(name)] = {
+
+                value: set_vNf_v(this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset),
+                enumerable: true
+
+            };
+
+            for (i = 0; i < descriptor.vertexCount; ++i) {
+                for (j = 0; j < this.size; ++j) {
+
+                    obj[this.getAttrPostfix(name, j) + i] = {
+
+                        get: get_v1f_u(this.offset + i * descriptor.vertexAttrCount + j),
+                        set: set_vNf_v(1, 1, 0, this.offset + i * descriptor.vertexAttrCount + j),
+                        enumerable: true
+
+                    };
+                }
+            }
+        }
+    }
+};
+
+/**
+ * @ignore
+ */
+function get_vNf_u(offset) {
+
+    return function (attrIndex) {
+
+        return this.vertexArray.vertices[offset + attrIndex];
+    };
+}
+
+/**
+ * @ignore
+ */
+function set_vNf_u(vectorLength, vertexCount, vertexAttrCount, offset) {
+    return function () {
+
+        var _vertices = this.vertexArray.vertices;
+        var i = void 0;
+        var n = void 0;
+
+        for (i = 0; i < vertexCount; ++i) {
+            for (n = 0; n < vectorLength; ++n) {
+                _vertices[i * vertexAttrCount + offset + n] = arguments[n];
+            }
+        }
+    };
+}
+
+/**
+ * @ignore
+ */
+function get_v1f_u(offset) {
+    return function () {
+        return this.vertexArray.vertices[offset];
+    };
+}
+
+/**
+ * @ignore
+ */
+function set_vNf_v(vectorLength, vertexCount, vertexAttrCount, offset) {
+    return function () {
+
+        var _vertices = this.vertexArray.vertices;
+        var i = void 0;
+        var n = void 0;
+
+        for (i = 0; i < vertexCount; ++i) {
+            for (n = 0; n < vectorLength; ++n) {
+                _vertices[i * vertexAttrCount + offset + n] = arguments[i * vectorLength + n];
+            }
+        }
+    };
+}
+
+/**
+ * @ignore
+ */
+function set_v1f_u(vertexCount, vertexAttrCount, offset) {
+    return function (value) {
+
+        var _vertices = this.vertexArray.vertices;
+
+        for (var i = 0; i < vertexCount; ++i) {
+
+            _vertices[i * vertexAttrCount + offset] = value;
+        }
+    };
+}
+
+/**
+ * @ignore
+ */
+function camelize(name) {
+    return name[0].toUpperCase() + name.substr(1);
+}
+
 class SpriteFactory {
 
     constructor() {
@@ -24225,6 +24378,76 @@ class ObjectPool {
 }
 
 /* jshint esversion:6 */
+class VertexIndexArray {
+
+  /**
+   * @param {number} vertexObjectCount - Number of vertex objects
+   * @param {number} objectIndexCount - Number of vertex indices per object
+   */
+  constructor(vertexObjectCount, objectIndexCount) {
+
+    var size = vertexObjectCount * objectIndexCount;
+
+    definePropertiesPublicRO(this, {
+
+      /**
+       * Number of vertex objects.
+       */
+      vertexObjectCount: vertexObjectCount,
+
+      /**
+       * Number of vertex indices per object.
+       */
+      objectIndexCount: objectIndexCount,
+
+      /**
+       * Size of array buffer.
+       */
+      size: size,
+
+      /**
+       * The uint index array buffer.
+       * @readonly
+       */
+      indices: new Uint32Array(size) // TODO Uint16Array
+
+    });
+  } // => constructor
+
+  /**
+   * @param {number} vertexObjectCount
+   * @param {number[]} indices
+   * @param {number} [objectOffset=0]
+   * @param {number} [stride=4]
+   * @return {VertexIndexArray}
+   * @example
+   * // Create a VertexIndexBuffer for 10 quads where each quad made up of 2x triangles (4x vertices and 6x indices)
+   * var quadIndices = Picimo.core.VertexIndexArray.Generate( 10, [ 0,1,2, 0,2,3 ], 4 );
+   * quadIndices.size                 // => 60
+   * quadIndices.objectIndexCount     // => 6
+   */
+  static Generate(vertexObjectCount, indices, objectOffset, stride) {
+
+    var arr = new VertexIndexArray(vertexObjectCount, indices.length);
+    var i, j;
+
+    if (stride === undefined) stride = 4;
+    if (objectOffset === undefined) objectOffset = 0;
+
+    for (i = 0; i < vertexObjectCount; ++i) {
+
+      for (j = 0; j < indices.length; ++j) {
+
+        arr.indices[i * arr.objectIndexCount + j] = indices[j] + (i + objectOffset) * stride;
+      }
+    }
+
+    return arr;
+  }
+
+} // => class VertexIndexArray
+
+/* jshint esversion:6 */
 class PicturePipeline {
 
     constructor(app, pool, texture, program) {
@@ -24478,6 +24701,135 @@ function initRenderCmds$1(pipeline) {
 //if ( pipeline.renderCmdObj ) pipeline.renderCmdObj.releaseAll();
 
 //}
+
+/* jshint esversion:6 */
+/**
+ * @param {VertexObjectDescriptor} descriptor - Vertex object descriptor
+ * @param {number} capacity - Maximum number of vertex objects
+ * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array
+ */
+
+function VertexObjectPool(descriptor, capacity, vertexArray) {
+
+    definePropertiesPublicRO(this, {
+
+        'descriptor': descriptor,
+
+        // Maximum number of vertex objects
+        'capacity': capacity,
+
+        'vertexArray': vertexArray ? vertexArray : descriptor.createVertexArray(capacity),
+
+        'ZERO': descriptor.create(),
+
+        'NEW': descriptor.create()
+
+    });
+
+    createVertexObjects(this);
+}
+
+Object.defineProperties(VertexObjectPool.prototype, {
+
+    // Number of in-use vertex objects
+    'usedCount': {
+
+        get: function get() {
+
+            return this.usedVOs.length;
+        },
+
+        enumerable: true
+
+    },
+
+    // Number of free and unused vertex objects
+    'availableCount': {
+
+        get: function get() {
+
+            return this.availableVOs.length;
+        },
+
+        enumerable: true
+
+    }
+
+});
+
+/**
+ * @throws throw error when capacity reached and no vertex object is available.
+ * @return {VertexObject}
+ */
+
+VertexObjectPool.prototype.alloc = function () {
+
+    var vo = this.availableVOs.shift();
+
+    if (vo === undefined) {
+
+        throw new Error("VertexObjectPool capacity(=" + this.capacity + ") reached!");
+    }
+
+    this.usedVOs.push(vo);
+
+    vo.vertexArray.copy(this.NEW.vertexArray);
+
+    return vo;
+};
+
+/**
+ * @param {VertexObject} vo - The vertex object
+ */
+
+VertexObjectPool.prototype.free = function (vo) {
+
+    var idx = this.usedVOs.indexOf(vo);
+
+    if (idx === -1) return;
+
+    var lastIdx = this.usedVOs.length - 1;
+
+    if (idx !== lastIdx) {
+
+        var last = this.usedVOs[lastIdx];
+        vo.vertexArray.copy(last.vertexArray);
+
+        var tmp = last.vertexArray;
+        last.vertexArray = vo.vertexArray;
+        vo.vertexArray = tmp;
+
+        this.usedVOs.splice(idx, 1, last);
+    }
+
+    this.usedVOs.pop();
+    this.availableVOs.unshift(vo);
+
+    vo.vertexArray.copy(this.ZERO.vertexArray);
+};
+
+/**
+ * @ignore
+ */
+function createVertexObjects(pool) {
+
+    pool.availableVOs = [];
+
+    var vertexArray, vertexObject;
+    var i;
+
+    for (i = 0; i < pool.capacity; i++) {
+
+        vertexArray = pool.vertexArray.subarray(i);
+
+        vertexObject = pool.descriptor.create(vertexArray);
+        vertexObject.destroy = pool.free.bind(pool, vertexObject);
+
+        pool.availableVOs.push(vertexObject);
+    }
+
+    pool.usedVOs = [];
+}
 
 /* jshint esversion:6 */
 var DEFAULT_WEBGL_PROGRAM = 'picimo.sprite';
@@ -31586,17 +31938,22 @@ function loadTexture(url) {
 //}
 
 /* jshint browser:true */
-/**
- * @class App
- *
- * @param {?HTMLCanvasELement} canvas
- * @param {Object} [options]
- *
- */
+class App$1 extends App$2 {
 
-class App$1 {
+    /**
+     * @param {?HTMLCanvasELement} canvas
+     * @param {Object} [options]
+     */
 
-    constructor(canvas, options) {
+    constructor(canvas) {
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+
+        super({
+            provider: Object.assign({
+                // TODO define services, components...
+            }, options.provider)
+        });
 
         eventize_1$1(this);
 
@@ -31711,6 +32068,9 @@ class App$1 {
     } // => constructor
 
 } // => class App
+
+App$1.Component = App$2.Component;
+App$1.Service = App$2.Service;
 
 eventize_1$1(App$1); // Enable plugins via Picimo.App.on('create', function (app, options))
 
