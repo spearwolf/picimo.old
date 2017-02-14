@@ -19928,263 +19928,6 @@ var lodash = createCommonjsModule(function (module, exports) {
 }.call(commonjsGlobal));
 });
 
-/**
- * Represents a 2d axis aligned boundary box.
- * @class AABB2
- * @param {number} [x0=0] - x0
- * @param {number} [x1=0] - x1
- * @param {number} [y0=0] - y0
- * @param {number} [y1=0] - y1
- */
-
-class AABB2 {
-
-    constructor() {
-        var x0 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        var x1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        var y0 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-        var y1 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-
-
-        if (x0 < x1) {
-
-            /**
-             * @type {number}
-             */
-            this.min_x = x0;
-            /**
-             * @type {number}
-             */
-            this.max_x = x1;
-        } else {
-
-            /**
-             * @type {number}
-             */
-            this.min_x = x1;
-            /**
-             * @type {number}
-             */
-            this.max_x = x0;
-        }
-
-        if (y0 < y1) {
-
-            /**
-             * @type {number}
-             */
-            this.min_y = y0;
-            /**
-             * @type {number}
-             */
-            this.max_y = y1;
-        } else {
-
-            /**
-             * @type {number}
-             */
-            this.min_y = y1;
-            /**
-             * @type {number}
-             */
-            this.max_y = y0;
-        }
-
-        Object.seal(this);
-    } // => constructor
-
-    /**
-     * @type {number}
-     */
-    get width() {
-        return this.max_x - this.min_x + 1;
-    }
-
-    /**
-     * @type {number}
-     */
-    get height() {
-        return this.max_y - this.min_y + 1;
-    }
-
-    /**
-     * @type {number}
-     */
-    get center_x() {
-        return (this.max_x - this.min_x) / 2;
-    }
-
-    /**
-     * @type {number}
-     */
-    get center_y() {
-        return (this.max_y - this.min_y) / 2;
-    }
-
-    /**
-     * Extend the boundary box.
-     *
-     * @param {number} x - x
-     * @param {number} y - y
-     */
-    addPoint(x, y) {
-
-        if (x < this.min_x) {
-
-            this.min_x = x;
-        } else if (x > this.max_x) {
-
-            this.max_x = x;
-        }
-
-        if (y < this.min_y) {
-
-            this.min_y = y;
-        } else if (y > this.max_y) {
-
-            this.max_y = y;
-        }
-    }
-
-    /**
-     * Determinates wether or the 2d point is inside this AABB.
-     *
-     * @param {number} x - x
-     * @param {number} y - y
-     * @return {boolean} return true when point is inside the aabb
-     */
-    isInside(x, y) {
-
-        if (x >= this.min_x && x <= this.max_x && y >= this.min_y && y <= this.max_y) {
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Determinates wether or not this AABB intersects *aabb*.
-     *
-     * @param {AABB2} aabb - aabb
-     * @return {boolean} return true when there is some intersection between both
-     */
-    isIntersection(aabb) {
-
-        if (aabb.max_x < this.min_x || aabb.min_x > this.max_x || aabb.max_y < this.min_y || aabb.min_y > this.max_y) {
-
-            return false;
-        }
-
-        return true;
-    }
-
-} // => class AABB2
-
-class Viewport extends AABB2 {
-
-  /**
-   * @param {number} x - x
-   * @param {number} y - y
-   * @param {number} width - width
-   * @param {number} height - height
-   */
-  constructor(x, y, width, height) {
-
-    var min_x = parseInt(x, 10);
-    var min_y = parseInt(y, 10);
-
-    super(min_x, min_x + parseInt(width, 10) - 1, min_y, min_y + parseInt(height, 10) - 1);
-  }
-
-  /**
-   * @type {number}
-   */
-  get x() {
-    return this.min_x;
-  }
-
-  /**
-   * @param {number} x
-   * @type {number}
-   */
-  set x(x) {
-
-    var w = this.width;
-
-    /**
-     * @type {number}
-     */
-    this.min_x = x;
-    /**
-     * @type {number}
-     */
-    this.max_x = x + w - 1;
-  }
-
-  /**
-   * @type {number}
-   */
-  get y() {
-    return this.min_y;
-  }
-
-  /**
-   * @param {number} y
-   * @type {number}
-   */
-  set y(y) {
-
-    var h = this.height;
-
-    /**
-     * @type {number}
-     */
-    this.min_y = y;
-    /**
-     * @type {number}
-     */
-    this.max_y = y + h - 1;
-  }
-
-  /**
-   * @type {number}
-   */
-  get width() {
-    return this.max_x - this.min_x + 1;
-  }
-
-  /**
-   * @param {number} y
-   * @type {number}
-   */
-  set width(w) {
-    /**
-     * @type {number}
-     */
-    this.max_x = this.min_x + w - 1;
-  }
-
-  /**
-   * @type {number}
-   */
-  get height() {
-    return this.max_y - this.min_y + 1;
-  }
-
-  /**
-   * @param {number} y
-   * @type {number}
-   */
-  set height(h) {
-    /**
-     * @type {number}
-     */
-    this.max_y = this.min_y + h - 1;
-  }
-
-}
-
 /* jshint esversion:6 */
 
 /**
@@ -20250,186 +19993,6 @@ function makeReadyPromise(obj) {
     });
 
     return obj;
-}
-
-/* jshint esversion:6 */
-
-/**
- * @param {number} a
- * @param {number} b
- * @return {number}
- */
-
-
-/**
- * @param {number} x
- * @return {number}
- */
-function findNextPowerOfTwo(x) {
-
-    var p = 1;
-
-    while (x > p) {
-
-        p <<= 1;
-    }
-
-    return p;
-}
-
-/**
- * @param {number} n
- * @return {boolean}
- */
-function isPowerOfTwo(n) {
-
-    return n !== 0 && (n & n - 1) === 0;
-}
-
-/* jshint esversion:6 */
-/* global HTMLCanvasElement */
-/* global HTMLImageElement */
-/**
- * A power of two image.
- */
-class PowerOfTwoImage {
-
-    /**
-     * @param {!App} app
-     * @param {?HTMLImageElement|HTMLCanvasElement} image
-     */
-    constructor(app, image) {
-
-        definePropertyPublicRO(this, 'app', app);
-        addUid(this);
-        makeReadyPromise(this);
-
-        /**
-         * @type {string}
-         */
-        this.url = null;
-
-        /**
-         * @type {HTMLImageElement|HTMLCanvasElement}
-         */
-        this.domElement = image;
-
-        /**
-         * The power of two converted image (may be the original image)
-         *
-         * @type {HTMLImageElement|HTMLCanvasElement}
-         */
-        this.image = null;
-
-        Object.seal(this);
-    }
-
-    /**
-     * @param {string} url
-     * @return {PowerOfTwoImage} self
-     */
-    load(url) {
-
-        var img = document.createElement('img');
-        this.domElement = img;
-
-        this.url = this.app.getAssetUrl(url);
-        img.src = this.url;
-
-        return this;
-    }
-
-    /**
-     * The original image
-     *
-     * @type {HTMLImageElement|HTMLCanvasElement}
-     */
-    get domElement() {
-        return this._domElement;
-    }
-
-    /**
-     * @type {HTMLImageElement|HTMLCanvasElement}
-     * @param {HTMLImageElement|HTMLCanvasElement} image
-     */
-    set domElement(image) {
-
-        if (image instanceof HTMLCanvasElement) {
-
-            setDomElement(this, image);
-        } else if (image instanceof HTMLImageElement) {
-
-            if (image.width === 0 && image.height === 0) {
-
-                this._domElement = image;
-                this.ready = false;
-
-                var self = this;
-
-                image.onload = function () {
-
-                    self.image = convertToPowerOfTwo(image);
-                    self.ready = true;
-                };
-            } else {
-
-                setDomElement(this, image);
-            }
-        } else {
-
-            setDomElement(this, null);
-        }
-    }
-
-    /**
-     * @type {number}
-     */
-    get width() {
-        return this.image ? this.image.width : 0;
-    }
-
-    /**
-     * @type {number}
-     */
-    get height() {
-        return this.image ? this.image.height : 0;
-    }
-
-} // => class PowerOfTwoImage
-
-
-/**
- * @ignore
- */
-function setDomElement(image, domElement) {
-
-    image._domElement = domElement;
-    image.image = domElement ? convertToPowerOfTwo(domElement) : null;
-    image.ready = !!domElement;
-}
-
-/**
- * @ignore
- */
-function convertToPowerOfTwo(image) {
-
-    if (isPowerOfTwo(image.width) && isPowerOfTwo(image.height)) {
-
-        return image;
-    } else {
-
-        var w = findNextPowerOfTwo(image.width);
-        var h = findNextPowerOfTwo(image.height);
-
-        var canvas = document.createElement('canvas');
-
-        canvas.width = w;
-        canvas.height = h;
-
-        canvas.getContext('2d').drawImage(image, 0, 0);
-
-        return canvas;
-    }
 }
 
 /* jshint esversion:6 */
@@ -20537,400 +20100,6 @@ class Resource {
     }
 
 } // => class Resource
-
-/**
- * @example
- * let c = document.createElement("canvas");
- * let t = new Picimo.core.Texture.fromCanvas(c);
- * t.width    // => 300
- * t.height   // => 150
- *
- * let tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
- * t.width    // => 100
- *
- */
-
-class Texture {
-
-    /**
-     * @param {Texture} [parent]
-     * @param {number} [x=0]
-     * @param {number} [y=0]
-     * @param {number} [width]
-     * @param {number} [height]
-     */
-    constructor(parent, x, y, width, height) {
-
-        this._parent = parent;
-        this._image = null;
-        this._width = width;
-        this._height = height;
-
-        /**
-         * @type {number}
-         */
-        this.x = x != null ? x : 0;
-
-        /**
-         * @type {number}
-         */
-        this.y = y != null ? y : 0;
-    }
-
-    /**
-     * @type {?Texture}
-     */
-    get parent() {
-        return this._parent;
-    }
-
-    /**
-     * @param {?Texture} parent
-     * @type {?Texture}
-     */
-    set parent(parent) {
-        this._parent = parent;
-    }
-
-    /**
-     * @type {?Texture}
-     */
-    get root() {
-        return this._parent ? this._parent : this;
-    }
-
-    /**
-     * @type {Image|HTMLImageElement|HTMLCanvasElement}
-     */
-    get image() {
-        return this._image ? this._image : this._parent ? this._parent.image : null;
-    }
-
-    /**
-     * @param {Image|HTMLImageElement|HTMLCanvasElement} image
-     * @type {Image|HTMLImageElement|HTMLCanvasElement}
-     */
-    set image(image) {
-        this._image = image;
-    }
-
-    /**
-     * @type {number}
-     */
-    get root_width() {
-
-        var root = this.root;
-
-        if (this === root) {
-
-            if (this._width != null) {
-
-                return this._width;
-            } else if (this._image) {
-
-                return this._image.width;
-            } else {
-
-                return 0;
-            }
-        } else {
-
-            return root.root_width;
-        }
-    }
-
-    /**
-     * @type {number}
-     */
-    get root_height() {
-
-        var root = this.root;
-
-        if (this === root) {
-
-            if (this._height != null) {
-
-                return this._height;
-            } else if (this._image) {
-
-                return this._image.height;
-            } else {
-
-                return 0;
-            }
-        } else {
-
-            return root.root_height;
-        }
-    }
-
-    /**
-     * @type {number}
-     */
-    get width() {
-
-        if (this._width != null) {
-
-            return this._width;
-        }
-
-        return this.root_width;
-    }
-
-    /**
-     * @param {number} width
-     * @type {number}
-     */
-    set width(width) {
-
-        this._width = width;
-    }
-
-    /**
-     * @type {number}
-     */
-    get height() {
-
-        if (this._height != null) {
-
-            return this._height;
-        }
-
-        return this.root_height;
-    }
-
-    /**
-     * @param {number} height
-     * @type {number}
-     */
-    set height(height) {
-
-        this._height = height;
-    }
-
-    /**
-     * @type {number}
-     */
-    get min_s() {
-
-        var x = this.x;
-        var tex = this;
-
-        while ((tex = tex.parent) != null) {
-
-            x += tex.x;
-        }
-
-        return x / this.root_width;
-    }
-
-    /**
-     * @type {number}
-     */
-    get min_t() {
-
-        var y = this.y;
-        var tex = this;
-
-        while ((tex = tex.parent) != null) {
-
-            y += tex.y;
-        }
-
-        return y / this.root_height;
-    }
-
-    /**
-     * @type {number}
-     */
-    get max_s() {
-
-        var x = this.x + this.width;
-        var tex = this;
-
-        while ((tex = tex.parent) != null) {
-
-            x += tex.x;
-        }
-
-        return x / this.root_width;
-    }
-
-    /**
-     * @type {number}
-     */
-    get max_t() {
-
-        var y = this.y + this.height;
-        var tex = this;
-
-        while ((tex = tex.parent) != null) {
-
-            y += tex.y;
-        }
-
-        return y / this.root_height;
-    }
-
-    /**
-     * @param {Object} obj - Any object which has a `.setTexCoords()` method
-     */
-    setTexCoords(obj) {
-
-        var x0 = this.min_s;
-        var y0 = this.min_t;
-        var x1 = this.max_s;
-        var y1 = this.max_t;
-
-        obj.setTexCoords(x0, y0, x1, y0, x1, y1, x0, y1);
-    }
-
-    /**
-     * @param {HTMLImageElement|HTMLCanvasElement} canvas
-     * @return {Texture}
-     */
-    static fromCanvas(canvas) {
-
-        var texture = new Texture();
-        texture.image = canvas;
-
-        return texture;
-    }
-
-} // => class Texture
-
-/**
- * Represents a texture atlas definition and holds references to the image, frames and textures.
- */
-class TextureAtlas extends Resource {
-
-  /**
-   * @param {App} app
-   * @param {string} imageUrl
-   * @param {string|Object} conf
-   */
-  constructor(app, imageUrl, conf) {
-
-    super(app, 'conf');
-
-    this.on('incomingData', toJson);
-    this.on('data', parseTextureAtlasDefinition);
-
-    /**
-     * The texture atlas definition
-     * @type {Object}
-     */
-    this.conf = conf;
-
-    /**
-     * The root texture
-     * @type {Texture}
-     */
-    this.texture = null;
-
-    /**
-     * @type {Map<Texture>}
-     */
-    this.frames = null;
-
-    /**
-     * All texture frame names
-     * @type {string[]}
-     */
-    this.frameNames = null;
-
-    /**
-     * @type {string}
-     */
-    this.imageUrl = imageUrl;
-
-    Object.seal(this);
-  }
-
-  /**
-   * Return texture by frame name
-   * @param {string} name
-   * @return {Texture} texture
-   */
-  getTexture(name) {
-
-    if (this.frames) {
-
-      return this.frames.get(name);
-    }
-  }
-
-  /**
-   * @return {Texture} texture
-   */
-  getRandomTexture() {
-
-    if (this.frames) {
-
-      return this.frames.get(this.frameNames[parseInt(this.frameNames.length * Math.random(), 10)]);
-    }
-  }
-
-} // => class TextureAtlas
-
-
-/**
- * @ignore
- */
-function toJson(data) {
-  return typeof data === 'string' ? JSON.parse(data) : data;
-}
-
-/**
- * @ignore
- */
-function constructImageUrl(textureAtlas, imageUrl) {
-
-  if (textureAtlas.imageUrl !== undefined) {
-
-    return textureAtlas.imageUrl;
-  }
-
-  return textureAtlas.app.joinAssetUrl(textureAtlas.url, imageUrl);
-}
-
-/**
- * @ignore
- */
-function parseTextureAtlasDefinition(conf) {
-
-  this.texture = new Texture();
-
-  this.texture.width = conf.meta.size.w;
-  this.texture.height = conf.meta.size.h;
-  this.texture.image = new PowerOfTwoImage(this.app).load(constructImageUrl(this, conf.meta.image));
-
-  this.frameNames = [];
-  this.frames = new Map();
-
-  var name, frame;
-
-  for (name in conf.frames) {
-
-    if (conf.frames.hasOwnProperty(name)) {
-
-      this.frameNames.push(name);
-      frame = conf.frames[name].frame;
-      this.frames.set(name, new Texture(this.texture, frame.x, frame.y, frame.w, frame.h));
-    }
-  }
-}
-
-
-
-var index$1 = Object.freeze({
-	AABB2: AABB2,
-	Viewport: Viewport,
-	PowerOfTwoImage: PowerOfTwoImage,
-	Resource: Resource,
-	Texture: Texture,
-	TextureAtlas: TextureAtlas
-});
 
 class ShaderSource extends Resource {
 
@@ -22430,20 +21599,6 @@ class WebGlBuffer {
 }
 
 /* jshint esversion:6 */
-
-
-
-var index = Object.freeze({
-	Program: Program,
-	ShaderSource: ShaderSource,
-	ShaderManager: ShaderManager,
-	TextureManager: TextureManager,
-	WebGlContext: WebGlContext,
-	WebGlRenderer: WebGlRenderer,
-	WebGlProgram: WebGlProgram,
-	WebGlTexture: WebGlTexture,
-	WebGlBuffer: WebGlBuffer
-});
 
 /* jshint esversion:6 */
 /**
@@ -30684,6 +29839,558 @@ class Matrix4 {
 
 } // => Matrix4
 
+/**
+ * Represents a 2d axis aligned boundary box.
+ * @class AABB2
+ * @param {number} [x0=0] - x0
+ * @param {number} [x1=0] - x1
+ * @param {number} [y0=0] - y0
+ * @param {number} [y1=0] - y1
+ */
+
+class AABB2 {
+
+    constructor() {
+        var x0 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        var x1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var y0 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+        var y1 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+
+
+        if (x0 < x1) {
+
+            /**
+             * @type {number}
+             */
+            this.min_x = x0;
+            /**
+             * @type {number}
+             */
+            this.max_x = x1;
+        } else {
+
+            /**
+             * @type {number}
+             */
+            this.min_x = x1;
+            /**
+             * @type {number}
+             */
+            this.max_x = x0;
+        }
+
+        if (y0 < y1) {
+
+            /**
+             * @type {number}
+             */
+            this.min_y = y0;
+            /**
+             * @type {number}
+             */
+            this.max_y = y1;
+        } else {
+
+            /**
+             * @type {number}
+             */
+            this.min_y = y1;
+            /**
+             * @type {number}
+             */
+            this.max_y = y0;
+        }
+
+        Object.seal(this);
+    } // => constructor
+
+    /**
+     * @type {number}
+     */
+    get width() {
+        return this.max_x - this.min_x + 1;
+    }
+
+    /**
+     * @type {number}
+     */
+    get height() {
+        return this.max_y - this.min_y + 1;
+    }
+
+    /**
+     * @type {number}
+     */
+    get center_x() {
+        return (this.max_x - this.min_x) / 2;
+    }
+
+    /**
+     * @type {number}
+     */
+    get center_y() {
+        return (this.max_y - this.min_y) / 2;
+    }
+
+    /**
+     * Extend the boundary box.
+     *
+     * @param {number} x - x
+     * @param {number} y - y
+     */
+    addPoint(x, y) {
+
+        if (x < this.min_x) {
+
+            this.min_x = x;
+        } else if (x > this.max_x) {
+
+            this.max_x = x;
+        }
+
+        if (y < this.min_y) {
+
+            this.min_y = y;
+        } else if (y > this.max_y) {
+
+            this.max_y = y;
+        }
+    }
+
+    /**
+     * Determinates wether or the 2d point is inside this AABB.
+     *
+     * @param {number} x - x
+     * @param {number} y - y
+     * @return {boolean} return true when point is inside the aabb
+     */
+    isInside(x, y) {
+
+        if (x >= this.min_x && x <= this.max_x && y >= this.min_y && y <= this.max_y) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determinates wether or not this AABB intersects *aabb*.
+     *
+     * @param {AABB2} aabb - aabb
+     * @return {boolean} return true when there is some intersection between both
+     */
+    isIntersection(aabb) {
+
+        if (aabb.max_x < this.min_x || aabb.min_x > this.max_x || aabb.max_y < this.min_y || aabb.min_y > this.max_y) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+} // => class AABB2
+
+class Viewport extends AABB2 {
+
+  /**
+   * @param {number} x - x
+   * @param {number} y - y
+   * @param {number} width - width
+   * @param {number} height - height
+   */
+  constructor(x, y, width, height) {
+
+    var min_x = parseInt(x, 10);
+    var min_y = parseInt(y, 10);
+
+    super(min_x, min_x + parseInt(width, 10) - 1, min_y, min_y + parseInt(height, 10) - 1);
+  }
+
+  /**
+   * @type {number}
+   */
+  get x() {
+    return this.min_x;
+  }
+
+  /**
+   * @param {number} x
+   * @type {number}
+   */
+  set x(x) {
+
+    var w = this.width;
+
+    /**
+     * @type {number}
+     */
+    this.min_x = x;
+    /**
+     * @type {number}
+     */
+    this.max_x = x + w - 1;
+  }
+
+  /**
+   * @type {number}
+   */
+  get y() {
+    return this.min_y;
+  }
+
+  /**
+   * @param {number} y
+   * @type {number}
+   */
+  set y(y) {
+
+    var h = this.height;
+
+    /**
+     * @type {number}
+     */
+    this.min_y = y;
+    /**
+     * @type {number}
+     */
+    this.max_y = y + h - 1;
+  }
+
+  /**
+   * @type {number}
+   */
+  get width() {
+    return this.max_x - this.min_x + 1;
+  }
+
+  /**
+   * @param {number} y
+   * @type {number}
+   */
+  set width(w) {
+    /**
+     * @type {number}
+     */
+    this.max_x = this.min_x + w - 1;
+  }
+
+  /**
+   * @type {number}
+   */
+  get height() {
+    return this.max_y - this.min_y + 1;
+  }
+
+  /**
+   * @param {number} y
+   * @type {number}
+   */
+  set height(h) {
+    /**
+     * @type {number}
+     */
+    this.max_y = this.min_y + h - 1;
+  }
+
+}
+
+/**
+ * @example
+ * let c = document.createElement("canvas");
+ * let t = new Picimo.core.Texture.fromCanvas(c);
+ * t.width    // => 300
+ * t.height   // => 150
+ *
+ * let tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
+ * t.width    // => 100
+ *
+ */
+
+class Texture {
+
+    /**
+     * @param {Texture} [parent]
+     * @param {number} [x=0]
+     * @param {number} [y=0]
+     * @param {number} [width]
+     * @param {number} [height]
+     */
+    constructor(parent, x, y, width, height) {
+
+        this._parent = parent;
+        this._image = null;
+        this._width = width;
+        this._height = height;
+
+        /**
+         * @type {number}
+         */
+        this.x = x != null ? x : 0;
+
+        /**
+         * @type {number}
+         */
+        this.y = y != null ? y : 0;
+    }
+
+    /**
+     * @type {?Texture}
+     */
+    get parent() {
+        return this._parent;
+    }
+
+    /**
+     * @param {?Texture} parent
+     * @type {?Texture}
+     */
+    set parent(parent) {
+        this._parent = parent;
+    }
+
+    /**
+     * @type {?Texture}
+     */
+    get root() {
+        return this._parent ? this._parent : this;
+    }
+
+    /**
+     * @type {Image|HTMLImageElement|HTMLCanvasElement}
+     */
+    get image() {
+        return this._image ? this._image : this._parent ? this._parent.image : null;
+    }
+
+    /**
+     * @param {Image|HTMLImageElement|HTMLCanvasElement} image
+     * @type {Image|HTMLImageElement|HTMLCanvasElement}
+     */
+    set image(image) {
+        this._image = image;
+    }
+
+    /**
+     * @type {number}
+     */
+    get root_width() {
+
+        var root = this.root;
+
+        if (this === root) {
+
+            if (this._width != null) {
+
+                return this._width;
+            } else if (this._image) {
+
+                return this._image.width;
+            } else {
+
+                return 0;
+            }
+        } else {
+
+            return root.root_width;
+        }
+    }
+
+    /**
+     * @type {number}
+     */
+    get root_height() {
+
+        var root = this.root;
+
+        if (this === root) {
+
+            if (this._height != null) {
+
+                return this._height;
+            } else if (this._image) {
+
+                return this._image.height;
+            } else {
+
+                return 0;
+            }
+        } else {
+
+            return root.root_height;
+        }
+    }
+
+    /**
+     * @type {number}
+     */
+    get width() {
+
+        if (this._width != null) {
+
+            return this._width;
+        }
+
+        return this.root_width;
+    }
+
+    /**
+     * @param {number} width
+     * @type {number}
+     */
+    set width(width) {
+
+        this._width = width;
+    }
+
+    /**
+     * @type {number}
+     */
+    get height() {
+
+        if (this._height != null) {
+
+            return this._height;
+        }
+
+        return this.root_height;
+    }
+
+    /**
+     * @param {number} height
+     * @type {number}
+     */
+    set height(height) {
+
+        this._height = height;
+    }
+
+    /**
+     * @type {number}
+     */
+    get min_s() {
+
+        var x = this.x;
+        var tex = this;
+
+        while ((tex = tex.parent) != null) {
+
+            x += tex.x;
+        }
+
+        return x / this.root_width;
+    }
+
+    /**
+     * @type {number}
+     */
+    get min_t() {
+
+        var y = this.y;
+        var tex = this;
+
+        while ((tex = tex.parent) != null) {
+
+            y += tex.y;
+        }
+
+        return y / this.root_height;
+    }
+
+    /**
+     * @type {number}
+     */
+    get max_s() {
+
+        var x = this.x + this.width;
+        var tex = this;
+
+        while ((tex = tex.parent) != null) {
+
+            x += tex.x;
+        }
+
+        return x / this.root_width;
+    }
+
+    /**
+     * @type {number}
+     */
+    get max_t() {
+
+        var y = this.y + this.height;
+        var tex = this;
+
+        while ((tex = tex.parent) != null) {
+
+            y += tex.y;
+        }
+
+        return y / this.root_height;
+    }
+
+    /**
+     * @param {Object} obj - Any object which has a `.setTexCoords()` method
+     */
+    setTexCoords(obj) {
+
+        var x0 = this.min_s;
+        var y0 = this.min_t;
+        var x1 = this.max_s;
+        var y1 = this.max_t;
+
+        obj.setTexCoords(x0, y0, x1, y0, x1, y1, x0, y1);
+    }
+
+    /**
+     * @param {HTMLImageElement|HTMLCanvasElement} canvas
+     * @return {Texture}
+     */
+    static fromCanvas(canvas) {
+
+        var texture = new Texture();
+        texture.image = canvas;
+
+        return texture;
+    }
+
+} // => class Texture
+
+/* jshint esversion:6 */
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
+ */
+
+
+/**
+ * @param {number} x
+ * @return {number}
+ */
+function findNextPowerOfTwo(x) {
+
+    var p = 1;
+
+    while (x > p) {
+
+        p <<= 1;
+    }
+
+    return p;
+}
+
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+function isPowerOfTwo(n) {
+
+    return n !== 0 && (n & n - 1) === 0;
+}
+
 /* jshint esversion:6 */
 class Canvas extends Picture$1 {
 
@@ -30849,6 +30556,274 @@ function createTexture(canvas, dimension) {
     }
 
     return texture;
+}
+
+/* jshint esversion:6 */
+/* global HTMLCanvasElement */
+/* global HTMLImageElement */
+/**
+ * A power of two image.
+ */
+class PowerOfTwoImage {
+
+    /**
+     * @param {!App} app
+     * @param {?HTMLImageElement|HTMLCanvasElement} image
+     */
+    constructor(app, image) {
+
+        definePropertyPublicRO(this, 'app', app);
+        addUid(this);
+        makeReadyPromise(this);
+
+        /**
+         * @type {string}
+         */
+        this.url = null;
+
+        /**
+         * @type {HTMLImageElement|HTMLCanvasElement}
+         */
+        this.domElement = image;
+
+        /**
+         * The power of two converted image (may be the original image)
+         *
+         * @type {HTMLImageElement|HTMLCanvasElement}
+         */
+        this.image = null;
+
+        Object.seal(this);
+    }
+
+    /**
+     * @param {string} url
+     * @return {PowerOfTwoImage} self
+     */
+    load(url) {
+
+        var img = document.createElement('img');
+        this.domElement = img;
+
+        this.url = this.app.getAssetUrl(url);
+        img.src = this.url;
+
+        return this;
+    }
+
+    /**
+     * The original image
+     *
+     * @type {HTMLImageElement|HTMLCanvasElement}
+     */
+    get domElement() {
+        return this._domElement;
+    }
+
+    /**
+     * @type {HTMLImageElement|HTMLCanvasElement}
+     * @param {HTMLImageElement|HTMLCanvasElement} image
+     */
+    set domElement(image) {
+
+        if (image instanceof HTMLCanvasElement) {
+
+            setDomElement(this, image);
+        } else if (image instanceof HTMLImageElement) {
+
+            if (image.width === 0 && image.height === 0) {
+
+                this._domElement = image;
+                this.ready = false;
+
+                var self = this;
+
+                image.onload = function () {
+
+                    self.image = convertToPowerOfTwo(image);
+                    self.ready = true;
+                };
+            } else {
+
+                setDomElement(this, image);
+            }
+        } else {
+
+            setDomElement(this, null);
+        }
+    }
+
+    /**
+     * @type {number}
+     */
+    get width() {
+        return this.image ? this.image.width : 0;
+    }
+
+    /**
+     * @type {number}
+     */
+    get height() {
+        return this.image ? this.image.height : 0;
+    }
+
+} // => class PowerOfTwoImage
+
+
+/**
+ * @ignore
+ */
+function setDomElement(image, domElement) {
+
+    image._domElement = domElement;
+    image.image = domElement ? convertToPowerOfTwo(domElement) : null;
+    image.ready = !!domElement;
+}
+
+/**
+ * @ignore
+ */
+function convertToPowerOfTwo(image) {
+
+    if (isPowerOfTwo(image.width) && isPowerOfTwo(image.height)) {
+
+        return image;
+    } else {
+
+        var w = findNextPowerOfTwo(image.width);
+        var h = findNextPowerOfTwo(image.height);
+
+        var canvas = document.createElement('canvas');
+
+        canvas.width = w;
+        canvas.height = h;
+
+        canvas.getContext('2d').drawImage(image, 0, 0);
+
+        return canvas;
+    }
+}
+
+/**
+ * Represents a texture atlas definition and holds references to the image, frames and textures.
+ */
+class TextureAtlas extends Resource {
+
+  /**
+   * @param {App} app
+   * @param {string} imageUrl
+   * @param {string|Object} conf
+   */
+  constructor(app, imageUrl, conf) {
+
+    super(app, 'conf');
+
+    this.on('incomingData', toJson);
+    this.on('data', parseTextureAtlasDefinition);
+
+    /**
+     * The texture atlas definition
+     * @type {Object}
+     */
+    this.conf = conf;
+
+    /**
+     * The root texture
+     * @type {Texture}
+     */
+    this.texture = null;
+
+    /**
+     * @type {Map<Texture>}
+     */
+    this.frames = null;
+
+    /**
+     * All texture frame names
+     * @type {string[]}
+     */
+    this.frameNames = null;
+
+    /**
+     * @type {string}
+     */
+    this.imageUrl = imageUrl;
+
+    Object.seal(this);
+  }
+
+  /**
+   * Return texture by frame name
+   * @param {string} name
+   * @return {Texture} texture
+   */
+  getTexture(name) {
+
+    if (this.frames) {
+
+      return this.frames.get(name);
+    }
+  }
+
+  /**
+   * @return {Texture} texture
+   */
+  getRandomTexture() {
+
+    if (this.frames) {
+
+      return this.frames.get(this.frameNames[parseInt(this.frameNames.length * Math.random(), 10)]);
+    }
+  }
+
+} // => class TextureAtlas
+
+
+/**
+ * @ignore
+ */
+function toJson(data) {
+  return typeof data === 'string' ? JSON.parse(data) : data;
+}
+
+/**
+ * @ignore
+ */
+function constructImageUrl(textureAtlas, imageUrl) {
+
+  if (textureAtlas.imageUrl !== undefined) {
+
+    return textureAtlas.imageUrl;
+  }
+
+  return textureAtlas.app.joinAssetUrl(textureAtlas.url, imageUrl);
+}
+
+/**
+ * @ignore
+ */
+function parseTextureAtlasDefinition(conf) {
+
+  this.texture = new Texture();
+
+  this.texture.width = conf.meta.size.w;
+  this.texture.height = conf.meta.size.h;
+  this.texture.image = new PowerOfTwoImage(this.app).load(constructImageUrl(this, conf.meta.image));
+
+  this.frameNames = [];
+  this.frames = new Map();
+
+  var name, frame;
+
+  for (name in conf.frames) {
+
+    if (conf.frames.hasOwnProperty(name)) {
+
+      this.frameNames.push(name);
+      frame = conf.frames[name].frame;
+      this.frames.set(name, new Texture(this.texture, frame.x, frame.y, frame.w, frame.h));
+    }
+  }
 }
 
 /**
@@ -31838,16 +31813,6 @@ Scene.prototype.computeViewMatrix = function (viewMatrix) {
     return viewMatrix;
 };
 
-
-
-var index$2 = Object.freeze({
-	Node: Node,
-	NodeState: NodeState,
-	Scene: Scene,
-	Picture: Picture$1,
-	SpriteGroup: SpriteGroup
-});
-
 var regExpAbsHttpUrl = new RegExp('^(https?:)?//', 'i');
 var regExpAbsUrlPath = new RegExp('^(https?:)?/', 'i');
 var regExpUrlDir = new RegExp('^(.*/)[^/]+$', 'i');
@@ -32082,9 +32047,6 @@ var VERSION = "0.0.26";
 
 exports.VERSION = VERSION;
 exports.App = App$1;
-exports.graph = index$2;
-exports.render = index;
-exports.core = index$1;
 exports.defineSprite = defineSprite;
 exports.SpriteFactory = SpriteFactory$1;
 

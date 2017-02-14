@@ -3,13 +3,13 @@
 ## Code Refactoring
 
 - [o] no more generic `import * as ...` imports
-- [ ] only one class or method per file
+- [-] only one class or method per file
 - [ ] for all options/configuration values use transform helpers `utils.asString()`, `utils.asBoolean()`, ..
 - [ ] texture state and events (imageLoaded, textureCreated, firstTimeRender), add to TextureManager
 - [ ] generic factories solution (see src/scene/factories as an example of how to *not*)
 - [ ] remove renderer.debugOutFrame - create a dynamic flag/properties for this feature
 - [ ] check/remove all inline TODOs
-- [ ] convert all graph/.. nodes into es6 classes
+- [-] convert all graph/.. nodes into es6 classes
 - [x] rename `utils/obj_utils`into `utils/obj_props`
 - [ ] rework all exceptions/errors and logs plus DEBUG/debug
 - [x] cleanup utils/index.js

@@ -1,4 +1,6 @@
-import { PowerOfTwoImage, Texture, TextureAtlas } from '../core';
+import PowerOfTwoImage from '../core/power_of_two_image';
+import Texture from '../core/texture';
+import TextureAtlas from '../core/texture_atlas';
 
 /**
  * @param {string} url

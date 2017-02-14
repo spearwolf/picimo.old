@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Resource } from '../core';
+import Resource from '../core/resource';
 
 export default class ShaderSource extends Resource {
 

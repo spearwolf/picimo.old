@@ -2,7 +2,8 @@
 import eventize from '@spearwolf/eventize';
 
 import Picture from './picture';
-import { Viewport, Texture } from '../core';
+import Viewport from '../core/viewport';
+import Texture from '../core/texture';
 import { asBoolean } from '../utils/as';
 import { isPowerOfTwo, findNextPowerOfTwo } from '../utils/math_helpers';
 
