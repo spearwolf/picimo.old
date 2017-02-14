@@ -1,3 +1,4 @@
+import createVertexObjects from './create_vertex_objects';
 
 export default class VOPool {
 
@@ -110,10 +111,17 @@ export default class VOPool {
 
 
     /**
-     * @param {VertexObject} vo - The vertex object
+     * @param {VertexObject|VertexObject[]} vo - vertex object(s)
      */
 
     free ( vo ) {
+
+        if ( Array.isArray( vo ) ) {
+
+            vo.forEach(_vo => _vo.free());
+            return;
+
+        }
 
         const idx = this.usedVOs.indexOf( vo );
 
@@ -138,29 +146,6 @@ export default class VOPool {
         this.availableVOs.unshift( vo );
 
         vo.voArray.copy( this.voZero.voArray );
-
-    }
-
-}
-
-/**
- * @ignore
- */
-function createVertexObjects ( pool, maxAllocSize = 0 ) {
-
-    const max = pool.capacity - pool.usedCount - pool.allocatedCount;
-    const len = pool.allocatedCount + ( maxAllocSize > 0 && maxAllocSize < max ? maxAllocSize : max );
-
-    for ( let i = pool.allocatedCount; i < len; i++ ) {
-
-        let voArray = pool.voArray.subarray( i );
-
-        let vertexObject = pool.descriptor.createVO( voArray );
-        vertexObject.free = pool.free.bind( pool, vertexObject );
-
-        //Object.freeze(vertexObject);
-
-        pool.availableVOs.push( vertexObject );
 
     }
 

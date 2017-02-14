@@ -3,21 +3,18 @@ import { BYTES_PER_ELEMENT, TYPED_ARRAY_GETTER } from '../utils/typed_array_hel
 
 /**
  * Vertex object *attribute* descriptor.
- *
- * @class VOAttrDescriptor
- *
- * @param {string} name
- * @param {string} type
- * @param {number} size
- * @param {number} offset
- * @param {number} byteOffset
- * @param {boolean} uniform
- * @param {string[]} [attrNames]
- *
  */
-
 export default class VOAttrDescriptor {
 
+    /**
+     * @param {string} name
+     * @param {string} type
+     * @param {number} size
+     * @param {number} [offset] - either `offset` or `byteOffset` must be specified
+     * @param {number} [byteOffset] - either `offset` or `byteOffset` must be specified
+     * @param {boolean} uniform
+     * @param {string[]} [attrNames]
+     */
     constructor ( name, type, size, offset, byteOffset, uniform, attrNames ) {
 
         this.name = name;

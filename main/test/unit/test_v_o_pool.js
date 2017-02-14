@@ -134,17 +134,17 @@ describe('VOPool', () => {
         const pool = new VOPool(descriptor, { maxAllocVOSize: 10 });
         const MAX = Math.floor(65536 / 3);
 
-        it('availableCount', () => assert.equal(pool.availableCount, MAX));
-        it('allocatedCount#1', () => assert.equal(pool.allocatedCount, 10));
+        it('availableCount:before', () => assert.equal(pool.availableCount, MAX));
+        it('allocatedCount:before', () => assert.equal(pool.allocatedCount, 10));
 
         it('maxAllocVOSize', () => {
             const vos = pool.alloc(15);
             assert.equal(vos.length, 15);
         });
 
-        it('allocatedCount#2', () => assert.equal(pool.allocatedCount, 20));
-        it('availableCount', () => assert.equal(pool.availableCount, MAX - 15));
-        it('usedCount', () => assert.equal(pool.usedCount, 15));
+        it('allocatedCount:after', () => assert.equal(pool.allocatedCount, 20));
+        it('availableCoun:after', () => assert.equal(pool.availableCount, MAX - 15));
+        it('usedCount:after', () => assert.equal(pool.usedCount, 15));
 
     });
 

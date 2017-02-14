@@ -9,7 +9,7 @@ export default class VertexIndexArray {
      */
     constructor (vertexObjectCount, objectIndexCount) {
 
-        var size = vertexObjectCount * objectIndexCount;
+        const size = vertexObjectCount * objectIndexCount;
 
         definePropertiesPublicRO( this, {
 
