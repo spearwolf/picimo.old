@@ -32,7 +32,7 @@ export default class VertexIndexArray {
              * The uint index array buffer.
              * @readonly
              */
-            indices: new Uint32Array( size )
+            indices: new Uint32Array( size )  // TODO Uint16Array
 
         });
 
