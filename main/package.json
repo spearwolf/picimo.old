@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "build:dbg": "rollup --environment TARGET:chrome-firefox,DEBUG,SOURCE_MAP:true,OUTFILE:dist/picimo-dbg.umd.js -c config/rollup.build.js",
-    "build:min": "rollup --environment TARGET:universal,UGLIFY,SOURCE_MAP:true,OUTFILE:dist/picimo-min.umd.js -c config/rollup.build.js",
+    "_build:min": "rollup --environment TARGET:universal,UGLIFY,SOURCE_MAP:true,OUTFILE:dist/picimo-min.umd.js -c config/rollup.build.js",
     "build:cjs": "rollup --environment TARGET:universal,FORMAT:cjs,OUTFILE:dist/picimo.js -c config/rollup.build.js",
     "build:ios": "rollup --environment TARGET:ios,OUTFILE:dist/picimo-ios.umd.js -c config/rollup.build.js",
     "build:test": "rollup --environment TARGET:chrome-firefox,OUTFILE:dist/picimo-chrome-firefox.umd.js -c config/rollup.build.js",

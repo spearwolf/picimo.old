@@ -773,810 +773,1179 @@ var color = createCommonjsModule(function (module) {
 
 // create namespaces
 /*global net */
-if ("undefined" == typeof net) { var net = {}; }
-if (!net.brehaut) { net.brehaut = {}; }
+if ("undefined" == typeof net) {
+    var net = {};
+}
+if (!net.brehaut) {
+    net.brehaut = {};
+}
 
 // this module function is called with net.brehaut as 'this'
-(function ( ) {
-  "use strict";
-  // Constants
+(function() {
+    "use strict";
+    // Constants
 
-  // css_colors maps color names onto their hex values
-  // these names are defined by W3C
-  var css_colors = {aliceblue:'#F0F8FF',antiquewhite:'#FAEBD7',aqua:'#00FFFF',aquamarine:'#7FFFD4',azure:'#F0FFFF',beige:'#F5F5DC',bisque:'#FFE4C4',black:'#000000',blanchedalmond:'#FFEBCD',blue:'#0000FF',blueviolet:'#8A2BE2',brown:'#A52A2A',burlywood:'#DEB887',cadetblue:'#5F9EA0',chartreuse:'#7FFF00',chocolate:'#D2691E',coral:'#FF7F50',cornflowerblue:'#6495ED',cornsilk:'#FFF8DC',crimson:'#DC143C',cyan:'#00FFFF',darkblue:'#00008B',darkcyan:'#008B8B',darkgoldenrod:'#B8860B',darkgray:'#A9A9A9',darkgrey:'#A9A9A9',darkgreen:'#006400',darkkhaki:'#BDB76B',darkmagenta:'#8B008B',darkolivegreen:'#556B2F',darkorange:'#FF8C00',darkorchid:'#9932CC',darkred:'#8B0000',darksalmon:'#E9967A',darkseagreen:'#8FBC8F',darkslateblue:'#483D8B',darkslategray:'#2F4F4F',darkslategrey:'#2F4F4F',darkturquoise:'#00CED1',darkviolet:'#9400D3',deeppink:'#FF1493',deepskyblue:'#00BFFF',dimgray:'#696969',dimgrey:'#696969',dodgerblue:'#1E90FF',firebrick:'#B22222',floralwhite:'#FFFAF0',forestgreen:'#228B22',fuchsia:'#FF00FF',gainsboro:'#DCDCDC',ghostwhite:'#F8F8FF',gold:'#FFD700',goldenrod:'#DAA520',gray:'#808080',grey:'#808080',green:'#008000',greenyellow:'#ADFF2F',honeydew:'#F0FFF0',hotpink:'#FF69B4',indianred:'#CD5C5C',indigo:'#4B0082',ivory:'#FFFFF0',khaki:'#F0E68C',lavender:'#E6E6FA',lavenderblush:'#FFF0F5',lawngreen:'#7CFC00',lemonchiffon:'#FFFACD',lightblue:'#ADD8E6',lightcoral:'#F08080',lightcyan:'#E0FFFF',lightgoldenrodyellow:'#FAFAD2',lightgray:'#D3D3D3',lightgrey:'#D3D3D3',lightgreen:'#90EE90',lightpink:'#FFB6C1',lightsalmon:'#FFA07A',lightseagreen:'#20B2AA',lightskyblue:'#87CEFA',lightslategray:'#778899',lightslategrey:'#778899',lightsteelblue:'#B0C4DE',lightyellow:'#FFFFE0',lime:'#00FF00',limegreen:'#32CD32',linen:'#FAF0E6',magenta:'#FF00FF',maroon:'#800000',mediumaquamarine:'#66CDAA',mediumblue:'#0000CD',mediumorchid:'#BA55D3',mediumpurple:'#9370D8',mediumseagreen:'#3CB371',mediumslateblue:'#7B68EE',mediumspringgreen:'#00FA9A',mediumturquoise:'#48D1CC',mediumvioletred:'#C71585',midnightblue:'#191970',mintcream:'#F5FFFA',mistyrose:'#FFE4E1',moccasin:'#FFE4B5',navajowhite:'#FFDEAD',navy:'#000080',oldlace:'#FDF5E6',olive:'#808000',olivedrab:'#6B8E23',orange:'#FFA500',orangered:'#FF4500',orchid:'#DA70D6',palegoldenrod:'#EEE8AA',palegreen:'#98FB98',paleturquoise:'#AFEEEE',palevioletred:'#D87093',papayawhip:'#FFEFD5',peachpuff:'#FFDAB9',peru:'#CD853F',pink:'#FFC0CB',plum:'#DDA0DD',powderblue:'#B0E0E6',purple:'#800080',rebeccapurple:'#663399',red:'#FF0000',rosybrown:'#BC8F8F',royalblue:'#4169E1',saddlebrown:'#8B4513',salmon:'#FA8072',sandybrown:'#F4A460',seagreen:'#2E8B57',seashell:'#FFF5EE',sienna:'#A0522D',silver:'#C0C0C0',skyblue:'#87CEEB',slateblue:'#6A5ACD',slategray:'#708090',slategrey:'#708090',snow:'#FFFAFA',springgreen:'#00FF7F',steelblue:'#4682B4',tan:'#D2B48C',teal:'#008080',thistle:'#D8BFD8',tomato:'#FF6347',turquoise:'#40E0D0',violet:'#EE82EE',wheat:'#F5DEB3',white:'#FFFFFF',whitesmoke:'#F5F5F5',yellow:'#FFFF00',yellowgreen:'#9ACD32'};
-
-  // CSS value regexes, according to http://www.w3.org/TR/css3-values/
-  var css_integer = '(?:\\+|-)?\\d+';
-  var css_float = '(?:\\+|-)?\\d*\\.\\d+';
-  var css_number = '(?:' + css_integer + ')|(?:' + css_float + ')';
-  css_integer = '(' + css_integer + ')';
-  css_float = '(' + css_float + ')';
-  css_number = '(' + css_number + ')';
-  var css_percentage = css_number + '%';
-  var css_whitespace = '\\s*?';
-
-  // http://www.w3.org/TR/2003/CR-css3-color-20030514/
-  var hsl_hsla_regex = new RegExp([
-    '^hsl(a?)\\(', css_number, ',', css_percentage, ',', css_percentage, '(,(', css_number, '))?\\)$'
-  ].join(css_whitespace) );
-  var rgb_rgba_integer_regex = new RegExp([
-    '^rgb(a?)\\(', css_integer, ',', css_integer, ',', css_integer, '(,(', css_number, '))?\\)$'
-  ].join(css_whitespace) );
-  var rgb_rgba_percentage_regex = new RegExp([
-    '^rgb(a?)\\(', css_percentage, ',', css_percentage, ',', css_percentage, '(,(', css_number, '))?\\)$'
-  ].join(css_whitespace) );
-
-  // Package wide variables
-
-  // becomes the top level prototype object
-  var color;
-
-  /* registered_models contains the template objects for all the
-   * models that have been registered for the color class.
-   */
-  var registered_models = [];
+    // css_colors maps color names onto their hex values
+    // these names are defined by W3C
+    
+    var css_colors = {aliceblue:'#F0F8FF',antiquewhite:'#FAEBD7',aqua:'#00FFFF',aquamarine:'#7FFFD4',azure:'#F0FFFF',beige:'#F5F5DC',bisque:'#FFE4C4',black:'#000000',blanchedalmond:'#FFEBCD',blue:'#0000FF',blueviolet:'#8A2BE2',brown:'#A52A2A',burlywood:'#DEB887',cadetblue:'#5F9EA0',chartreuse:'#7FFF00',chocolate:'#D2691E',coral:'#FF7F50',cornflowerblue:'#6495ED',cornsilk:'#FFF8DC',crimson:'#DC143C',cyan:'#00FFFF',darkblue:'#00008B',darkcyan:'#008B8B',darkgoldenrod:'#B8860B',darkgray:'#A9A9A9',darkgrey:'#A9A9A9',darkgreen:'#006400',darkkhaki:'#BDB76B',darkmagenta:'#8B008B',darkolivegreen:'#556B2F',darkorange:'#FF8C00',darkorchid:'#9932CC',darkred:'#8B0000',darksalmon:'#E9967A',darkseagreen:'#8FBC8F',darkslateblue:'#483D8B',darkslategray:'#2F4F4F',darkslategrey:'#2F4F4F',darkturquoise:'#00CED1',darkviolet:'#9400D3',deeppink:'#FF1493',deepskyblue:'#00BFFF',dimgray:'#696969',dimgrey:'#696969',dodgerblue:'#1E90FF',firebrick:'#B22222',floralwhite:'#FFFAF0',forestgreen:'#228B22',fuchsia:'#FF00FF',gainsboro:'#DCDCDC',ghostwhite:'#F8F8FF',gold:'#FFD700',goldenrod:'#DAA520',gray:'#808080',grey:'#808080',green:'#008000',greenyellow:'#ADFF2F',honeydew:'#F0FFF0',hotpink:'#FF69B4',indianred:'#CD5C5C',indigo:'#4B0082',ivory:'#FFFFF0',khaki:'#F0E68C',lavender:'#E6E6FA',lavenderblush:'#FFF0F5',lawngreen:'#7CFC00',lemonchiffon:'#FFFACD',lightblue:'#ADD8E6',lightcoral:'#F08080',lightcyan:'#E0FFFF',lightgoldenrodyellow:'#FAFAD2',lightgray:'#D3D3D3',lightgrey:'#D3D3D3',lightgreen:'#90EE90',lightpink:'#FFB6C1',lightsalmon:'#FFA07A',lightseagreen:'#20B2AA',lightskyblue:'#87CEFA',lightslategray:'#778899',lightslategrey:'#778899',lightsteelblue:'#B0C4DE',lightyellow:'#FFFFE0',lime:'#00FF00',limegreen:'#32CD32',linen:'#FAF0E6',magenta:'#FF00FF',maroon:'#800000',mediumaquamarine:'#66CDAA',mediumblue:'#0000CD',mediumorchid:'#BA55D3',mediumpurple:'#9370D8',mediumseagreen:'#3CB371',mediumslateblue:'#7B68EE',mediumspringgreen:'#00FA9A',mediumturquoise:'#48D1CC',mediumvioletred:'#C71585',midnightblue:'#191970',mintcream:'#F5FFFA',mistyrose:'#FFE4E1',moccasin:'#FFE4B5',navajowhite:'#FFDEAD',navy:'#000080',oldlace:'#FDF5E6',olive:'#808000',olivedrab:'#6B8E23',orange:'#FFA500',orangered:'#FF4500',orchid:'#DA70D6',palegoldenrod:'#EEE8AA',palegreen:'#98FB98',paleturquoise:'#AFEEEE',palevioletred:'#D87093',papayawhip:'#FFEFD5',peachpuff:'#FFDAB9',peru:'#CD853F',pink:'#FFC0CB',plum:'#DDA0DD',powderblue:'#B0E0E6',purple:'#800080',rebeccapurple:'#663399',red:'#FF0000',rosybrown:'#BC8F8F',royalblue:'#4169E1',saddlebrown:'#8B4513',salmon:'#FA8072',sandybrown:'#F4A460',seagreen:'#2E8B57',seashell:'#FFF5EE',sienna:'#A0522D',silver:'#C0C0C0',skyblue:'#87CEEB',slateblue:'#6A5ACD',slategray:'#708090',slategrey:'#708090',snow:'#FFFAFA',springgreen:'#00FF7F',steelblue:'#4682B4',tan:'#D2B48C',teal:'#008080',thistle:'#D8BFD8',tomato:'#FF6347',turquoise:'#40E0D0',violet:'#EE82EE',wheat:'#F5DEB3',white:'#FFFFFF',whitesmoke:'#F5F5F5',yellow:'#FFFF00',yellowgreen:'#9ACD32'};
 
 
-  /* factories contains methods to create new instance of
-   * different color models that have been registered.
-   */
-  var factories = {};
+    // CSS value regexes, according to http://www.w3.org/TR/css3-values/
+    var css_integer = '(?:\\+|-)?\\d+';
+    var css_float = '(?:\\+|-)?\\d*\\.\\d+';
+    var css_number = '(?:' + css_integer + ')|(?:' + css_float + ')';
+    css_integer = '(' + css_integer + ')';
+    css_float = '(' + css_float + ')';
+    css_number = '(' + css_number + ')';
+    var css_percentage = css_number + '%';
+    var css_whitespace = '\\s*?';
 
-  // Utility functions
+    // http://www.w3.org/TR/2003/CR-css3-color-20030514/
+    var hsl_hsla_regex = new RegExp([
+        '^hsl(a?)\\(', css_number, ',', css_percentage, ',', css_percentage, '(,(', css_number, '))?\\)$'
+    ].join(css_whitespace));
+    var rgb_rgba_integer_regex = new RegExp([
+        '^rgb(a?)\\(', css_integer, ',', css_integer, ',', css_integer, '(,(', css_number, '))?\\)$'
+    ].join(css_whitespace));
+    var rgb_rgba_percentage_regex = new RegExp([
+        '^rgb(a?)\\(', css_percentage, ',', css_percentage, ',', css_percentage, '(,(', css_number, '))?\\)$'
+    ].join(css_whitespace));
 
-  /* object is Douglas Crockfords object function for prototypal
-   * inheritance.
-   */
-  if (!this.object) {
-    this.object = function (o) {
-      function F () { }
-      F.prototype = o;
-      return new F();
-    };
-  }
-  var object = this.object;
+    // Package wide variables
 
-  /* takes a value, converts to string if need be, then pads it
-   * to a minimum length.
-   */
-  function pad ( val, len ) {
-    val = val.toString();
-    var padded = [];
+    // becomes the top level prototype object
+    var color;
 
-    for (var i = 0, j = Math.max( len - val.length, 0); i < j; i++) {
-      padded.push('0');
-    }
-
-    padded.push(val);
-    return padded.join('');
-  }
-
-
-  /* takes a string and returns a new string with the first letter
-   * capitalised
-   */
-  function capitalise ( s ) {
-    return s.slice(0,1).toUpperCase() + s.slice(1);
-  }
-
-  /* removes leading and trailing whitespace
-   */
-  function trim ( str ) {
-    return str.replace(/^\s+|\s+$/g, '');
-  }
-
-  /* used to apply a method to object non-destructively by
-   * cloning the object and then apply the method to that
-   * new object
-   */
-  function cloneOnApply( meth ) {
-    return function ( ) {
-      var cloned = this.clone();
-      meth.apply(cloned, arguments);
-      return cloned;
-    };
-  }
-
-
-  /* registerModel is used to add additional representations
-   * to the color code, and extend the color API with the new
-   * operation that model provides. see before for examples
-   */
-  function registerModel( name, model ) {
-    var proto = object(color);
-    var fields = []; // used for cloning and generating accessors
-
-    var to_meth = 'to'+ capitalise(name);
-
-    function convertAndApply( meth ) {
-      return function ( ) {
-        return meth.apply(this[to_meth](), arguments);
-      };
-    }
-
-    for (var key in model) if (model.hasOwnProperty(key)) {
-      proto[key] = model[key];
-      var prop = proto[key];
-
-      if (key.slice(0,1) == '_') { continue; }
-      if (!(key in color) && "function" == typeof prop) {
-        // the method found on this object is a) public and b) not
-        // currently supported by the color object. Create an impl that
-        // calls the toModel function and passes that new object
-        // onto the correct method with the args.
-        color[key] = convertAndApply(prop);
-      }
-      else if ("function" != typeof prop) {
-        // we have found a public property. create accessor methods
-        // and bind them up correctly
-        fields.push(key);
-        var getter = 'get'+capitalise(key);
-        var setter = 'set'+capitalise(key);
-
-        color[getter] = convertAndApply(
-          proto[getter] = (function ( key ) {
-            return function ( ) {
-              return this[key];
-            };
-          })( key )
-        );
-
-        color[setter] = convertAndApply(
-          proto[setter] = (function ( key ) {
-            return function ( val ) {
-              var cloned = this.clone();
-              cloned[key] = val;
-              return cloned;
-            };
-          })( key )
-        );
-      }
-    } // end of for over model
-
-    // a method to create a new object - largely so prototype chains dont
-    // get insane. This uses an unrolled 'object' so that F is cached
-    // for later use. this is approx a 25% speed improvement
-    function F () { }
-    F.prototype = proto;
-    function factory ( ) {
-      return new F();
-    }
-    factories[name] = factory;
-
-    proto.clone = function () {
-      var cloned = factory();
-      for (var i = 0, j = fields.length; i < j; i++) {
-        var key = fields[i];
-        cloned[key] = this[key];
-      }
-      return cloned;
-    };
-
-    color[to_meth] = function ( ) {
-      return factory();
-    };
-
-    registered_models.push(proto);
-
-    return proto;
-  }// end of registerModel
-
-  // Template Objects
-
-  /* color is the root object in the color hierarchy. It starts
-   * life as a very simple object, but as color models are
-   * registered it has methods programmatically added to manage
-   * conversions as needed.
-   */
-  color = {
-    /* fromObject takes an argument and delegates to the internal
-     * color models to try to create a new instance.
+    /* registered_models contains the template objects for all the
+     * models that have been registered for the color class.
      */
-    fromObject: function ( o ) {
-      if (!o) {
-        return object(color);
-      }
+    var registered_models = [];
 
-      for (var i = 0, j = registered_models.length; i < j; i++) {
-        var nu = registered_models[i].fromObject(o);
-        if (nu) {
-          return nu;
+
+    /* factories contains methods to create new instance of
+     * different color models that have been registered.
+     */
+    var factories = {};
+
+    // Utility functions
+
+    /* object is Douglas Crockfords object function for prototypal
+     * inheritance.
+     */
+    if (!this.object) {
+        this.object = function(o) {
+            function F() {}
+            F.prototype = o;
+            return new F();
+        };
+    }
+    var object = this.object;
+
+    /* takes a value, converts to string if need be, then pads it
+     * to a minimum length.
+     */
+    function pad(val, len) {
+        val = val.toString();
+        var padded = [];
+
+        for (var i = 0, j = Math.max(len - val.length, 0); i < j; i++) {
+            padded.push('0');
         }
-      }
 
-      return object(color);
-    },
-
-    toString: function ( ) {
-      return this.toCSS();
+        padded.push(val);
+        return padded.join('');
     }
-  };
 
-  var transparent = null; // defined with an RGB later.
 
-  /* RGB is the red green blue model. This definition is converted
-   * to a template object by registerModel.
-   */
-  registerModel('RGB', {
-    red:    0,
-    green:  0,
-    blue:   0,
-    alpha:  0,
-
-    /* getLuminance returns a value between 0 and 1, this is the
-     * luminance calcuated according to
-     * http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html#RTFToC9
+    /* takes a string and returns a new string with the first letter
+     * capitalised
      */
-    getLuminance: function ( ) {
-      return (this.red * 0.2126) + (this.green * 0.7152) + (this.blue * 0.0722);
-    },
+    function capitalise(s) {
+        return s.slice(0, 1).toUpperCase() + s.slice(1);
+    }
 
-    /* does an alpha based blend of color onto this. alpha is the
-     * amount of 'color' to use. (0 to 1)
+    /* removes leading and trailing whitespace
      */
-    blend: function ( color , alpha ) {
-      color = color.toRGB();
-      alpha = Math.min(Math.max(alpha, 0), 1);
-      var rgb = this.clone();     
+    function trim(str) {
+        return str.replace(/^\s+|\s+$/g, '');
+    }
 
-      rgb.red = (rgb.red * (1 - alpha)) + (color.red * alpha);
-      rgb.green = (rgb.green * (1 - alpha)) + (color.green * alpha);
-      rgb.blue = (rgb.blue * (1 - alpha)) + (color.blue * alpha);
-      rgb.alpha = (rgb.alpha * (1 - alpha)) + (color.alpha * alpha);
-
-      return rgb;
-    },
-
-    /* fromObject attempts to convert an object o to and RGB
-     * instance. This accepts an object with red, green and blue
-     * members or a string. If the string is a known CSS color name
-     * or a hexdecimal string it will accept it.
+    /* used to apply a method to object non-destructively by
+     * cloning the object and then apply the method to that
+     * new object
      */
-    fromObject: function ( o ) {
-      if (o instanceof Array) {
-        return this._fromRGBArray ( o );
-      }
-      if ("string" == typeof o) {
-        return this._fromCSS( trim( o ) );
-      }
-      if (o.hasOwnProperty('red') &&
-          o.hasOwnProperty('green') &&
-          o.hasOwnProperty('blue')) {
-        return this._fromRGB ( o );
-      }
-      // nothing matchs, not an RGB object
-    },
+    function cloneOnApply(meth) {
+        return function() {
+            var cloned = this.clone();
+            meth.apply(cloned, arguments);
+            return cloned;
+        };
+    }
 
-    _stringParsers: [
-        // CSS RGB(A) literal:
-        function ( css ) {
-          css = trim(css);
 
-          var withInteger = match(rgb_rgba_integer_regex, 255);
-          if(withInteger) {
-            return withInteger;
-          }
-          return match(rgb_rgba_percentage_regex, 100);
+    /* registerModel is used to add additional representations
+     * to the color code, and extend the color API with the new
+     * operation that model provides. see before for examples
+     */
+    function registerModel(name, model) {
+        var proto = object(color);
+        var fields = []; // used for cloning and generating accessors
 
-          function match(regex, max_value) {
-            var colorGroups = css.match( regex );
+        var to_meth = 'to' + capitalise(name);
 
-            // If there is an "a" after "rgb", there must be a fourth parameter and the other way round
-            if (!colorGroups || (!!colorGroups[1] + !!colorGroups[5] === 1)) {
-              return null;
+        function convertAndApply(meth) {
+            return function() {
+                return meth.apply(this[to_meth](), arguments);
+            };
+        }
+
+        for (var key in model)
+            if (model.hasOwnProperty(key)) {
+                proto[key] = model[key];
+                var prop = proto[key];
+
+                if (key.slice(0, 1) == '_') {
+                    continue;
+                }
+                if (!(key in color) && "function" == typeof prop) {
+                    // the method found on this object is a) public and b) not
+                    // currently supported by the color object. Create an impl that
+                    // calls the toModel function and passes that new object
+                    // onto the correct method with the args.
+                    color[key] = convertAndApply(prop);
+                } else if ("function" != typeof prop) {
+                    // we have found a public property. create accessor methods
+                    // and bind them up correctly
+                    fields.push(key);
+                    var getter = 'get' + capitalise(key);
+                    var setter = 'set' + capitalise(key);
+
+                    color[getter] = convertAndApply(
+                        proto[getter] = (function(key) {
+                            return function() {
+                                return this[key];
+                            };
+                        })(key)
+                    );
+
+                    color[setter] = convertAndApply(
+                        proto[setter] = (function(key) {
+                            return function(val) {
+                                var cloned = this.clone();
+                                cloned[key] = val;
+                                return cloned;
+                            };
+                        })(key)
+                    );
+                }
+            } // end of for over model
+
+            // a method to create a new object - largely so prototype chains dont
+            // get insane. This uses an unrolled 'object' so that F is cached
+            // for later use. this is approx a 25% speed improvement
+
+        function F() {}
+        F.prototype = proto;
+
+        function factory() {
+            return new F();
+        }
+        factories[name] = factory;
+
+        proto.clone = function() {
+            var cloned = factory();
+            for (var i = 0, j = fields.length; i < j; i++) {
+                var key = fields[i];
+                cloned[key] = this[key];
+            }
+            return cloned;
+        };
+
+        color[to_meth] = function() {
+            return factory();
+        };
+
+        registered_models.push(proto);
+
+        return proto;
+    } // end of registerModel
+
+    // Template Objects
+
+    /* color is the root object in the color hierarchy. It starts
+     * life as a very simple object, but as color models are
+     * registered it has methods programmatically added to manage
+     * conversions as needed.
+     */
+    color = {
+        /* fromObject takes an argument and delegates to the internal
+         * color models to try to create a new instance.
+         */
+        fromObject: function(o) {
+            if (!o) {
+                return object(color);
             }
 
-            var rgb = factories.RGB();
-            rgb.red   = Math.min(1, Math.max(0, colorGroups[2] / max_value));
-            rgb.green = Math.min(1, Math.max(0, colorGroups[3] / max_value));
-            rgb.blue  = Math.min(1, Math.max(0, colorGroups[4] / max_value));
-            rgb.alpha = !!colorGroups[5] ? Math.min(Math.max(parseFloat(colorGroups[6]), 0), 1) : 1;
+            for (var i = 0, j = registered_models.length; i < j; i++) {
+                var nu = registered_models[i].fromObject(o);
+                if (nu) {
+                    return nu;
+                }
+            }
 
-            return rgb;
-          }
+            return object(color);
         },
 
-        function ( css ) {
-            var lower = css.toLowerCase();
-            if (lower in css_colors) {
-              css = css_colors[lower];
+        toString: function() {
+            return this.toCSS();
+        }
+    };
+
+    var transparent = null; // defined with an RGB later.
+
+    /* RGB is the red green blue model. This definition is converted
+     * to a template object by registerModel.
+     */
+    registerModel('RGB', {
+        red: 0,
+        green: 0,
+        blue: 0,
+        alpha: 0,
+
+        /* getLuminance returns a value between 0 and 1, this is the
+         * luminance calcuated according to
+         * http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html#RTFToC9
+         */
+        getLuminance: function() {
+            return (this.red * 0.2126) + (this.green * 0.7152) + (this.blue * 0.0722);
+        },
+
+        /* does an alpha based blend of color onto this. alpha is the
+         * amount of 'color' to use. (0 to 1)
+         */
+        blend: function(color, alpha) {
+            color = color.toRGB();
+            alpha = Math.min(Math.max(alpha, 0), 1);
+            var rgb = this.clone();
+
+            rgb.red = (rgb.red * (1 - alpha)) + (color.red * alpha);
+            rgb.green = (rgb.green * (1 - alpha)) + (color.green * alpha);
+            rgb.blue = (rgb.blue * (1 - alpha)) + (color.blue * alpha);
+            rgb.alpha = (rgb.alpha * (1 - alpha)) + (color.alpha * alpha);
+
+            return rgb;
+        },
+
+        /* fromObject attempts to convert an object o to and RGB
+         * instance. This accepts an object with red, green and blue
+         * members or a string. If the string is a known CSS color name
+         * or a hexdecimal string it will accept it.
+         */
+        fromObject: function(o) {
+            if (o instanceof Array) {
+                return this._fromRGBArray(o);
             }
-
-            if (!css.match(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
-              return;
+            if ("string" == typeof o) {
+                return this._fromCSS(trim(o));
             }
+            if (o.hasOwnProperty('red') &&
+                o.hasOwnProperty('green') &&
+                o.hasOwnProperty('blue')) {
+                return this._fromRGB(o);
+            }
+            // nothing matchs, not an RGB object
+        },
 
-            css = css.replace(/^#/,'');
+        _stringParsers: [
+            // CSS RGB(A) literal:
+            function(css) {
+                css = trim(css);
 
-            var bytes = css.length / 3;
+                var withInteger = match(rgb_rgba_integer_regex, 255);
+                if (withInteger) {
+                    return withInteger;
+                }
+                return match(rgb_rgba_percentage_regex, 100);
+
+                function match(regex, max_value) {
+                    var colorGroups = css.match(regex);
+
+                    // If there is an "a" after "rgb", there must be a fourth parameter and the other way round
+                    if (!colorGroups || (!!colorGroups[1] + !!colorGroups[5] === 1)) {
+                        return null;
+                    }
+
+                    var rgb = factories.RGB();
+                    rgb.red = Math.min(1, Math.max(0, colorGroups[2] / max_value));
+                    rgb.green = Math.min(1, Math.max(0, colorGroups[3] / max_value));
+                    rgb.blue = Math.min(1, Math.max(0, colorGroups[4] / max_value));
+                    rgb.alpha = !!colorGroups[5] ? Math.min(Math.max(parseFloat(colorGroups[6]), 0), 1) : 1;
+
+                    return rgb;
+                }
+            },
+
+            function(css) {
+                var lower = css.toLowerCase();
+                if (lower in css_colors) {
+                    css = css_colors[lower];
+                }
+
+                if (!css.match(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)) {
+                    return;
+                }
+
+                css = css.replace(/^#/, '');
+
+                var bytes = css.length / 3;
+
+                var max = Math.pow(16, bytes) - 1;
+
+                var rgb = factories.RGB();
+                rgb.red = parseInt(css.slice(0, bytes), 16) / max;
+                rgb.green = parseInt(css.slice(bytes * 1, bytes * 2), 16) / max;
+                rgb.blue = parseInt(css.slice(bytes * 2), 16) / max;
+                rgb.alpha = 1;
+                return rgb;
+            },
+
+            function(css) {
+                if (css.toLowerCase() !== 'transparent') return;
+
+                return transparent;
+            }
+        ],
+
+        _fromCSS: function(css) {
+            var color = null;
+            for (var i = 0, j = this._stringParsers.length; i < j; i++) {
+                color = this._stringParsers[i](css);
+                if (color) return color;
+            }
+        },
+
+        _fromRGB: function(RGB) {
+            var newRGB = factories.RGB();
+
+            newRGB.red = RGB.red;
+            newRGB.green = RGB.green;
+            newRGB.blue = RGB.blue;
+            newRGB.alpha = RGB.hasOwnProperty('alpha') ? RGB.alpha : 1;
+
+            return newRGB;
+        },
+
+        _fromRGBArray: function(RGB) {
+            var newRGB = factories.RGB();
+
+            newRGB.red = Math.max(0, Math.min(1, RGB[0] / 255));
+            newRGB.green = Math.max(0, Math.min(1, RGB[1] / 255));
+            newRGB.blue = Math.max(0, Math.min(1, RGB[2] / 255));
+            newRGB.alpha = RGB[3] !== undefined ? Math.max(0, Math.min(1, RGB[3])) : 1;
+
+            return newRGB;
+        },
+
+        // convert to a CSS string. defaults to two bytes a value
+        toCSSHex: function(bytes) {
+            bytes = bytes || 2;
 
             var max = Math.pow(16, bytes) - 1;
+            var css = [
+                "#",
+                pad(Math.round(this.red * max).toString(16).toUpperCase(), bytes),
+                pad(Math.round(this.green * max).toString(16).toUpperCase(), bytes),
+                pad(Math.round(this.blue * max).toString(16).toUpperCase(), bytes)
+            ];
 
-            var rgb = factories.RGB();
-            rgb.red =   parseInt(css.slice(0, bytes), 16) / max;
-            rgb.green = parseInt(css.slice(bytes * 1,bytes * 2), 16) / max;
-            rgb.blue =  parseInt(css.slice(bytes * 2), 16) / max;
-            rgb.alpha = 1;
-            return rgb;
+            return css.join('');
         },
 
-        function ( css ) {
-            if (css.toLowerCase() !== 'transparent') return;
+        toCSS: function(bytes) {
+            if (this.alpha === 1) return this.toCSSHex(bytes);
 
-            return transparent;
+            var max = 255;
+
+            var components = [
+                'rgba(',
+                Math.max(0, Math.min(max, Math.round(this.red * max))), ',',
+                Math.max(0, Math.min(max, Math.round(this.green * max))), ',',
+                Math.max(0, Math.min(max, Math.round(this.blue * max))), ',',
+                Math.max(0, Math.min(1, this.alpha)),
+                ')'
+            ];
+
+            return components.join('');
+        },
+
+        toHSV: function() {
+            var hsv = factories.HSV();
+            var min, max, delta;
+
+            min = Math.min(this.red, this.green, this.blue);
+            max = Math.max(this.red, this.green, this.blue);
+            hsv.value = max; // v
+
+            delta = max - min;
+
+            if (delta == 0) { // white, grey, black
+                hsv.hue = hsv.saturation = 0;
+            } else { // chroma
+                hsv.saturation = delta / max;
+
+                if (this.red == max) {
+                    hsv.hue = (this.green - this.blue) / delta; // between yellow & magenta
+                } else if (this.green == max) {
+                    hsv.hue = 2 + (this.blue - this.red) / delta; // between cyan & yellow
+                } else {
+                    hsv.hue = 4 + (this.red - this.green) / delta; // between magenta & cyan
+                }
+
+                hsv.hue = ((hsv.hue * 60) + 360) % 360; // degrees
+            }
+
+            hsv.alpha = this.alpha;
+
+            return hsv;
+        },
+        toHSL: function() {
+            return this.toHSV().toHSL();
+        },
+
+        toRGB: function() {
+            return this.clone();
         }
-    ],
+    });
 
-    _fromCSS: function ( css ) {
-      var color = null;
-      for (var i = 0, j = this._stringParsers.length; i < j; i++) {
-          color = this._stringParsers[i](css);
-          if (color) return color;
-      }
-    },
+    transparent = color.fromObject({
+        red: 0,
+        blue: 0,
+        green: 0,
+        alpha: 0
+    });
 
-    _fromRGB: function ( RGB ) {
-      var newRGB = factories.RGB();
 
-      newRGB.red = RGB.red;
-      newRGB.green = RGB.green;
-      newRGB.blue = RGB.blue;
-      newRGB.alpha = RGB.hasOwnProperty('alpha') ? RGB.alpha : 1;
+    /* Like RGB above, this object describes what will become the HSV
+     * template object. This model handles hue, saturation and value.
+     * hue is the number of degrees around the color wheel, saturation
+     * describes how much color their is and value is the brightness.
+     */
+    registerModel('HSV', {
+        hue: 0,
+        saturation: 0,
+        value: 1,
+        alpha: 1,
 
-      return newRGB;
-    },
+        shiftHue: cloneOnApply(function(degrees) {
+            var hue = (this.hue + degrees) % 360;
+            if (hue < 0) {
+                hue = (360 + hue) % 360;
+            }
 
-    _fromRGBArray: function ( RGB ) {
-      var newRGB = factories.RGB();
+            this.hue = hue;
+        }),
 
-      newRGB.red = Math.max(0, Math.min(1, RGB[0] / 255));
-      newRGB.green = Math.max(0, Math.min(1, RGB[1] / 255));
-      newRGB.blue = Math.max(0, Math.min(1, RGB[2] / 255));
-      newRGB.alpha = RGB[3] !== undefined ? Math.max(0, Math.min(1, RGB[3])) : 1;
+        devalueByAmount: cloneOnApply(function(val) {
+            this.value = Math.min(1, Math.max(this.value - val, 0));
+        }),
 
-      return newRGB;
-    },
+        devalueByRatio: cloneOnApply(function(val) {
+            this.value = Math.min(1, Math.max(this.value * (1 - val), 0));
+        }),
 
-    // convert to a CSS string. defaults to two bytes a value
-    toCSSHex: function ( bytes ) {
-        bytes = bytes || 2;
+        valueByAmount: cloneOnApply(function(val) {
+            this.value = Math.min(1, Math.max(this.value + val, 0));
+        }),
 
-        var max = Math.pow(16, bytes) - 1;
-        var css = [
-          "#",
-          pad ( Math.round(this.red * max).toString( 16 ).toUpperCase(), bytes ),
-          pad ( Math.round(this.green * max).toString( 16 ).toUpperCase(), bytes ),
-          pad ( Math.round(this.blue * max).toString( 16 ).toUpperCase(), bytes )
-        ];
+        valueByRatio: cloneOnApply(function(val) {
+            this.value = Math.min(1, Math.max(this.value * (1 + val), 0));
+        }),
 
-        return css.join('');
-    },    
-    
-    toCSS: function ( bytes ) {
-      if (this.alpha === 1) return this.toCSSHex(bytes); 
+        desaturateByAmount: cloneOnApply(function(val) {
+            this.saturation = Math.min(1, Math.max(this.saturation - val, 0));
+        }),
 
-      var max = 255;
-      
-      var components = [
-        'rgba(',
-        Math.max(0, Math.min(max, Math.round(this.red * max))), ',',
-        Math.max(0, Math.min(max, Math.round(this.green * max))), ',', 
-        Math.max(0, Math.min(max, Math.round(this.blue * max))), ',',
-        Math.max(0, Math.min(1, this.alpha)), 
-        ')'
-      ];
+        desaturateByRatio: cloneOnApply(function(val) {
+            this.saturation = Math.min(1, Math.max(this.saturation * (1 - val), 0));
+        }),
 
-      return components.join('');
-    },
+        saturateByAmount: cloneOnApply(function(val) {
+            this.saturation = Math.min(1, Math.max(this.saturation + val, 0));
+        }),
 
-    toHSV: function ( ) {
-      var hsv = factories.HSV();
-      var min, max, delta;
+        saturateByRatio: cloneOnApply(function(val) {
+            this.saturation = Math.min(1, Math.max(this.saturation * (1 + val), 0));
+        }),
 
-      min = Math.min(this.red, this.green, this.blue);
-      max = Math.max(this.red, this.green, this.blue);
-      hsv.value = max; // v
+        schemeFromDegrees: function(degrees) {
+            var newColors = [];
+            for (var i = 0, j = degrees.length; i < j; i++) {
+                var col = this.clone();
+                col.hue = (this.hue + degrees[i]) % 360;
+                newColors.push(col);
+            }
+            return newColors;
+        },
 
-      delta = max - min;
+        complementaryScheme: function() {
+            return this.schemeFromDegrees([0, 180]);
+        },
 
-      if( delta == 0 ) { // white, grey, black
-        hsv.hue = hsv.saturation = 0;
-      }
-      else { // chroma
-        hsv.saturation = delta / max;
+        splitComplementaryScheme: function() {
+            return this.schemeFromDegrees([0, 150, 320]);
+        },
 
-        if( this.red == max ) {
-          hsv.hue = ( this.green - this.blue ) / delta; // between yellow & magenta
+        splitComplementaryCWScheme: function() {
+            return this.schemeFromDegrees([0, 150, 300]);
+        },
+
+        splitComplementaryCCWScheme: function() {
+            return this.schemeFromDegrees([0, 60, 210]);
+        },
+
+        triadicScheme: function() {
+            return this.schemeFromDegrees([0, 120, 240]);
+        },
+
+        clashScheme: function() {
+            return this.schemeFromDegrees([0, 90, 270]);
+        },
+
+        tetradicScheme: function() {
+            return this.schemeFromDegrees([0, 90, 180, 270]);
+        },
+
+        fourToneCWScheme: function() {
+            return this.schemeFromDegrees([0, 60, 180, 240]);
+        },
+
+        fourToneCCWScheme: function() {
+            return this.schemeFromDegrees([0, 120, 180, 300]);
+        },
+
+        fiveToneAScheme: function() {
+            return this.schemeFromDegrees([0, 115, 155, 205, 245]);
+        },
+
+        fiveToneBScheme: function() {
+            return this.schemeFromDegrees([0, 40, 90, 130, 245]);
+        },
+
+        fiveToneCScheme: function() {
+            return this.schemeFromDegrees([0, 50, 90, 205, 320]);
+        },
+
+        fiveToneDScheme: function() {
+            return this.schemeFromDegrees([0, 40, 155, 270, 310]);
+        },
+
+        fiveToneEScheme: function() {
+            return this.schemeFromDegrees([0, 115, 230, 270, 320]);
+        },
+
+        sixToneCWScheme: function() {
+            return this.schemeFromDegrees([0, 30, 120, 150, 240, 270]);
+        },
+
+        sixToneCCWScheme: function() {
+            return this.schemeFromDegrees([0, 90, 120, 210, 240, 330]);
+        },
+
+        neutralScheme: function() {
+            return this.schemeFromDegrees([0, 15, 30, 45, 60, 75]);
+        },
+
+        analogousScheme: function() {
+            return this.schemeFromDegrees([0, 30, 60, 90, 120, 150]);
+        },
+
+        fromObject: function(o) {
+            if (o.hasOwnProperty('hue') &&
+                o.hasOwnProperty('saturation') &&
+                o.hasOwnProperty('value')) {
+                var hsv = factories.HSV();
+
+                hsv.hue = o.hue;
+                hsv.saturation = o.saturation;
+                hsv.value = o.value;
+                hsv.alpha = o.hasOwnProperty('alpha') ? o.alpha : 1;
+
+                return hsv;
+            }
+            // nothing matches, not an HSV object
+            return null;
+        },
+
+        _normalise: function() {
+            this.hue %= 360;
+            this.saturation = Math.min(Math.max(0, this.saturation), 1);
+            this.value = Math.min(Math.max(0, this.value));
+            this.alpha = Math.min(1, Math.max(0, this.alpha));
+        },
+
+        toRGB: function() {
+            this._normalise();
+
+            var rgb = factories.RGB();
+            var i;
+            var f, p, q, t;
+
+            if (this.saturation === 0) {
+                // achromatic (grey)
+                rgb.red = this.value;
+                rgb.green = this.value;
+                rgb.blue = this.value;
+                rgb.alpha = this.alpha;
+                return rgb;
+            }
+
+            var h = this.hue / 60; // sector 0 to 5
+            i = Math.floor(h);
+            f = h - i; // factorial part of h
+            p = this.value * (1 - this.saturation);
+            q = this.value * (1 - this.saturation * f);
+            t = this.value * (1 - this.saturation * (1 - f));
+
+            switch (i) {
+                case 0:
+                    rgb.red = this.value;
+                    rgb.green = t;
+                    rgb.blue = p;
+                    break;
+                case 1:
+                    rgb.red = q;
+                    rgb.green = this.value;
+                    rgb.blue = p;
+                    break;
+                case 2:
+                    rgb.red = p;
+                    rgb.green = this.value;
+                    rgb.blue = t;
+                    break;
+                case 3:
+                    rgb.red = p;
+                    rgb.green = q;
+                    rgb.blue = this.value;
+                    break;
+                case 4:
+                    rgb.red = t;
+                    rgb.green = p;
+                    rgb.blue = this.value;
+                    break;
+                default: // case 5:
+                    rgb.red = this.value;
+                    rgb.green = p;
+                    rgb.blue = q;
+                    break;
+            }
+
+            rgb.alpha = this.alpha;
+
+            return rgb;
+        },
+        toHSL: function() {
+            this._normalise();
+
+            var hsl = factories.HSL();
+
+            hsl.hue = this.hue;
+            var l = (2 - this.saturation) * this.value,
+                s = this.saturation * this.value;
+            if (l && 2 - l) {
+                s /= (l <= 1) ? l : 2 - l;
+            }
+            l /= 2;
+            hsl.saturation = s;
+            hsl.lightness = l;
+            hsl.alpha = this.alpha;
+
+            return hsl;
+        },
+
+        toHSV: function() {
+            return this.clone();
         }
-        else if( this.green  == max ) {
-          hsv.hue = 2 + ( this.blue - this.red ) / delta; // between cyan & yellow
+    });
+
+    registerModel('HSL', {
+        hue: 0,
+        saturation: 0,
+        lightness: 0,
+        alpha: 1,
+
+        darkenByAmount: cloneOnApply(function(val) {
+            this.lightness = Math.min(1, Math.max(this.lightness - val, 0));
+        }),
+
+        darkenByRatio: cloneOnApply(function(val) {
+            this.lightness = Math.min(1, Math.max(this.lightness * (1 - val), 0));
+        }),
+
+        lightenByAmount: cloneOnApply(function(val) {
+            this.lightness = Math.min(1, Math.max(this.lightness + val, 0));
+        }),
+
+        lightenByRatio: cloneOnApply(function(val) {
+            this.lightness = Math.min(1, Math.max(this.lightness * (1 + val), 0));
+        }),
+
+        fromObject: function(o) {
+            if ("string" == typeof o) {
+                return this._fromCSS(o);
+            }
+            if (o.hasOwnProperty('hue') &&
+                o.hasOwnProperty('saturation') &&
+                o.hasOwnProperty('lightness')) {
+                return this._fromHSL(o);
+            }
+            // nothing matchs, not an RGB object
+        },
+
+        _fromCSS: function(css) {
+            var colorGroups = trim(css).match(hsl_hsla_regex);
+
+            // if there is an "a" after "hsl", there must be a fourth parameter and the other way round
+            if (!colorGroups || (!!colorGroups[1] + !!colorGroups[5] === 1)) {
+                return null;
+            }
+
+            var hsl = factories.HSL();
+            hsl.hue = (colorGroups[2] % 360 + 360) % 360;
+            hsl.saturation = Math.max(0, Math.min(parseInt(colorGroups[3], 10) / 100, 1));
+            hsl.lightness = Math.max(0, Math.min(parseInt(colorGroups[4], 10) / 100, 1));
+            hsl.alpha = !!colorGroups[5] ? Math.max(0, Math.min(1, parseFloat(colorGroups[6]))) : 1;
+
+            return hsl;
+        },
+
+        _fromHSL: function(HSL) {
+            var newHSL = factories.HSL();
+
+            newHSL.hue = HSL.hue;
+            newHSL.saturation = HSL.saturation;
+            newHSL.lightness = HSL.lightness;
+
+            newHSL.alpha = HSL.hasOwnProperty('alpha') ? HSL.alpha : 1;
+
+            return newHSL;
+        },
+
+        _normalise: function() {
+            this.hue = (this.hue % 360 + 360) % 360;
+            this.saturation = Math.min(Math.max(0, this.saturation), 1);
+            this.lightness = Math.min(Math.max(0, this.lightness));
+            this.alpha = Math.min(1, Math.max(0, this.alpha));
+        },
+
+        toHSL: function() {
+            return this.clone();
+        },
+        toHSV: function() {
+            this._normalise();
+
+            var hsv = factories.HSV();
+
+            // http://ariya.blogspot.com/2008/07/converting-between-hsl-and-hsv.html
+            hsv.hue = this.hue; // H
+            var l = 2 * this.lightness,
+                s = this.saturation * ((l <= 1) ? l : 2 - l);
+            hsv.value = (l + s) / 2; // V
+            hsv.saturation = ((2 * s) / (l + s)) || 0; // S
+            hsv.alpha = this.alpha;
+
+            return hsv;
+        },
+        toRGB: function() {
+            return this.toHSV().toRGB();
         }
-        else {
-          hsv.hue = 4 + ( this.red - this.green ) / delta; // between magenta & cyan
+    });
+
+    // Package specific exports
+
+    /* the Color function is a factory for new color objects.
+     */
+    function Color(o) {
+        return color.fromObject(o);
+    }
+    Color.isValid = function(str) {
+        var key, c = Color(str);
+
+        var length = 0;
+        for (key in c) {
+            if (c.hasOwnProperty(key)) {
+                length++;
+            }
         }
 
-        hsv.hue = ((hsv.hue * 60) + 360) % 360; // degrees
-      }
-
-      hsv.alpha = this.alpha;
-
-      return hsv;
-    },
-    toHSL: function ( ) {
-      return this.toHSV().toHSL();
-    },
-
-    toRGB: function ( ) {
-      return this.clone();
-    }
-  });
-
-  transparent = color.fromObject({red: 0, blue: 0, green: 0, alpha: 0});
-
-
-  /* Like RGB above, this object describes what will become the HSV
-   * template object. This model handles hue, saturation and value.
-   * hue is the number of degrees around the color wheel, saturation
-   * describes how much color their is and value is the brightness.
-   */
-  registerModel('HSV', {
-    hue: 0,
-    saturation: 0,
-    value: 1,
-    alpha: 1,
-
-    shiftHue: cloneOnApply(function ( degrees ) {
-      var hue = (this.hue + degrees) % 360;
-      if (hue < 0) {
-        hue = (360 + hue) % 360;
-      }
-
-      this.hue = hue;
-    }),
-
-    devalueByAmount: cloneOnApply(function ( val ) {
-      this.value = Math.min(1, Math.max(this.value - val, 0));
-    }),
-
-    devalueByRatio: cloneOnApply(function ( val ) {
-      this.value = Math.min(1, Math.max(this.value * (1 - val), 0));
-    }),
-
-    valueByAmount: cloneOnApply(function ( val ) {
-      this.value = Math.min(1, Math.max(this.value + val, 0));
-    }),
-
-    valueByRatio: cloneOnApply(function ( val ) {
-      this.value = Math.min(1, Math.max(this.value * (1 + val), 0));
-    }),
-
-    desaturateByAmount: cloneOnApply(function ( val ) {
-      this.saturation = Math.min(1, Math.max(this.saturation - val, 0));
-    }),
-
-    desaturateByRatio: cloneOnApply(function ( val ) {
-      this.saturation = Math.min(1, Math.max(this.saturation * (1 - val), 0));
-    }),
-
-    saturateByAmount: cloneOnApply(function ( val ) {
-      this.saturation = Math.min(1, Math.max(this.saturation + val, 0));
-    }),
-
-    saturateByRatio: cloneOnApply(function ( val ) {
-      this.saturation = Math.min(1, Math.max(this.saturation * (1 + val), 0));
-    }),
-
-    schemeFromDegrees: function ( degrees ) {
-      var newColors = [];
-      for (var i = 0, j = degrees.length; i < j; i++) {
-        var col = this.clone();
-        col.hue = (this.hue + degrees[i]) % 360;
-        newColors.push(col);
-      }
-      return newColors;
-    },
-
-    complementaryScheme: function ( ) {
-      return this.schemeFromDegrees([0,180]);
-    },
-
-    splitComplementaryScheme: function ( ) {
-      return this.schemeFromDegrees([0,150,320]);
-    },
-
-    splitComplementaryCWScheme: function ( ) {
-      return this.schemeFromDegrees([0,150,300]);
-    },
-
-    splitComplementaryCCWScheme: function ( ) {
-      return this.schemeFromDegrees([0,60,210]);
-    },
-
-    triadicScheme: function ( ) {
-      return this.schemeFromDegrees([0,120,240]);
-    },
-
-    clashScheme: function ( ) {
-      return this.schemeFromDegrees([0,90,270]);
-    },
-
-    tetradicScheme: function ( ) {
-      return this.schemeFromDegrees([0,90,180,270]);
-    },
-
-    fourToneCWScheme: function ( ) {
-      return this.schemeFromDegrees([0,60,180,240]);
-    },
-
-    fourToneCCWScheme: function ( ) {
-      return this.schemeFromDegrees([0,120,180,300]);
-    },
-
-    fiveToneAScheme: function ( ) {
-      return this.schemeFromDegrees([0,115,155,205,245]);
-    },
-
-    fiveToneBScheme: function ( ) {
-      return this.schemeFromDegrees([0,40,90,130,245]);
-    },
-
-    fiveToneCScheme: function ( ) {
-      return this.schemeFromDegrees([0,50,90,205,320]);
-    },
-
-    fiveToneDScheme: function ( ) {
-      return this.schemeFromDegrees([0,40,155,270,310]);
-    },
-
-    fiveToneEScheme: function ( ) {
-      return this.schemeFromDegrees([0,115,230,270,320]);
-    },
-
-    sixToneCWScheme: function ( ) {
-      return this.schemeFromDegrees([0,30,120,150,240,270]);
-    },
-
-    sixToneCCWScheme: function ( ) {
-      return this.schemeFromDegrees([0,90,120,210,240,330]);
-    },
-
-    neutralScheme: function ( ) {
-      return this.schemeFromDegrees([0,15,30,45,60,75]);
-    },
-
-    analogousScheme: function ( ) {
-      return this.schemeFromDegrees([0,30,60,90,120,150]);
-    },
-
-    fromObject: function ( o ) {
-      if (o.hasOwnProperty('hue') &&
-          o.hasOwnProperty('saturation') &&
-          o.hasOwnProperty('value')) {
-        var hsv = factories.HSV();
-
-        hsv.hue = o.hue;
-        hsv.saturation = o.saturation;
-        hsv.value = o.value;
-        hsv.alpha = o.hasOwnProperty('alpha') ? o.alpha : 1;
-
-        return hsv;
-      }
-      // nothing matches, not an HSV object
-      return null;
-    },
-
-    _normalise: function ( ) {
-       this.hue %= 360;
-       this.saturation = Math.min(Math.max(0, this.saturation), 1);
-       this.value = Math.min(Math.max(0, this.value));
-       this.alpha = Math.min(1, Math.max(0, this.alpha));
-    },
-
-    toRGB: function ( ) {
-      this._normalise();
-
-      var rgb = factories.RGB();
-      var i;
-      var f, p, q, t;
-
-      if( this.saturation === 0 ) {
-        // achromatic (grey)
-        rgb.red = this.value;
-        rgb.green = this.value;
-        rgb.blue = this.value;
-        rgb.alpha = this.alpha;
-        return rgb;
-      }
-
-      var h = this.hue / 60;			// sector 0 to 5
-      i = Math.floor( h );
-      f = h - i;			// factorial part of h
-      p = this.value * ( 1 - this.saturation );
-      q = this.value * ( 1 - this.saturation * f );
-      t = this.value * ( 1 - this.saturation * ( 1 - f ) );
-
-      switch( i ) {
-        case 0:
-          rgb.red = this.value;
-          rgb.green = t;
-          rgb.blue = p;
-          break;
-        case 1:
-          rgb.red = q;
-          rgb.green = this.value;
-          rgb.blue = p;
-          break;
-        case 2:
-          rgb.red = p;
-          rgb.green = this.value;
-          rgb.blue = t;
-          break;
-        case 3:
-          rgb.red = p;
-          rgb.green = q;
-          rgb.blue = this.value;
-          break;
-        case 4:
-          rgb.red = t;
-          rgb.green = p;
-          rgb.blue = this.value;
-          break;
-        default:		// case 5:
-          rgb.red = this.value;
-          rgb.green = p;
-          rgb.blue = q;
-          break;
-      }
-
-      rgb.alpha = this.alpha;
-
-      return rgb;
-    },
-    toHSL: function() {
-      this._normalise();
-
-      var hsl = factories.HSL();
-
-      hsl.hue = this.hue;
-      var l = (2 - this.saturation) * this.value,
-          s = this.saturation * this.value;
-      if(l && 2 - l) {
-        s /= (l <= 1) ? l : 2 - l;
-      }
-      l /= 2;
-      hsl.saturation = s;
-      hsl.lightness = l;
-      hsl.alpha = this.alpha;
-
-      return hsl;
-    },
-
-    toHSV: function ( ) {
-      return this.clone();
-    }
-  });
-
-  registerModel('HSL', {
-    hue: 0,
-    saturation: 0,
-    lightness: 0,
-    alpha: 1,
-
-    darkenByAmount: cloneOnApply(function ( val ) {
-      this.lightness = Math.min(1, Math.max(this.lightness - val, 0));
-    }),
-
-    darkenByRatio: cloneOnApply(function ( val ) {
-      this.lightness = Math.min(1, Math.max(this.lightness * (1 - val), 0));
-    }),
-
-    lightenByAmount: cloneOnApply(function ( val ) {
-      this.lightness = Math.min(1, Math.max(this.lightness + val, 0));
-    }),
-
-    lightenByRatio: cloneOnApply(function ( val ) {
-      this.lightness = Math.min(1, Math.max(this.lightness * (1 + val), 0));
-    }),
-
-    fromObject: function ( o ) {
-      if ("string" == typeof o) {
-        return this._fromCSS( o );
-      }
-      if (o.hasOwnProperty('hue') &&
-          o.hasOwnProperty('saturation') &&
-          o.hasOwnProperty('lightness')) {
-        return this._fromHSL ( o );
-      }
-      // nothing matchs, not an RGB object
-    },
-
-    _fromCSS: function ( css ) {
-      var colorGroups = trim( css ).match( hsl_hsla_regex );
-
-      // if there is an "a" after "hsl", there must be a fourth parameter and the other way round
-      if (!colorGroups || (!!colorGroups[1] + !!colorGroups[5] === 1)) {
-        return null;
-      }
-
-      var hsl = factories.HSL();
-      hsl.hue        = (colorGroups[2] % 360 + 360) % 360;
-      hsl.saturation = Math.max(0, Math.min(parseInt(colorGroups[3], 10) / 100, 1));
-      hsl.lightness  = Math.max(0, Math.min(parseInt(colorGroups[4], 10) / 100, 1));
-      hsl.alpha      = !!colorGroups[5] ? Math.max(0, Math.min(1, parseFloat(colorGroups[6]))) : 1;
-
-      return hsl;
-    },
-
-    _fromHSL: function ( HSL ) {
-      var newHSL = factories.HSL();
-
-      newHSL.hue = HSL.hue;
-      newHSL.saturation = HSL.saturation;
-      newHSL.lightness = HSL.lightness;
-
-      newHSL.alpha = HSL.hasOwnProperty('alpha') ? HSL.alpha : 1;
-
-      return newHSL;
-    },
-
-    _normalise: function ( ) {
-       this.hue = (this.hue % 360 + 360) % 360;
-       this.saturation = Math.min(Math.max(0, this.saturation), 1);
-       this.lightness = Math.min(Math.max(0, this.lightness));
-       this.alpha = Math.min(1, Math.max(0, this.alpha));
-    },
-
-    toHSL: function() {
-      return this.clone();
-    },
-    toHSV: function() {
-      this._normalise();
-
-      var hsv = factories.HSV();
-
-      // http://ariya.blogspot.com/2008/07/converting-between-hsl-and-hsv.html
-      hsv.hue = this.hue; // H
-      var l = 2 * this.lightness,
-          s = this.saturation * ((l <= 1) ? l : 2 - l);
-      hsv.value = (l + s) / 2; // V
-      hsv.saturation = ((2 * s) / (l + s)) || 0; // S
-      hsv.alpha = this.alpha;
-
-      return hsv;
-    },
-    toRGB: function() {
-      return this.toHSV().toRGB();
-    }
-  });
-
-  // Package specific exports
-
-  /* the Color function is a factory for new color objects.
-   */
-  function Color( o ) {
-    return color.fromObject( o );
-  }
-  Color.isValid = function( str ) {
-    var key, c = Color( str );
-
-    var length = 0;
-    for(key in c) {
-      if(c.hasOwnProperty(key)) {
-        length++;
-      }
-    }
-
-    return length > 0;
-  };
-  net.brehaut.Color = Color;
+        return length > 0;
+    };
+    net.brehaut.Color = Color;
 }).call(net.brehaut);
 
 /* Export to CommonJS
-*/
+ */
 {
-  module.exports = net.brehaut.Color;
+    module.exports = net.brehaut.Color;
 }
 });
+
+const COMPONENT = 'component';
+const SERVICE = 'service';
+
+const APP_SERVICE = 'app';
+const PARENT_SERVICE = 'parent';
+
+const AFTER_INITIALIZED = 'afterInitialized';
+
+const COMPONENT_TYPE = Symbol('componentType');
+const INJECT = Symbol('inject');
+const CONSTRUCT = Symbol('construct');
+const PROVIDER = Symbol('provider');
+
+var hasExclamationMark = function (str) {
+    if (typeof str === 'string') {
+        return str[str.length - 1] === '!';
+    }
+    return false;
+};
+
+const plainName = name => name.substring(0, name.length - 1);
+const isExclamizedName = (name) => hasExclamationMark(name) || name === PARENT_SERVICE;
+
+const waitForAndCallFactories = (providers, getFactory, extraOptions) =>
+    providers
+        .map(providerName => {
+            const name = hasExclamationMark(providerName) ? plainName(providerName) : providerName;
+            let factory = getFactory(name);
+            if (typeof factory === 'function') {
+                factory = factory(extraOptions);
+            }
+            return Promise.resolve(factory).then(value => {
+                return {
+                    providerName,
+                    value
+                };
+            });
+        });
+
+function constructEntity (provider, extraProviders) {
+
+    const _provider = provider.provider;
+    let instance;
+
+    if (typeof _provider === 'function') {
+
+        const app = _provider[PROVIDER] || extraProviders ? new App$2({
+            parent: provider.app,
+            provider: [_provider[PROVIDER], extraProviders]
+        }) : provider.app;
+
+        const initializedServices = {};
+
+        const copyFactories = (factories, to) => factories.forEach(factory => {
+            to[factory.providerName] = factory.value;
+        });
+
+        if (_provider[CONSTRUCT]) {
+
+            instance = _provider[CONSTRUCT]
+                .then((constructProviders) => {
+                    return typeof constructProviders === 'function' ? constructProviders() : constructProviders;
+                })
+                .then((constructProviders) => {
+                    let fulfill;
+
+                    const getServiceFactory = name => initializedServices[name] || app.factory(name, SERVICE);
+                    const createInstance = (fn) => Reflect.construct(fn, constructProviders.map(getServiceFactory));
+                    const constructFactories = waitForAndCallFactories(
+                        constructProviders.filter(isExclamizedName),
+                        getServiceFactory);
+
+                    if (constructFactories.length) {
+                        fulfill = Promise.all(constructFactories).then(factories => {
+                            copyFactories(factories, initializedServices);
+                            return createInstance(_provider);
+                        });
+                    } else {
+                        fulfill = createInstance(_provider);
+                    }
+
+                    return fulfill;
+                });
+
+        } else {
+            instance = Promise.resolve(new _provider);
+        }
+
+        if (_provider[INJECT]) {
+
+            instance = Promise.all([instance, _provider[INJECT]])
+                .then(([entity, injectProviders]) => {
+
+                    const initializedComponents = {};
+                    const getComponentFactory = name => initializedComponents[name] || app.factory(name, COMPONENT);
+
+                    let fulfill = entity;
+
+                    if (injectProviders.length) {
+
+                        const injectFactories = waitForAndCallFactories(
+                            injectProviders.filter(name => hasExclamationMark(name) && !initializedComponents[name]),
+                            getComponentFactory,
+                            {[PARENT_SERVICE]: entity});
+
+                        if (injectFactories.length) {
+
+                            fulfill = Promise.all([fulfill, Promise.all(injectFactories)])
+                                .then(([entity, factories]) => {
+                                    copyFactories(factories, initializedComponents);
+                                    return entity;
+                                });
+
+                        }
+
+                        fulfill = fulfill.then(entity => {
+
+                            injectProviders.forEach(providerName => {
+                                const name = hasExclamationMark(providerName) ? plainName(providerName) : providerName;
+                                Object.defineProperty(entity, name, {
+                                    value: getComponentFactory(providerName)
+                                });
+                            });
+
+                            return entity;
+                        });
+
+                    }
+
+                    return fulfill;
+                });
+
+        }
+
+        instance = instance.then(entity => {
+            const fn = entity[AFTER_INITIALIZED];
+            if (typeof fn === 'function') {
+                return Promise.resolve(fn.call(entity)).then(() => entity);
+            } else {
+                return entity;
+            }
+        });
+
+    } else {
+        instance = _provider;
+    }
+
+    return instance;
+
+}
+
+function createFactory (app, name, type) {
+
+    const provider = app.providers.get(name, type);
+
+    switch (type) {
+        case SERVICE:
+            return createServiceFactory(name, provider);
+        case COMPONENT:
+            return createComponentFactory(provider);
+        default:
+            throw new Error(`invalid provider type: ${type}`);
+    }
+
+}
+
+function createServiceFactory (name, provider) {
+    return () => {
+
+        const services = provider.app.services;
+        let instance = services.get(name);
+
+        if (instance === undefined) {
+            instance = constructEntity(provider);
+            services.set(name, instance);
+        }
+
+        return instance;
+    }
+}
+
+function createComponentFactory (provider) {
+    return constructEntity.bind(null, provider);
+}
+
+function annotateProvider (provider, componentType, options) {
+
+    provider[COMPONENT_TYPE] = componentType;
+
+    if (options) {
+
+        if (options.construct != null) {
+            provider[CONSTRUCT] = Promise.resolve(options.construct);
+        }
+
+        if (options.inject != null) {
+            provider[INJECT] = Promise.resolve(options.inject);
+        }
+
+        if (options.provider != null) {
+            provider[PROVIDER] = options.provider;
+        }
+
+    }
+
+    return provider;
+}
+
+class ProviderCollection {
+
+    constructor (app, parent) {
+        this.app = app;
+        this.parent = parent || null;
+        this.providers = new Map;
+    }
+
+    add (name, provider) {
+        let provDef = this.providers.get(name);
+        if (provDef === undefined) {
+            provDef = {};
+            this.providers.set(name, provDef);
+        }
+
+        provDef[provider[COMPONENT_TYPE] || SERVICE] = provider;
+    }
+
+    addProviders (providers) {
+        if (!providers) return;
+        if (Array.isArray(providers)) {
+            providers.forEach(this.addProviders.bind(this));
+        } else if (typeof providers === 'object') {
+            Object.keys(providers).forEach((name) => this.add(name, providers[name]));
+        }
+    }
+
+    get (name, type) {
+
+        const isRoot = this.parent === null;
+        let provider = this.providers.get(name);
+
+        if (!provider) {
+            if (isRoot) {
+                throw new Error(`unknown provider: ${name}`);
+            } else {
+                return this.parent.get(name, type);
+            }
+        }
+
+        provider = provider[type];
+
+        if (!provider) {
+            if (isRoot) {
+                throw new Error(`unknown ${type} provider: ${name}`);
+            } else {
+                return this.parent.get(name, type);
+            }
+        }
+
+        return {
+            app: this.app,
+            provider
+        };
+
+    }
+
+}
+
+class App$2 {
+
+    static Component (provider, options) {
+        if (typeof provider === 'function') {
+            return annotateProvider(provider, COMPONENT, options);
+        } else {
+            throw new Error('Component(..) needs a constructor/function as first parameter!');
+        }
+    }
+
+    static Service (provider, options) {
+        if (typeof provider === 'function') {
+            return annotateProvider(provider, SERVICE, options);
+        } else {
+            throw new Error('Service(..) needs a constructor/function as first parameter!');
+        }
+    }
+
+    constructor (options) {
+        this.services = new Map;
+        this.factories = {
+            [COMPONENT]: new Map,
+            [SERVICE]: new Map
+        };
+        const hasOptions = options != null;
+        this.parent = hasOptions && options.parent ? options.parent : null;
+        this.providers = new ProviderCollection(this, this.parent && this.parent.providers);
+        if (hasOptions) {
+            this.providers.addProviders(options.provider);
+        }
+    }
+
+    /**
+     * @return a promise which resolves to a service instance
+     */
+    service (name) {
+
+        if (name === APP_SERVICE) {
+            return this;
+        }
+
+        return this.factory(name, SERVICE)();
+
+    }
+
+    /**
+     * @return a promise which resolves to a new entity (which is an instance of a component)
+     */
+    createEntity (name, options) {
+
+        return Promise.resolve(this.factory(name, COMPONENT)(options));
+
+    }
+
+    /**
+     * @return a function which returns a promise which resolves itself into a component
+     */
+    factory (name, type = COMPONENT) {
+
+        if (name === APP_SERVICE) {
+            return this;
+        }
+
+        try {
+            return findOrCreateFactory(this, name, type);
+
+        } catch (err) {
+            if (name === PARENT_SERVICE) {
+                return null;
+            }
+            throw err;
+        }
+    }
+
+}
+
+function findOrCreateFactory (app, name, type) {
+
+    const factories = app.factories[type];
+    let factory = factories.get(name);
+
+    if (factory === undefined) {
+        factory = createFactory(app, name, type);
+        factories.set(name, factory);
+    }
+
+    return factory;
+
+}
 
 /**
  * WebGL blend and depth mode state description.
@@ -1665,6 +2034,7 @@ class BlendMode {
 /**
  * Define a *read-only* property which is *enumerable* but not *writable* and *configurable*.
  *
+ * @name utils.definePropertyPublicRO
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -1687,6 +2057,7 @@ function definePropertyPublicRO ( obj, name, value ) {
 /**
  * Define a property which is NOT *enumerable* and *configurable* BUT *writable*.
  *
+ * @name utils.definePropertyPrivate
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -1708,6 +2079,7 @@ function definePropertyPrivate ( obj, name, value ) {
 /**
  * Define a **read-only** property which is NOT *enumerable*, *configurable* and *writable*.
  *
+ * @name utils.definePropertyPrivateRO
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  * @param {Object} obj
  * @param {string} name
@@ -1728,6 +2100,7 @@ function definePropertyPrivateRO ( obj, name, value ) {
 /**
  * Define *read-only* properties which are *enumerable* but not *writable* and *configurable*.
  *
+ * @name utils.definePropertiesPublicRO
  * @example
  * Picimo.utils.object.definePropertiesPublicRO( obj, {
  *     FOO: 'foo',
@@ -1764,6 +2137,7 @@ function definePropertiesPublicRO ( obj, map ) {
 /**
  * Define *read-only* properties which are NOT *enumerable*, *writable* or *configurable*.
  *
+ * @name utils.definePropertiesPrivateRO
  * @example
  * Picimo.utils.object.definePropertiesPrivateRO( obj, {
  *     _FOO: 'foo',
@@ -2572,7 +2946,7 @@ var lodash = createCommonjsModule(function (module, exports) {
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.2';
+  var VERSION = '4.17.4';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -4127,9 +4501,9 @@ var lodash = createCommonjsModule(function (module, exports) {
      * Shortcut fusion is an optimization to merge iteratee calls; this avoids
      * the creation of intermediate arrays and can greatly reduce the number of
      * iteratee executions. Sections of a chain sequence qualify for shortcut
-     * fusion if the section is applied to an array of at least `200` elements
-     * and any iteratees accept only one argument. The heuristic for whether a
-     * section qualifies for shortcut fusion is subject to change.
+     * fusion if the section is applied to an array and iteratees accept only
+     * one argument. The heuristic for whether a section qualifies for shortcut
+     * fusion is subject to change.
      *
      * Chaining is supported in custom builds as long as the `_#value` method is
      * directly or indirectly included in the build.
@@ -4288,8 +4662,8 @@ var lodash = createCommonjsModule(function (module, exports) {
 
     /**
      * By default, the template delimiters used by lodash are like those in
-     * embedded Ruby (ERB). Change the following template settings to use
-     * alternative delimiters.
+     * embedded Ruby (ERB) as well as ES2015 template strings. Change the
+     * following template settings to use alternative delimiters.
      *
      * @static
      * @memberOf _
@@ -4436,8 +4810,7 @@ var lodash = createCommonjsModule(function (module, exports) {
           resIndex = 0,
           takeCount = nativeMin(length, this.__takeCount__);
 
-      if (!isArr || arrLength < LARGE_ARRAY_SIZE ||
-          (arrLength == length && takeCount == length)) {
+      if (!isArr || (!isRight && arrLength == length && takeCount == length)) {
         return baseWrapperValue(array, this.__actions__);
       }
       var result = [];
@@ -4551,7 +4924,7 @@ var lodash = createCommonjsModule(function (module, exports) {
      */
     function hashHas(key) {
       var data = this.__data__;
-      return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+      return nativeCreate ? (data[key] !== undefined) : hasOwnProperty.call(data, key);
     }
 
     /**
@@ -5022,24 +5395,6 @@ var lodash = createCommonjsModule(function (module, exports) {
      */
     function arrayShuffle(array) {
       return shuffleSelf(copyArray(array));
-    }
-
-    /**
-     * Used by `_.defaults` to customize its `_.assignIn` use.
-     *
-     * @private
-     * @param {*} objValue The destination value.
-     * @param {*} srcValue The source value.
-     * @param {string} key The key of the property to assign.
-     * @param {Object} object The parent object of `objValue`.
-     * @returns {*} Returns the value to assign.
-     */
-    function assignInDefaults(objValue, srcValue, key, object) {
-      if (objValue === undefined ||
-          (eq(objValue, objectProto[key]) && !hasOwnProperty.call(object, key))) {
-        return srcValue;
-      }
-      return objValue;
     }
 
     /**
@@ -5654,8 +6009,7 @@ var lodash = createCommonjsModule(function (module, exports) {
       if (value == null) {
         return value === undefined ? undefinedTag : nullTag;
       }
-      value = Object(value);
-      return (symToStringTag && symToStringTag in value)
+      return (symToStringTag && symToStringTag in Object(value))
         ? getRawTag(value)
         : objectToString(value);
     }
@@ -5859,7 +6213,7 @@ var lodash = createCommonjsModule(function (module, exports) {
       if (value === other) {
         return true;
       }
-      if (value == null || other == null || (!isObject(value) && !isObjectLike(other))) {
+      if (value == null || other == null || (!isObjectLike(value) && !isObjectLike(other))) {
         return value !== value && other !== other;
       }
       return baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
@@ -5882,17 +6236,12 @@ var lodash = createCommonjsModule(function (module, exports) {
     function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
       var objIsArr = isArray(object),
           othIsArr = isArray(other),
-          objTag = arrayTag,
-          othTag = arrayTag;
+          objTag = objIsArr ? arrayTag : getTag(object),
+          othTag = othIsArr ? arrayTag : getTag(other);
 
-      if (!objIsArr) {
-        objTag = getTag(object);
-        objTag = objTag == argsTag ? objectTag : objTag;
-      }
-      if (!othIsArr) {
-        othTag = getTag(other);
-        othTag = othTag == argsTag ? objectTag : othTag;
-      }
+      objTag = objTag == argsTag ? objectTag : objTag;
+      othTag = othTag == argsTag ? objectTag : othTag;
+
       var objIsObj = objTag == objectTag,
           othIsObj = othTag == objectTag,
           isSameTag = objTag == othTag;
@@ -6340,7 +6689,6 @@ var lodash = createCommonjsModule(function (module, exports) {
      * @returns {Object} Returns the new object.
      */
     function basePick(object, paths) {
-      object = Object(object);
       return basePickBy(object, paths, function(value, path) {
         return hasIn(object, path);
       });
@@ -7733,8 +8081,7 @@ var lodash = createCommonjsModule(function (module, exports) {
           var args = arguments,
               value = args[0];
 
-          if (wrapper && args.length == 1 &&
-              isArray(value) && value.length >= LARGE_ARRAY_SIZE) {
+          if (wrapper && args.length == 1 && isArray(value)) {
             return wrapper.plant(value).value();
           }
           var index = 0,
@@ -8041,7 +8388,7 @@ var lodash = createCommonjsModule(function (module, exports) {
       var func = Math[methodName];
       return function(number, precision) {
         number = toNumber(number);
-        precision = nativeMin(toInteger(precision), 292);
+        precision = precision == null ? 0 : nativeMin(toInteger(precision), 292);
         if (precision) {
           // Shift with exponential notation to avoid floating-point issues.
           // See [MDN](https://mdn.io/round#Examples) for more details.
@@ -8146,7 +8493,7 @@ var lodash = createCommonjsModule(function (module, exports) {
       thisArg = newData[2];
       partials = newData[3];
       holders = newData[4];
-      arity = newData[9] = newData[9] == null
+      arity = newData[9] = newData[9] === undefined
         ? (isBindKey ? 0 : func.length)
         : nativeMax(newData[9] - length, 0);
 
@@ -8164,6 +8511,63 @@ var lodash = createCommonjsModule(function (module, exports) {
       }
       var setter = data ? baseSetData : setData;
       return setWrapToString(setter(result, newData), func, bitmask);
+    }
+
+    /**
+     * Used by `_.defaults` to customize its `_.assignIn` use to assign properties
+     * of source objects to the destination object for all destination properties
+     * that resolve to `undefined`.
+     *
+     * @private
+     * @param {*} objValue The destination value.
+     * @param {*} srcValue The source value.
+     * @param {string} key The key of the property to assign.
+     * @param {Object} object The parent object of `objValue`.
+     * @returns {*} Returns the value to assign.
+     */
+    function customDefaultsAssignIn(objValue, srcValue, key, object) {
+      if (objValue === undefined ||
+          (eq(objValue, objectProto[key]) && !hasOwnProperty.call(object, key))) {
+        return srcValue;
+      }
+      return objValue;
+    }
+
+    /**
+     * Used by `_.defaultsDeep` to customize its `_.merge` use to merge source
+     * objects into destination objects that are passed thru.
+     *
+     * @private
+     * @param {*} objValue The destination value.
+     * @param {*} srcValue The source value.
+     * @param {string} key The key of the property to merge.
+     * @param {Object} object The parent object of `objValue`.
+     * @param {Object} source The parent object of `srcValue`.
+     * @param {Object} [stack] Tracks traversed source values and their merged
+     *  counterparts.
+     * @returns {*} Returns the value to assign.
+     */
+    function customDefaultsMerge(objValue, srcValue, key, object, source, stack) {
+      if (isObject(objValue) && isObject(srcValue)) {
+        // Recursively merge objects and arrays (susceptible to call stack limits).
+        stack.set(srcValue, objValue);
+        baseMerge(objValue, srcValue, undefined, customDefaultsMerge, stack);
+        stack['delete'](srcValue);
+      }
+      return objValue;
+    }
+
+    /**
+     * Used by `_.omit` to customize its `_.cloneDeep` use to only clone plain
+     * objects.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @param {string} key The key of the property to inspect.
+     * @returns {*} Returns the uncloned value or `undefined` to defer cloning to `_.cloneDeep`.
+     */
+    function customOmitClone(value) {
+      return isPlainObject(value) ? undefined : value;
     }
 
     /**
@@ -8337,9 +8741,9 @@ var lodash = createCommonjsModule(function (module, exports) {
      */
     function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
       var isPartial = bitmask & COMPARE_PARTIAL_FLAG,
-          objProps = keys(object),
+          objProps = getAllKeys(object),
           objLength = objProps.length,
-          othProps = keys(other),
+          othProps = getAllKeys(other),
           othLength = othProps.length;
 
       if (objLength != othLength && !isPartial) {
@@ -8577,7 +8981,15 @@ var lodash = createCommonjsModule(function (module, exports) {
      * @param {Object} object The object to query.
      * @returns {Array} Returns the array of symbols.
      */
-    var getSymbols = nativeGetSymbols ? overArg(nativeGetSymbols, Object) : stubArray;
+    var getSymbols = !nativeGetSymbols ? stubArray : function(object) {
+      if (object == null) {
+        return [];
+      }
+      object = Object(object);
+      return arrayFilter(nativeGetSymbols(object), function(symbol) {
+        return propertyIsEnumerable.call(object, symbol);
+      });
+    };
 
     /**
      * Creates an array of the own and inherited enumerable symbols of `object`.
@@ -9061,29 +9473,6 @@ var lodash = createCommonjsModule(function (module, exports) {
       data[1] = newBitmask;
 
       return data;
-    }
-
-    /**
-     * Used by `_.defaultsDeep` to customize its `_.merge` use.
-     *
-     * @private
-     * @param {*} objValue The destination value.
-     * @param {*} srcValue The source value.
-     * @param {string} key The key of the property to merge.
-     * @param {Object} object The parent object of `objValue`.
-     * @param {Object} source The parent object of `srcValue`.
-     * @param {Object} [stack] Tracks traversed source values and their merged
-     *  counterparts.
-     * @returns {*} Returns the value to assign.
-     */
-    function mergeDefaults(objValue, srcValue, key, object, source, stack) {
-      if (isObject(objValue) && isObject(srcValue)) {
-        // Recursively merge objects and arrays (susceptible to call stack limits).
-        stack.set(srcValue, objValue);
-        baseMerge(objValue, srcValue, undefined, mergeDefaults, stack);
-        stack['delete'](srcValue);
-      }
-      return objValue;
     }
 
     /**
@@ -10828,7 +11217,7 @@ var lodash = createCommonjsModule(function (module, exports) {
      *
      * var users = [
      *   { 'user': 'barney',  'active': false },
-     *   { 'user': 'fred',    'active': false},
+     *   { 'user': 'fred',    'active': false },
      *   { 'user': 'pebbles', 'active': true }
      * ];
      *
@@ -13397,7 +13786,7 @@ var lodash = createCommonjsModule(function (module, exports) {
       if (typeof func != 'function') {
         throw new TypeError(FUNC_ERROR_TEXT);
       }
-      start = start === undefined ? 0 : nativeMax(toInteger(start), 0);
+      start = start == null ? 0 : nativeMax(toInteger(start), 0);
       return baseRest(function(args) {
         var array = args[start],
             otherArgs = castSlice(args, 0, start);
@@ -14067,7 +14456,7 @@ var lodash = createCommonjsModule(function (module, exports) {
      * date objects, error objects, maps, numbers, `Object` objects, regexes,
      * sets, strings, symbols, and typed arrays. `Object` objects are compared
      * by their own, not inherited, enumerable properties. Functions and DOM
-     * nodes are **not** supported.
+     * nodes are compared by strict equality, i.e. `===`.
      *
      * @static
      * @memberOf _
@@ -15087,7 +15476,9 @@ var lodash = createCommonjsModule(function (module, exports) {
      * // => 3
      */
     function toSafeInteger(value) {
-      return baseClamp(toInteger(value), -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER);
+      return value
+        ? baseClamp(toInteger(value), -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER)
+        : (value === 0 ? value : 0);
     }
 
     /**
@@ -15341,7 +15732,7 @@ var lodash = createCommonjsModule(function (module, exports) {
      * // => { 'a': 1, 'b': 2 }
      */
     var defaults = baseRest(function(args) {
-      args.push(undefined, assignInDefaults);
+      args.push(undefined, customDefaultsAssignIn);
       return apply(assignInWith, undefined, args);
     });
 
@@ -15365,7 +15756,7 @@ var lodash = createCommonjsModule(function (module, exports) {
      * // => { 'a': { 'b': 2, 'c': 3 } }
      */
     var defaultsDeep = baseRest(function(args) {
-      args.push(undefined, mergeDefaults);
+      args.push(undefined, customDefaultsMerge);
       return apply(mergeWith, undefined, args);
     });
 
@@ -16027,7 +16418,7 @@ var lodash = createCommonjsModule(function (module, exports) {
       });
       copyObject(object, getAllKeysIn(object), result);
       if (isDeep) {
-        result = baseClone(result, CLONE_DEEP_FLAG | CLONE_FLAT_FLAG | CLONE_SYMBOLS_FLAG);
+        result = baseClone(result, CLONE_DEEP_FLAG | CLONE_FLAT_FLAG | CLONE_SYMBOLS_FLAG, customOmitClone);
       }
       var length = paths.length;
       while (length--) {
@@ -17176,7 +17567,10 @@ var lodash = createCommonjsModule(function (module, exports) {
      */
     function startsWith(string, target, position) {
       string = toString(string);
-      position = baseClamp(toInteger(position), 0, string.length);
+      position = position == null
+        ? 0
+        : baseClamp(toInteger(position), 0, string.length);
+
       target = baseToString(target);
       return string.slice(position, position + target.length) == target;
     }
@@ -17295,9 +17689,9 @@ var lodash = createCommonjsModule(function (module, exports) {
         options = undefined;
       }
       string = toString(string);
-      options = assignInWith({}, options, settings, assignInDefaults);
+      options = assignInWith({}, options, settings, customDefaultsAssignIn);
 
-      var imports = assignInWith({}, options.imports, settings.imports, assignInDefaults),
+      var imports = assignInWith({}, options.imports, settings.imports, customDefaultsAssignIn),
           importsKeys = keys(imports),
           importsValues = baseValues(imports, importsKeys);
 
@@ -19381,14 +19775,13 @@ var lodash = createCommonjsModule(function (module, exports) {
     // Add `LazyWrapper` methods for `_.drop` and `_.take` variants.
     arrayEach(['drop', 'take'], function(methodName, index) {
       LazyWrapper.prototype[methodName] = function(n) {
-        var filtered = this.__filtered__;
-        if (filtered && !index) {
-          return new LazyWrapper(this);
-        }
         n = n === undefined ? 1 : nativeMax(toInteger(n), 0);
 
-        var result = this.clone();
-        if (filtered) {
+        var result = (this.__filtered__ && !index)
+          ? new LazyWrapper(this)
+          : this.clone();
+
+        if (result.__filtered__) {
           result.__takeCount__ = nativeMin(n, result.__takeCount__);
         } else {
           result.__views__.push({
@@ -19625,278 +20018,6 @@ var lodash = createCommonjsModule(function (module, exports) {
 }.call(commonjsGlobal));
 });
 
-/**
- * Represents a 2d axis aligned boundary box.
- */
-class AABB2 {
-
-    /**
-     * @param {number} [x0=0] - x0
-     * @param {number} [x1=0] - x1
-     * @param {number} [y0=0] - y0
-     * @param {number} [y1=0] - y1
-     */
-    constructor (x0 = 0, x1 = 0, y0 = 0, y1 = 0) {
-
-        if (x0 < x1) {
-
-            /**
-             * @type {number}
-             */
-            this.min_x = x0;
-            /**
-             * @type {number}
-             */
-            this.max_x = x1;
-
-        } else {
-
-            /**
-             * @type {number}
-             */
-            this.min_x = x1;
-            /**
-             * @type {number}
-             */
-            this.max_x = x0;
-
-        }
-
-        if (y0 < y1) {
-
-            /**
-             * @type {number}
-             */
-            this.min_y = y0;
-            /**
-             * @type {number}
-             */
-            this.max_y = y1;
-
-        } else {
-
-            /**
-             * @type {number}
-             */
-            this.min_y = y1;
-            /**
-             * @type {number}
-             */
-            this.max_y = y0;
-
-        }
-
-        Object.seal(this);
-
-    } // => constructor
-
-    /**
-     * @type {number}
-     */
-    get width () {
-        return this.max_x - this.min_x + 1;
-    }
-
-    /**
-     * @type {number}
-     */
-    get height () {
-        return this.max_y - this.min_y + 1;
-    }
-
-    /**
-     * @type {number}
-     */
-    get center_x () {
-        return ( this.max_x - this.min_x ) / 2;
-    }
-
-    /**
-     * @type {number}
-     */
-    get center_y () {
-        return ( this.max_y - this.min_y ) / 2;
-    }
-
-    /**
-     * Extend the boundary box.
-     *
-     * @param {number} x - x
-     * @param {number} y - y
-     */
-    addPoint (x, y) {
-
-        if (x < this.min_x) {
-
-            this.min_x = x;
-
-        } else if (x > this.max_x) {
-
-            this.max_x = x;
-
-        }
-
-        if (y < this.min_y) {
-
-            this.min_y = y;
-
-        } else if (y > this.max_y) {
-
-            this.max_y = y;
-
-        }
-
-    }
-
-    /**
-     * Determinates wether or the 2d point is inside this AABB.
-     *
-     * @param {number} x - x
-     * @param {number} y - y
-     * @return {boolean} return true when point is inside the aabb
-     */
-    isInside (x, y) {
-
-        if (x >= this.min_x && x <= this.max_x &&
-            y >= this.min_y && y <= this.max_y) {
-
-            return true;
-
-        }
-
-        return false;
-
-    }
-
-    /**
-     * Determinates wether or not this AABB intersects *aabb*.
-     *
-     * @param {AABB2} aabb - aabb
-     * @return {boolean} return true when there is some intersection between both
-     */
-    isIntersection (aabb) {
-
-        if (aabb.max_x < this.min_x || aabb.min_x > this.max_x ||
-            aabb.max_y < this.min_y || aabb.min_y > this.max_y) {
-
-            return false;
-
-        }
-
-        return true;
-
-    }
-
-} // => class AABB2
-
-class Viewport extends AABB2 {
-
-    /**
-     * @param {number} x - x
-     * @param {number} y - y
-     * @param {number} width - width
-     * @param {number} height - height
-     */
-    constructor (x, y, width, height) {
-
-        let min_x = parseInt(x, 10);
-        let min_y = parseInt(y, 10);
-
-        super(min_x, (min_x + parseInt(width,  10) - 1),
-              min_y, (min_y + parseInt(height, 10) - 1));
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get x () {
-        return this.min_x;
-    }
-
-    /**
-     * @param {number} x
-     * @type {number}
-     */
-    set x (x) {
-
-        let w = this.width;
-
-        /**
-         * @type {number}
-         */
-        this.min_x = x;
-        /**
-         * @type {number}
-         */
-        this.max_x = x + w - 1;
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get y () {
-        return this.min_y;
-    }
-
-    /**
-     * @param {number} y
-     * @type {number}
-     */
-    set y (y) {
-
-        let h = this.height;
-
-        /**
-         * @type {number}
-         */
-        this.min_y = y;
-        /**
-         * @type {number}
-         */
-        this.max_y = y + h - 1;
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get width () {
-        return this.max_x - this.min_x + 1;
-    }
-
-    /**
-     * @param {number} y
-     * @type {number}
-     */
-    set width (w) {
-        /**
-         * @type {number}
-         */
-        this.max_x = this.min_x + w - 1;
-    }
-
-    /**
-     * @type {number}
-     */
-    get height () {
-        return this.max_y - this.min_y + 1;
-    }
-
-    /**
-     * @param {number} y
-     * @type {number}
-     */
-    set height (h) {
-        /**
-         * @type {number}
-         */
-        this.max_y = this.min_y + h - 1;
-    }
-
-}
-
 /* jshint esversion:6 */
 
 /**
@@ -19960,202 +20081,6 @@ function makeReadyPromise (obj) {
     });
 
     return obj;
-
-}
-
-/* jshint esversion:6 */
-
-/**
- * @param {number} a
- * @param {number} b
- * @return {number}
- */
-
-
-/**
- * @param {number} x
- * @return {number}
- */
-function findNextPowerOfTwo ( x ) {
-
-    var p = 1;
-
-    while ( x > p ) {
-
-        p <<= 1;
-
-    }
-
-    return p;
-
-}
-
-/**
- * @param {number} n
- * @return {boolean}
- */
-function isPowerOfTwo ( n ) {
-
-    return n !== 0 && ( n & ( n - 1 ) ) === 0;
-
-}
-
-/* jshint esversion:6 */
-/* global HTMLCanvasElement */
-/* global HTMLImageElement */
-/**
- * A power of two image.
- */
-class PowerOfTwoImage {
-
-    /**
-     * @param {!App} app
-     * @param {?HTMLImageElement|HTMLCanvasElement} image
-     */
-    constructor (app, image) {
-
-        definePropertyPublicRO( this, 'app', app );
-        addUid( this );
-        makeReadyPromise( this );
-
-        /**
-         * @type {string}
-         */
-        this.url = null;
-
-        /**
-         * @type {HTMLImageElement|HTMLCanvasElement}
-         */
-        this.domElement = image;
-
-        /**
-         * The power of two converted image (may be the original image)
-         *
-         * @type {HTMLImageElement|HTMLCanvasElement}
-         */
-        this.image = null;
-
-        Object.seal( this );
-
-    }
-
-    /**
-     * @param {string} url
-     * @return {PowerOfTwoImage} self
-     */
-    load ( url ) {
-
-        var img = document.createElement( 'img' );
-        this.domElement = img;
-
-        this.url = this.app.getAssetUrl( url );
-        img.src = this.url;
-
-        return this;
-
-    }
-
-    /**
-     * The original image
-     *
-     * @type {HTMLImageElement|HTMLCanvasElement}
-     */
-    get domElement () {
-        return this._domElement;
-    }
-
-    /**
-     * @type {HTMLImageElement|HTMLCanvasElement}
-     * @param {HTMLImageElement|HTMLCanvasElement} image
-     */
-    set domElement (image) {
-
-        if ( image instanceof HTMLCanvasElement ) {
-
-            setDomElement( this, image );
-
-        } else if ( image instanceof HTMLImageElement ) {
-
-            if ( image.width === 0 && image.height === 0 ) {
-
-                this._domElement = image;
-                this.ready = false;
-
-                var self = this;
-
-                image.onload = function () {
-
-                    self.image = convertToPowerOfTwo( image );
-                    self.ready = true;
-
-                };
-
-            } else {
-
-                setDomElement( this, image );
-
-            }
-
-        } else {
-
-            setDomElement( this, null );
-
-        }
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get width () {
-        return this.image ? this.image.width : 0;
-    }
-
-    /**
-     * @type {number}
-     */
-    get height () {
-        return this.image ? this.image.height : 0;
-    }
-
-}  // => class PowerOfTwoImage
-
-
-/**
- * @ignore
- */
-function setDomElement ( image, domElement ) {
-
-    image._domElement = domElement;
-    image.image = domElement ? convertToPowerOfTwo( domElement ) : null;
-    image.ready = !! domElement;
-
-}
-
-/**
- * @ignore
- */
-function convertToPowerOfTwo ( image ) {
-
-    if ( isPowerOfTwo( image.width ) && isPowerOfTwo( image.height ) ) {
-
-        return image;
-
-    } else {
-
-        var w = findNextPowerOfTwo( image.width );
-        var h = findNextPowerOfTwo( image.height );
-
-        var canvas = document.createElement( 'canvas' );
-
-        canvas.width  = w;
-        canvas.height = h;
-
-        canvas.getContext( '2d' ).drawImage( image, 0, 0 );
-
-        return canvas;
-
-    }
 
 }
 
@@ -20269,1227 +20194,6 @@ class Resource {
     }
 
 } // => class Resource
-
-/**
- * @example
- * let c = document.createElement("canvas");
- * let t = new Picimo.core.Texture.fromCanvas(c);
- * t.width    // => 300
- * t.height   // => 150
- *
- * let tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
- * t.width    // => 100
- *
- */
-
-class Texture {
-
-    /**
-     * @param {Texture} [parent]
-     * @param {number} [x=0]
-     * @param {number} [y=0]
-     * @param {number} [width]
-     * @param {number} [height]
-     */
-    constructor (parent, x, y, width, height) {
-
-        this._parent = parent;
-        this._image  = null;
-        this._width  = width;
-        this._height = height;
-
-        /**
-         * @type {number}
-         */
-        this.x = x != null ? x : 0;
-
-        /**
-         * @type {number}
-         */
-        this.y = y != null ? y : 0;
-
-    }
-
-    /**
-     * @type {?Texture}
-     */
-    get parent () {
-        return this._parent;
-    }
-
-    /**
-     * @param {?Texture} parent
-     * @type {?Texture}
-     */
-    set parent (parent) {
-        this._parent = parent;
-    }
-
-    /**
-     * @type {?Texture}
-     */
-    get root () {
-        return this._parent ? this._parent : this;
-    }
-
-    /**
-     * @type {Image|HTMLImageElement|HTMLCanvasElement}
-     */
-    get image () {
-        return this._image ? this._image : ( this._parent ? this._parent.image : null );
-    }
-
-    /**
-     * @param {Image|HTMLImageElement|HTMLCanvasElement} image
-     * @type {Image|HTMLImageElement|HTMLCanvasElement}
-     */
-    set image ( image ) {
-        this._image = image;
-    }
-
-    /**
-     * @type {number}
-     */
-    get root_width () {
-
-        var root = this.root;
-
-        if ( this === root ) {
-
-            if ( this._width != null ) {
-
-                return this._width;
-
-            } else if ( this._image ) {
-
-                return this._image.width;
-
-            } else {
-
-                return 0;
-
-            }
-
-        } else {
-
-            return root.root_width;
-
-        }
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get root_height () {
-
-        var root = this.root;
-
-        if ( this === root ) {
-
-            if ( this._height != null ) {
-
-                return this._height;
-
-            } else if ( this._image ) {
-
-                return this._image.height;
-
-            } else {
-
-                return 0;
-
-            }
-
-        } else {
-
-            return root.root_height;
-
-        }
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get width () {
-
-        if ( this._width != null ) {
-
-            return this._width;
-
-        }
-
-        return this.root_width;
-
-    }
-
-    /**
-     * @param {number} width
-     * @type {number}
-     */
-    set width ( width ) {
-
-        this._width = width;
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get height () {
-
-        if ( this._height != null ) {
-
-            return this._height;
-
-        }
-
-        return this.root_height;
-
-    }
-
-    /**
-     * @param {number} height
-     * @type {number}
-     */
-    set height ( height ) {
-
-        this._height = height;
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get min_s () {
-
-        var x = this.x;
-        var tex = this;
-
-        while ( ( tex = tex.parent ) != null ) {
-
-            x += tex.x;
-
-        }
-
-        return x / this.root_width;
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get min_t () {
-
-        var y = this.y;
-        var tex = this;
-
-        while ( ( tex = tex.parent ) != null ) {
-
-            y += tex.y;
-
-        }
-
-        return y / this.root_height;
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get max_s () {
-
-        var x = this.x + this.width;
-        var tex = this;
-
-        while ( ( tex = tex.parent ) != null ) {
-
-            x += tex.x;
-
-        }
-
-        return x / this.root_width;
-
-    }
-
-    /**
-     * @type {number}
-     */
-    get max_t () {
-
-        var y = this.y + this.height;
-        var tex = this;
-
-        while ( ( tex = tex.parent ) != null ) {
-
-            y += tex.y;
-
-        }
-
-        return y / this.root_height;
-
-    }
-
-    /**
-     * @param {Object} obj - Any object which has a `.setTexCoords()` method
-     */
-    setTexCoords (obj) {
-
-        let x0 = this.min_s;
-        let y0 = this.min_t;
-        let x1 = this.max_s;
-        let y1 = this.max_t;
-
-        obj.setTexCoords(
-            x0, y0,
-            x1, y0,
-            x1, y1,
-            x0, y1 );
-
-    }
-
-    /**
-     * @param {HTMLImageElement|HTMLCanvasElement} canvas
-     * @return {Texture}
-     */
-    static fromCanvas (canvas) {
-
-        let texture = new Texture;
-        texture.image = canvas;
-
-        return texture;
-
-    }
-
-}  // => class Texture
-
-/**
- * Represents a texture atlas definition and holds references to the image, frames and textures.
- */
-class TextureAtlas extends Resource {
-
-    /**
-     * @param {App} app
-     * @param {string} imageUrl
-     * @param {string|Object} conf
-     */
-    constructor (app, imageUrl, conf) {
-
-        super(app, 'conf');
-
-        this.on('incomingData', toJson);
-        this.on('data', parseTextureAtlasDefinition);
-
-        /**
-         * The texture atlas definition
-         * @type {Object}
-         */
-        this.conf = conf;
-
-        /**
-         * The root texture
-         * @type {Texture}
-         */
-        this.texture = null;
-
-        /**
-         * @type {Map<Texture>}
-         */
-        this.frames = null;
-
-        /**
-         * All texture frame names
-         * @type {string[]}
-         */
-        this.frameNames = null;
-
-        /**
-         * @type {string}
-         */
-        this.imageUrl = imageUrl;
-
-        Object.seal(this);
-
-    }
-
-    /**
-     * Return texture by frame name
-     * @param {string} name
-     * @return {Texture} texture
-     */
-    getTexture (name) {
-
-        if ( this.frames ) {
-
-            return this.frames.get( name );
-
-        }
-
-    }
-
-    /**
-     * @return {Texture} texture
-     */
-    getRandomTexture () {
-
-        if ( this.frames ) {
-
-            return this.frames.get( this.frameNames[ parseInt( this.frameNames.length * Math.random(), 10 ) ] );
-
-        }
-
-    }
-
-} // => class TextureAtlas
-
-
-/**
- * @ignore
- */
-function toJson (data) {
-    return typeof data === 'string' ? JSON.parse( data ) : data;
-}
-
-/**
- * @ignore
- */
-function constructImageUrl (textureAtlas, imageUrl) {
-
-    if ( textureAtlas.imageUrl !== undefined ) {
-
-        return textureAtlas.imageUrl;
-
-    }
-
-    return textureAtlas.app.joinAssetUrl( textureAtlas.url, imageUrl );
-
-}
-
-/**
- * @ignore
- */
-function parseTextureAtlasDefinition (conf) {
-
-    this.texture = new Texture();
-
-    this.texture.width  = conf.meta.size.w;
-    this.texture.height = conf.meta.size.h;
-    this.texture.image  = new PowerOfTwoImage( this.app ).load( constructImageUrl( this, conf.meta.image ) );
-
-    this.frameNames = [];
-    this.frames = new Map;
-
-    var name, frame;
-
-    for ( name in conf.frames ) {
-
-        if ( conf.frames.hasOwnProperty( name ) ) {
-
-            this.frameNames.push( name );
-            frame = conf.frames[ name ].frame;
-            this.frames.set( name, new Texture( this.texture, frame.x, frame.y, frame.w, frame.h ) );
-
-        }
-
-    }
-
-}
-
-class VertexArray {
-
-    /**
-     * @param {VertexObjectDescriptor} descriptor - The vertex descriptor
-     * @param {number} capacity - Maximum number of vertex objects
-     * @param {?Float32Array} vertices
-     */
-    constructor (descriptor, capacity, vertices) {
-
-        /**
-         * @type {VertexObjectDescriptor}
-         */
-        this.descriptor = descriptor;
-
-        /**
-         * @type {number}
-         */
-        this.capacity = capacity;
-
-        /**
-         * The float array buffer
-         * @type {Float32Array}
-         */
-        this.vertices = vertices !== undefined ? vertices : new Float32Array( capacity * descriptor.vertexCount * descriptor.vertexAttrCount );
-
-    }
-
-    /**
-     * @param {VertexArray} fromVertexArray
-     * @param {number} [toOffset=0] - Vertex object offset
-     */
-    copy (fromVertexArray, toOffset) {
-
-        let offset = 0;
-
-        if ( toOffset === undefined ) {
-
-            offset = toOffset * this.descriptor.vertexCount * this.descriptor.vertexAttrCount;
-
-        }
-
-        this.vertices.set( fromVertexArray.vertices, offset );
-
-    }
-
-    /**
-     * @param {number} begin - Index of first vertex object
-     * @param {number} [size=1]
-     * @return {VertexArray}
-     */
-    subarray (begin, size) {
-
-        if ( size === undefined ) {
-
-            size = 1;
-
-        }
-
-        var vertices = this.vertices.subarray(
-                begin * this.descriptor.vertexCount * this.descriptor.vertexAttrCount,
-                (begin + size) * this.descriptor.vertexCount * this.descriptor.vertexAttrCount );
-
-        return new VertexArray( this.descriptor, size, vertices );
-
-    }
-
-} // => class VertexArray
-
-/* jshint esversion:6 */
-class VertexIndexArray {
-
-    /**
-     * @param {number} vertexObjectCount - Number of vertex objects
-     * @param {number} objectIndexCount - Number of vertex indices per object
-     */
-    constructor (vertexObjectCount, objectIndexCount) {
-
-        var size = vertexObjectCount * objectIndexCount;
-
-        definePropertiesPublicRO( this, {
-
-            /**
-             * Number of vertex objects.
-             */
-            vertexObjectCount: vertexObjectCount,
-
-            /**
-             * Number of vertex indices per object.
-             */
-            objectIndexCount: objectIndexCount,
-
-            /**
-             * Size of array buffer.
-             */
-            size: size,
-
-            /**
-             * The uint index array buffer.
-             * @readonly
-             */
-            indices: new Uint32Array( size )
-
-        });
-
-    } // => constructor
-
-    /**
-     * @param {number} vertexObjectCount
-     * @param {number[]} indices
-     * @param {number} [objectOffset=0]
-     * @param {number} [stride=4]
-     * @return {VertexIndexArray}
-     * @example
-     * // Create a VertexIndexBuffer for 10 quads where each quad made up of 2x triangles (4x vertices and 6x indices)
-     * var quadIndices = Picimo.core.VertexIndexArray.Generate( 10, [ 0,1,2, 0,2,3 ], 4 );
-     * quadIndices.size                 // => 60
-     * quadIndices.objectIndexCount     // => 6
-     */
-    static Generate (vertexObjectCount, indices, objectOffset, stride) {
-
-        var arr = new VertexIndexArray( vertexObjectCount, indices.length );
-        var i, j;
-
-        if ( stride === undefined ) stride = 4;
-        if ( objectOffset === undefined ) objectOffset = 0;
-
-        for ( i = 0; i < vertexObjectCount; ++i ) {
-
-            for ( j = 0; j < indices.length; ++j ) {
-
-                arr.indices[ ( i * arr.objectIndexCount ) + j ] = indices[ j ] + ( ( i + objectOffset ) * stride );
-
-            }
-
-        }
-
-        return arr;
-
-    }
-
-} // => class VertexIndexArray
-
-/* jshint esversion:6 */
-/**
- * @param {!VertexObjectDescriptor} [descriptor] - Vertex descriptor
- * @param {?VertexArray} [vertexArray] - Vertex array
- */
-function VertexObject ( descriptor, vertexArray ) {
-
-    if ( this.descriptor !== undefined ) return;
-
-    let _descriptor = descriptor ? descriptor : ( vertexArray ? vertexArray.descriptor : null );
-    if ( ! _descriptor ) {
-
-        throw new Error( 'VertexObject#descriptor is null!' );
-
-    }
-    definePropertyPrivateRO( this, 'descriptor', _descriptor );
-
-    let _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
-    definePropertyPrivate( this, 'vertexArray', _vertexArray );
-
-    if ( this.descriptor !== this.vertexArray.descriptor && ( this.descriptor.vertexCount !== this.vertexArray.descriptor.vertexCount || this.descriptor.vertexAttrCount !== this.vertexArray.descriptor.vertexAttrCount) ) {
-
-        throw new Error( 'Incompatible vertex object descriptors!' );
-
-    }
-
-}
-
-Object.defineProperties( VertexObject.prototype, {
-
-    'vertices': {
-        get: function () {
-
-            return this.vertexArray.vertices;
-
-        }
-    }
-
-});
-
-/**
- * @param {function} vertexObjectConstructor - Vertex object constructor function
- * @param {number} vertexCount - Vertex count
- * @param {number} vertexAttrCount - Vertex attribute count
- * @param {Array} attributes - Vertex attribute descriptions
- * @param {Object} [aliases] - Vertex attribute aliases
- * @example
- * var descriptor = new Picimo.core.VertexObjectDescriptor(
- *
- *     null,
- *
- *     4,   // vertexCount
- *     12,  // vertexAttrCount
- *
- *     [    // attributes ..
- *
- *         { name: 'position',  size: 3, attrNames: [ 'x', 'y', 'z' ] },
- *         { name: 'rotate',    size: 1, uniform: true },
- *         { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
- *         { name: 'translate', size: 2, attrNames: [ 'tx', 'ty' ], uniform: true },
- *         { name: 'scale',     size: 1, uniform: true },
- *         { name: 'opacity',   size: 1, uniform: true }
- *
- *     ],
- *
- *     {   // aliases ..
- *
- *         pos2d: { size: 2, offset: 0 },
- *         posZ:  { size: 1, offset: 2, uniform: true },
- *         uv:    'texCoords'
- *
- *     }
- *
- * );
- *
- * vo.proto.numberOfBeast = function () { return 666; };
- *
- *
- * var vo = descriptor.create();
- *
- * vo.setPosition( 1,2,-1, 4,5,-1, 7,8,-1, 10,11,-1 );
- * vo.x2                // => 7
- * vo.y0                // => 2
- * vo.posZ              // => -1
- * vo.posZ = 23;
- * vo.z1                // => 23
- * vo.numberOfBeast()   // => 666
- *
- */
-
-function VertexObjectDescriptor ( vertexObjectConstructor, vertexCount, vertexAttrCount, attributes, aliases ) {
-
-    this.vertexObjectConstructor = buildVOConstructor(vertexObjectConstructor);
-    this.vertexObjectConstructor.prototype = Object.create( VertexObject.prototype );
-    this.vertexObjectConstructor.prototype.constructor = this.vertexObjectConstructor;
-
-    this.vertexCount = parseInt( vertexCount, 10 );
-    this.vertexAttrCount = parseInt( vertexAttrCount, 10 );
-
-    // ======= attributes =======
-
-    this.attr = {};
-
-    var offset, attr, i;
-
-    if ( Array.isArray( attributes ) ) {
-
-        offset = 0;
-
-        for ( i = 0; i < attributes.length; ++i ) {
-
-            attr = attributes[ i ];
-
-            if ( attr.size === undefined ) throw new Error( 'vertex object attribute descriptor has no size property!' );
-
-            if ( attr.name !== undefined ) {
-
-                this.attr[ attr.name ] = new VertexObjectAttrDescriptor( attr.name, attr.size, offset, !! attr.uniform, attr.attrNames );
-
-            }
-
-            offset += attr.size;
-
-        }
-
-        if ( offset > this.vertexAttrCount ) throw new Error( 'vertexAttrCount is too small (offset=' + offset + ')' );
-
-    }
-
-    // ======= aliases =======
-
-    var name;
-
-    if ( aliases !== undefined ) {
-
-        for ( name in aliases ) {
-
-            if ( aliases.hasOwnProperty( name ) ) {
-
-                attr = aliases[ name ];
-
-                if ( typeof attr === 'string' ) {
-
-                    attr = this.attr[ attr ];
-
-                    if ( attr !== undefined ) {
-
-                        this.attr[ name ] = attr;
-
-                    }
-
-                } else {
-
-                    this.attr[ name ] = new VertexObjectAttrDescriptor( name, attr.size, attr.offset, !! attr.uniform, attr.attrNames );
-
-                }
-
-            }
-
-        }
-
-    }
-
-    // ======= propertiesObject =======
-
-    this.propertiesObject = {};
-
-    for ( name in this.attr ) {
-
-        if ( this.attr.hasOwnProperty( name ) ) {
-
-            attr = this.attr[ name ];
-
-            attr.defineProperties( name, this.propertiesObject, this );
-
-        }
-
-    }
-
-
-    // ======= vertex object prototype =======
-
-    this.vertexObjectPrototype = Object.create( this.vertexObjectConstructor.prototype, this.propertiesObject );
-
-
-    // === winterkälte jetzt
-
-    Object.freeze( this.attr );
-    Object.freeze( this );
-
-}
-
-/**
- * @ignore
- */
-function buildVOConstructor ( constructorFunc ) {
-    if (typeof constructorFunc === 'function') {
-        if (!constructorFunc.name) {
-            return function CustomVertexObject () {
-                return constructorFunc.call(this);
-            };
-        } else {
-            return constructorFunc;
-        }
-    } else {
-        return function CustomVertexObject () {};
-    }
-}
-
-
-/**
- * @param {number} [size=1]
- * @return {VertexArray}
- */
-VertexObjectDescriptor.prototype.createVertexArray = function ( size ) {
-
-    return new VertexArray( this, ( size === undefined ? 1 : size ) );
-
-};
-
-/**
- * Create a new {@link VertexObject}.
- * @param {VertexArray} [vertexArray] - Vertex array
- * @return {VertexObject}
- */
-VertexObjectDescriptor.prototype.create = function ( vertexArray ) {
-
-    var vo = Object.create( this.vertexObjectPrototype );
-    VertexObject.call( vo, this, vertexArray );
-
-    if ( VertexObject !== this.vertexObjectConstructor ) {
-
-        this.vertexObjectConstructor.call( vo );
-
-    }
-
-    return vo;
-
-};
-
-
-/**
- * @param {string} name
- * @param {number} [size=1]
- * @return {boolean}
- */
-VertexObjectDescriptor.prototype.hasAttribute = function ( name, size ) {
-
-    var attr = this.attr[ name ];
-    return attr && attr.size === ( size || 1 );
-
-};
-
-
-Object.defineProperties( VertexObjectDescriptor.prototype, {
-
-    /**
-     * The prototype object of the vertex object. You should add your own properties and methods here.
-     */
-    'proto': {
-        get: function () {
-
-            return this.vertexObjectConstructor.prototype;
-
-        },
-        enumerable: true
-    }
-
-});
-
-
-// =========================================
-// VertexObjectAttrDescriptor
-// =========================================
-
-/**
- * @ignore
- */
-function VertexObjectAttrDescriptor ( name, size, offset, uniform, attrNames ) {
-
-    this.name      = name;
-    this.size      = size;
-    this.offset    = offset;
-    this.uniform   = uniform;
-    this.attrNames = attrNames;
-
-    Object.freeze( this );
-
-}
-
-/**
- * @ignore
- */
-VertexObjectAttrDescriptor.prototype.getAttrPostfix = function ( name, index ) {
-
-    if ( this.attrNames ) {
-
-        var postfix = this.attrNames[ index ];
-
-        if ( postfix !== undefined ) {
-
-            return postfix;
-
-        }
-
-    }
-
-    return name + '_' + index;
-
-};
-
-/**
- * @ignore
- */
-VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, descriptor ) {
-
-    var i, j;
-
-    if ( this.size === 1 ) {
-
-        if ( this.uniform ) {
-
-            obj[ name ] = {
-
-                get        : get_v1f_u( this.offset ),
-                set        : set_v1f_u( descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
-                enumerable : true
-
-            };
-
-        } else {
-
-            obj[ "set" + camelize( name ) ] = {
-
-                value      : set_vNf_v( 1, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
-                enumerable : true
-
-            };
-
-            for ( i = 0; i < descriptor.vertexCount ; ++i ) {
-
-                obj[ name + i ] = {
-
-                    get        : get_v1f_u( this.offset + ( i * descriptor.vertexAttrCount ) ),
-                    set        : set_vNf_v( 1, 1, 0, this.offset + ( i * descriptor.vertexAttrCount ) ),
-                    enumerable : true
-
-                };
-
-            }
-
-        }
-
-    } else if ( this.size >= 2 ) {
-
-        if ( this.uniform ) {
-
-            obj[ "get" + camelize( name ) ] = {
-
-                value      : get_vNf_u( this.offset ),
-                enumerable : true
-
-            };
-
-            obj[ "set" + camelize( name ) ] = {
-
-                value      : set_vNf_u( this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
-                enumerable : true
-
-            };
-
-            for ( i = 0; i < this.size ; ++i ) {
-
-                obj[ this.getAttrPostfix( name, i ) ] = {
-
-                    get        : get_v1f_u( this.offset + i ),
-                    set        : set_v1f_u( descriptor.vertexCount, descriptor.vertexAttrCount, this.offset + i ),
-                    enumerable : true
-
-                };
-
-            }
-
-        } else {
-
-            obj[ "set" + camelize( name ) ] = {
-
-                value      : set_vNf_v( this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
-                enumerable : true
-
-            };
-
-            for ( i = 0; i < descriptor.vertexCount ; ++i ) {
-                for ( j = 0; j < this.size ; ++j ) {
-
-                    obj[ this.getAttrPostfix( name, j ) + i ] = {
-
-                        get        : get_v1f_u( this.offset + ( i * descriptor.vertexAttrCount ) + j ),
-                        set        : set_vNf_v( 1, 1, 0, this.offset + ( i * descriptor.vertexAttrCount ) + j ),
-                        enumerable : true
-
-                    };
-
-                }
-            }
-
-        }
-
-    }
-
-};
-
-/**
- * @ignore
- */
-function get_vNf_u ( offset ) {
-
-    return function ( attrIndex ) {
-
-        return this.vertexArray.vertices[ offset + attrIndex ];
-
-    };
-
-}
-
-/**
- * @ignore
- */
-function set_vNf_u ( vectorLength, vertexCount, vertexAttrCount, offset ) {
-    return function () {
-
-        let _vertices = this.vertexArray.vertices;
-        let i;
-        let n;
-
-        for ( i = 0; i < vertexCount; ++i ) {
-            for ( n = 0; n < vectorLength; ++n ) {
-                _vertices[ ( i * vertexAttrCount ) + offset + n ] = arguments[n];
-            }
-        }
-
-    };
-}
-
-/**
- * @ignore
- */
-function get_v1f_u ( offset ) {
-    return function () {
-        return this.vertexArray.vertices[ offset ];
-    };
-}
-
-/**
- * @ignore
- */
-function set_vNf_v ( vectorLength, vertexCount, vertexAttrCount, offset ) {
-    return function () {
-
-        let _vertices = this.vertexArray.vertices;
-        let i;
-        let n;
-
-        for ( i = 0; i < vertexCount; ++i ) {
-            for ( n = 0; n < vectorLength; ++n ) {
-                _vertices[( i * vertexAttrCount ) + offset + n] = arguments[( i * vectorLength ) + n];
-            }
-        }
-
-    };
-}
-
-/**
- * @ignore
- */
-function set_v1f_u ( vertexCount, vertexAttrCount, offset ) {
-    return function ( value ) {
-
-        var _vertices = this.vertexArray.vertices;
-
-        for ( let i = 0; i < vertexCount; ++i ) {
-
-            _vertices[ ( i * vertexAttrCount ) + offset ] = value;
-
-        }
-
-    };
-}
-
-/**
- * @ignore
- */
-function camelize ( name ) {
-    return name[ 0 ].toUpperCase() + name.substr( 1 );
-}
-
-/* jshint esversion:6 */
-/**
- * @param {VertexObjectDescriptor} descriptor - Vertex object descriptor
- * @param {number} capacity - Maximum number of vertex objects
- * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array
- */
-
-function VertexObjectPool ( descriptor, capacity, vertexArray ) {
-
-    definePropertiesPublicRO( this, {
-
-        'descriptor' : descriptor,
-
-        // Maximum number of vertex objects
-        'capacity' : capacity,
-
-        'vertexArray' : ( vertexArray ? vertexArray : descriptor.createVertexArray( capacity ) ),
-
-        'ZERO' : descriptor.create(),
-
-        'NEW' : descriptor.create()
-
-    });
-
-    createVertexObjects( this );
-
-}
-
-Object.defineProperties( VertexObjectPool.prototype, {
-
-    // Number of in-use vertex objects
-    'usedCount': {
-
-        get: function () {
-
-            return this.usedVOs.length;
-
-        },
-
-        enumerable: true
-
-    },
-
-    // Number of free and unused vertex objects
-    'availableCount': {
-
-        get: function () {
-
-            return this.availableVOs.length;
-
-        },
-
-        enumerable: true
-
-    }
-
-});
-
-
-/**
- * @throws throw error when capacity reached and no vertex object is available.
- * @return {VertexObject}
- */
-
-VertexObjectPool.prototype.alloc = function () {
-
-    var vo = this.availableVOs.shift();
-
-    if ( vo === undefined ) {
-
-        throw new Error( "VertexObjectPool capacity(=" + this.capacity + ") reached!" );
-
-    }
-
-    this.usedVOs.push( vo );
-
-    vo.vertexArray.copy( this.NEW.vertexArray );
-
-    return vo;
-
-};
-
-
-/**
- * @param {VertexObject} vo - The vertex object
- */
-
-VertexObjectPool.prototype.free = function ( vo ) {
-
-    var idx = this.usedVOs.indexOf( vo );
-
-    if ( idx === -1 ) return;
-
-    var lastIdx = this.usedVOs.length - 1;
-
-    if ( idx !== lastIdx ) {
-
-        var last = this.usedVOs[ lastIdx ];
-        vo.vertexArray.copy( last.vertexArray );
-
-        var tmp = last.vertexArray;
-        last.vertexArray = vo.vertexArray;
-        vo.vertexArray = tmp;
-
-        this.usedVOs.splice( idx, 1, last );
-
-    }
-
-    this.usedVOs.pop();
-    this.availableVOs.unshift( vo );
-
-    vo.vertexArray.copy( this.ZERO.vertexArray );
-
-};
-
-
-/**
- * @ignore
- */
-function createVertexObjects ( pool ) {
-
-    pool.availableVOs = [];
-
-    var vertexArray, vertexObject;
-    var i;
-
-    for ( i = 0; i < pool.capacity; i++ ) {
-
-        vertexArray = pool.vertexArray.subarray( i );
-
-        vertexObject = pool.descriptor.create( vertexArray );
-        vertexObject.destroy = pool.free.bind( pool, vertexObject );
-
-        pool.availableVOs.push( vertexObject );
-
-    }
-
-    pool.usedVOs = [];
-
-}
-
-
-
-var index$1 = Object.freeze({
-	AABB2: AABB2,
-	Viewport: Viewport,
-	PowerOfTwoImage: PowerOfTwoImage,
-	Resource: Resource,
-	Texture: Texture,
-	TextureAtlas: TextureAtlas,
-	VertexArray: VertexArray,
-	VertexIndexArray: VertexIndexArray,
-	VertexObject: VertexObject,
-	VertexObjectDescriptor: VertexObjectDescriptor,
-	VertexObjectPool: VertexObjectPool
-});
 
 class ShaderSource extends Resource {
 
@@ -23146,21 +21850,6 @@ class WebGlBuffer {
 
 /* jshint esversion:6 */
 
-
-
-
-var index = Object.freeze({
-	Program: Program,
-	ShaderSource: ShaderSource,
-	ShaderManager: ShaderManager,
-	TextureManager: TextureManager,
-	WebGlContext: WebGlContext,
-	WebGlRenderer: WebGlRenderer,
-	WebGlProgram: WebGlProgram,
-	WebGlTexture: WebGlTexture,
-	WebGlBuffer: WebGlBuffer
-});
-
 /* jshint esversion:6 */
 /**
  * @ignore
@@ -23236,6 +21925,570 @@ var createWebGlContext = function ( app ) {
     return ctx;
 
 };
+
+class VertexArray {
+
+    /**
+     * @param {VertexObjectDescriptor} descriptor - The vertex descriptor
+     * @param {number} capacity - Maximum number of vertex objects
+     * @param {?Float32Array} vertices
+     */
+    constructor (descriptor, capacity, vertices) {
+
+        /**
+         * @type {VertexObjectDescriptor}
+         */
+        this.descriptor = descriptor;
+
+        /**
+         * @type {number}
+         */
+        this.capacity = capacity;
+
+        /**
+         * The float array buffer
+         * @type {Float32Array}
+         */
+        this.vertices = vertices !== undefined ? vertices : new Float32Array( capacity * descriptor.vertexCount * descriptor.vertexAttrCount );
+
+    }
+
+    /**
+     * @param {VertexArray} fromVertexArray
+     * @param {number} [toOffset=0] - Vertex object offset
+     */
+    copy (fromVertexArray, toOffset) {
+
+        let offset = 0;
+
+        if ( toOffset === undefined ) {
+
+            offset = toOffset * this.descriptor.vertexCount * this.descriptor.vertexAttrCount;
+
+        }
+
+        this.vertices.set( fromVertexArray.vertices, offset );
+
+    }
+
+    /**
+     * @param {number} begin - Index of first vertex object
+     * @param {number} [size=1]
+     * @return {VertexArray}
+     */
+    subarray (begin, size) {
+
+        if ( size === undefined ) {
+
+            size = 1;
+
+        }
+
+        var vertices = this.vertices.subarray(
+                begin * this.descriptor.vertexCount * this.descriptor.vertexAttrCount,
+                (begin + size) * this.descriptor.vertexCount * this.descriptor.vertexAttrCount );
+
+        return new VertexArray( this.descriptor, size, vertices );
+
+    }
+
+} // => class VertexArray
+
+/* jshint esversion:6 */
+/**
+ * @param {!VertexObjectDescriptor} [descriptor] - Vertex descriptor
+ * @param {?VertexArray} [vertexArray] - Vertex array
+ */
+function VertexObject ( descriptor, vertexArray ) {
+
+    if ( this.descriptor !== undefined ) return;
+
+    let _descriptor = descriptor ? descriptor : ( vertexArray ? vertexArray.descriptor : null );
+    if ( ! _descriptor ) {
+
+        throw new Error( 'VertexObject#descriptor is null!' );
+
+    }
+    definePropertyPrivateRO( this, 'descriptor', _descriptor );
+
+    let _vertexArray = vertexArray ? vertexArray : descriptor.createVertexArray();
+    definePropertyPrivate( this, 'vertexArray', _vertexArray );
+
+    if ( this.descriptor !== this.vertexArray.descriptor && ( this.descriptor.vertexCount !== this.vertexArray.descriptor.vertexCount || this.descriptor.vertexAttrCount !== this.vertexArray.descriptor.vertexAttrCount) ) {
+
+        throw new Error( 'Incompatible vertex object descriptors!' );
+
+    }
+
+}
+
+Object.defineProperties( VertexObject.prototype, {
+
+    'vertices': {
+        get: function () {
+
+            return this.vertexArray.vertices;
+
+        }
+    }
+
+});
+
+/**
+ * @param {function} vertexObjectConstructor - Vertex object constructor function
+ * @param {number} vertexCount - Vertex count
+ * @param {number} vertexAttrCount - Vertex attribute count
+ * @param {Array} attributes - Vertex attribute descriptions
+ * @param {Object} [aliases] - Vertex attribute aliases
+ * @example
+ * var descriptor = new Picimo.core.VertexObjectDescriptor(
+ *
+ *     null,
+ *
+ *     4,   // vertexCount
+ *     12,  // vertexAttrCount
+ *
+ *     [    // attributes ..
+ *
+ *         { name: 'position',  size: 3, attrNames: [ 'x', 'y', 'z' ] },
+ *         { name: 'rotate',    size: 1, uniform: true },
+ *         { name: 'texCoords', size: 2, attrNames: [ 's', 't' ] },
+ *         { name: 'translate', size: 2, attrNames: [ 'tx', 'ty' ], uniform: true },
+ *         { name: 'scale',     size: 1, uniform: true },
+ *         { name: 'opacity',   size: 1, uniform: true }
+ *
+ *     ],
+ *
+ *     {   // aliases ..
+ *
+ *         pos2d: { size: 2, offset: 0 },
+ *         posZ:  { size: 1, offset: 2, uniform: true },
+ *         uv:    'texCoords'
+ *
+ *     }
+ *
+ * );
+ *
+ * vo.proto.numberOfBeast = function () { return 666; };
+ *
+ *
+ * var vo = descriptor.create();
+ *
+ * vo.setPosition( 1,2,-1, 4,5,-1, 7,8,-1, 10,11,-1 );
+ * vo.x2                // => 7
+ * vo.y0                // => 2
+ * vo.posZ              // => -1
+ * vo.posZ = 23;
+ * vo.z1                // => 23
+ * vo.numberOfBeast()   // => 666
+ *
+ */
+
+function VertexObjectDescriptor ( vertexObjectConstructor, vertexCount, vertexAttrCount, attributes, aliases ) {
+
+    this.vertexObjectConstructor = buildVOConstructor(vertexObjectConstructor);
+    this.vertexObjectConstructor.prototype = Object.create( VertexObject.prototype );
+    this.vertexObjectConstructor.prototype.constructor = this.vertexObjectConstructor;
+
+    this.vertexCount = parseInt( vertexCount, 10 );
+    this.vertexAttrCount = parseInt( vertexAttrCount, 10 );
+
+    // ======= attributes =======
+
+    this.attr = {};
+
+    var offset, attr, i;
+
+    if ( Array.isArray( attributes ) ) {
+
+        offset = 0;
+
+        for ( i = 0; i < attributes.length; ++i ) {
+
+            attr = attributes[ i ];
+
+            if ( attr.size === undefined ) throw new Error( 'vertex object attribute descriptor has no size property!' );
+
+            if ( attr.name !== undefined ) {
+
+                this.attr[ attr.name ] = new VertexObjectAttrDescriptor( attr.name, attr.size, offset, !! attr.uniform, attr.attrNames );
+
+            }
+
+            offset += attr.size;
+
+        }
+
+        if ( offset > this.vertexAttrCount ) throw new Error( 'vertexAttrCount is too small (offset=' + offset + ')' );
+
+    }
+
+    // ======= aliases =======
+
+    var name;
+
+    if ( aliases !== undefined ) {
+
+        for ( name in aliases ) {
+
+            if ( aliases.hasOwnProperty( name ) ) {
+
+                attr = aliases[ name ];
+
+                if ( typeof attr === 'string' ) {
+
+                    attr = this.attr[ attr ];
+
+                    if ( attr !== undefined ) {
+
+                        this.attr[ name ] = attr;
+
+                    }
+
+                } else {
+
+                    this.attr[ name ] = new VertexObjectAttrDescriptor( name, attr.size, attr.offset, !! attr.uniform, attr.attrNames );
+
+                }
+
+            }
+
+        }
+
+    }
+
+    // ======= propertiesObject =======
+
+    this.propertiesObject = {};
+
+    for ( name in this.attr ) {
+
+        if ( this.attr.hasOwnProperty( name ) ) {
+
+            attr = this.attr[ name ];
+
+            attr.defineProperties( name, this.propertiesObject, this );
+
+        }
+
+    }
+
+
+    // ======= vertex object prototype =======
+
+    this.vertexObjectPrototype = Object.create( this.vertexObjectConstructor.prototype, this.propertiesObject );
+
+
+    // === winterkälte jetzt
+
+    Object.freeze( this.attr );
+    Object.freeze( this );
+
+}
+
+/**
+ * @ignore
+ */
+function buildVOConstructor ( constructorFunc ) {
+    if (typeof constructorFunc === 'function') {
+        if (!constructorFunc.name) {
+            return function CustomVertexObject () {
+                return constructorFunc.call(this);
+            };
+        } else {
+            return constructorFunc;
+        }
+    } else {
+        return function CustomVertexObject () {};
+    }
+}
+
+
+/**
+ * @param {number} [size=1]
+ * @return {VertexArray}
+ */
+VertexObjectDescriptor.prototype.createVertexArray = function ( size ) {
+
+    return new VertexArray( this, ( size === undefined ? 1 : size ) );
+
+};
+
+/**
+ * Create a new {@link VertexObject}.
+ * @param {VertexArray} [vertexArray] - Vertex array
+ * @return {VertexObject}
+ */
+VertexObjectDescriptor.prototype.create = function ( vertexArray ) {
+
+    var vo = Object.create( this.vertexObjectPrototype );
+    VertexObject.call( vo, this, vertexArray );
+
+    if ( VertexObject !== this.vertexObjectConstructor ) {
+
+        this.vertexObjectConstructor.call( vo );
+
+    }
+
+    return vo;
+
+};
+
+
+/**
+ * @param {string} name
+ * @param {number} [size=1]
+ * @return {boolean}
+ */
+VertexObjectDescriptor.prototype.hasAttribute = function ( name, size ) {
+
+    var attr = this.attr[ name ];
+    return attr && attr.size === ( size || 1 );
+
+};
+
+
+Object.defineProperties( VertexObjectDescriptor.prototype, {
+
+    /**
+     * The prototype object of the vertex object. You should add your own properties and methods here.
+     */
+    'proto': {
+        get: function () {
+
+            return this.vertexObjectConstructor.prototype;
+
+        },
+        enumerable: true
+    }
+
+});
+
+
+// =========================================
+// VertexObjectAttrDescriptor
+// =========================================
+
+/**
+ * @ignore
+ */
+function VertexObjectAttrDescriptor ( name, size, offset, uniform, attrNames ) {
+
+    this.name      = name;
+    this.size      = size;
+    this.offset    = offset;
+    this.uniform   = uniform;
+    this.attrNames = attrNames;
+
+    Object.freeze( this );
+
+}
+
+/**
+ * @ignore
+ */
+VertexObjectAttrDescriptor.prototype.getAttrPostfix = function ( name, index ) {
+
+    if ( this.attrNames ) {
+
+        var postfix = this.attrNames[ index ];
+
+        if ( postfix !== undefined ) {
+
+            return postfix;
+
+        }
+
+    }
+
+    return name + '_' + index;
+
+};
+
+/**
+ * @ignore
+ */
+VertexObjectAttrDescriptor.prototype.defineProperties = function ( name, obj, descriptor ) {
+
+    var i, j;
+
+    if ( this.size === 1 ) {
+
+        if ( this.uniform ) {
+
+            obj[ name ] = {
+
+                get        : get_v1f_u( this.offset ),
+                set        : set_v1f_u( descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
+                enumerable : true
+
+            };
+
+        } else {
+
+            obj[ "set" + camelize( name ) ] = {
+
+                value      : set_vNf_v( 1, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
+                enumerable : true
+
+            };
+
+            for ( i = 0; i < descriptor.vertexCount ; ++i ) {
+
+                obj[ name + i ] = {
+
+                    get        : get_v1f_u( this.offset + ( i * descriptor.vertexAttrCount ) ),
+                    set        : set_vNf_v( 1, 1, 0, this.offset + ( i * descriptor.vertexAttrCount ) ),
+                    enumerable : true
+
+                };
+
+            }
+
+        }
+
+    } else if ( this.size >= 2 ) {
+
+        if ( this.uniform ) {
+
+            obj[ "get" + camelize( name ) ] = {
+
+                value      : get_vNf_u( this.offset ),
+                enumerable : true
+
+            };
+
+            obj[ "set" + camelize( name ) ] = {
+
+                value      : set_vNf_u( this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
+                enumerable : true
+
+            };
+
+            for ( i = 0; i < this.size ; ++i ) {
+
+                obj[ this.getAttrPostfix( name, i ) ] = {
+
+                    get        : get_v1f_u( this.offset + i ),
+                    set        : set_v1f_u( descriptor.vertexCount, descriptor.vertexAttrCount, this.offset + i ),
+                    enumerable : true
+
+                };
+
+            }
+
+        } else {
+
+            obj[ "set" + camelize( name ) ] = {
+
+                value      : set_vNf_v( this.size, descriptor.vertexCount, descriptor.vertexAttrCount, this.offset ),
+                enumerable : true
+
+            };
+
+            for ( i = 0; i < descriptor.vertexCount ; ++i ) {
+                for ( j = 0; j < this.size ; ++j ) {
+
+                    obj[ this.getAttrPostfix( name, j ) + i ] = {
+
+                        get        : get_v1f_u( this.offset + ( i * descriptor.vertexAttrCount ) + j ),
+                        set        : set_vNf_v( 1, 1, 0, this.offset + ( i * descriptor.vertexAttrCount ) + j ),
+                        enumerable : true
+
+                    };
+
+                }
+            }
+
+        }
+
+    }
+
+};
+
+/**
+ * @ignore
+ */
+function get_vNf_u ( offset ) {
+
+    return function ( attrIndex ) {
+
+        return this.vertexArray.vertices[ offset + attrIndex ];
+
+    };
+
+}
+
+/**
+ * @ignore
+ */
+function set_vNf_u ( vectorLength, vertexCount, vertexAttrCount, offset ) {
+    return function () {
+
+        let _vertices = this.vertexArray.vertices;
+        let i;
+        let n;
+
+        for ( i = 0; i < vertexCount; ++i ) {
+            for ( n = 0; n < vectorLength; ++n ) {
+                _vertices[ ( i * vertexAttrCount ) + offset + n ] = arguments[n];
+            }
+        }
+
+    };
+}
+
+/**
+ * @ignore
+ */
+function get_v1f_u ( offset ) {
+    return function () {
+        return this.vertexArray.vertices[ offset ];
+    };
+}
+
+/**
+ * @ignore
+ */
+function set_vNf_v ( vectorLength, vertexCount, vertexAttrCount, offset ) {
+    return function () {
+
+        let _vertices = this.vertexArray.vertices;
+        let i;
+        let n;
+
+        for ( i = 0; i < vertexCount; ++i ) {
+            for ( n = 0; n < vectorLength; ++n ) {
+                _vertices[( i * vertexAttrCount ) + offset + n] = arguments[( i * vectorLength ) + n];
+            }
+        }
+
+    };
+}
+
+/**
+ * @ignore
+ */
+function set_v1f_u ( vertexCount, vertexAttrCount, offset ) {
+    return function ( value ) {
+
+        var _vertices = this.vertexArray.vertices;
+
+        for ( let i = 0; i < vertexCount; ++i ) {
+
+            _vertices[ ( i * vertexAttrCount ) + offset ] = value;
+
+        }
+
+    };
+}
+
+/**
+ * @ignore
+ */
+function camelize ( name ) {
+    return name[ 0 ].toUpperCase() + name.substr( 1 );
+}
 
 class SpriteFactory {
 
@@ -24657,6 +23910,80 @@ class ObjectPool {
 }
 
 /* jshint esversion:6 */
+class VertexIndexArray {
+
+    /**
+     * @param {number} vertexObjectCount - Number of vertex objects
+     * @param {number} objectIndexCount - Number of vertex indices per object
+     */
+    constructor (vertexObjectCount, objectIndexCount) {
+
+        const size = vertexObjectCount * objectIndexCount;
+
+        definePropertiesPublicRO( this, {
+
+            /**
+             * Number of vertex objects.
+             */
+            vertexObjectCount: vertexObjectCount,
+
+            /**
+             * Number of vertex indices per object.
+             */
+            objectIndexCount: objectIndexCount,
+
+            /**
+             * Size of array buffer.
+             */
+            size: size,
+
+            /**
+             * The uint index array buffer.
+             * @readonly
+             */
+            indices: new Uint32Array( size )  // TODO Uint16Array
+
+        });
+
+    } // => constructor
+
+    /**
+     * @param {number} vertexObjectCount
+     * @param {number[]} indices
+     * @param {number} [objectOffset=0]
+     * @param {number} [stride=4]
+     * @return {VertexIndexArray}
+     * @example
+     * // Create a VertexIndexBuffer for 10 quads where each quad made up of 2x triangles (4x vertices and 6x indices)
+     * var quadIndices = Picimo.core.VertexIndexArray.Generate( 10, [ 0,1,2, 0,2,3 ], 4 );
+     * quadIndices.size                 // => 60
+     * quadIndices.objectIndexCount     // => 6
+     */
+    static Generate (vertexObjectCount, indices, objectOffset, stride) {
+
+        var arr = new VertexIndexArray( vertexObjectCount, indices.length );
+        var i, j;
+
+        if ( stride === undefined ) stride = 4;
+        if ( objectOffset === undefined ) objectOffset = 0;
+
+        for ( i = 0; i < vertexObjectCount; ++i ) {
+
+            for ( j = 0; j < indices.length; ++j ) {
+
+                arr.indices[ ( i * arr.objectIndexCount ) + j ] = indices[ j ] + ( ( i + objectOffset ) * stride );
+
+            }
+
+        }
+
+        return arr;
+
+    }
+
+} // => class VertexIndexArray
+
+/* jshint esversion:6 */
 class PicturePipeline {
 
     constructor (app, pool, texture, program) {
@@ -24928,6 +24255,147 @@ function initRenderCmds$1 ( pipeline ) {
     //if ( pipeline.renderCmdObj ) pipeline.renderCmdObj.releaseAll();
 
 //}
+
+/* jshint esversion:6 */
+/**
+ * @param {VertexObjectDescriptor} descriptor - Vertex object descriptor
+ * @param {number} capacity - Maximum number of vertex objects
+ * @param {Picimo.core.VertexArray} [vertexArray] - Vertex array
+ */
+
+function VertexObjectPool ( descriptor, capacity, vertexArray ) {
+
+    definePropertiesPublicRO( this, {
+
+        'descriptor' : descriptor,
+
+        // Maximum number of vertex objects
+        'capacity' : capacity,
+
+        'vertexArray' : ( vertexArray ? vertexArray : descriptor.createVertexArray( capacity ) ),
+
+        'ZERO' : descriptor.create(),
+
+        'NEW' : descriptor.create()
+
+    });
+
+    createVertexObjects( this );
+
+}
+
+Object.defineProperties( VertexObjectPool.prototype, {
+
+    // Number of in-use vertex objects
+    'usedCount': {
+
+        get: function () {
+
+            return this.usedVOs.length;
+
+        },
+
+        enumerable: true
+
+    },
+
+    // Number of free and unused vertex objects
+    'availableCount': {
+
+        get: function () {
+
+            return this.availableVOs.length;
+
+        },
+
+        enumerable: true
+
+    }
+
+});
+
+
+/**
+ * @throws throw error when capacity reached and no vertex object is available.
+ * @return {VertexObject}
+ */
+
+VertexObjectPool.prototype.alloc = function () {
+
+    var vo = this.availableVOs.shift();
+
+    if ( vo === undefined ) {
+
+        throw new Error( "VertexObjectPool capacity(=" + this.capacity + ") reached!" );
+
+    }
+
+    this.usedVOs.push( vo );
+
+    vo.vertexArray.copy( this.NEW.vertexArray );
+
+    return vo;
+
+};
+
+
+/**
+ * @param {VertexObject} vo - The vertex object
+ */
+
+VertexObjectPool.prototype.free = function ( vo ) {
+
+    var idx = this.usedVOs.indexOf( vo );
+
+    if ( idx === -1 ) return;
+
+    var lastIdx = this.usedVOs.length - 1;
+
+    if ( idx !== lastIdx ) {
+
+        var last = this.usedVOs[ lastIdx ];
+        vo.vertexArray.copy( last.vertexArray );
+
+        var tmp = last.vertexArray;
+        last.vertexArray = vo.vertexArray;
+        vo.vertexArray = tmp;
+
+        this.usedVOs.splice( idx, 1, last );
+
+    }
+
+    this.usedVOs.pop();
+    this.availableVOs.unshift( vo );
+
+    vo.vertexArray.copy( this.ZERO.vertexArray );
+
+};
+
+
+/**
+ * @ignore
+ */
+function createVertexObjects ( pool ) {
+
+    pool.availableVOs = [];
+
+    var vertexArray, vertexObject;
+    var i;
+
+    for ( i = 0; i < pool.capacity; i++ ) {
+
+        vertexArray = pool.vertexArray.subarray( i );
+
+        vertexObject = pool.descriptor.create( vertexArray );
+        vertexObject.destroy = pool.free.bind( pool, vertexObject );
+
+        pool.availableVOs.push( vertexObject );
+
+    }
+
+    pool.usedVOs = [];
+
+}
 
 /* jshint esversion:6 */
 const DEFAULT_WEBGL_PROGRAM = 'picimo.sprite';
@@ -30785,6 +30253,609 @@ class Matrix4 {
 
 }  // => Matrix4
 
+/**
+ * Represents a 2d axis aligned boundary box.
+ * @class AABB2
+ * @param {number} [x0=0] - x0
+ * @param {number} [x1=0] - x1
+ * @param {number} [y0=0] - y0
+ * @param {number} [y1=0] - y1
+ */
+
+class AABB2 {
+
+    constructor (x0 = 0, x1 = 0, y0 = 0, y1 = 0) {
+
+        if (x0 < x1) {
+
+            /**
+             * @type {number}
+             */
+            this.min_x = x0;
+            /**
+             * @type {number}
+             */
+            this.max_x = x1;
+
+        } else {
+
+            /**
+             * @type {number}
+             */
+            this.min_x = x1;
+            /**
+             * @type {number}
+             */
+            this.max_x = x0;
+
+        }
+
+        if (y0 < y1) {
+
+            /**
+             * @type {number}
+             */
+            this.min_y = y0;
+            /**
+             * @type {number}
+             */
+            this.max_y = y1;
+
+        } else {
+
+            /**
+             * @type {number}
+             */
+            this.min_y = y1;
+            /**
+             * @type {number}
+             */
+            this.max_y = y0;
+
+        }
+
+        Object.seal(this);
+
+    } // => constructor
+
+    /**
+     * @type {number}
+     */
+    get width () {
+        return this.max_x - this.min_x + 1;
+    }
+
+    /**
+     * @type {number}
+     */
+    get height () {
+        return this.max_y - this.min_y + 1;
+    }
+
+    /**
+     * @type {number}
+     */
+    get center_x () {
+        return ( this.max_x - this.min_x ) / 2;
+    }
+
+    /**
+     * @type {number}
+     */
+    get center_y () {
+        return ( this.max_y - this.min_y ) / 2;
+    }
+
+    /**
+     * Extend the boundary box.
+     *
+     * @param {number} x - x
+     * @param {number} y - y
+     */
+    addPoint (x, y) {
+
+        if (x < this.min_x) {
+
+            this.min_x = x;
+
+        } else if (x > this.max_x) {
+
+            this.max_x = x;
+
+        }
+
+        if (y < this.min_y) {
+
+            this.min_y = y;
+
+        } else if (y > this.max_y) {
+
+            this.max_y = y;
+
+        }
+
+    }
+
+    /**
+     * Determinates wether or the 2d point is inside this AABB.
+     *
+     * @param {number} x - x
+     * @param {number} y - y
+     * @return {boolean} return true when point is inside the aabb
+     */
+    isInside (x, y) {
+
+        if (x >= this.min_x && x <= this.max_x &&
+            y >= this.min_y && y <= this.max_y) {
+
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    /**
+     * Determinates wether or not this AABB intersects *aabb*.
+     *
+     * @param {AABB2} aabb - aabb
+     * @return {boolean} return true when there is some intersection between both
+     */
+    isIntersection (aabb) {
+
+        if (aabb.max_x < this.min_x || aabb.min_x > this.max_x ||
+            aabb.max_y < this.min_y || aabb.min_y > this.max_y) {
+
+            return false;
+
+        }
+
+        return true;
+
+    }
+
+} // => class AABB2
+
+class Viewport extends AABB2 {
+
+    /**
+     * @param {number} x - x
+     * @param {number} y - y
+     * @param {number} width - width
+     * @param {number} height - height
+     */
+    constructor (x, y, width, height) {
+
+        let min_x = parseInt(x, 10);
+        let min_y = parseInt(y, 10);
+
+        super(min_x, (min_x + parseInt(width,  10) - 1),
+              min_y, (min_y + parseInt(height, 10) - 1));
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get x () {
+        return this.min_x;
+    }
+
+    /**
+     * @param {number} x
+     * @type {number}
+     */
+    set x (x) {
+
+        let w = this.width;
+
+        /**
+         * @type {number}
+         */
+        this.min_x = x;
+        /**
+         * @type {number}
+         */
+        this.max_x = x + w - 1;
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get y () {
+        return this.min_y;
+    }
+
+    /**
+     * @param {number} y
+     * @type {number}
+     */
+    set y (y) {
+
+        let h = this.height;
+
+        /**
+         * @type {number}
+         */
+        this.min_y = y;
+        /**
+         * @type {number}
+         */
+        this.max_y = y + h - 1;
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get width () {
+        return this.max_x - this.min_x + 1;
+    }
+
+    /**
+     * @param {number} y
+     * @type {number}
+     */
+    set width (w) {
+        /**
+         * @type {number}
+         */
+        this.max_x = this.min_x + w - 1;
+    }
+
+    /**
+     * @type {number}
+     */
+    get height () {
+        return this.max_y - this.min_y + 1;
+    }
+
+    /**
+     * @param {number} y
+     * @type {number}
+     */
+    set height (h) {
+        /**
+         * @type {number}
+         */
+        this.max_y = this.min_y + h - 1;
+    }
+
+}
+
+/**
+ * @example
+ * let c = document.createElement("canvas");
+ * let t = new Picimo.core.Texture.fromCanvas(c);
+ * t.width    // => 300
+ * t.height   // => 150
+ *
+ * let tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
+ * t.width    // => 100
+ *
+ */
+
+class Texture {
+
+    /**
+     * @param {Texture} [parent]
+     * @param {number} [x=0]
+     * @param {number} [y=0]
+     * @param {number} [width]
+     * @param {number} [height]
+     */
+    constructor (parent, x, y, width, height) {
+
+        this._parent = parent;
+        this._image  = null;
+        this._width  = width;
+        this._height = height;
+
+        /**
+         * @type {number}
+         */
+        this.x = x != null ? x : 0;
+
+        /**
+         * @type {number}
+         */
+        this.y = y != null ? y : 0;
+
+    }
+
+    /**
+     * @type {?Texture}
+     */
+    get parent () {
+        return this._parent;
+    }
+
+    /**
+     * @param {?Texture} parent
+     * @type {?Texture}
+     */
+    set parent (parent) {
+        this._parent = parent;
+    }
+
+    /**
+     * @type {?Texture}
+     */
+    get root () {
+        return this._parent ? this._parent : this;
+    }
+
+    /**
+     * @type {Image|HTMLImageElement|HTMLCanvasElement}
+     */
+    get image () {
+        return this._image ? this._image : ( this._parent ? this._parent.image : null );
+    }
+
+    /**
+     * @param {Image|HTMLImageElement|HTMLCanvasElement} image
+     * @type {Image|HTMLImageElement|HTMLCanvasElement}
+     */
+    set image ( image ) {
+        this._image = image;
+    }
+
+    /**
+     * @type {number}
+     */
+    get root_width () {
+
+        var root = this.root;
+
+        if ( this === root ) {
+
+            if ( this._width != null ) {
+
+                return this._width;
+
+            } else if ( this._image ) {
+
+                return this._image.width;
+
+            } else {
+
+                return 0;
+
+            }
+
+        } else {
+
+            return root.root_width;
+
+        }
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get root_height () {
+
+        var root = this.root;
+
+        if ( this === root ) {
+
+            if ( this._height != null ) {
+
+                return this._height;
+
+            } else if ( this._image ) {
+
+                return this._image.height;
+
+            } else {
+
+                return 0;
+
+            }
+
+        } else {
+
+            return root.root_height;
+
+        }
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get width () {
+
+        if ( this._width != null ) {
+
+            return this._width;
+
+        }
+
+        return this.root_width;
+
+    }
+
+    /**
+     * @param {number} width
+     * @type {number}
+     */
+    set width ( width ) {
+
+        this._width = width;
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get height () {
+
+        if ( this._height != null ) {
+
+            return this._height;
+
+        }
+
+        return this.root_height;
+
+    }
+
+    /**
+     * @param {number} height
+     * @type {number}
+     */
+    set height ( height ) {
+
+        this._height = height;
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get min_s () {
+
+        var x = this.x;
+        var tex = this;
+
+        while ( ( tex = tex.parent ) != null ) {
+
+            x += tex.x;
+
+        }
+
+        return x / this.root_width;
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get min_t () {
+
+        var y = this.y;
+        var tex = this;
+
+        while ( ( tex = tex.parent ) != null ) {
+
+            y += tex.y;
+
+        }
+
+        return y / this.root_height;
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get max_s () {
+
+        var x = this.x + this.width;
+        var tex = this;
+
+        while ( ( tex = tex.parent ) != null ) {
+
+            x += tex.x;
+
+        }
+
+        return x / this.root_width;
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get max_t () {
+
+        var y = this.y + this.height;
+        var tex = this;
+
+        while ( ( tex = tex.parent ) != null ) {
+
+            y += tex.y;
+
+        }
+
+        return y / this.root_height;
+
+    }
+
+    /**
+     * @param {Object} obj - Any object which has a `.setTexCoords()` method
+     */
+    setTexCoords (obj) {
+
+        let x0 = this.min_s;
+        let y0 = this.min_t;
+        let x1 = this.max_s;
+        let y1 = this.max_t;
+
+        obj.setTexCoords(
+            x0, y0,
+            x1, y0,
+            x1, y1,
+            x0, y1 );
+
+    }
+
+    /**
+     * @param {HTMLImageElement|HTMLCanvasElement} canvas
+     * @return {Texture}
+     */
+    static fromCanvas (canvas) {
+
+        let texture = new Texture;
+        texture.image = canvas;
+
+        return texture;
+
+    }
+
+}  // => class Texture
+
+/* jshint esversion:6 */
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
+ */
+
+
+/**
+ * @param {number} x
+ * @return {number}
+ */
+function findNextPowerOfTwo ( x ) {
+
+    var p = 1;
+
+    while ( x > p ) {
+
+        p <<= 1;
+
+    }
+
+    return p;
+
+}
+
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+function isPowerOfTwo ( n ) {
+
+    return n !== 0 && ( n & ( n - 1 ) ) === 0;
+
+}
+
 /* jshint esversion:6 */
 class Canvas extends Picture$1 {
 
@@ -30957,6 +31028,297 @@ function createTexture (canvas, dimension) {
     }
 
     return texture;
+
+}
+
+/* jshint esversion:6 */
+/* global HTMLCanvasElement */
+/* global HTMLImageElement */
+/**
+ * A power of two image.
+ */
+class PowerOfTwoImage {
+
+    /**
+     * @param {!App} app
+     * @param {?HTMLImageElement|HTMLCanvasElement} image
+     */
+    constructor (app, image) {
+
+        definePropertyPublicRO( this, 'app', app );
+        addUid( this );
+        makeReadyPromise( this );
+
+        /**
+         * @type {string}
+         */
+        this.url = null;
+
+        /**
+         * @type {HTMLImageElement|HTMLCanvasElement}
+         */
+        this.domElement = image;
+
+        /**
+         * The power of two converted image (may be the original image)
+         *
+         * @type {HTMLImageElement|HTMLCanvasElement}
+         */
+        this.image = null;
+
+        Object.seal( this );
+
+    }
+
+    /**
+     * @param {string} url
+     * @return {PowerOfTwoImage} self
+     */
+    load ( url ) {
+
+        var img = document.createElement( 'img' );
+        this.domElement = img;
+
+        this.url = this.app.getAssetUrl( url );
+        img.src = this.url;
+
+        return this;
+
+    }
+
+    /**
+     * The original image
+     *
+     * @type {HTMLImageElement|HTMLCanvasElement}
+     */
+    get domElement () {
+        return this._domElement;
+    }
+
+    /**
+     * @type {HTMLImageElement|HTMLCanvasElement}
+     * @param {HTMLImageElement|HTMLCanvasElement} image
+     */
+    set domElement (image) {
+
+        if ( image instanceof HTMLCanvasElement ) {
+
+            setDomElement( this, image );
+
+        } else if ( image instanceof HTMLImageElement ) {
+
+            if ( image.width === 0 && image.height === 0 ) {
+
+                this._domElement = image;
+                this.ready = false;
+
+                var self = this;
+
+                image.onload = function () {
+
+                    self.image = convertToPowerOfTwo( image );
+                    self.ready = true;
+
+                };
+
+            } else {
+
+                setDomElement( this, image );
+
+            }
+
+        } else {
+
+            setDomElement( this, null );
+
+        }
+
+    }
+
+    /**
+     * @type {number}
+     */
+    get width () {
+        return this.image ? this.image.width : 0;
+    }
+
+    /**
+     * @type {number}
+     */
+    get height () {
+        return this.image ? this.image.height : 0;
+    }
+
+}  // => class PowerOfTwoImage
+
+
+/**
+ * @ignore
+ */
+function setDomElement ( image, domElement ) {
+
+    image._domElement = domElement;
+    image.image = domElement ? convertToPowerOfTwo( domElement ) : null;
+    image.ready = !! domElement;
+
+}
+
+/**
+ * @ignore
+ */
+function convertToPowerOfTwo ( image ) {
+
+    if ( isPowerOfTwo( image.width ) && isPowerOfTwo( image.height ) ) {
+
+        return image;
+
+    } else {
+
+        var w = findNextPowerOfTwo( image.width );
+        var h = findNextPowerOfTwo( image.height );
+
+        var canvas = document.createElement( 'canvas' );
+
+        canvas.width  = w;
+        canvas.height = h;
+
+        canvas.getContext( '2d' ).drawImage( image, 0, 0 );
+
+        return canvas;
+
+    }
+
+}
+
+/**
+ * Represents a texture atlas definition and holds references to the image, frames and textures.
+ */
+class TextureAtlas extends Resource {
+
+    /**
+     * @param {App} app
+     * @param {string} imageUrl
+     * @param {string|Object} conf
+     */
+    constructor (app, imageUrl, conf) {
+
+        super(app, 'conf');
+
+        this.on('incomingData', toJson);
+        this.on('data', parseTextureAtlasDefinition);
+
+        /**
+         * The texture atlas definition
+         * @type {Object}
+         */
+        this.conf = conf;
+
+        /**
+         * The root texture
+         * @type {Texture}
+         */
+        this.texture = null;
+
+        /**
+         * @type {Map<Texture>}
+         */
+        this.frames = null;
+
+        /**
+         * All texture frame names
+         * @type {string[]}
+         */
+        this.frameNames = null;
+
+        /**
+         * @type {string}
+         */
+        this.imageUrl = imageUrl;
+
+        Object.seal(this);
+
+    }
+
+    /**
+     * Return texture by frame name
+     * @param {string} name
+     * @return {Texture} texture
+     */
+    getTexture (name) {
+
+        if ( this.frames ) {
+
+            return this.frames.get( name );
+
+        }
+
+    }
+
+    /**
+     * @return {Texture} texture
+     */
+    getRandomTexture () {
+
+        if ( this.frames ) {
+
+            return this.frames.get( this.frameNames[ parseInt( this.frameNames.length * Math.random(), 10 ) ] );
+
+        }
+
+    }
+
+} // => class TextureAtlas
+
+
+/**
+ * @ignore
+ */
+function toJson (data) {
+    return typeof data === 'string' ? JSON.parse( data ) : data;
+}
+
+/**
+ * @ignore
+ */
+function constructImageUrl (textureAtlas, imageUrl) {
+
+    if ( textureAtlas.imageUrl !== undefined ) {
+
+        return textureAtlas.imageUrl;
+
+    }
+
+    return textureAtlas.app.joinAssetUrl( textureAtlas.url, imageUrl );
+
+}
+
+/**
+ * @ignore
+ */
+function parseTextureAtlasDefinition (conf) {
+
+    this.texture = new Texture();
+
+    this.texture.width  = conf.meta.size.w;
+    this.texture.height = conf.meta.size.h;
+    this.texture.image  = new PowerOfTwoImage( this.app ).load( constructImageUrl( this, conf.meta.image ) );
+
+    this.frameNames = [];
+    this.frames = new Map;
+
+    var name, frame;
+
+    for ( name in conf.frames ) {
+
+        if ( conf.frames.hasOwnProperty( name ) ) {
+
+            this.frameNames.push( name );
+            frame = conf.frames[ name ].frame;
+            this.frames.set( name, new Texture( this.texture, frame.x, frame.y, frame.w, frame.h ) );
+
+        }
+
+    }
 
 }
 
@@ -32024,26 +32386,11 @@ Scene.prototype.computeViewMatrix = function (viewMatrix) {
 
 };
 
-
-
-var index$2 = Object.freeze({
-	Node: Node,
-	NodeState: NodeState,
-	Scene: Scene,
-	Picture: Picture$1,
-	SpriteGroup: SpriteGroup
-});
-
 const regExpAbsHttpUrl = new RegExp( '^(https?:)?//', 'i' );
 const regExpAbsUrlPath = new RegExp( '^(https?:)?/', 'i' );
 const regExpUrlDir     = new RegExp( '^(.*/)[^/]+$', 'i' );
 
-
-/**
- * @param {string} url
- * @return {string}
- */
-
+/** @ignore */
 function getUrlDir ( url ) {
 
     if (url[url.length - 1] === '/') return url;
@@ -32051,12 +32398,7 @@ function getUrlDir ( url ) {
 
 }
 
-
-/**
- * @param {string} url
- * @return {string}
- */
-
+/** @ignore */
 function getAssetUrl ( url ) {
 
     var assetUrl;
@@ -32092,12 +32434,7 @@ function getAssetUrl ( url ) {
 }
 
 
-/**
- * @param {string} baseUrl
- * @param {string} url
- * @return {string}
- */
-
+/** @ignore */
 function joinAssetUrl ( baseUrl, url ) {
 
     if ( regExpAbsUrlPath.test( url ) ) {
@@ -32154,49 +32491,61 @@ function loadTexture ( url ) {
 //}
 
 /* jshint browser:true */
-class App$1 {
+class App$1 extends App$2 {
 
-    constructor (canvas, options) {
+    /**
+     * @param {?HTMLCanvasELement} canvas
+     * @param {Object} [options]
+     */
 
-        eventize_1$1(this);
+    constructor (canvas, options = {}) {
 
-        /**
-         * @private
-         */
+        super({
+            provider: Object.assign({
+                // TODO define services, components...
+            }, options.provider)
+        });
+
+        eventize_1$1( this );
+
+        /** @private */
         this.resize = resize;
 
-        /**
-         * @private
-         */
+        /** @private */
         this.renderFrame = renderFrame;
 
         /**
-         * {@link src/app/asset_url_helper.js~getAssetUrl}
+         * @function
+         * @param {string} url
+         * @return {string}
          */
         this.getAssetUrl = getAssetUrl;
 
         /**
-         * {@link src/app/asset_url_helper.js~joinAssetUrl}
+         * @function
+         * @param {string} baseUrl
+         * @param {string} url
+         * @return {string}
          */
         this.joinAssetUrl = joinAssetUrl;
 
-        /**
-         * {@link src/app/texture_helpers.js~loadTextureAtlas}
-         */
         this.loadTextureAtlas = loadTextureAtlas;
-
-        /**
-         * {@link src/app/texture_helpers.js~loadTexture}
-         */
         this.loadTexture = loadTexture;
 
         if (typeof window !== 'undefined') {  // TODO wrap window?
             definePropertyPublicRO(this, 'devicePixelRatio', window.devicePixelRatio || 1);
         }
 
+        /**
+         * App *ready* state.
+         * @instance
+         * @type {boolean}
+         */
         definePropertyPublicRO(this, 'ready', false);
 
         /**
+         * App *time* in ms since startup.
+         * @instance
          * @type {float}
          */
         this.now = window.performance.now() / 1000.0;
@@ -32270,6 +32619,9 @@ class App$1 {
 
 }  // => class App
 
+App$1.Component = App$2.Component;
+App$1.Service = App$2.Service;
+
 eventize_1$1(App$1);  // Enable plugins via Picimo.App.on('create', function (app, options))
 
 /* jshint esversion:6 */
@@ -32278,4 +32630,4 @@ eventize_1$1(App$1);  // Enable plugins via Picimo.App.on('create', function (ap
 
 const VERSION = "0.0.26";
 
-export { VERSION, App$1 as App, index$2 as graph, index as render, index$1 as core, defineSprite, SpriteFactory$1 as SpriteFactory };
+export { VERSION, App$1 as App, defineSprite, SpriteFactory$1 as SpriteFactory };
