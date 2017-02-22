@@ -2,11 +2,11 @@
 /**
  * @example
  * let c = document.createElement("canvas");
- * let t = new Picimo.core.Texture.fromCanvas(c);
+ * let t = new Picimo.Texture.fromCanvas(c);
  * t.width    // => 300
  * t.height   // => 150
  *
- * let tt = new Picimo.core.Texture( t, 30, 15, 100, 100 )
+ * let tt = new Picimo.Texture( t, 30, 15, 100, 100 )
  * t.width    // => 100
  *
  */
@@ -58,14 +58,16 @@ export default class Texture {
      * @type {?Texture}
      */
     get root () {
-        return this._parent ? this._parent : this;
+        return this._parent || this;
+        //return this._parent ? this._parent : this;
     }
 
     /**
      * @type {Image|HTMLImageElement|HTMLCanvasElement}
      */
     get image () {
-        return this._image ? this._image : ( this._parent ? this._parent.image : null );
+        return this._image || (this._parent && this._parent.image) || null;
+        //return this._image ? this._image : ( this._parent ? this._parent.image : null );
     }
 
     /**

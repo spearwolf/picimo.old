@@ -5,9 +5,9 @@ import makeReadyPromise from '../utils/make_ready_promise';
 import { definePropertyPublicRO } from '../utils/obj_props';
 
 /**
- * @desc
- *   A generic resource which has a ready state and loads data from an url.
+ * A generic resource which has a ready state and loads data from an url.
  *
+ * @desc
  *   The resource will load the data immediately after you set the url. The incoming data object can be transformed
  *   by subscribing to the `incomingData` event. When data is successfully loaded and transformed the `data`
  *   event will be emitted.
