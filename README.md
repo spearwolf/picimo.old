@@ -1,5 +1,12 @@
-# <img src="https://cdn.rawgit.com/spearwolf/picimo/master/assets/images/picimo-logo-640x248.png" alt="picimo" width="320">
+# <img src="assets/images/picimo-logo-640x248.png" alt="picimo" width="320">
 > Pictures in Motion
+
+# NEW: I started working on picimo's successor, version 2. It’s almost a full rewrite. See the new project page [https://github.com/spearwolf/picimo](https://github.com/spearwolf/picimo)
+
+THIS REPOSITORY IS NO LONGER MAINTAINED.
+
+
+---
 
 _picimo_ is a __sprite__ engine for __javascript__ running in a modern __browser__. it is built from scratch and exclusively utilizes __webgl__ as rendering technology.
 
