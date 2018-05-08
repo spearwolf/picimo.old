@@ -1,7 +1,7 @@
 # <img src="assets/images/picimo-logo-640x248.png" alt="picimo" width="320">
 > Pictures in Motion
 
-# NEW: I started working on picimo's successor, version 2. It’s almost a full rewrite. See the new project page [https://github.com/spearwolf/picimo](https://github.com/spearwolf/picimo)
+# NEW: I started working on picimo's successor, version 2. It’s almost a full rewrite. See the new project page [https://github.com/spearwolf/picimo-next](https://github.com/spearwolf/picimo-next)
 
 THIS REPOSITORY IS NO LONGER MAINTAINED.
 
